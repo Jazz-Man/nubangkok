@@ -72,3 +72,15 @@ atlassian*
 
 
 app/etc/config.php
+.php_cs.dist
+.travis.yml
+.user.ini
+CHANGELOG.md
+CONTRIBUTING.md
+COPYING.txt
+ISSUE_TEMPLATE.md
+LICENSE.txt
+LICENSE_AFL.txt
+PULL_REQUEST_TEMPLATE.md
+auth.json.sample
+php.ini.sample
