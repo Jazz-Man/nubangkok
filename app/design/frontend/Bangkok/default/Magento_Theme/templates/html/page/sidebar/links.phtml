@@ -1,15 +1,23 @@
 <?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
 
-<div>
-    <div><a href="#"><?php echo __('Inspiration'); ?></a></div>
-    <div><a href="#"><?php echo __('Customer care'); ?></a></div>
-    <div><a href="#"><?php echo __('Product care'); ?></a></div>
-    <div><a href="#"><?php echo __('Contact us'); ?></a></div>
-    <div><a href="#"><?php echo __('Career'); ?></a></div>
-    <div>
-        <span>FB</span>
-        <span>Inst</span>
-        <span>youtube</span>
+<div class="left-menu">
+    <div class="general-subcategories">
+        <div class="left-menu-big-margin "><a href="#"><?php echo __('Inspiration'); ?></a></div>
+        <div><a class="font-less" href="#"><?php echo __('Customer care'); ?></a></div>
+        <div><a class="font-less" href="#"><?php echo __('Product care'); ?></a></div>
+        <div><a class="font-less" href="#"><?php echo __('Contact us'); ?></a></div>
+        <div><a class="font-less" href="#"><?php echo __('Career'); ?></a></div>
+        <div class="social-links">
+            <span class="social-acc-pic">
+                <img src="<?php echo $this->getViewFileUrl('images/fb-icon.png'); ?>" alt="facebook-icon">
+            </span>
+            <span class="social-acc-pic">
+                <img src="<?php echo $this->getViewFileUrl('images/insta-icon.png'); ?>" alt="instagram-icon">
+            </span>
+            <span class="social-acc-pic">
+                <img src="<?php echo $this->getViewFileUrl('images/youtube-icon.png'); ?>" alt="youtube-icon">
+            </span>
+        </div>
+        <div><a class="font-less" href="#"><?php echo __('Policies'); ?></a></div>
     </div>
-    <div><a href="#"><?php echo __('Policies'); ?></a></div>
 </div>
