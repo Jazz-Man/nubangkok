@@ -2,11 +2,82 @@
 
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+
         <referenceContainer name="sidebar.additional">
             <block class="Magento\Framework\View\Element\Template" name="links_sidebar" as="links.sidebar"
                    template="Magento_Theme::html/page/sidebar/links.phtml"/>
         </referenceContainer>
+        <referenceBlock name="top.links">
+            <block class="Magento\Framework\View\Element\Template" name="top.search"
+                   as="topSearch" template="Magento_Search::form.mini.phtml" after="my-account-link"/>
+            <block class="Magento\Checkout\Block\Cart\Sidebar" name="minicart" as="minicart" after="top.search"
+                   template="Magento_Checkout::cart/minicart.phtml">
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="types" xsi:type="array"/>
+                        <item name="components" xsi:type="array">
+                            <item name="minicart_content" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Checkout/js/view/minicart</item>
+                                <item name="config" xsi:type="array">
+                                    <item name="template" xsi:type="string">Magento_Checkout/minicart/content</item>
+                                </item>
+                                <item name="children" xsi:type="array">
+                                    <item name="subtotal.container" xsi:type="array">
+                                        <item name="component" xsi:type="string">uiComponent</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="displayArea" xsi:type="string">subtotalContainer</item>
+                                        </item>
+                                        <item name="children" xsi:type="array">
+                                            <item name="subtotal" xsi:type="array">
+                                                <item name="component" xsi:type="string">uiComponent</item>
+                                                <item name="config" xsi:type="array">
+                                                    <item name="template" xsi:type="string">
+                                                        Magento_Checkout/minicart/subtotal
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                    <item name="extra_info" xsi:type="array">
+                                        <item name="component" xsi:type="string">uiComponent</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="displayArea" xsi:type="string">extraInfo</item>
+                                        </item>
+                                    </item>
+                                    <item name="promotion" xsi:type="array">
+                                        <item name="component" xsi:type="string">uiComponent</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="displayArea" xsi:type="string">promotion</item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+                <container name="minicart.addons" label="Mini-cart promotion block"/>
+            </block>
+            <block class="Magento\Directory\Block\Currency" name="select-currency" after="minicart"
+                   template="Magento_Directory::currency.phtml"/>
+            <block class="Magento\Store\Block\Switcher" name="select_store_language" after="select-currency"
+                   as="select_store_language" template="Magento_Store::switch/languages.phtml"/>
+        </referenceBlock>
+
+        <referenceBlock name="my-account-link">
+            <arguments>
+                <argument name="class" xsi:type="string">top-link-myaccount</argument>
+                <argument name="label" xsi:type="string"/>
+            </arguments>
+        </referenceBlock>
+
         <referenceContainer name="footer" remove="true"/>
         <referenceContainer name="header-wrapper" remove="true"/>
+        <referenceBlock name="header" remove="true"/>
+        <referenceBlock name="wish-list-link" remove="true"/>
+        <referenceBlock name="register-link" remove="true"/>
+        <referenceBlock name="catalog.compare.link" remove="true"/>
+        <referenceBlock name="authorization-link" remove="true" />
+        <referenceBlock name="currency" remove="true"/>
+        <referenceBlock name="store_language" remove="true"/>
     </body>
 </page>
