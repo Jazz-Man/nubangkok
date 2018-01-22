@@ -1,0 +1,12 @@
+
+<?php
+use Magento\Catalog\Model\Product\ProductList\Toolbar;
+?>
+<?php echo $this->getChildHtml('breadcrumbs');?>
+<?php if ($block->getCollection()->getSize()): ?>
+    <div class="toolbar toolbar-products" data-mage-init='<?= /* @escapeNotVerified */ $block->getWidgetOptionsJson() ?>'>
+        <?php if ($block->isExpanded()): ?>
+            <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
+        <?php endif; ?>
+    </div>
+<?php endif ?>
