@@ -3,8 +3,8 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="sidebar.additional">
-            <block class="Magento\Framework\View\Element\Template" name="sidebar_category_filter" as="sidebar.category.filter"
-                   template="Encomage_Theme::sidebar/category/filters.phtml" before="-"/>
+            <block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="sidebar_categories" as="sidebar.categories"
+                   template="Encomage_Theme::html/page/sidebar/categories.phtml" before="-"/>
         </referenceContainer>
     </body>
 </page>
