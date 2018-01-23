@@ -1,0 +1,34 @@
+<?php /** @var \Encomage\Theme\Block\Html\Page\Sidebar\Categories $block */ ?>
+<?php $categories = $block->getCategories(); ?>
+<div class="left-menu">
+    <?php if (!empty($categories)): ?>
+        <div class="js-sidebar-categories">
+            <div class="main-categories">
+                <?php foreach ($categories as $category): ?>
+                    <span class="font-less">
+                         <a data-category-id="<?php echo $category->getId(); ?>"
+                            class="js-sidebar-category js-no-link js-category-main"
+                            href="">
+                             <?php echo $category->getName(); ?>
+                         </a>
+                    </span>
+                <?php endforeach; ?>
+            </div>
+            <div class="main-subcategories">
+                <?php foreach ($categories as $child): ?>
+                    <?php if ($child->hasChildren()): ?>
+                        <?php echo $block->getSubCategoriesHtml($child, false); ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
+<script type="text/x-magento-init">
+    {
+            ".js-sidebar-categories": {
+                "Encomage_Theme/js/sidebar/categories": <?php echo $block->getJsConfig(); ?>
+            }
+        }
+
+</script>
