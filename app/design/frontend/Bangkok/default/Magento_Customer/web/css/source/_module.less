@@ -32,11 +32,14 @@
 & when (@media-common = true) {
     .page-header {
         .links {
+            li:first-of-type{
+                padding-top: 8px;
+            }
             .top-link-myaccount {
                 width: 25px;
                 height: 25px;
                 display: block;
-                background: url("../images/customer-icon.png");
+                background: @icon-customer-account;
                 background-size: cover;
             }
         }
