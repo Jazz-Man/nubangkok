@@ -15,30 +15,9 @@
                 <?php endforeach; ?>
             </div>
             <div class="main-subcategories">
-                <?php foreach ($categories as $child0): ?>
-                    <?php if ($child0->hasChildren()): ?>
-                        <?php foreach ($child0->getChildren() as $child1): ?>
-                            <div>
-                                <a data-category-id="<?php echo $child1->getId(); ?>"
-                                   data-parent-id="<?php echo $child1->getParent()->getId(); ?>"
-                                   class="js-sidebar-subcategories js-no-link js-category-child-1"
-                                   href=""><?php echo $child1->getName(); ?></a>
-                                <?php if ($child1->hasChildren()): ?>
-                                    <ul>
-                                        <?php foreach ($child1->getChildren() as $child2): ?>
-                                            <li>
-                                                <a data-category-id="<?php echo $child2->getId(); ?>"
-                                                   data-parent-id="<?php echo $child2->getParent()->getId(); ?>"
-                                                   class="js-sidebar-subcategories js-category-child-2"
-                                                   href="<?php echo $child2->getName() ?>">
-                                                    <?php echo $child2->getName(); ?>
-                                                </a>
-                                            </li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                <?php endif; ?>
-                            </div>
-                        <?php endforeach; ?>
+                <?php foreach ($categories as $child): ?>
+                    <?php if ($child->hasChildren()): ?>
+                        <?php echo $block->getSubCategoriesHtml($child, false); ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </div>
@@ -46,9 +25,10 @@
     <?php endif; ?>
 </div>
 <script type="text/x-magento-init">
-        {
+    {
             ".js-sidebar-categories": {
-                "Encomage_Theme/js/sidebar/categories": {}
+                "Encomage_Theme/js/sidebar/categories": <?php echo $block->getJsConfig(); ?>
             }
         }
+
 </script>
