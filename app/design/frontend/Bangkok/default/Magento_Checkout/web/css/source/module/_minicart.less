@@ -103,6 +103,25 @@
     }
 
     .minicart-wrapper {
+        //
+        // bag handle
+        //
+        .cart_bg_handle{
+            position: absolute;
+            overflow: hidden;
+            top: 2px;
+            left: 15px;
+            margin-left: -6px;
+        }
+        //
+        // count-bag
+        //
+        .count-bag{
+            color:@color-red9;
+            position: absolute;
+            left: 11px;
+            top: 12px;
+        }
         .lib-dropdown(
         @_toggle-selector: ~'.action.showcart',
         @_options-selector: ~'.block-minicart',
