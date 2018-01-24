@@ -2,6 +2,8 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <move element="page.main.title" destination="product.info.main" before="-"/>
+        <move element="breadcrumbs" destination="content" before="product.info.main"/>
+        <move element="view.addto.wishlist" destination="product.info.addtocart.additional" after="-"/>
         <move element="product.info.stock.sku" destination="product.info.price" after="page.main.title"/>
 
         <referenceBlock name="product.info.review" remove="true"/>
@@ -10,5 +12,8 @@
         <referenceBlock name="product.info.mailto" remove="true"/>
         <referenceBlock name="reviews.tab" remove="true"/>
         <referenceBlock name="review_view" remove="true"/>
+        <referenceBlock name="product.info.options.wrapper.bottom">
+            <block class="Magento\Framework\View\Element\Template" name="message.box" as="message_box" template="Magento_Catalog::product/view/message_box.phtml" before="product.info.addtocart.additional"/>
+        </referenceBlock>
     </body>
 </page>
