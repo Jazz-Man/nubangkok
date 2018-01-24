@@ -61,7 +61,7 @@ class Categories extends \Magento\Framework\View\Element\Template
         $html .= '<ul style="display: none;" data-parent-id="' . $childCat->getId() . '">';
         /** If not top category */
         if ($childCat->hasChildren() && $addLinkToParentCat) {
-            $liClass = (in_array($childCat->getId(), $this->_activeCategoryPath)) ? 'class="active"' : '';
+            $liClass = ($this->_activeCategoryPath && in_array($childCat->getId(), $this->_activeCategoryPath)) ? 'class="active"' : '';
             $html .= '<li data-category-id="' . $childCat->getId() . '" ' . $liClass . '>';
             $html .= '<a data-category-id="'
                 . $childCat->getId() . '" href="' . $this->_categoryHelper->getCategoryUrl($childCat) . '">'
@@ -70,7 +70,7 @@ class Categories extends \Magento\Framework\View\Element\Template
             $html .= '</li>';
         }
         foreach ($children as $item) {
-            $liClass = (in_array($item->getId(), $this->_activeCategoryPath)) ? 'class="active"' : '';
+            $liClass = ($this->_activeCategoryPath && in_array($item->getId(), $this->_activeCategoryPath)) ? 'class="active"' : '';
             $html .= '<li data-category-id="' . $item->getId() . '" ' . $liClass . '>';
             $linkClasses = 'js-sidebar-category';
             if ($item->hasChildren()) {
