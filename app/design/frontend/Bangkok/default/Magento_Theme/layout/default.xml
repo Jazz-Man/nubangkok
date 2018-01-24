@@ -8,6 +8,13 @@
                    template="Magento_Theme::html/page/sidebar/links.phtml"/>
         </referenceContainer>
         <referenceBlock name="top.links">
+            <block class="Magento\Framework\View\Element\Html\Link" name="store.locator" after="my-account-link">
+            <arguments>
+                <argument name="class" xsi:type="string">top-link-locate</argument>
+            <argument name="path" xsi:type="string" translate="false">locator</argument>
+        <argument name="sortOrder" xsi:type="number">110</argument>
+</arguments>
+        </block>
             <block class="Magento\Framework\View\Element\Template" name="top.search"
                    as="topSearch" template="Magento_Search::form.mini.phtml" after="my-account-link"/>
             <block class="Magento\Checkout\Block\Cart\Sidebar" name="minicart" as="minicart" after="top.search"
@@ -71,8 +78,6 @@
         </referenceBlock>
 
         <referenceContainer name="footer" remove="true"/>
-        <referenceContainer name="header-wrapper" remove="true"/>
-        <referenceBlock name="header" remove="true"/>
         <referenceBlock name="wish-list-link" remove="true"/>
         <referenceBlock name="register-link" remove="true"/>
         <referenceBlock name="catalog.compare.link" remove="true"/>
