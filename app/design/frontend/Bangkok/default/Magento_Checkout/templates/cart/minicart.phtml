@@ -2,8 +2,11 @@
     <a class="action showcart" href="<?= /* @escapeNotVerified */
     $block->getShoppingCartUrl() ?>"
        data-bind="scope: 'minicart_content'">
-        <span class="text"><?= /* @escapeNotVerified */
-            __('My Cart') ?></span>
+        <span class="text"><?= /* @escapeNotVerified */ __('My Cart') ?></span>
+        <span class="cart_bg_handle">
+            <img src="<?php echo $this->getViewFileUrl('images/bag-handle.png'); ?>" alt="youtube-icon">
+        </span>
+        <span class="count-bag">1</span>
         <span class="counter qty empty"
               data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
             <span class="counter-number"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
@@ -30,7 +33,7 @@
             <div id="minicart-content-wrapper" data-bind="scope: 'minicart_content'">
                 <!-- ko template: getTemplate() --><!-- /ko -->
             </div>
-            <?= $block->getChildHtml('minicart.addons') ?>
+            <?= $block->getChildHtml('minicart.xaddons') ?>
         </div>
     <?php endif ?>
     <script>
