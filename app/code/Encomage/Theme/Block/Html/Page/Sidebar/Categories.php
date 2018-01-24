@@ -38,6 +38,11 @@ class Categories extends \Magento\Framework\View\Element\Template
         return $this->_registry->registry('current_category');
     }
 
+    public function getMainActiveCategoryId()
+    {
+        return $this->_mainActiveCategoryId;
+    }
+
     public function getJsConfig()
     {
         return $this->_json->serialize(

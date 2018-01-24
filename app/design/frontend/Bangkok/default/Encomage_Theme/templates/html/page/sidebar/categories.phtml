@@ -5,7 +5,7 @@
         <div class="js-sidebar-categories">
             <div class="main-categories">
                 <?php foreach ($categories as $category): ?>
-                    <span class="font-less">
+                    <span class="font-less <?php echo ($category->getId() == $block->getMainActiveCategoryId()) ? 'active' : ''?>">
                          <a data-category-id="<?php echo $category->getId(); ?>"
                             class="js-sidebar-category js-no-link js-category-main"
                             href="">

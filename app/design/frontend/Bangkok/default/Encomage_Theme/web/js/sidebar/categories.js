@@ -33,7 +33,9 @@ define([
 
                 }
                 if (el.hasClass('js-category-main')) {
+                    $('.main-categories span').removeClass('active');
                     $('.main-subcategories ul').hide();
+                    el.parent().addClass('active');
                 }
                 activateSubMenu(el.data('categoryId'));
             })
