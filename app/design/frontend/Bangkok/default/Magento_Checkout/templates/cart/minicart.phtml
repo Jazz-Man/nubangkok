@@ -6,8 +6,7 @@
         <span class="cart_bg_handle">
             <img src="<?php echo $this->getViewFileUrl('images/bag-handle.png'); ?>" alt="youtube-icon">
         </span>
-        <span class="count-bag">1</span>
-        <span class="counter qty empty"
+        <span class="count-bag"
               data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
             <span class="counter-number"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
             <span class="counter-label">

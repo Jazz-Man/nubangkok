@@ -546,22 +546,21 @@
   .left-menu-big-margin {
     margin-top: 50px;
     margin-bottom: 50px !important;
+    text-transform: uppercase;
   }
   //make font less
   .font-less {
-    font-size: ceil((@font-size__base * .85));
+    //font-size: ceil((@font-size__base * .85));
+    text-transform: uppercase;
   }
   .main-categories {
     padding-bottom: 20px;
     span {
-      //background-color: @color-violet;
       padding: 1px 7px;
       border-radius: 3px;
       margin-right: 5px;
       a {
         text-transform: uppercase;
-        //color: @color-white;
-        //font-size: @font-size__base;
         font-weight: @font-weight__bold;
       }
       &.active {
@@ -573,29 +572,35 @@
     }
   }
 
-  .main-subcategories{
+
+  .main-subcategories {
     ul {
+      padding-left: 0;
       li {
-        a{
+        list-style-type: none;
+        a {
           margin-bottom: 1rem;
           display: block;
           text-transform: uppercase;
+        }
+        &.active{
           font-weight: 700;
+          list-style-type: disc;
         }
       }
-      ul{
+      ul {
         padding-left: 15px;
         li {
           list-style-type: none;
-          a{
+          a {
             text-transform: capitalize;
             font-weight: 100;
           }
-        }
-        .active {
-          list-style-type: disc;
-          a {
-            font-weight: 700;
+          &.active {
+            list-style-type: disc;
+            a {
+              font-weight: 700;
+            }
           }
         }
       }
