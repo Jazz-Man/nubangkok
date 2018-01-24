@@ -78,6 +78,8 @@
         </referenceBlock>
 
         <referenceContainer name="footer" remove="true"/>
+        <referenceContainer name="header-wrapper" remove="true"/>
+        <referenceBlock name="header" remove="true"/>
         <referenceBlock name="wish-list-link" remove="true"/>
         <referenceBlock name="register-link" remove="true"/>
         <referenceBlock name="catalog.compare.link" remove="true"/>
