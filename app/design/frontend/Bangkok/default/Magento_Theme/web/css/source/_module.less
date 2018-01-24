@@ -57,6 +57,31 @@
     //  ---------------------------------------------
 
     .page-header {
+
+            .links {
+                li:first-of-type, li:nth-child(2), li:nth-child(5), li:nth-child(6){
+                    padding-top: 8px;
+                }
+                //.switcher-currency{
+                //    float: right;
+                //}
+
+                .top-link-myaccount {
+                    width: 25px;
+                    height: 25px;
+                    display: block;
+                    background: @icon-customer-account;
+                    background-size: cover;
+                }
+                .top-link-locate{
+                    background: @icon-locate;
+                    width: 16px;
+                    height: 25px;
+                    display: block;
+                    background-size: cover;
+                }
+            }
+
         .lib-css(background-color, @header__background-color);
         border-bottom: 1px solid @border-color__base;
         margin-bottom: @indent__base;
@@ -196,14 +221,14 @@
 
             .options {
                 .lib-dropdown(
-                    @_dropdown-actions-padding: 0,
-                    @_dropdown-list-item-padding: 0,
-                    @_dropdown-toggle-icon-content: @icon-down,
-                    @_dropdown-toggle-active-icon-content: @icon-up,
-                    @_icon-font-text-hide: true,
-                    @_icon-font-size: 22px,
-                    @_icon-font-line-height: 22px,
-                    @_dropdown-list-min-width: 160px
+                @_dropdown-actions-padding: 0,
+                @_dropdown-list-item-padding: 0,
+                @_dropdown-toggle-icon-content: @icon-down,
+                @_dropdown-toggle-active-icon-content: @icon-up,
+                @_icon-font-text-hide: true,
+                @_icon-font-size: 22px,
+                @_icon-font-line-height: 22px,
+                @_dropdown-list-min-width: 160px
                 );
 
                 ul.dropdown {
@@ -228,8 +253,7 @@
             }
 
             strong {
-                font-weight: 400;
-                padding: 2px;
+                font-weight: @font-weight__regular;
             }
         }
     }
@@ -345,7 +369,7 @@
         margin-bottom: 0;
 
         .panel.wrapper {
-            border-bottom: 1px solid @secondary__color;
+            //border-bottom: 1px solid @secondary__color;
         }
 
         .header.panel {

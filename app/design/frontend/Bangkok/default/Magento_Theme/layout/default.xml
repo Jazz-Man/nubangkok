@@ -9,11 +9,11 @@
         </referenceContainer>
         <referenceBlock name="top.links">
             <block class="Magento\Framework\View\Element\Html\Link" name="store.locator" after="my-account-link">
-            <arguments>
-                <argument name="class" xsi:type="string">top-link-locate</argument>
-            <argument name="path" xsi:type="string" translate="false">locator</argument>
-        <argument name="sortOrder" xsi:type="number">110</argument>
-</arguments>
+                <arguments>
+                    <argument name="class" xsi:type="string">top-link-locate</argument>
+                    <argument name="path" xsi:type="string" translate="false">locator</argument>
+                    <argument name="sortOrder" xsi:type="number">110</argument>
+                </arguments>
         </block>
             <block class="Magento\Framework\View\Element\Template" name="top.search"
                    as="topSearch" template="Magento_Search::form.mini.phtml" after="my-account-link"/>
@@ -64,10 +64,10 @@
                 </arguments>
                 <container name="minicart.addons" label="Mini-cart promotion block"/>
             </block>
-            <block class="Magento\Directory\Block\Currency" name="select-currency" after="minicart"
+            <block class="Magento\Directory\Block\Currency" name="select-currency" after="select_store_language"
                    template="Magento_Directory::currency.phtml"/>
-            <block class="Magento\Store\Block\Switcher" name="select_store_language" after="select-currency"
-                   as="select_store_language" template="Magento_Store::switch/languages.phtml"/>
+            <block class="Magento\Store\Block\Switcher" name="select_store_language" as="select_store_language"
+                   after="minicart" template="Magento_Store::switch/languages.phtml"/>
         </referenceBlock>
 
         <referenceBlock name="my-account-link">
@@ -78,13 +78,12 @@
         </referenceBlock>
 
         <referenceContainer name="footer" remove="true"/>
-        <referenceContainer name="header-wrapper" remove="true"/>
-        <referenceBlock name="header" remove="true"/>
         <referenceBlock name="wish-list-link" remove="true"/>
         <referenceBlock name="register-link" remove="true"/>
         <referenceBlock name="catalog.compare.link" remove="true"/>
         <referenceBlock name="authorization-link" remove="true" />
         <referenceBlock name="currency" remove="true"/>
         <referenceBlock name="store_language" remove="true"/>
+        <referenceBlock name="page.main.title" remove="true"/>
     </body>
 </page>
