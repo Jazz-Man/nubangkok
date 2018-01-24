@@ -32,7 +32,7 @@
 & when (@media-common = true) {
     .page-header {
         .links {
-            li:first-of-type{
+            li:first-of-type, li:nth-child(2){
                 padding-top: 8px;
             }
             .top-link-myaccount {
@@ -40,6 +40,13 @@
                 height: 25px;
                 display: block;
                 background: @icon-customer-account;
+                background-size: cover;
+            }
+            .top-link-locate{
+                background: @icon-locate;
+                width: 16px;
+                height: 25px;
+                display: block;
                 background-size: cover;
             }
         }
