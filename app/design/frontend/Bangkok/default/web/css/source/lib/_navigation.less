@@ -7,6 +7,7 @@
 //  Navigation
 //  _____________________________________________
 
+
 .lib-main-navigation(
   @_nav__indent-side: 15px,
   @_nav-background-color: @navigation__background,
@@ -62,7 +63,6 @@
       margin: 0;
       padding: 0;
     }
-
     li {
       margin: 0;
     }
@@ -528,6 +528,8 @@
 //  ---------------------------------------------
 .left-menu {
   .social-links {
+    height: 25px;
+    margin-top: 15px;
     .social-acc-pic {
       display: inline-block;
       width: 24.5%;
@@ -537,6 +539,9 @@
         height: 25px;
       }
     }
+  }
+  .left-menu-last-item{
+    margin-top: 50px;
   }
   .left-menu-big-margin {
     margin-top: 50px;
@@ -549,22 +554,50 @@
   .main-categories {
     padding-bottom: 20px;
     span {
-      background-color: @color-violet;
+      //background-color: @color-violet;
       padding: 1px 7px;
       border-radius: 3px;
       margin-right: 5px;
       a {
         text-transform: uppercase;
-        color: @color-white;
+        //color: @color-white;
+        //font-size: @font-size__base;
         font-weight: @font-weight__bold;
+      }
+      &.active {
+        background-color: @color-violet;
+        a {
+          color: @color-white;
+        }
       }
     }
   }
-  .main-subcategories, .general-subcategories {
-    div {
-      margin-bottom: 10px;
-      a {
-        text-transform: uppercase;
+
+  .main-subcategories{
+    ul {
+      li {
+        a{
+          margin-bottom: 1rem;
+          display: block;
+          text-transform: uppercase;
+          font-weight: 700;
+        }
+      }
+      ul{
+        padding-left: 15px;
+        li {
+          list-style-type: none;
+          a{
+            text-transform: capitalize;
+            font-weight: 100;
+          }
+        }
+        .active {
+          list-style-type: disc;
+          a {
+            font-weight: 700;
+          }
+        }
       }
     }
   }
