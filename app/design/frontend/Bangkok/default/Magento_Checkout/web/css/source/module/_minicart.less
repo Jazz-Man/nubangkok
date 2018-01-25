@@ -409,14 +409,23 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
-    .minicart-wrapper .block-minicart {
-        width: 290px;
+    .minicart-wrapper{
+        .block-minicart {
+            width: 290px;
+        }
     }
 }
+
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
     .minicart-wrapper {
         margin-top: @indent__s;
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .minicart-wrapper {
+        margin-top: 9px;
     }
 }
 
