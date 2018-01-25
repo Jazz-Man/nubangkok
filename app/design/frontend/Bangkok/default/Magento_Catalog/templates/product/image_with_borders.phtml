@@ -1,0 +1,27 @@
+<?php /** @var $block \Magento\Catalog\Block\Product\Image */ ?>
+
+<span class="product-image-container"
+      style="width:<?= /* @escapeNotVerified */
+      $block->getWidth() ?>px;">
+    <span class="product-image-wrapper"
+          style="padding-bottom: <?= /* @escapeNotVerified */
+          ($block->getRatio() * 100) ?>%;">
+        <div class="image-block">
+        <img class="product-image-photo"
+            <?= /* @escapeNotVerified */
+            $block->getCustomAttributes() ?>
+             src="<?= /* @escapeNotVerified */
+             $block->getImageUrl() ?>"
+             width="<?= /* @escapeNotVerified */
+             $block->getResizedImageWidth() ?>"
+             height="<?= /* @escapeNotVerified */
+             $block->getResizedImageHeight() ?>"
+             alt="<?= /* @escapeNotVerified */
+             $block->stripTags($block->getLabel(), null, true) ?>"/>
+
+    <span class="product-note-info">Limited</span>
+                                            <span class="product-note-status">New</span>
+                                            <span class="popular-products">Popular</span>
+    </span>
+    </div>
+</span>
