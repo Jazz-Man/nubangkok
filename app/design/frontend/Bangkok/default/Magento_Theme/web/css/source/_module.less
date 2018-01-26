@@ -354,13 +354,19 @@
                             .lib-css(padding-left, @indent__xs);
                         }
                     }
+                    &:nth-child(5){
+                        margin-right: 0;
+                    }
+                    &:nth-child(6){
+                        margin-right: 0;
+                    }
                 }
             }
         }
 
         &.content {
             &:extend(.abs-add-clearfix-desktop all);
-            padding: @indent__l @indent__base 0;
+            //padding: @indent__l @indent__base 0;
         }
     }
 
@@ -374,8 +380,8 @@
 
         .header.panel {
             &:extend(.abs-add-clearfix-desktop all);
-            padding-bottom: @indent__s;
-            padding-top: @indent__s;
+            //padding-bottom: @indent__s;
+            //padding-top: @indent__s;
         }
 
         .switcher {
