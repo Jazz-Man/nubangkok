@@ -53,6 +53,9 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
                     <?php // Product Image ?>
                     <a href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
                         <?= $productImage->toHtml() ?>
+<!--                                            <span class="product-note-info">Limited</span>-->
+<!--                                            <span class="product-note-status">New</span>-->
+<!--                                            <span class="popular-products">Popular</span>-->
                     </a>
                     <div class="product details product-item-details">
                         <?php
