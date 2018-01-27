@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="\Encomage\Swatches\Model\SwatchAttributesProvider">
+        <arguments>
+            <argument name="swatchHelper" xsi:type="object">\Magento\Swatches\Helper\Data\Proxy</argument>
+        </arguments>
+    </type>
+    <preference for="Magento\Swatches\Model\Plugin\EavAttribute" type="Encomage\Swatches\Model\Plugin\EavAttribute"/>
+    <preference for="Magento\Swatches\Model\ResourceModel\Swatch" type="Encomage\Swatches\Model\ResourceModel\Swatch"/>
+    <preference for="Magento\Swatches\Model\SwatchAttributesProvider" type="Encomage\Swatches\Model\SwatchAttributesProvider"/>
+</config>
