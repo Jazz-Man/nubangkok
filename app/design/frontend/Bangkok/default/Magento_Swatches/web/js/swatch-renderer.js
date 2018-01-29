@@ -308,7 +308,7 @@ define([
          */
         _sortAttributes: function () {
             this.options.jsonConfig.attributes = _.sortBy(this.options.jsonConfig.attributes, function (attribute) {
-                if(attribute.code="size"){
+                if(attribute.code == "size"){
                     return attribute.position =10;
                 }
                 return attribute.position;
@@ -576,7 +576,6 @@ define([
 
             html += '</select>';
             return html;
-
         },
 
         /**
@@ -1328,13 +1327,10 @@ define([
          * @private
          */
         _getStockStatus: function ($this) {
-
             var stockStatuses = this.options.jsonConfig.stockStatus;
             var statusAttr = this.options.jsonConfig.attributes;
             var attrOptionId = $this.attr('option-id');
             var stockStatusMessage = [];
-
-
             $.each(statusAttr, function (key, item) {
                 if (item.code == "color") {
                     $.each(stockStatuses, function (item, value) {
@@ -1348,7 +1344,6 @@ define([
                     });
                 }
             });
-
             return stockStatusMessage;
         },
 
