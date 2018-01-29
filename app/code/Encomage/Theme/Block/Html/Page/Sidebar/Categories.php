@@ -54,29 +54,32 @@ class Categories extends \Magento\Framework\View\Element\Template
         );
     }
 
-    public function getSubCategoriesHtml(\Magento\Framework\Data\Tree\Node $childCat, $addLinkToParentCat = true)
+    public function getSubCategoriesHtml(\Magento\Framework\Data\Tree\Node $childCat, bool $addLinkToParentCat = true)
     {
         $children = $childCat->getChildren();
         $html = '';
         $html .= '<ul style="display: none;" data-parent-id="' . $childCat->getId() . '">';
         /** If not top category */
         if ($childCat->hasChildren() && $addLinkToParentCat) {
-            $liClass = ($this->_activeCategoryPath && in_array($childCat->getId(), $this->_activeCategoryPath)) ? 'class="active"' : '';
+            $liClass = $this->_isActiveMenuItem($childCat->getId())
+            && $childCat->getId() == $this->getCurrentCategory()->getId() ? 'class="active"' : '';
             $html .= '<li data-category-id="' . $childCat->getId() . '" ' . $liClass . '>';
-            $html .= '<a data-category-id="'
-                . $childCat->getId() . '" href="' . $this->_categoryHelper->getCategoryUrl($childCat) . '">'
+            $html .= '<a data-category-id="' . $childCat->getId()
+                . '" href="' . $this->_categoryHelper->getCategoryUrl($childCat) . '">'
                 . __('All')
                 . '</a>';
             $html .= '</li>';
         }
         foreach ($children as $item) {
-            $liClass = ($this->_activeCategoryPath && in_array($item->getId(), $this->_activeCategoryPath)) ? 'class="active"' : '';
+            $liClass = $this->_isActiveMenuItem($item->getId()) ? 'class="active"' : '';
             $html .= '<li data-category-id="' . $item->getId() . '" ' . $liClass . '>';
             $linkClasses = 'js-sidebar-category';
             if ($item->hasChildren()) {
                 $linkClasses .= ' js-no-link';
             }
-            $html .= '<a data-category-id="' . $item->getId() . '" class="' . $linkClasses . '" href="'
+            $html .= '<a data-category-id="' . $item->getId()
+                . '" class="' . $linkClasses
+                . '" href="'
                 . $this->_categoryHelper->getCategoryUrl($item) . '">'
                 . $item->getName() . '</a>';
             if ($item->hasChildren()) {
@@ -86,6 +89,11 @@ class Categories extends \Magento\Framework\View\Element\Template
         }
         $html .= '</ul>';
         return $html;
+    }
+
+    protected function _isActiveMenuItem(int $catId)
+    {
+        return ($this->_activeCategoryPath && in_array($catId, $this->_activeCategoryPath));
     }
 
     protected function _prepareCategories()
