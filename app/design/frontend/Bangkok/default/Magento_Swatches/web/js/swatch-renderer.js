@@ -1336,7 +1336,7 @@ define([
                     $.each(stockStatuses, function (item, value) {
                         if (value[attrOptionId] != null) {
                             if (value[attrOptionId].stock) {
-                                stockStatusMessage [value[attrOptionId].size] = "in stock"
+                                stockStatusMessage [value[attrOptionId].size] = "In stock"
                             } else {
                                 stockStatusMessage[value[attrOptionId].size] = "Not in stock Notify me";
                             }
