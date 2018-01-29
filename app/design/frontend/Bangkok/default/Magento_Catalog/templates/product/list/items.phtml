@@ -11,7 +11,7 @@ switch ($type = $block->getType()) {
             $class = $type;
 
             $image = 'related_products_list';
-            $title = __('Related Products');
+            $title = __('You might also be interested in');
             $items = $block->getAllItems();
             $limit = $block->getPositionLimit();
             $shuffle = (int) $block->isShuffled();
@@ -31,7 +31,7 @@ switch ($type = $block->getType()) {
             $class = $type;
 
             $image = 'related_products_list';
-            $title = __('Related Products');
+            $title = __('You might also be interested in');
             $items = $block->getItems();
             $limit = 0;
             $shuffle = 0;
@@ -156,7 +156,7 @@ switch ($type = $block->getType()) {
         <div class="block <?= /* @escapeNotVerified */ $class ?>">
             <?php endif; ?>
             <div class="block-title title">
-                <strong id="block-<?= /* @escapeNotVerified */ $class ?>-heading" role="heading" aria-level="2"><?= /* @escapeNotVerified */ $title ?></strong>
+                <p id="block-<?= /* @escapeNotVerified */ $class ?>-heading" role="heading" aria-level="2"><?= /* @escapeNotVerified */ $title ?></p>
             </div>
             <div class="block-content content" aria-labelledby="block-<?= /* @escapeNotVerified */ $class ?>-heading">
                 <div class="products wrapper grid products-grid products-<?= /* @escapeNotVerified */ $type ?>">
