@@ -21,5 +21,6 @@
         <referenceBlock name="product.info.options.wrapper.bottom">
             <block class="Magento\Framework\View\Element\Template" name="message.box" as="message_box" template="Magento_Catalog::product/view/message_box.phtml" before="product.info.addtocart.additional"/>
         </referenceBlock>
+        <referenceBlock name="product.info.stock.sku" remove="true" />
     </body>
 </page>
