@@ -348,7 +348,7 @@ define([
                 isInProductView = false;
 
             productId = this.element.parents('.product-item-details')
-                    .find('.price-box.price-final_price').attr('data-product-id');
+                .find('.price-box.price-final_price').attr('data-product-id');
 
             if (!productId) {
                 // Check individual product.
@@ -392,7 +392,7 @@ define([
                 if ($widget.options.enableControlLabel) {
                     label +=
                         '<span id="' + controlLabelId + '" class="' + classes.attributeLabelClass + '">' +
-                            item.label +
+                        item.label +
                         '</span>' +
                         '<span class="' + classes.attributeSelectedOptionLabelClass + '"></span>';
                 }
@@ -408,17 +408,17 @@ define([
                 // Create new control
                 container.append(
                     '<div class="' + classes.attributeClass + ' ' + item.code + '" ' +
-                         'attribute-code="' + item.code + '" ' +
-                         'attribute-id="' + item.id + '">' +
-                        label +
-                        '<div aria-activedescendant="" ' +
-                             'tabindex="0" ' +
-                             'aria-invalid="false" ' +
-                             'aria-required="true" ' +
-                             'role="listbox" ' + listLabel +
-                             'class="' + classes.attributeOptionsWrapper + ' clearfix">' +
-                            options + select +
-                        '</div>' + input +
+                    'attribute-code="' + item.code + '" ' +
+                    'attribute-id="' + item.id + '">' +
+                    label +
+                    '<div aria-activedescendant="" ' +
+                    'tabindex="0" ' +
+                    'aria-invalid="false" ' +
+                    'aria-required="true" ' +
+                    'role="listbox" ' + listLabel +
+                    'class="' + classes.attributeOptionsWrapper + ' clearfix">' +
+                    options + select +
+                    '</div>' + input +
                     '</div>'
                 );
 
@@ -484,7 +484,6 @@ define([
                     value,
                     thumb,
                     label,
-                    stock,
                     attr;
 
                 if (!optionConfig.hasOwnProperty(this.id)) {
@@ -501,7 +500,6 @@ define([
                 value = optionConfig[id].hasOwnProperty('value') ? optionConfig[id].value : '';
                 thumb = optionConfig[id].hasOwnProperty('thumb') ? optionConfig[id].thumb : '';
                 label = this.label ? this.label : '';
-                stock =this.stock;
                 attr =
                     ' id="' + controlId + '-item-' + id + '"' +
                     ' aria-checked="false"' +
@@ -521,8 +519,7 @@ define([
 
                 if (type === 0) {
                     // Text
-                    html += '<li class="' + optionClass + ' text" ' + attr + '>' + (value ? value : label) + stock +
-                        '</li>';
+                    html += '<li class="' + optionClass + ' text" ' + attr + '>' + (value ? value : label)  + '</li>';
                 } else if (type === 1) {
                     // Color
                     html += '<div class="' + optionClass + ' color" ' + attr +
@@ -608,7 +605,6 @@ define([
             var $widget = this,
                 options = this.options.classes,
                 target;
-
             $widget.element.on('click', '.' + options.optionClass, function () {
                 return $widget._OnClick($(this), $widget);
             });
@@ -658,7 +654,7 @@ define([
 
             if (this.options.useAjax) {
                 this._debouncedLoadProductMedia();
-            }  else {
+            } else {
                 images = this.options.jsonConfig.images[this.getProduct()];
 
                 if (!images) {
@@ -716,6 +712,7 @@ define([
                 $widget._UpdatePrice();
             }
 
+            $widget._stockStatus($this);
             $widget._loadMedia(eventName);
             $input.trigger('change');
         },
@@ -742,7 +739,7 @@ define([
          */
         _toggleCheckedAttributes: function ($this, $wrapper) {
             $wrapper.attr('aria-activedescendant', $this.attr('id'))
-                    .find('.' + this.options.classes.optionClass).attr('aria-checked', false);
+                .find('.' + this.options.classes.optionClass).attr('aria-checked', false);
             $this.attr('aria-checked', true);
         },
 
@@ -1232,7 +1229,7 @@ define([
         _EmulateSelectedByAttributeId: function (selectedAttributes, triggerClick) {
             $.each(selectedAttributes, $.proxy(function (attributeId, optionId) {
                 var elem = this.element.find('.' + this.options.classes.attributeClass +
-                    '[attribute-id="' + attributeId + '"] [option-id="' + optionId + '"]'),
+                        '[attribute-id="' + attributeId + '"] [option-id="' + optionId + '"]'),
                     parentInput = elem.parent();
 
                 if (triggerClick === null || triggerClick === '') {
@@ -1300,6 +1297,29 @@ define([
 
                 this.options.mediaCache[JSON.stringify(mediaCallData)] = this.options.jsonConfig.preSelectedGallery;
             }
+        },
+        _stockStatus: function ($this) {
+
+            var sizeBox =this.element.find('.swatch-attribute.size')
+                .first()
+                .find('.swatch-attribute-options')
+                .children();
+
+            $.each(sizeBox, function (item,value) {
+                //console.log(value);
+            });
+
+
+            var stockStatus = this.options.jsonConfig.stockStatus;
+            $.each(this.options.jsonConfig.attributes, function (key, item) {
+                if (item.code == "color") {
+                    $.each(stockStatus, function (item, value) {
+                        if(value[$this.attr('option-id')] != null){
+                            console.log(value[$this.attr('option-id')]);
+                        }
+                    });
+                }
+            });
         }
     });
 
