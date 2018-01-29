@@ -91,7 +91,7 @@ class Configurable extends \Magento\Swatches\Block\Product\Renderer\Configurable
         $allProducts = $this->getProduct()->getTypeInstance()->getUsedProducts($this->getProduct(), null);
         foreach ($allProducts as $product) {
             if ($product->isSaleable()) {
-                $item[$product->getColor()]['id'] = $product->getID();
+                $item[$product->getColor()]['size'] = $product->getSize();
                 $item[$product->getColor()]['stock'] = $this->_stockItemRepository->get($product->getID())->getIsInStock();
                 $stockStatus[] = $item;
                 unset ($item);
