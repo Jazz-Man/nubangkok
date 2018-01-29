@@ -308,6 +308,9 @@ define([
          */
         _sortAttributes: function () {
             this.options.jsonConfig.attributes = _.sortBy(this.options.jsonConfig.attributes, function (attribute) {
+                if(attribute.code="size"){
+                    return attribute.position =10;
+                }
                 return attribute.position;
             });
         },
@@ -520,7 +523,7 @@ define([
 
                 if (type === 0) {
                     // Text
-                    html += '<li class="' + optionClass + ' text" ' + attr + '>' + (value ? value : label) + '</li>';
+                    html += '<li class="' + optionClass + ' text" ' + attr + '>' + (value ? value : label)  + '</li>';
                 } else if (type === 1) {
                     // Color
                     html += '<div class="' + optionClass + ' color" ' + attr +
@@ -603,7 +606,6 @@ define([
             var $widget = this,
                 options = this.options.classes,
                 target;
-
             $widget.element.on('click', '.' + options.optionClass, function () {
                 return $widget._OnClick($(this), $widget);
             });
@@ -1228,7 +1230,7 @@ define([
         _EmulateSelectedByAttributeId: function (selectedAttributes, triggerClick) {
             $.each(selectedAttributes, $.proxy(function (attributeId, optionId) {
                 var elem = this.element.find('.' + this.options.classes.attributeClass +
-                    '[attribute-id="' + attributeId + '"] [option-id="' + optionId + '"]'),
+                        '[attribute-id="' + attributeId + '"] [option-id="' + optionId + '"]'),
                     parentInput = elem.parent();
 
                 if (triggerClick === null || triggerClick === '') {
