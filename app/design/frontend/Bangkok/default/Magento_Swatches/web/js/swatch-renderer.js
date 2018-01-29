@@ -296,6 +296,7 @@ define([
                 this._RenderControls();
                 this._setPreSelectedGallery();
                 $(this.element).trigger('swatch.initialized');
+                $('.swatch-attribute .swatch-attribute-options div.swatch-option').first().click();
             } else {
                 console.log('SwatchRenderer: No input data received');
             }
@@ -348,7 +349,7 @@ define([
                 isInProductView = false;
 
             productId = this.element.parents('.product-item-details')
-                    .find('.price-box.price-final_price').attr('data-product-id');
+                .find('.price-box.price-final_price').attr('data-product-id');
 
             if (!productId) {
                 // Check individual product.
@@ -392,7 +393,7 @@ define([
                 if ($widget.options.enableControlLabel) {
                     label +=
                         '<span id="' + controlLabelId + '" class="' + classes.attributeLabelClass + '">' +
-                            item.label +
+                        item.label +
                         '</span>' +
                         '<span class="' + classes.attributeSelectedOptionLabelClass + '"></span>';
                 }
@@ -408,17 +409,17 @@ define([
                 // Create new control
                 container.append(
                     '<div class="' + classes.attributeClass + ' ' + item.code + '" ' +
-                         'attribute-code="' + item.code + '" ' +
-                         'attribute-id="' + item.id + '">' +
-                        label +
-                        '<div aria-activedescendant="" ' +
-                             'tabindex="0" ' +
-                             'aria-invalid="false" ' +
-                             'aria-required="true" ' +
-                             'role="listbox" ' + listLabel +
-                             'class="' + classes.attributeOptionsWrapper + ' clearfix">' +
-                            options + select +
-                        '</div>' + input +
+                    'attribute-code="' + item.code + '" ' +
+                    'attribute-id="' + item.id + '">' +
+                    label +
+                    '<div aria-activedescendant="" ' +
+                    'tabindex="0" ' +
+                    'aria-invalid="false" ' +
+                    'aria-required="true" ' +
+                    'role="listbox" ' + listLabel +
+                    'class="' + classes.attributeOptionsWrapper + ' clearfix">' +
+                    options + select +
+                    '</div>' + input +
                     '</div>'
                 );
 
@@ -484,7 +485,6 @@ define([
                     value,
                     thumb,
                     label,
-                    stock,
                     attr;
 
                 if (!optionConfig.hasOwnProperty(this.id)) {
@@ -501,7 +501,6 @@ define([
                 value = optionConfig[id].hasOwnProperty('value') ? optionConfig[id].value : '';
                 thumb = optionConfig[id].hasOwnProperty('thumb') ? optionConfig[id].thumb : '';
                 label = this.label ? this.label : '';
-                stock =this.stock;
                 attr =
                     ' id="' + controlId + '-item-' + id + '"' +
                     ' aria-checked="false"' +
@@ -521,8 +520,7 @@ define([
 
                 if (type === 0) {
                     // Text
-                    html += '<li class="' + optionClass + ' text" ' + attr + '>' + (value ? value : label) + stock +
-                        '</li>';
+                    html += '<li class="' + optionClass + ' text" ' + attr + '>' + (value ? value : label) + '</li>';
                 } else if (type === 1) {
                     // Color
                     html += '<div class="' + optionClass + ' color" ' + attr +
@@ -556,15 +554,12 @@ define([
          */
         _RenderSwatchSelect: function (config, chooseText) {
             var html;
-
             if (this.options.jsonSwatchConfig.hasOwnProperty(config.id)) {
                 return '';
             }
 
             html =
-                '<select class="' + this.options.classes.selectClass + ' ' + config.code + '">' +
-                '<option value="0" option-id="0">' + chooseText + '</option>';
-
+                '<select class="' + this.options.classes.selectClass + ' ' + config.code + '">';
             $.each(config.options, function () {
                 var label = this.label,
                     attr = ' value="' + this.id + '" option-id="' + this.id + '"';
@@ -577,8 +572,8 @@ define([
             });
 
             html += '</select>';
-
             return html;
+
         },
 
         /**
@@ -652,13 +647,13 @@ define([
          */
         _loadMedia: function (eventName) {
             var $main = this.inProductList ?
-                    this.element.parents('.product-item-info') :
-                    this.element.parents('.column.main'),
+                this.element.parents('.product-item-info') :
+                this.element.parents('.column.main'),
                 images;
 
             if (this.options.useAjax) {
                 this._debouncedLoadProductMedia();
-            }  else {
+            } else {
                 images = this.options.jsonConfig.images[this.getProduct()];
 
                 if (!images) {
@@ -716,6 +711,7 @@ define([
                 $widget._UpdatePrice();
             }
 
+            $widget._stockStatus($this);
             $widget._loadMedia(eventName);
             $input.trigger('change');
         },
@@ -742,7 +738,7 @@ define([
          */
         _toggleCheckedAttributes: function ($this, $wrapper) {
             $wrapper.attr('aria-activedescendant', $this.attr('id'))
-                    .find('.' + this.options.classes.optionClass).attr('aria-checked', false);
+                .find('.' + this.options.classes.optionClass).attr('aria-checked', false);
             $this.attr('aria-checked', true);
         },
 
@@ -1300,6 +1296,77 @@ define([
 
                 this.options.mediaCache[JSON.stringify(mediaCallData)] = this.options.jsonConfig.preSelectedGallery;
             }
+        },
+
+        /**
+         * Sets product stock status
+         * @param $this
+         * @private
+         */
+        _stockStatus: function ($this) {
+            var sizeElementId, sizeElement;
+            var sizeBox = this.element.find('.swatch-attribute.size')
+                .first()
+                .find('.swatch-select.size')
+                .children();
+            var sizeLabels =this._getSizeLabels();
+            var stockStatusMessage = this._getStockStatus($this);
+            $.each(sizeBox, function () {
+                sizeElement = $(this);
+                sizeElementId = $(this).attr('option-id');
+                sizeElement.text(sizeLabels[sizeElementId] + ' '+ stockStatusMessage[sizeElementId])
+            });
+        },
+
+        /**
+         * Return Stock Statuses
+         *
+         * @param $this
+         * @returns {Array}
+         * @private
+         */
+        _getStockStatus: function ($this) {
+
+            var stockStatuses = this.options.jsonConfig.stockStatus;
+            var statusAttr = this.options.jsonConfig.attributes;
+            var attrOptionId = $this.attr('option-id');
+            var stockStatusMessage = [];
+
+
+            $.each(statusAttr, function (key, item) {
+                if (item.code == "color") {
+                    $.each(stockStatuses, function (item, value) {
+                        if (value[attrOptionId] != null) {
+                            if (value[attrOptionId].stock) {
+                                stockStatusMessage [value[attrOptionId].size] = "in stock"
+                            } else {
+                                stockStatusMessage[value[attrOptionId].size] = "Not in stock Notify me";
+                            }
+                        }
+                    });
+                }
+            });
+
+            return stockStatusMessage;
+        },
+
+        /**
+         * Return size labels
+         * @returns {Array}
+         * @private
+         */
+        _getSizeLabels: function () {
+            var sizeLabels = [];
+
+            $.each(this.options.jsonConfig.attributes, function (key, item) {
+                if (item.code == "size") {
+                    $.each(item.options, function (i, value) {
+                        sizeLabels[value.id] = value.label;
+                    })
+                }
+            });
+
+            return sizeLabels;
         }
     });
 

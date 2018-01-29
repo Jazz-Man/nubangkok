@@ -84,6 +84,6 @@
         <referenceBlock name="authorization-link" remove="true" />
         <referenceBlock name="currency" remove="true"/>
         <referenceBlock name="store_language" remove="true"/>
-        <referenceBlock name="page.main.title" remove="true"/>
+        <!--<referenceBlock name="page.main.title" remove="true"/>-->
     </body>
 </page>
