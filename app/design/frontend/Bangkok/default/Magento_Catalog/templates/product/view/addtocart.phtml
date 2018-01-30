@@ -22,7 +22,10 @@
             </button>
             <?= $block->getChildHtml('', true) ?>
         </div>
-        <div class="arrow-up"></div>
+        <a target="_blank" title="<?php echo __('Share on Facebook'); ?>"
+           href="<?php echo $this->helper('Encomage\Catalog\Helper\Data')->getFacebookShareUrl($_product); ?>">
+            <div class="arrow-up"></div>
+        </a>
     </div>
 
 </div>
