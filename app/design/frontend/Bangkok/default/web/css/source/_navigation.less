@@ -8,6 +8,7 @@
 //  _____________________________________________
 
 @active-nav-indent: 54px;
+@mobile-nav-items-background-color: #eae4dc;
 
 //
 //  Common
@@ -43,6 +44,93 @@
     top: 15px;
     z-index: 14;
   }
+
+  //
+  // Navigation Left Bar
+  //  ---------------------------------------------
+  .left-menu {
+    .social-links {
+      height: 25px;
+      margin-top: 15px;
+      .social-acc-pic {
+        display: inline-block;
+        width: 24.5%;
+        float: left;
+        img {
+          width: 25px;
+          height: 25px;
+        }
+      }
+    }
+    .left-menu-last-item{
+      margin-top: 50px;
+    }
+    .left-menu-big-margin {
+      margin-top: 50px;
+      margin-bottom: 35px !important;
+      text-transform: uppercase;
+    }
+    //make font less
+    .font-less {
+      //font-size: ceil((@font-size__base * .85));
+      text-transform: uppercase;
+      line-height: 2.6em;
+    }
+    .main-categories {
+      padding-bottom: 20px;
+      span {
+        padding: 1px 7px;
+        border-radius: 3px;
+        //margin-right: 5px;
+        a {
+          text-transform: uppercase;
+          font-weight: @font-weight__bold;
+        }
+        &.active {
+          background-color: @color-violet;
+          a {
+            color: @color-white;
+          }
+        }
+      }
+    }
+
+
+    .main-subcategories {
+      ul {
+        padding-left: 10px;
+        li {
+          list-style-type: none;
+          a {
+            margin-bottom: 1rem;
+            display: block;
+            text-transform: uppercase;
+          }
+          &.active{
+            font-weight: 700;
+            list-style-type: disc;
+          }
+        }
+        ul {
+          padding-left: 15px;
+          li {
+            list-style-type: none;
+            a {
+              text-transform: capitalize;
+              font-weight: 100;
+            }
+            &.active {
+              list-style-type: disc;
+              a {
+                font-weight: 700;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
 }
 
 //
@@ -84,14 +172,31 @@
     -webkit-overflow-scrolling: touch;
     .lib-css(transition, left .3s, 1);
     height: 100%;
-    left: -80%;
-    left: calc(~'-1 * (100% - @{active-nav-indent})');
+    left: -100%;
+    //left: calc(~'-1 * (100% - @{active-nav-indent})');
     overflow: auto;
     position: fixed;
     top: 0;
-    width: 80%;
-    width: calc(~'100% - @{active-nav-indent}');
-
+    width: 100%;
+    //width: calc(~'100% - @{active-nav-indent}');
+    .nav-toggle-close {
+      cursor: pointer;
+      :before{
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-size: 28px;
+        line-height: inherit;
+        color: #8f8f8f;
+        content: '\e609';
+        font-family: 'icons-blank-theme';
+        vertical-align: middle;
+        display: inline-block;
+        font-weight: normal;
+        overflow: hidden;
+        speak: none;
+        text-align: center;
+      }
+    }
     .switcher {
       border-top: 1px solid @color-gray82;
       font-size: 1.6rem;
@@ -267,6 +372,64 @@
     }
 
     padding: @indent__m 0;
+
+    //
+    // Navigation Left Bar
+    //  ---------------------------------------------
+    .navigation {
+      .mobile-nav-switch {
+        background-color: @mobile-nav-items-background-color;
+        min-height: 80px;
+        border-bottom: 5px solid @color-white;
+        a {
+          padding: 0;
+        }
+        div {
+          display: inline-block;
+        }
+        .mobile-nav-switch-language {
+          width: 50%;
+          float: left;
+          .item {
+            width: 35px;
+            height: 35px;
+            margin: 8px;
+            &.active {
+              border: 8px solid @color-white;
+              border-radius: 5px;
+              margin: 0;
+            }
+          }
+        }
+        .mobile-nav-switch-currency {
+          width: 50%;
+          font-size: 22px;
+          float: right;
+          .item {
+            &.active {
+              background-color: @color-white;
+              border-radius: 5px;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+    .left-menu {
+      .main-categories {
+        background-color: @mobile-nav-items-background-color;
+        span{
+          display: inline-block;
+          font-weight: 400;
+          &.active{
+            font-weight: 700;
+          }
+        }
+        .font-less{
+          font-size: 26px;
+        }
+      }
+    }
   }
 
   .lib-main-navigation();
