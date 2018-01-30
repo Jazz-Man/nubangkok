@@ -546,10 +546,15 @@
         background-color: @color-violet;
         border: 1px solid @color-violet;
         margin-top: 50px;
+        &:hover{
+          background-color: @color-violet - 20%;
+        }
       }
     }
   }
-
+.product-options-wrapper{
+  border-top: 2px solid #e8e8e8;
+}
   .block.related {
     .action.select {
       display: block;
@@ -567,8 +572,18 @@
   .product-options-bottom {
     margin-top: 25px;
     .message {
-      font-size: @font-size__s;
+      font-size: 16px;
     }
+  }
+  .product-options-bottom input[type="radio"] + span{
+    margin-left: 2%;
+  }
+  .fieldset .arrow-up{
+    position: absolute;
+    top: 100%;
+    right: 35%;
+    width: 25px;
+    height: 38px;
   }
 }
 
