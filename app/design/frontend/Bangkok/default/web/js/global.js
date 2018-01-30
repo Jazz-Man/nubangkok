@@ -5,9 +5,12 @@ define([
 ], function ($) {
     "use strict";
 
+    //init selections
+    //---------------------------------------------
     $('select').niceSelect();
 
     //stick header
+    //---------------------------------------------
     var previousScroll = 0,
         pageHeader = $('header.page-header');
     $(window).scroll(function () {

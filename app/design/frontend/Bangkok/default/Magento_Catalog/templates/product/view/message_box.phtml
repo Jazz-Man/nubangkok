@@ -1,11 +1,21 @@
 <div class="message"><?php echo __('Have you worn these shoes before?'); ?>
         <label for="yes">
             <input type="radio" id="yes"
-                   name="contact" value="yes">
+                   name="answer" value="yes" class="js-answer js-show-model">
             <span></span><span><?php echo __('Yes'); ?></span></label>
 
         <label for="no">
-            <input type="radio" id="no"
-                   name="contact" value="no">
+            <input type="radio" id="no" class="js-answer"
+                   name="answer" value="no">
             <span></span><span><?php echo __('No'); ?></span></label>
 </div>
+<div id="product-message-box-popup">
+    CONTENT
+</div>
+<script type="text/x-magento-init">
+    {
+        "#product-message-box-popup": {
+            "Magento_Catalog/js/add-to-cart-question": {}
+        }
+    }
+</script>
