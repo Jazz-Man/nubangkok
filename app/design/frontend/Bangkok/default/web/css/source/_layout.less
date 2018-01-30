@@ -64,6 +64,7 @@
   .breadcrumbs {
     margin: 0;
     //float: left;
+    order: -1;
   }
 
   .page-header .header.panel{
@@ -133,7 +134,7 @@
 
   .column.main {
     position: relative;
-    border: 1px solid @color-gray-middle2;
+    border: 2px solid @color-gray-light01;
     padding: 0 40px;
     #lib-layout-columns > .main();
     &:extend(.abs-add-box-sizing-desktop all);
@@ -161,10 +162,14 @@
 
   .page-layout-2columns-left {
     .sidebar-additional {
+      //position: fixed;
       clear: left;
       float: left;
       padding-left: 0;
       padding-right: @layout-column__additional-sidebar-offset;
+      .general-subcategories{
+        padding-left: 10px;
+      }
     }
   }
 
