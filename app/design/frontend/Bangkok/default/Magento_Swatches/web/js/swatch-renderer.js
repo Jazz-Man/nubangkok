@@ -704,6 +704,10 @@ define([
                 $input.attr('data-attr-name', this._getAttributeCodeById(attributeId));
                 $this.addClass('selected');
                 $widget._toggleCheckedAttributes($this, $wrapper);
+                if($parent.hasClass('color')){
+                    $('.product-name .color').text($this.attr('option-label'));
+                }
+
             }
 
             $widget._Rebuild();
