@@ -1,0 +1,11 @@
+<?php
+/** @var Magento\Directory\Block\Currency $block */
+?>
+<?php $currencies = $block->getCurrencies(); ?>
+<div class="mobile-nav-switch-currency">
+    <?php foreach ($currencies as $_code => $_name): ?>
+        <div class="item <?php echo ($block->getCurrentCurrencyCode() == $_code) ? 'active' : ''; ?>">
+            <a href="#" data-post='<?php echo $block->getSwitchCurrencyPostData($_code) ?>'><?php echo $block->escapeHtml($_code) ?></a>
+        </div>
+    <?php endforeach; ?>
+</div>
