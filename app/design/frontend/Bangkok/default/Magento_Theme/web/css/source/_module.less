@@ -81,6 +81,12 @@
                     background-size: cover;
                 }
             }
+        &.sticky-header{
+            position:fixed;
+            background-color: @color-white;
+            z-index: 999999999;
+            width: 100%;
+        }
 
         .lib-css(background-color, @header__background-color);
         border-bottom: 1px solid @border-color__base;
