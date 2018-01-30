@@ -10,3 +10,17 @@
 #maincontent .column.main .fotorama__arr .fotorama__arr--next .fotorama__arr__arr{
     background-color: hotpink;
 }
+
+#maincontent .column.main .fotorama__dot
+{
+    width: 6px;
+    height: 6px;
+}
+
+#maincontent .column.main .fotorama__active .fotorama__dot
+{
+    background-color: #55463e;
+    border-color: #55463e;
+    width: 6px;
+    height: 6px;
+}
