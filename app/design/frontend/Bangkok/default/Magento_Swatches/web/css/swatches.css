@@ -8,6 +8,14 @@
     position: relative;
 }
 
+.swatch-attribute-label span:first-of-type{
+    display: none;
+}
+
+.swatch-opt .size span:first-of-type{
+    display: none;
+}
+
 .swatch-attribute-label.required {
     padding-right: 10px;
 }
@@ -25,6 +33,7 @@
 .swatch-attribute-selected-option {
     color: #646464;
     padding-left: 17px;
+    display: none;
 }
 
 .swatch-attribute-options {
@@ -33,16 +42,15 @@
 }
 
 .swatch-option {
-    padding: 1px 2px;
-    min-width: 36px;
-    max-width: 36px;
-    height: 36px;
+    /*padding: 1px 2px;*/
+    width: 25px;
+    height: 25px;
     float: left;
     margin: 0 10px 5px 0;
     text-align: center;
     cursor: pointer;
     position: relative;
-    border: 1px solid rgb(218, 218, 218);
+    border: 3px solid #fff;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -59,8 +67,8 @@
 }
 
 .swatch-option.selected {
-    outline: 2px solid #ff5501;
-    border: 1px solid #fff;
+    outline: 2px solid gray;
+    border: 3px solid #fff;
     color: #333;
 }
 
@@ -95,8 +103,18 @@
 
 .swatch-option.image:not(.disabled):hover,
 .swatch-option.color:not(.disabled):hover {
-    outline: 2px solid #ee0000;
-    border: 1px solid #fff;
+    outline: 2px solid gray;
+    border: 3px solid #fff;
+}
+.swatch-option.image:not(.disabled):focus,
+.swatch-option.color:not(.disabled):focus {
+    outline: 2px solid gray;
+    border: 3px solid #fff;
+}
+.swatch-option.image:not(.disabled):active,
+.swatch-option.color:not(.disabled):active {
+    outline: 2px solid gray;
+    border: 3px solid #fff;
 }
 
 .swatch-option.disabled {

@@ -1,9 +1,11 @@
-<div class="message"><?php echo __('Have you worn these shoes before?'); ?></div>
-<!--<label for="yes"><input type="checkbox" value="Yes" name="yes"><span></span></label>-->
-<!--<label for="no"><input type="checkbox" value="No" name="no"><span></span></label>-->
+<div class="message"><?php echo __('Have you worn these shoes before?'); ?>
+        <label for="yes">
+            <input type="radio" id="yes"
+                   name="contact" value="yes">
+            <span></span><span><?php echo __('Yes'); ?></span></label>
 
-<input type="checkbox" id="yes" name="yes" />
-<label for="yes"><span></span><?php echo __('Yes'); ?></label>
-
-<input type="checkbox" id="no" name="no" />
-<label for="no"><span></span><?php echo __('No'); ?></label>
+        <label for="no">
+            <input type="radio" id="no"
+                   name="contact" value="no">
+            <span></span><span><?php echo __('No'); ?></span></label>
+</div>

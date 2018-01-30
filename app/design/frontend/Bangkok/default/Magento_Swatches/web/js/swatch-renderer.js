@@ -7,7 +7,8 @@ define([
     'priceUtils',
     'jquery/ui',
     'jquery/jquery.parsequery',
-    'mage/validation/validation'
+    'mage/validation/validation',
+    'js/plugins/jquery.nice-select'
 ], function ($, _, mageTemplate, keyboardHandler, $t, priceUtils) {
     'use strict';
 
@@ -301,6 +302,7 @@ define([
                 console.log('SwatchRenderer: No input data received');
             }
             this.options.tierPriceTemplate = $(this.options.tierPriceTemplateSelector).html();
+            $('.swatch-opt select').niceSelect();
         },
 
         /**
@@ -648,8 +650,8 @@ define([
          */
         _loadMedia: function (eventName) {
             var $main = this.inProductList ?
-                this.element.parents('.product-item-info') :
-                this.element.parents('.column.main'),
+                    this.element.parents('.product-item-info') :
+                    this.element.parents('.column.main'),
                 images;
 
             if (this.options.useAjax) {

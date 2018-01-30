@@ -1,0 +1,12 @@
+#maincontent .column.main .fotorama__nav.fotorama__nav--thumbs{
+    display: none;
+}
+#maincontent .column.main .fotorama__nav.fotorama__nav--thumbs .fotorama__nav__shaft
+{
+    display: none;
+}
+
+
+#maincontent .column.main .fotorama__arr .fotorama__arr--next .fotorama__arr__arr{
+    background-color: hotpink;
+}
