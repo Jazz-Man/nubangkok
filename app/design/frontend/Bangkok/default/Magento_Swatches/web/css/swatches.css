@@ -12,8 +12,12 @@
     display: none;
 }
 
-.swatch-opt .size span:first-of-type{
-    display: none;
+/*.swatch-opt .size span:first-of-type{*/
+    /*display: none;*/
+/*}*/
+
+.swatch-attribute.size .swatch-attribute-label{
+  display: none;
 }
 
 .swatch-attribute-label.required {
