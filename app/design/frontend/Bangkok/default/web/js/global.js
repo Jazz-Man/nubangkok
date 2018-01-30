@@ -1,10 +1,10 @@
 define([
     'jquery',
     'js/plugins/jquery.nice-select'
-], function ($) {
+], function (jQuery) {
     "use strict";
 
     return function () {
-        $('select').niceSelect();
+        jQuery('select').niceSelect();
     };
 });
