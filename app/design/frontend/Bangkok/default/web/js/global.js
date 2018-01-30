@@ -14,13 +14,13 @@ define([
         var currentScroll = $(this).scrollTop();
         if (currentScroll < previousScroll) {
             if (currentScroll > pageHeader.outerHeight()) {
-                pageHeader.addClass('stick-header');
+                pageHeader.addClass('sticky-header');
 
             } else {
-                pageHeader.removeClass('stick-header');
+                pageHeader.removeClass('sticky-header');
             }
         } else {
-            pageHeader.removeClass('stick-header');
+            pageHeader.removeClass('sticky-header');
         }
         previousScroll = currentScroll;
     })
