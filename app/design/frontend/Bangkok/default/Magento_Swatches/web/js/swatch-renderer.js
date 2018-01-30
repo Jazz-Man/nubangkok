@@ -302,7 +302,7 @@ define([
                 console.log('SwatchRenderer: No input data received');
             }
             this.options.tierPriceTemplate = $(this.options.tierPriceTemplateSelector).html();
-            $('.swatch-opt select').niceSelect();
+           // $('.swatch-opt select').niceSelect();
         },
 
         /**
