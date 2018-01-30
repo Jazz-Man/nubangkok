@@ -8,7 +8,7 @@ define([
     'jquery/ui',
     'jquery/jquery.parsequery',
     'mage/validation/validation',
-    'js/plugins/jquery.nice-select'
+    'niceselect'
 ], function ($, _, mageTemplate, keyboardHandler, $t, priceUtils) {
     'use strict';
 
