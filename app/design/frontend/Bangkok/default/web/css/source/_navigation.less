@@ -48,7 +48,7 @@
   //
   // Navigation Left Bar
   //  ---------------------------------------------
-  .left-menu {
+  .sidebar-menu {
     .social-links {
       height: 25px;
       margin-top: 15px;
@@ -449,7 +449,7 @@
       .block-content {
         margin-bottom: 0;
         height: 68px;
-        background-color: #eae4dc;
+        background-color: @mobile-nav-items-background-color;
         .label {
           display: none;
         }
@@ -502,14 +502,14 @@
 
       .searchButton {
         float: right;
-        border: 1px solid @color-gray-middle3;
+        border: 2px solid @color-gray-middle3;
         background: transparent;
         text-align: center;
         cursor: pointer;
       }
     }
 
-    .left-menu {
+    .sidebar-menu {
       .main-categories {
         background-color: @mobile-nav-items-background-color;
         padding: 15px 15px;
@@ -600,7 +600,7 @@
       .block-content {
         margin-bottom: 0;
         height: 68px;
-        background-color: #eae4dc;
+        background-color: @mobile-nav-items-background-color;
         .label {
           display: none;
         }
@@ -660,7 +660,7 @@
       }
     }
 
-    .left-menu {
+    .sidebar-menu {
       .main-categories {
         background-color: @mobile-nav-items-background-color;
         padding: 15px 15px;
@@ -680,13 +680,13 @@
     }
   .lib-main-navigation();
 
-  .left-menu {
+  .sidebar-menu {
     .social-links {
       height: 25px;
-      margin-top: 15px;
+      margin-top: 5px;
       .social-acc-pic {
         display: inline-block;
-        width: 24.5%;
+        width: 14.5%;
         float: left;
         img {
           width: 25px;
@@ -695,12 +695,27 @@
       }
     }
     .left-menu-last-item {
-      margin-top: 50px;
+      margin-top: 5px;
+      margin-bottom: 0;
+      a{
+        margin-top: 0;
+      }
+    }
+    .general-subcategories {
+      div{
+        background-color: @mobile-nav-items-background-color;
+        margin-bottom: 5px;
+        font-weight: 700;
+      }
+      .social-links {
+        padding: 7px 15px;
+      }
     }
     .left-menu-big-margin {
-      margin-top: 50px;
-      margin-bottom: 35px !important;
+      margin-top: 25px;
+      margin-bottom: 5px !important;
       text-transform: uppercase;
+      //background-color: @mobile-nav-items-background-color;
     }
     //make font less
     .font-less {
