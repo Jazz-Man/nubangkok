@@ -24,3 +24,14 @@
     width: 6px;
     height: 6px;
 }
+
+
+
+
+/* lib/_section.less */
+    .product.data.items > .item.content {
+        text-transform: capitalize;
+        padding: 30px 0;
+    }
+
+

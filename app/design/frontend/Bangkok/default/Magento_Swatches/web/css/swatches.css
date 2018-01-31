@@ -6,6 +6,8 @@
 .swatch-attribute-label {
     /*font-weight: bold;*/
     position: relative;
+    color: #494949;
+    font-size: 16px;
 }
 
 .swatch-attribute-label span:first-of-type{
@@ -54,10 +56,13 @@
     text-align: center;
     cursor: pointer;
     position: relative;
-    border: 3px solid #fff;
+    border: 3px solid white;
     overflow: hidden;
     text-overflow: ellipsis;
+    box-shadow: 0 0 0 0.5px #c6c6c6,
+    0 0 0 0.5px #c6c6c6;
 }
+
 
 .swatch-option.text {
     background: #F0F0F0;
