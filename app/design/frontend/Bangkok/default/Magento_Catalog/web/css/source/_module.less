@@ -167,9 +167,13 @@
   .product-info-main {
     .page-title-wrapper {
       .page-title {
+        padding-top: 20px;
         line-height: @line-height__base;
-        margin-bottom: @indent__s;
+        margin-bottom: 2px;
         word-wrap: break-word;
+        font-size: @font-size-title;
+        color: @color-gray19;
+        font-weight: @font-weight__heavier;
       }
     }
 
@@ -272,6 +276,10 @@
   }
 
   .product-info-main .product-info-price{
+    .price-box{
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
     .product-info-stock-sku{
       display: none;
     }
@@ -570,7 +578,7 @@
   }
   .product-info-main,
   .product-options-bottom {
-    margin-top: 25px;
+    margin-top: 0;
     .message {
       font-size: 16px;
     }

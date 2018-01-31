@@ -24,3 +24,18 @@
     width: 6px;
     height: 6px;
 }
+
+/* gallery.css*/
+
+.product.data.items > .item.content {
+    padding: 30px 0 !important;
+}
+
+@media screen and (max-width: 767px){
+    .fotorama__nav--dots {
+        top: -40px !important;
+    }
+}
+
+
+
