@@ -300,7 +300,9 @@ define([
             } else {
                 console.log('SwatchRenderer: No input data received');
             }
+
             this.options.tierPriceTemplate = $(this.options.tierPriceTemplateSelector).html();
+            $('.swatch-attribute-options select').niceSelect();
         },
 
         /**
@@ -721,6 +723,7 @@ define([
             $widget._stockStatus($this);
             $widget._loadMedia(eventName);
             $input.trigger('change');
+            $('.swatch-select.size').niceSelect('update');
         },
 
         /**
