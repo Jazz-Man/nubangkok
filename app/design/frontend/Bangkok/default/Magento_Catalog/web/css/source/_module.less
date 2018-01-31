@@ -169,6 +169,7 @@
       .page-title {
         line-height: @line-height__base;
         margin-bottom: @indent__s;
+        word-wrap: break-word;
       }
     }
 
@@ -270,12 +271,18 @@
     }
   }
 
+  .product-info-main .product-info-price{
+    .product-info-stock-sku{
+      display: none;
+    }
+  }
   .product-info-main,
   .product-options-bottom {
     margin-top: 25px;
     .message {
       float: left;
       font-size: @font-size-bgk;
+      width: 100%;
     }
     .price-box {
       .price-including-tax + .price-excluding-tax,
@@ -287,13 +294,11 @@
 
         .price {
           .lib-font-size(12);
-          font-weight: @font-weight__bold;
         }
       }
 
       .price-wrapper .price {
         .lib-font-size(18);
-        font-weight: @font-weight__bold;
       }
 
       .price {
@@ -307,6 +312,9 @@
 
       .price-container {
         .lib-font-size(14);
+        .price-label{
+          display: none;
+        }
       }
 
       .price-label + .price-wrapper {
@@ -339,6 +347,8 @@
 
       .actions {
         text-align: center;
+        float: left;
+        width: 100%;
       }
 
       .action.tocart {
@@ -535,6 +545,7 @@
         text-transform: uppercase;
         background-color: @color-violet;
         border: 1px solid @color-violet;
+        margin-top: 50px;
       }
     }
   }
@@ -578,16 +589,19 @@
 
       .actions {
         display: table-cell;
-        padding-top: @indent__m;
+        padding-top: 40px;
         text-align: center;
         vertical-align: bottom;
-        width: 55%;
+        width: 70%;
         button {
           width: 100%;
           background-color: @color-brown;
           border: 1px solid @color-brown;
           text-transform: uppercase;
           padding: 10px 17px;
+          &:hover{
+            background-color: @color-brown - 30%;
+          }
         }
       }
     }
