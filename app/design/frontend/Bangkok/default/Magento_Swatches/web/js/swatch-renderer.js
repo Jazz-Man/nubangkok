@@ -297,12 +297,10 @@ define([
                 this._RenderControls();
                 this._setPreSelectedGallery();
                 $(this.element).trigger('swatch.initialized');
-                $('.swatch-attribute .swatch-attribute-options div.swatch-option').first().click();
             } else {
                 console.log('SwatchRenderer: No input data received');
             }
             this.options.tierPriceTemplate = $(this.options.tierPriceTemplateSelector).html();
-           // $('.swatch-opt select').niceSelect();
         },
 
         /**
@@ -564,7 +562,9 @@ define([
             }
 
             html =
-                '<select class="' + this.options.classes.selectClass + ' ' + config.code + '">';
+                '<select class="' + this.options.classes.selectClass + ' ' + config.code + '">' +
+                '<option value="0" option-id="0">' + chooseText + '</option>';
+
             $.each(config.options, function () {
                 var label = this.label,
                     attr = ' value="' + this.id + '" option-id="' + this.id + '"';
@@ -650,8 +650,8 @@ define([
          */
         _loadMedia: function (eventName) {
             var $main = this.inProductList ?
-                    this.element.parents('.product-item-info') :
-                    this.element.parents('.column.main'),
+                this.element.parents('.product-item-info') :
+                this.element.parents('.column.main'),
                 images;
 
             if (this.options.useAjax) {
@@ -1235,7 +1235,7 @@ define([
         _EmulateSelectedByAttributeId: function (selectedAttributes, triggerClick) {
             $.each(selectedAttributes, $.proxy(function (attributeId, optionId) {
                 var elem = this.element.find('.' + this.options.classes.attributeClass +
-                        '[attribute-id="' + attributeId + '"] [option-id="' + optionId + '"]'),
+                    '[attribute-id="' + attributeId + '"] [option-id="' + optionId + '"]'),
                     parentInput = elem.parent();
 
                 if (triggerClick === null || triggerClick === '') {
@@ -1333,10 +1333,12 @@ define([
          * @private
          */
         _getStockStatus: function ($this) {
+            var chooseText = this.options.jsonConfig.chooseText
             var stockStatuses = this.options.jsonConfig.stockStatus;
             var statusAttr = this.options.jsonConfig.attributes;
             var attrOptionId = $this.attr('option-id');
             var stockStatusMessage = [];
+            stockStatusMessage[0]=chooseText;
             $.each(statusAttr, function (key, item) {
                 if (item.code == "color") {
                     $.each(stockStatuses, function (item, value) {
@@ -1360,7 +1362,7 @@ define([
          */
         _getSizeLabels: function () {
             var sizeLabels = [];
-
+            sizeLabels[0]='';
             $.each(this.options.jsonConfig.attributes, function (key, item) {
                 if (item.code == "size") {
                     $.each(item.options, function (i, value) {
