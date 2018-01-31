@@ -5,6 +5,12 @@ define([
 
     return function (config, element) {
 
+        $('span[data-action="toggle-nav"]').on('click', function () {
+            $('html').addClass('nav-before-open nav-open')
+        });
+        $('span[data-action="toggle-nav-close"]').on('click', function () {
+            $('html').removeClass('nav-open')
+        });
         function activateSubMenu(categoryId) {
             var e = $('.main-subcategories ul[data-parent-id="' + categoryId + '"]');
             if (config.currentCategoryId) {
