@@ -1,16 +1,17 @@
-<div class="message"><?php echo __('Have you worn these shoes before?'); ?>
-        <label for="yes">
-            <input type="radio" id="yes"
-                   name="answer" value="yes" class="js-answer js-show-model">
-            <span></span><span><?php echo __('Yes'); ?></span></label>
+<div class="message js-message" style="display:none;">
+    <?php echo __('Have you worn these shoes before?'); ?>
+    <label for="yes">
+        <input type="radio" id="yes"
+               name="answer" value="yes" class="js-answer">
+        <span></span><span><?php echo __('Yes'); ?></span></label>
 
-        <label for="no">
-            <input type="radio" id="no" class="js-answer"
-                   name="answer" value="no">
-            <span></span><span><?php echo __('No'); ?></span></label>
+    <label for="no">
+        <input type="radio" id="no" class="js-answer js-show-model"
+               name="answer" value="no">
+        <span></span><span><?php echo __('No'); ?></span></label>
 </div>
-<div id="product-message-box-popup">
-    CONTENT
+<div id="product-message-box-popup" style="display: none">
+    <?php echo __('If you are sure about your size click "Add to bag now"'); ?>
 </div>
 <script type="text/x-magento-init">
     {
