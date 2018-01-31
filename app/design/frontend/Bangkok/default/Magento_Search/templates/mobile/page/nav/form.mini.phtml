@@ -12,7 +12,7 @@ $helper = $this->helper(\Magento\Search\Helper\Data::class);
                 <label class="label" for="search" data-role="minisearch-label">
                     <span><?= /* @escapeNotVerified */ __('Search') ?></span>
                 </label>
-                <div class="control">
+                <div class="search-mob">
                     <input id="search"
                            data-mage-init='{"quickSearch":{
                                 "formSelector":"#search_mini_form",
@@ -23,7 +23,7 @@ $helper = $this->helper(\Magento\Search\Helper\Data::class);
                            name="<?= /* @escapeNotVerified */ $helper->getQueryParamName() ?>"
                            value="<?= /* @escapeNotVerified */ $helper->getEscapedQueryText() ?>"
                            placeholder="<?= /* @escapeNotVerified */ __('Search entire store here...') ?>"
-                           class="input-text"
+                           class="searchTerm"
                            maxlength="<?= /* @escapeNotVerified */ $helper->getMaxQueryLength() ?>"
                            role="combobox"
                            aria-haspopup="false"
@@ -31,15 +31,25 @@ $helper = $this->helper(\Magento\Search\Helper\Data::class);
                            autocomplete="off"/>
                     <div id="search_autocomplete" class="search-autocomplete"></div>
                     <?= $block->getChildHtml() ?>
+                    <div class="actions actions-mob">
+                        <button type="submit"
+                                title="<?= $block->escapeHtml(__('Search')) ?>"
+                                class="action search searchButton">
+                            <span><?= __('GO') ?></span>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="actions">
-                <button type="submit"
-                        title="<?= $block->escapeHtml(__('Search')) ?>"
-                        class="action search">
-                    <span><?= /* @escapeNotVerified */ __('Search') ?></span>
-                </button>
-            </div>
+
         </form>
     </div>
 </li>
+
+<!--<div class="search-mob">-->
+<!--    <div class="search">-->
+<!--        <input type="text" class="searchTerm" placeholder="What are you looking for?">-->
+<!--        <button type="submit" class="searchButton">-->
+<!--            <span>Go</span>-->
+<!--        </button>-->
+<!--    </div>-->
+<!--</div>-->
