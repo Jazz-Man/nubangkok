@@ -32,7 +32,6 @@ define([
                     type: 'popup',
                     responsive: true,
                     innerScroll: true,
-                    title: $.mage.__('Our consultant can help you with your size.'),
                     buttons: [
                         {
                             text: $.mage.__('Chat with consultant'),
