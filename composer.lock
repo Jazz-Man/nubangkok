@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f5372385eabf5320c0027f3fca0462c5",
+    "content-hash": "625ce36779e991a155f1eec374e43b31",
     "packages": [
         {
             "name": "braintree/braintree_php",
@@ -6033,6 +6033,86 @@
                 "framework"
             ],
             "time": "2017-06-21T14:56:23+00:00"
+        },
+        {
+            "name": "mageplaza/magento-2-banner-slider-extension",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mageplaza/magento-2-banner-slider.git",
+                "reference": "f3aacc2d20816a2b55af01d27eaad03c5ef95858"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mageplaza/magento-2-banner-slider/zipball/f3aacc2d20816a2b55af01d27eaad03c5ef95858",
+                "reference": "f3aacc2d20816a2b55af01d27eaad03c5ef95858",
+                "shasum": ""
+            },
+            "require": {
+                "mageplaza/module-core": "*"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Mageplaza\\BetterSlider\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Sam",
+                    "email": "sam@mageplaza.com",
+                    "homepage": "https://www.mageplaza.com",
+                    "role": "Leader"
+                }
+            ],
+            "description": "Magento 2 Banner Slider extension",
+            "time": "2017-08-17T09:26:03+00:00"
+        },
+        {
+            "name": "mageplaza/module-core",
+            "version": "1.3.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mageplaza/module-core.git",
+                "reference": "104306f5d3ae18d62efb234e47e94f0cafe8a4b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mageplaza/module-core/zipball/104306f5d3ae18d62efb234e47e94f0cafe8a4b6",
+                "reference": "104306f5d3ae18d62efb234e47e94f0cafe8a4b6",
+                "shasum": ""
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Mageplaza\\Core\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Mageplaza License"
+            ],
+            "authors": [
+                {
+                    "name": "Mageplaza",
+                    "email": "hi@mageplaza.com",
+                    "homepage": "https://www.mageplaza.com",
+                    "role": "Leader"
+                }
+            ],
+            "description": "Mageplaza Core for Magento 2",
+            "time": "2018-01-05T10:31:02+00:00"
         },
         {
             "name": "monolog/monolog",
