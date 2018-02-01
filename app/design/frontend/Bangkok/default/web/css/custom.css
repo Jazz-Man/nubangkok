@@ -25,23 +25,24 @@
 
 /*stores, carrency dropp-icon*/
 
-.page-header .switcher .options .action.toggle:after, .page-footer .switcher .options .action.toggle:after {
-    position: absolute;
-    background: url(../images/select-arrow-down.png);
+.page-header .switcher .options .action.toggle:after,
+.page-footer .switcher .options .action.toggle:after {
+    position: absolute; background: url(../images/select-arrow-down.png);
     width: 14px;
-    height: 10px;
-    background-size: cover;
-    top: 6px;
+    height: 9px;
+    background-size: contain;
+    top: 7px;
     right: 4px;
 }
 
-.page-header .switcher .options .action.toggle.active:after, .page-footer .switcher .options .action.toggle.active:after {
+.page-header .switcher .options .action.toggle.active:after,
+.page-footer .switcher .options .action.toggle.active:after {
     position: absolute;
     background: url(../images/select-arrow-up.png);
     width: 14px;
-    height: 10px;
-    background-size: cover;
-    top: 6px;
+    height: 9px;
+    background-size: contain;
+    top: 7px;
     right: 4px;
 }
 
