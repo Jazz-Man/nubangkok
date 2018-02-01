@@ -5,7 +5,7 @@
         <referenceContainer name="sidebar.additional">
             <container name="left-sidebar-container" as="left-sidebar-container" label="Left sidebar container"
                        htmlTag="div"
-                       htmlClass="left-sidebar-container js-sticky-sidebar" after="logo">
+                       htmlClass="left-sidebar-container js-sticky-sidebar">
                 <block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="sidebar_categories"
                        as="sidebar.categories"
                        template="Encomage_Theme::html/page/sidebar/categories.phtml" before="-"/>
@@ -44,7 +44,7 @@
             <block class="Magento\Framework\View\Element\Template" name="nav-toggle" as="nav-toggle" before="-"
                    template="Encomage_Theme::html/mobile/page/nav/toggle.phtml"/>
         </referenceContainer>
-        <move element="logo" destination="sidebar.additional" before="-"/>
+        <move element="logo" destination="left-sidebar-container" before="-"/>
 
         <referenceBlock name="store.links" remove="true"/>
         <referenceBlock name="store.settings" remove="true"/>
