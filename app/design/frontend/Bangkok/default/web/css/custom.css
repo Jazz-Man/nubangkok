@@ -58,3 +58,58 @@
     }
 }
 
+/* popup *********************/
+
+.modal-popup._inner-scroll .modal-inner-wrap{
+    max-width: 700px;
+}
+.modal-content p {
+    font-size: 20px;
+}
+.modal-popup.modal-slide footer.modal-footer{
+    border-top: none;
+}
+
+/* popup buttons*/
+.modal-footer .product-question-modal-btn-consultant {
+    width: 40%;
+    border: 2px solid #aeaeae;
+    font-size: 14px;
+    text-transform: uppercase;
+    background-color: transparent;
+    border-radius: 3px;
+}
+.modal-footer .product-question-modal-btn-consultant:hover{
+    background-color: gainsboro;
+}
+
+.modal-footer .product-question-modal-btn-add-to-cart{
+    font-size: 14px;
+    background-color: #55463e;
+    border: 2px solid #55463e;
+    text-transform: uppercase;
+    width: 40%;
+    color: white;
+}
+.modal-footer .product-question-modal-btn-add-to-cart:hover{
+    background-color: #6b584e;
+}
+
+@media screen and (max-width: 767px) {
+    .modal-slide._inner-scroll .modal-footer{
+        margin-top: 50px;
+    }
+    .modal-content{
+        margin-top: 50px;
+    }
+
+    .modal-footer .product-question-modal-btn-consultant,
+    .modal-footer .product-question-modal-btn-add-to-cart {
+        width: 100%;
+        height: 50px;
+    }
+    .modal-footer .product-question-modal-btn-add-to-cart{
+        margin-top: 25px;
+    }
+}
+
