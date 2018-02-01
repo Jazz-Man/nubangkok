@@ -1,28 +1,48 @@
-#maincontent .column.main .fotorama__nav.fotorama__nav--thumbs{
-    display: none;
-}
-#maincontent .column.main .fotorama__nav.fotorama__nav--thumbs .fotorama__nav__shaft
-{
+#maincontent .column.main .fotorama__nav.fotorama__nav--thumbs {
     display: none;
 }
 
+#maincontent .column.main .fotorama__nav.fotorama__nav--thumbs .fotorama__nav__shaft {
+    display: none;
+}
 
-#maincontent .column.main .fotorama__arr .fotorama__arr--next .fotorama__arr__arr{
+#maincontent .column.main .fotorama__arr .fotorama__arr--next .fotorama__arr__arr {
     background-color: hotpink;
 }
 
-#maincontent .column.main .fotorama__dot
-{
+#maincontent .column.main .fotorama__dot {
     width: 6px;
     height: 6px;
 }
 
-#maincontent .column.main .fotorama__active .fotorama__dot
-{
+#maincontent .column.main .fotorama__active .fotorama__dot {
     background-color: #55463e;
     border-color: #55463e;
     width: 6px;
     height: 6px;
+}
+
+
+/*stores, carrency dropp-icon*/
+
+.page-header .switcher .options .action.toggle:after, .page-footer .switcher .options .action.toggle:after {
+    position: absolute;
+    background: url(../images/select-arrow-down.png);
+    width: 14px;
+    height: 10px;
+    background-size: cover;
+    top: 6px;
+    right: 4px;
+}
+
+.page-header .switcher .options .action.toggle.active:after, .page-footer .switcher .options .action.toggle.active:after {
+    position: absolute;
+    background: url(../images/select-arrow-up.png);
+    width: 14px;
+    height: 10px;
+    background-size: cover;
+    top: 6px;
+    right: 4px;
 }
 
 /* gallery.css*/
@@ -31,11 +51,9 @@
     padding: 30px 0 !important;
 }
 
-@media screen and (max-width: 767px){
+@media screen and (max-width: 767px) {
     .fotorama__nav--dots {
         top: -40px !important;
     }
 }
-
-
 
