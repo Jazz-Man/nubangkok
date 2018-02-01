@@ -5,6 +5,8 @@
         <referenceContainer name="sidebar.additional">
             <block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="sidebar_categories" as="sidebar.categories"
                    template="Encomage_Theme::html/page/sidebar/categories.phtml" before="-"/>
+            <block class="Magento\Framework\View\Element\Template" name="links_sidebar" as="links.sidebar"
+                   template="Encomage_Theme::html/page/sidebar/links.phtml"/>
         </referenceContainer>
         <referenceBlock name="navigation.sections">
             <block class="Magento\Framework\View\Element\Template" name="mobile.nav" group="navigation-sections"
@@ -27,6 +29,8 @@
                     <block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="mobile.nav.categories"
                            template="Encomage_Theme::html/page/sidebar/categories.phtml" ttl="3600"
                            after="mobile.nav.switch"/>
+                    <block class="Magento\Framework\View\Element\Template" name="mobile_links_sidebar" as="mobile.links.sidebar"
+                           template="Encomage_Theme::html/page/sidebar/links.phtml"/>
                 </block>
             </block>
         </referenceBlock>
