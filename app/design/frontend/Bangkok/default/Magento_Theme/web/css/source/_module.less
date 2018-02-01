@@ -57,7 +57,10 @@
     //  ---------------------------------------------
 
     .page-header {
-
+        position:fixed;
+        background-color: @color-white;
+        z-index: 999999999;
+        width: 100%;
             .links {
                 li:first-of-type, li:nth-child(2), li:nth-child(5), li:nth-child(6){
                     padding-top: 8px;
@@ -81,12 +84,6 @@
                     background-size: cover;
                 }
             }
-        &.sticky-header{
-            position:fixed;
-            background-color: @color-white;
-            z-index: 999999999;
-            width: 100%;
-        }
 
         .lib-css(background-color, @header__background-color);
         border-bottom: 1px solid @border-color__base;
@@ -104,7 +101,6 @@
     .logo {
         float: left;
         margin: 0 0 @indent__s @indent__xl;
-        max-width: 50%;
         position: relative;
         z-index: 5;
 
@@ -410,14 +406,8 @@
         }
     }
 
-    .logo {
-        margin: -8px auto 25px 0;
 
-        img {
-            max-height: inherit;
-            width: 100%;
-        }
-    }
+
 
     .footer {
         &.content {
