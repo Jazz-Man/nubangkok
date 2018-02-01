@@ -2,11 +2,6 @@
 
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-
-        <referenceContainer name="sidebar.additional">
-            <block class="Magento\Framework\View\Element\Template" name="links_sidebar" as="links.sidebar"
-                   template="Magento_Theme::html/page/sidebar/links.phtml"/>
-        </referenceContainer>
         <referenceBlock name="top.links">
             <block class="Magento\Framework\View\Element\Html\Link" name="store.locator" after="my-account-link">
                 <arguments>
