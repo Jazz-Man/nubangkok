@@ -1,7 +1,8 @@
 define([
     'jquery',
     'domReady!',
-    'niceselect'
+    'niceselect',
+    'sticky'
 ], function ($) {
     "use strict";
 
@@ -9,15 +10,16 @@ define([
     //---------------------------------------------
     $('select').niceSelect();
 
+    //sticky sidebar
+    //---------------------------------------------
+    $('.js-sticky-sidebar').sticky({topSpacing:100});
+
     //stick header
     //---------------------------------------------
-
-
     var previousScroll = 0,
         pageHeader = $('header.page-header'),
         sidebar = $('.sidebar.sidebar-additional'),
-        baseSidebarMargin = parseInt(sidebar.css('margin-top')),
-        mainContentHeight = $('#maincontent').innerHeight();
+        baseSidebarMargin = parseInt(sidebar.css('margin-top'));
     if ($(document).scrollTop()) {
         sidebar.css('margin-top', baseSidebarMargin + $(document).scrollTop());
     }
@@ -27,23 +29,15 @@ define([
             //top
             if (currentScroll > pageHeader.outerHeight()) {
                 pageHeader.addClass('sticky-header');
-                //sidebar.css('margin-top', baseSidebarMargin + pageHeader.outerHeight());
 
             } else {
                 pageHeader.removeClass('sticky-header');
-                //sidebar.css('margin-top', baseSidebarMargin);
 
             }
             sidebar.css('margin-top', baseSidebarMargin + currentScroll);
         } else {
             //bottom
             pageHeader.removeClass('sticky-header');
-            //sidebar.css('margin-top', baseSidebarMargin);
-            if (currentScroll < mainContentHeight) {
-                sidebar.css('margin-top', baseSidebarMargin + currentScroll);
-
-            }
-
         }
         previousScroll = currentScroll;
     })
