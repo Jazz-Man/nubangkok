@@ -2,24 +2,6 @@
 
 <div class="sidebar-menu">
     <div class="general-subcategories">
-        <div class="left-menu-big-margin "><a href="#"><?php echo __('Inspiration'); ?></a></div>
-        <div><a class="font-less" href="#"><?php echo __('Customer care'); ?></a></div>
-        <div><a class="font-less" href="#"><?php echo __('Product care'); ?></a></div>
-        <div><a class="font-less" href="#"><?php echo __('Contact us'); ?></a></div>
-        <div><a class="font-less" href="#"><?php echo __('Career'); ?></a></div>
-        <div class="social-links">
-            <span class="social-acc-pic">
-                <img src="<?php echo $this->getViewFileUrl('images/facebook.png'); ?>" alt="facebook-icon">
-            </span>
-            <span class="social-acc-pic">
-                <img src="<?php echo $this->getViewFileUrl('images/instagram.png'); ?>" alt="instagram-icon">
-            </span>
-            <span class="social-acc-pic">
-                <img src="<?php echo $this->getViewFileUrl('images/youtube.png'); ?>" alt="youtube-icon">
-            </span>
-             <span class="social-acc-pic">
-                <img src="<?php echo $this->getViewFileUrl('images/empty-link.png'); ?>" alt="youtube-icon">
-            </span>
-        </div>
+        <?php echo $block->getChildHtml('left_sidebar_cms_static_block')?>
     </div>
 </div>
