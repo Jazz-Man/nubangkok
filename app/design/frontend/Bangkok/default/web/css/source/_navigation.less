@@ -125,6 +125,9 @@
             text-transform: uppercase;
           }
           &.active{
+            >a{
+              font-weight: 700;
+            }
             font-weight: 700;
             list-style-type: disc;
           }
@@ -132,16 +135,9 @@
         ul {
           padding-left: 15px;
           li {
-            list-style-type: none;
             a {
               text-transform: capitalize;
               font-weight: 100;
-            }
-            &.active {
-              list-style-type: disc;
-              a {
-                font-weight: 700;
-              }
             }
           }
         }
@@ -773,37 +769,18 @@
       ul {
         padding-left: 0 !important;
         li {
-          list-style-type: none;
-          //border-bottom: 2px solid #eae4dc;
           a {
-            //margin-bottom: 1rem;
             font-weight: 700;
-            display: block;
-            text-transform: uppercase;
             margin-bottom: 0;
             border-bottom: 2px solid #eae4dc;
           }
-          &.active {
-            font-weight: 700;
-            list-style-type: disc;
-          }
-
         }
         ul {
           padding-left: 0;
           li {
-            list-style-type: none;
             a {
-              text-transform: capitalize;
-              font-weight: 100;
               color: black;
               padding-left: 30px;
-            }
-            &.active {
-              list-style-type: disc;
-              a {
-                font-weight: 700;
-              }
             }
           }
         }
