@@ -5,12 +5,28 @@ define([
 
     return function (config, element) {
 
+        var $html = $('html');
+
+        //  open mobile menu
+        // ----------------------------------------------------------------
+
         $('span[data-action="toggle-nav"]').on('click', function () {
-            $('html').addClass('nav-before-open nav-open')
+            $html.addClass('nav-before-open nav-open')
         });
+
+        //  close mobile menu
+        // ----------------------------------------------------------------
+
         $('span[data-action="toggle-nav-close"]').on('click', function () {
-            $('html').removeClass('nav-open')
+            $html.removeClass('nav-open');
+            setTimeout(function () {
+                $html.removeClass('nav-before-open');
+            }, 300);
         });
+
+        //  category tree
+        // ----------------------------------------------------------------
+
         function activateSubMenu(categoryId) {
             var e = $('.main-subcategories ul[data-parent-id="' + categoryId + '"]');
             if (config.currentCategoryId) {
