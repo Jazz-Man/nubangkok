@@ -72,6 +72,61 @@
             </arguments>
         </referenceBlock>
 
+        <referenceContainer name="header-wrapper">
+            <block class="Magento\Framework\View\Element\Template" name="nav-toggle" as="nav-toggle" before="-"
+                   template="Magento_Theme::html/mobile/page/nav/toggle.phtml"/>
+            <container name="js-menu-items-place" as="js-menu-items-place"
+                       htmlTag="div"
+                       htmlClass="menu-items-place js-menu-items-place">
+                <block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="sidebar_categories"
+                       as="sidebar.categories"
+                       template="Magento_Theme::html/page/sidebar/categories.phtml" before="-"/>
+                <block class="Magento\Framework\View\Element\Template" name="links_sidebar" as="links.sidebar"
+                       template="Magento_Theme::html/page/sidebar/links.phtml"/>
+            </container>
+        </referenceContainer>
+
+
+        <referenceContainer name="sidebar.additional">
+            <container name="left-sidebar-container" as="left-sidebar-container" label="Left sidebar container"
+                       htmlTag="div"
+                       htmlClass="left-sidebar-container js-sticky-sidebar">
+                <block class="Magento\Framework\View\Element\Template" name="sidebar-menu-container" as="sidebar-menu-container"
+                       template="Magento_Theme::html/page/sidebar-container.phtml"/>
+            </container>
+        </referenceContainer>
+        <referenceBlock name="navigation.sections">
+            <block class="Magento\Framework\View\Element\Template" name="mobile.nav" group="navigation-sections"
+                   template="Magento_Theme::html/container.phtml">
+                <block class="Magento\Framework\View\Element\Template" name="mobile.nav.container"
+                       template="Magento_Theme::html/mobile/page/nav/container.phtml">
+                    <block class="Magento\Framework\View\Element\Template" name="mobile.nav.search"
+                           as="mobile.topSearch" template="Magento_Search::mobile/page/nav/form.mini.phtml" before="-"/>
+                    <container name="mobile.nav.switch" as="mobile.nav.switch" label="Mobile nav switch" htmlTag="div"
+                               htmlClass="mobile-nav-switch" after="mobile.nav.search">
+                        <block class="Magento\Store\Block\Switcher" name="mobile.nav.switch.languages"
+                               as="mobile.nav.switch.languages"
+                               template="Magento_Store::mobile/page/nav/languages.phtml" before="-"/>
+                        <block class="Magento\Directory\Block\Currency" name="mobile.nav.switch.currency"
+                               as="mobile.nav.switch.currency"
+                               template="Magento_Directory::mobile/page/nav/currency.phtml"
+                               after="mobile.nav.switch.languages"/>
+                    </container>
+
+
+                    <block class="Magento\Framework\View\Element\Template" name="mobile-sidebar-menu-container" as="sidebar-menu-container"
+                           template="Magento_Theme::html/page/sidebar-container.phtml"/>
+                </block>
+            </block>
+        </referenceBlock>
+
+
+        <move element="logo" destination="left-sidebar-container" before="-"/>
+
+        <referenceBlock name="store.links" remove="true"/>
+        <referenceBlock name="store.settings" remove="true"/>
+        <referenceBlock name="store.menu" remove="true"/>
+
         <referenceBlock name="store_switcher" remove="true"/>
         <referenceBlock name="footer_links" remove="true"/>
         <referenceBlock name="report.bugs" remove="true"/>
