@@ -72,7 +72,7 @@
 
 /* popup buttons*/
 .modal-footer .product-question-modal-btn-consultant {
-    width: 40%;
+    min-width: 204px;
     border: 2px solid #aeaeae;
     font-size: 14px;
     text-transform: uppercase;
@@ -88,7 +88,7 @@
     background-color: #55463e;
     border: 2px solid #55463e;
     text-transform: uppercase;
-    width: 40%;
+    min-width: 204px;
     color: white;
 }
 .modal-footer .product-question-modal-btn-add-to-cart:hover{
@@ -113,3 +113,9 @@
     }
 }
 
+/* radio box PDP */
+@media screen and (max-width: 1076px) {
+    .product-info-main .radio-box, .product-options-bottom .radio-box{
+        margin-left: 1%;
+    }
+}

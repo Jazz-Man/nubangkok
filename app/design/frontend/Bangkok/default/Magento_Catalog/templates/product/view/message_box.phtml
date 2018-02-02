@@ -1,6 +1,8 @@
 <div class="message js-message" style="display:none;">
-    <?php echo __('Have you worn these shoes before?'); ?>
-    <label for="yes">
+    <p><?php echo __('Have you worn these shoes before?'); ?></p>
+
+   <div class="radio-box">
+       <label for="yes">
         <input type="radio" id="yes"
                name="answer" value="yes" class="js-answer">
         <span></span><span><?php echo __('Yes'); ?></span></label>
@@ -9,6 +11,7 @@
         <input type="radio" id="no" class="js-answer js-show-model"
                name="answer" value="no">
         <span></span><span><?php echo __('No'); ?></span></label>
+   </div>
 </div>
 <div id="product-message-box-popup" style="display: none">
     <p><?php echo __('Our consultant can help you with your size.'); ?></p>
