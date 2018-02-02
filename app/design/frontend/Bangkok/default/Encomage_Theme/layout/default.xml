@@ -6,11 +6,8 @@
             <container name="left-sidebar-container" as="left-sidebar-container" label="Left sidebar container"
                        htmlTag="div"
                        htmlClass="left-sidebar-container js-sticky-sidebar">
-                <block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="sidebar_categories"
-                       as="sidebar.categories"
-                       template="Encomage_Theme::html/page/sidebar/categories.phtml" before="-"/>
-                <block class="Magento\Framework\View\Element\Template" name="links_sidebar" as="links.sidebar"
-                       template="Encomage_Theme::html/page/sidebar/links.phtml"/>
+                <block class="Magento\Framework\View\Element\Template" name="sidebar-menu-container" as="sidebar-menu-container"
+                       template="Encomage_Theme::html/page/sidebar-container.phtml"/>
             </container>
         </referenceContainer>
         <referenceBlock name="navigation.sections">
@@ -31,18 +28,31 @@
                                after="mobile.nav.switch.languages"/>
                     </container>
 
-                    <block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="mobile.nav.categories"
-                           template="Encomage_Theme::html/page/sidebar/categories.phtml" ttl="3600"
-                           after="mobile.nav.switch"/>
-                    <block class="Magento\Framework\View\Element\Template" name="mobile_links_sidebar"
-                           as="mobile.links.sidebar"
-                           template="Encomage_Theme::html/page/sidebar/links.phtml"/>
+
+                    <block class="Magento\Framework\View\Element\Template" name="mobile-sidebar-menu-container" as="sidebar-menu-container"
+                           template="Encomage_Theme::html/page/sidebar-container.phtml">
+                        <!--<block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="mobile.nav.categories"
+                               template="Encomage_Theme::html/page/sidebar/categories.phtml" ttl="3600"
+                               after="mobile.nav.switch"/>
+                        <block class="Magento\Framework\View\Element\Template" name="mobile_links_sidebar"
+                               as="mobile.links.sidebar"
+                               template="Encomage_Theme::html/page/sidebar/links.phtml"/>-->
+                    </block>
                 </block>
             </block>
         </referenceBlock>
         <referenceContainer name="header-wrapper">
             <block class="Magento\Framework\View\Element\Template" name="nav-toggle" as="nav-toggle" before="-"
                    template="Encomage_Theme::html/mobile/page/nav/toggle.phtml"/>
+            <container name="js-menu-items-place" as="js-menu-items-place"
+                       htmlTag="div"
+                       htmlClass="menu-items-place js-menu-items-place">
+                <block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="sidebar_categories"
+                       as="sidebar.categories"
+                       template="Encomage_Theme::html/page/sidebar/categories.phtml" before="-"/>
+                <block class="Magento\Framework\View\Element\Template" name="links_sidebar" as="links.sidebar"
+                       template="Encomage_Theme::html/page/sidebar/links.phtml"/>
+            </container>
         </referenceContainer>
         <move element="logo" destination="left-sidebar-container" before="-"/>
 
