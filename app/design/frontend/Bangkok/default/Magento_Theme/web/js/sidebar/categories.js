@@ -29,7 +29,8 @@ define([
 
         }
 
-
+        // toggle between mobile / desktop
+        // ----------------------------------------------------------------
         function menuHtmlToggleContainer(container) {
             var html = '';
             if (baseMenuPlace.html()) {
@@ -82,7 +83,7 @@ define([
                     }
                     if (el.hasClass('js-category-main')) {
                         $('.main-categories span').removeClass('active');
-                        $('.main-subcategories ul').hide();
+                        $('.main-subcategories ul').hide().removeClass('active');
                         el.parent().addClass('active');
                     }
                     activateSubMenu(el.data('categoryId'));
