@@ -6,7 +6,7 @@
     <?php foreach ($block->getStores() as $lang): ?>
         <div class="item <?php echo ($block->getStoreCode() == $lang->getCode()) ? 'active' : ''; ?>">
             <a href="#" data-post='<?php echo $block->getTargetStorePostData($lang) ?>'>
-                <img src="<?php echo $this->getViewFileUrl('images/mobile/nav/languages/bangkok_th.png'); ?>">
+                <img src="<?php echo $this->getViewFileUrl('images/mobile/nav/languages/' . $lang->getCode() . '.png'); ?>">
             </a>
         </div>
     <?php endforeach; ?>
