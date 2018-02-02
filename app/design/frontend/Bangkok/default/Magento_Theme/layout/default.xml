@@ -82,7 +82,13 @@
                        as="sidebar.categories"
                        template="Magento_Theme::html/page/sidebar/categories.phtml" before="-"/>
                 <block class="Magento\Framework\View\Element\Template" name="links_sidebar" as="links.sidebar"
-                       template="Magento_Theme::html/page/sidebar/links.phtml"/>
+                       template="Magento_Theme::html/page/sidebar/links.phtml">
+                    <block class="Magento\Cms\Block\Block" name="left_sidebar_cms_static_block">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">left_sidebar_cms_static_block</argument>
+                        </arguments>
+                    </block>
+                </block>
             </container>
         </referenceContainer>
 
