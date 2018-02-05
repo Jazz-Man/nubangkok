@@ -93,6 +93,7 @@ class Configurable extends \Magento\Swatches\Block\Product\Renderer\Configurable
             if ($product->isSaleable()) {
                 $item[$product->getColor()]['size'] = $product->getSize();
                 $item[$product->getColor()]['stock'] = $this->_stockItemRepository->get($product->getID())->getIsInStock();
+                $item[$product->getColor()]['qty'] = $this->_stockItemRepository->get($product->getID())->getQty();
                 $stockStatus[] = $item;
                 unset ($item);
             }
