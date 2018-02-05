@@ -310,8 +310,8 @@ define([
          */
         _sortAttributes: function () {
             this.options.jsonConfig.attributes = _.sortBy(this.options.jsonConfig.attributes, function (attribute) {
-                if(attribute.code == "size"){
-                    return attribute.position =10;
+                if (attribute.code == "size") {
+                    return attribute.position = 10;
                 }
                 return attribute.position;
             });
@@ -525,7 +525,7 @@ define([
 
                 if (type === 0) {
                     // Text
-                    html += '<li class="' + optionClass + ' text" ' + attr + '>' + (value ? value : label)  + '</li>';
+                    html += '<li class="' + optionClass + ' text" ' + attr + '>' + (value ? value : label) + '</li>';
                 } else if (type === 1) {
                     // Color
                     html += '<div class="' + optionClass + ' color" ' + attr +
@@ -706,7 +706,7 @@ define([
                 $input.attr('data-attr-name', this._getAttributeCodeById(attributeId));
                 $this.addClass('selected');
                 $widget._toggleCheckedAttributes($this, $wrapper);
-                if($parent.hasClass('color')){
+                if ($parent.hasClass('color')) {
                     $('.product-name .color').text($this.attr('option-label'));
                 }
 
@@ -724,6 +724,7 @@ define([
             $widget._loadMedia(eventName);
             $input.trigger('change');
             $('.swatch-select.size').niceSelect('update');
+            this._getItemStockQty();
         },
 
         /**
@@ -781,6 +782,7 @@ define([
             $widget._Rebuild();
             $widget._UpdatePrice();
             $widget._loadMedia();
+            this._getItemStockQty();
             $input.trigger('change');
         },
 
@@ -1319,12 +1321,12 @@ define([
                 .first()
                 .find('.swatch-select.size')
                 .children();
-            var sizeLabels =this._getSizeLabels();
+            var sizeLabels = this._getSizeLabels();
             var stockStatusMessage = this._getStockStatus($this);
             $.each(sizeBox, function () {
                 sizeElement = $(this);
                 sizeElementId = $(this).attr('option-id');
-                sizeElement.text(sizeLabels[sizeElementId] + ' '+ stockStatusMessage[sizeElementId])
+                sizeElement.text(sizeLabels[sizeElementId] + ' ' + stockStatusMessage[sizeElementId])
             });
         },
 
@@ -1341,7 +1343,7 @@ define([
             var statusAttr = this.options.jsonConfig.attributes;
             var attrOptionId = $this.attr('option-id');
             var stockStatusMessage = [];
-            stockStatusMessage[0]=chooseText;
+            stockStatusMessage[0] = chooseText;
             $.each(statusAttr, function (key, item) {
                 if (item.code == "color") {
                     $.each(stockStatuses, function (item, value) {
@@ -1365,7 +1367,7 @@ define([
          */
         _getSizeLabels: function () {
             var sizeLabels = [];
-            sizeLabels[0]='';
+            sizeLabels[0] = '';
             $.each(this.options.jsonConfig.attributes, function (key, item) {
                 if (item.code == "size") {
                     $.each(item.options, function (i, value) {
@@ -1375,6 +1377,28 @@ define([
             });
 
             return sizeLabels;
+        },
+
+        _getItemStockQty: function () {
+            var sizeOptionCode;
+            var colorCodeOption;
+            var colorCodeOptionValue;
+            colorCodeOption = $('.swatch-opt .swatch-attribute.color').find('div').find('.selected');
+            colorCodeOptionValue = colorCodeOption.attr('option-id');
+            sizeOptionCode = $('.nice-select.swatch-select.size ul.list')
+                .find('.selected').attr('data-value');
+
+            $('#productItemQty').hide();
+
+            this.options.jsonConfig.stockStatus.forEach(function (element) {
+                if (typeof element[colorCodeOptionValue] !== 'undefined'
+                    && element[colorCodeOptionValue].size == sizeOptionCode
+                    && element[colorCodeOptionValue].qty < 5
+                    && element[colorCodeOptionValue].stock == true
+                ) {
+                    $('#productItemQty').show();
+                }
+            })
         }
     });
 
