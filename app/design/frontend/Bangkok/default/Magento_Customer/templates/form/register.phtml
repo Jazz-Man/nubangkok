@@ -82,24 +82,25 @@
         <div class="field choice specials_offers">
             <input type="checkbox" name="specials_offers"
                    title="<?php /* @escapeNotVerified */
-                   echo __('I would like to receive specials offers') ?>"
-                   value="1"
+                   echo __('I would like to receive specials offers');?>"
                    id="specials_offers"
                    checked="checked" class="checkbox">
             <label for="specials_offers" class="label">
-                <span><?php /* @escapeNotVerified */
-                    echo __('I would like to receive specials offers') ?></span>
+                <span><?php echo __('I would like to receive specials offers');?></span>
             </label>
         </div>
         <div class="field choice tos">
-            <input type="checkbox" name="specials_offers"
-                   title="<?php /* @escapeNotVerified */
-                   echo __('I agree to the Terms od Service') ?>"
-                   value="2"
+            <input type="checkbox" name="tos"
+                   title="<?php echo __('I agree to the Terms od Service');?>"
                    id="tos"
                    class="checkbox">
             <label for="tos" class="label">
-                <span><?php /* @escapeNotVerified */echo __('I agree to the Terms od Service') ?></span>
+                <span>
+                   <?php echo __('I agree to the');?>
+                    <a href="#" target="_blank">
+                     <?php echo __('Terms of Service');?>
+                    </a>
+                   </span>
             </label>
         </div>
     </fieldset>
@@ -107,6 +108,8 @@
     <div class="actions-toolbar">
         <div class="primary">
             <button type="submit" class="action submit primary"
+                    id="form-register-button"
+                    disabled
                     title="<?= $block->escapeHtmlAttr(__('Create an Account')) ?>">
                 <span><?= $block->escapeHtml(__('Create an Account')) ?></span></button>
         </div>
@@ -141,9 +144,7 @@
 
     });
 </script>
-<div>
-    <img src="" alt="">
-</div>
+<?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId("register-form-right")->toHtml();?>
 <div class="primary">
     <div>
         <p><?= $block->escapeHtml(__('Already registered?')) ?></p>
@@ -153,29 +154,18 @@
         </a>
     </div>
 </div>
-
-<div id="customer-popup-modal">
-    <p> <?php echo __('Account created. Welcome to UPBangkok!')?></p>
-</div>
 <script>
-    require(
-        [
-            'jquery',
-            'Magento_Ui/js/modal/modal'
-        ],
-        function ($,modal) {
-            var options = {
-                type: 'popup',
-                responsive: true,
-                innerScroll: true,
-                buttons: [{
-                    text: $.mage.__('Continue'),
-                    class: '',
-                    click: function () {this.closeModal();}
-                }]
-            };
-            var popup = modal(options, $('#customer-popup-modal'));
-            $('#customer-popup-modal').modal('openModal');
-        }
-    );
+    require([
+        'jquery',
+    ], function ($) {
+        $('input#tos').click(function () {
+         var element = $(this);
+          if( element.prop("checked")){
+            $('button#form-register-button').attr('disabled',false)
+          }
+          else{
+              $('button#form-register-button').attr('disabled',true)
+          }
+        });
+    });
 </script>
