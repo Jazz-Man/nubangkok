@@ -28,6 +28,12 @@
           user-select: none;
   white-space: nowrap;
   width: 90%; }
+.fieldset.create.info .nice-select{
+  height: 32px;
+}
+.fieldset.create.info .nice-select:after{
+  top: 7px;
+}
   .nice-select:hover {
     border-color: #dbdbdb; }
   .nice-select:active, .nice-select.open, .nice-select:focus {
