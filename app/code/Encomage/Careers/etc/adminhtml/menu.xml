@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Encomage_Careers::careers" title="Careers" module="Encomage_Careers" sortOrder="51" resource="Encomage_Careers::careers"/>
+        <add id="Encomage_Careers::careers_page" title="Careers Page" module="Encomage_Careers" sortOrder="10" action="careers" parent="Encomage_Careers::careers" resource="Encomage_Careers::careers" />
+    </menu>
+</config>
