@@ -382,8 +382,54 @@
       border: none;
       border-bottom: 2px solid @color-gray91;
     }
-    .field .control {
-      .nice-select {
+    .field{
+      label[for=country]{
+        display: inline-block;
+        float: left;
+        border-bottom: 2px solid @color-gray91;
+        height: 35px;
+        width: 20%;
+        span{
+          padding-left: 9px;
+        }
+      }
+      //.control {
+      //  .nice-select {
+      //    border-top: none;
+      //    padding-left: 9px;
+      //  }
+      //}
+    }
+    .field.country .control{
+      float: left;
+      width: 80%;
+      .nice-select{
+        width: 100%;
+        border-top: none;
+        padding-left: 9px;
+      }
+    }
+    .field.date.field-dob{
+      .customer-dob{
+        margin-top: 5px;
+      }
+    }
+    label[for=gender]{
+      display: inline-block;
+      float: left;
+      border-bottom: 2px solid @color-gray91;
+      height: 35px;
+      width: 42%;
+      span{
+        padding-left: 9px;
+        padding-top: 11px;
+        display: block;
+      }
+    }
+    .field.gender .control{
+      float: left;
+      width: 58%;
+      .nice-select{
         width: 100%;
         border-top: none;
         padding-left: 9px;
@@ -461,8 +507,11 @@
     .sign-in-block {
       margin-top: 100px;
       text-align: center;
+      p{
+        margin-top: 2rem;
+      }
       a.action.login{
-        border: 2px solid #aeaeae;
+        border: 2px solid @color-gray91;
         font-size: 14px;
         text-transform: uppercase;
         border-radius: 3px;

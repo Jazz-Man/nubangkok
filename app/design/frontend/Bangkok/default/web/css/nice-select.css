@@ -38,8 +38,8 @@
 }
   .nice-select:hover {
     border-color: #dbdbdb; }
-  .nice-select:active, .nice-select.open, .nice-select:focus {
-    border-color: #999; }
+  /*.nice-select:active, .nice-select.open, .nice-select:focus {*/
+    /*border-color: #999; }*/
   .nice-select:after {
     border-top: 2px solid darkgray;
     border-left: 2px solid darkgray;
