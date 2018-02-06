@@ -135,7 +135,8 @@
         @_icon-font-display: block,
         @_icon-font-text-hide: true
       );
-      display: inline-block;
+      //display: inline-block;
+      display: none;
       vertical-align: middle;
 
       &:focus {
@@ -355,7 +356,6 @@
     .legend {
       &:extend(.abs-margin-for-forms-desktop all);
     }
-
     > .field {
 
       /*.lib-form-field-type-revert();
@@ -368,6 +368,7 @@
   // create account
   //
   .form.create.account.form-create-account .create.info {
+
     h2 {
       text-align: center;
     }
@@ -386,15 +387,29 @@
         border-top: none;
       }
     }
-    .birthday-gender {
-      input[name=birth] {
-        width: 35%;
-      }
-      input[name=gender] {
-        width: 45%;
-        float: right;
+    //.birthday-gender {
+    //  input[name=birth] {
+    //    width: 35%;
+    //  }
+    //  input[name=gender] {
+    //    width: 45%;
+    //    float: right;
+    //  }
+    //}
+    .dob-block {
+      width: 40%;
+      display: inline-block;
+      float: left;
+    }
+    .gender-block {
+      width: 40%;
+      display: inline-block;
+      float: right;
+      label[for=gender]{
+        display: none;
       }
     }
+
     .checkbox-block {
       width: 100%;
       display: inline-block;
@@ -434,7 +449,7 @@
           background: @icon-choose-chd no-repeat;
         }
       }
-      .field.choice.tos{
+      .field.choice.tos {
         margin-top: 25px;
       }
     }
