@@ -34,6 +34,13 @@
     }
 }
 
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m){
+    .actions-toolbar > .primary .action:last-child,
+    .actions-toolbar > .secondary .action:last-child{
+        width: 86%;
+    }
+}
+
 //
 //  Desktop
 //  _____________________________________________
