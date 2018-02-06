@@ -3,56 +3,41 @@
 namespace Encomage\Customer\Block\Account;
 
 use Magento\Framework\UrlInterface;
+use Magento\Framework\Serialize\Serializer\Json;
 
 class TopLinks extends \Magento\Customer\Block\Account\Link
 {
 
-
-    protected $urlBuilder;
-
-    protected $_session;
+    private $urlBuilder;
+    private $json;
 
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Customer\Model\Url $customerUrl,
         array $data = [],
         UrlInterface $urlBuilder,
-        \Magento\Customer\Model\Session $session
+        Json $json
+
     )
     {
         parent::__construct($context, $customerUrl, $data);
         $this->urlBuilder = $urlBuilder;
-        $this->_session = $session;
+        $this->json = $json;
     }
 
-
-    public function getRegisterUrl()
+    public function getJsConfig()
     {
-        return $this->urlBuilder->getUrl('customer/account/create');
-    }
-
-    public function getAccountUrl()
-    {
-        return $this->urlBuilder->getUrl('customer/account');
-    }
-
-    public function getLogoutUrl()
-    {
-        return $this->urlBuilder->getUrl('customer/account/logout');
-    }
-
-    public function getSignInUrl()
-    {
-        return $this->urlBuilder->getUrl('customer/account/login');
-    }
-
-    public function isLoggedIn()
-    {
-        return $this->_session->isLoggedIn();
-    }
-
-    public function getCustomerName()
-    {
-        return $this->_session->getCustomer()->getFirstname();
+        return $this->json->serialize(
+            [
+                'logged' => [
+                    ['label' => __('Log out'), 'href' => $this->urlBuilder->getUrl('customer/account/logout')],
+                    ['label' => __('My account'), 'href' => $this->urlBuilder->getUrl('customer/account')]
+                ],
+                'notLogged' => [
+                    ['label' => __('Sign in'), 'href' => $this->urlBuilder->getUrl('customer/account/login')],
+                    ['label' => __('Create account'), 'href' => $this->urlBuilder->getUrl('customer/account/create')]
+                ]
+            ]
+        );
     }
 }

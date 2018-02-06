@@ -1,28 +1,14 @@
-<li data-mage-init='{"Magento_Customer/js/top-link":{}}'>
-
-        <div style="display: none" class="js-logged-customer">
-            <a href="#" class="customer-name"></a>
-            <ul class="dropdown switcher-dropdown"
-                data-target="dropdown">
-                <li>
-                    <a href="<?= $block->getLogoutUrl(); ?>"><?= $block->escapeHtml(__('Log out')); ?></a>
-                </li>
-                <li>
-                    <a href="<?= $block->getAccountUrl(); ?>"><?= $block->escapeHtml(__('My account')); ?></a>
-                </li>
-            </ul>
-        </div>
-
-        <div style="display: none" class="js-not-logged-customer">
-            <a href="#" class="top-link-myaccount"></a>
-            <ul class="dropdown switcher-dropdown"
-                data-target="dropdown">
-                <li>
-                    <a href="<?= $block->getSignInUrl(); ?>"><?= $block->escapeHtml(__('Sign in')); ?></a>
-                </li>
-                <li>
-                    <a href="<?= $block->getRegisterUrl(); ?>"><?= $block->escapeHtml(__('Create account')); ?></a>
-                </li>
-            </ul>
-        </div>
+<?php
+/** @var  $block \Encomage\Customer\Block\Account\TopLinks */
+?>
+<li class="switcher">
+    <div class="actions dropdown options switcher-options">
+        <a href="#" class="top-link-myaccount actions dropdown customer-name"
+           data-mage-init='{"dropdown":{}}'
+           data-toggle="dropdown"
+           data-trigger-keypress-button="true"></a>
+        <ul class="dropdown switcher-dropdown" data-target="dropdown"
+            data-mage-init='{"Magento_Customer/js/top-link":<?php echo $block->getJsConfig() ?>}'>
+        </ul>
+    </div>
 </li>
