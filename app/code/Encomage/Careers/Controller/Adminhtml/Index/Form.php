@@ -6,6 +6,7 @@ use \Magento\Backend\App\Action\Context;
 use \Magento\Framework\Registry;
 use \Magento\Framework\View\Result\PageFactory;
 use \Encomage\Careers\Model\CareersFactory as Careers;
+use \Encomage\Careers\Model\ResourceModel\Careers as CareersResource;
 use Magento\Framework\Exception\LocalizedException;
 
 class Form extends \Magento\Backend\App\Action
@@ -15,10 +16,19 @@ class Form extends \Magento\Backend\App\Action
     protected $_careersFactory;
 
     protected $resultPageFactory = false;
+    
+    protected $careersResource;
 
-    public function __construct(Context $context, Registry $coreRegistry, PageFactory $resultPageFactory, Careers $_careersFactory)
+    public function __construct(
+        Context $context,
+        Registry $coreRegistry,
+        PageFactory $resultPageFactory,
+        Careers $_careersFactory,
+        CareersResource $careersResource
+    )
     {
         $this->_careersFactory = $_careersFactory;
+        $this->careersResource = $careersResource;
         $this->_coreRegistry = $coreRegistry;
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
@@ -27,11 +37,11 @@ class Form extends \Magento\Backend\App\Action
     public function execute()
     {
         $params = $this->getRequest()->getParam('careers');
-        if(is_array($params)) {
+        if (is_array($params)) {
             $model = $this->_careersFactory->create();
             $model->setData($params);
             try {
-                $model->save();
+                $this->careersResource->save($model);
             } catch (\Exception $e) {
                 throw new LocalizedException(__($e));
             }

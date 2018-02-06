@@ -5,6 +5,8 @@ use Encomage\Careers\Model\ResourceModel\Careers\CollectionFactory;
 
 class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
+    public $loadedData;
+
     /**
      * @param string $name
      * @param string $primaryFieldName
@@ -26,6 +28,9 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
     }
 
+    /**
+     * @return array
+     */
     public function getData()
     {
         if (isset($this->loadedData)) {
@@ -36,7 +41,6 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         $this->loadedData = array();
         /** @var Customer $customer */
         foreach ($items as $careers) {
-            // notre fieldset s'apelle "contact" d'ou ce tableau pour que magento puisse retrouver ses datas :
             $this->loadedData[$careers->getId()]['careers'] = $careers->getData();
         }
 

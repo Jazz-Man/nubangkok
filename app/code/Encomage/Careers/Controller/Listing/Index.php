@@ -1,5 +1,6 @@
-<?php 
-namespace Encomage\Careers\Controller\Index;
+<?php
+
+namespace Encomage\Careers\Controller\Listing;
 
 class Index extends \Magento\Framework\App\Action\Action
 {
