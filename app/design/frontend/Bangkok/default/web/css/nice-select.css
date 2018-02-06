@@ -30,6 +30,8 @@
   width: 90%; }
 .fieldset.create.info .nice-select{
   height: 32px;
+  line-height: 32px;
+  margin-top: 5px;
 }
 .fieldset.create.info .nice-select:after{
   top: 7px;

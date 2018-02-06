@@ -50,8 +50,8 @@
             ->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
 
         <div class="field country required">
-            <!--            <label for="country" class="label"><span>-->
-            <?php //echo $block->escapeHtml(__('Country')) ?><!--</span></label>-->
+                        <label for="country" class="label"><span>
+            <?php echo $block->escapeHtml(__('Country')) ?></span></label>
             <div class="control">
                 <?= $block->getCountryHtmlSelect() ?>
             </div>
@@ -72,7 +72,7 @@
             <?php endif ?>
         </div>
         <div class="gender-block">
-            <?php $_gender = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Gender') ?>
+             <?php $_gender = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Gender') ?>
             <?php if ($_gender->isEnabled()): ?>
                 <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
             <?php endif ?>
@@ -147,14 +147,17 @@
 
     });
 </script>
-<?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId("register-form-right")->toHtml(); ?>
-<div class="primary">
-    <div>
+
+
+<div class="account-right-block">
+    <?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId("register-form-right")->toHtml(); ?>
+    <div class="sign-in-block">
         <p><?= $block->escapeHtml(__('Already registered?')) ?></p>
-        <a class="action login primary"
+        <a class="action login"
            href="<?= $block->escapeUrl($block->getBackUrl()) ?>">
             <span><?= $block->escapeHtml(__('Sign In')) ?></span>
         </a>
+        <a href="#"><span>Or</span></a>
     </div>
 </div>
 <script>
