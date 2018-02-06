@@ -135,7 +135,8 @@
         @_icon-font-display: block,
         @_icon-font-text-hide: true
       );
-      display: inline-block;
+      //display: inline-block;
+      display: none;
       vertical-align: middle;
 
       &:focus {
@@ -194,7 +195,7 @@
     border-top: 2px solid @color-gray91;
     border-bottom: 2px solid @color-gray91;
     padding: 0;
-    &:focus{
+    &:focus {
       box-shadow: none;
     }
     //  background: @icon-select-arrow-down;
@@ -226,6 +227,7 @@
   //  }
   //}
 }
+
 //select option[value="176"]:hover {
 //  background-color: violet;
 //}
@@ -260,27 +262,30 @@
 //   background: purple;
 //}
 
-._keyfocus *:focus, input:not([disabled]):focus, textarea:not([disabled]):focus, select:not([disabled]):focus{
+._keyfocus *:focus, input:not([disabled]):focus, textarea:not([disabled]):focus, select:not([disabled]):focus {
   box-shadow: none;
 }
 
 .product-options-bottom {
-  label{
+  label {
     position: relative;
-    &[for=yes]{
+    &[for=yes] {
       float: left;
+      span:last-of-type {
+        position: absolute;
+        right: -1px;
+      }
     }
-    &[for=no]{
+    &[for=no] {
       float: right;
-    }
-    span:last-of-type{
-      position: absolute;
-      top: 20px;
-      right: -3px;
+      span:last-of-type {
+        position: absolute;
+        right: 0;
+      }
     }
   }
 
-  input[type="radio"]{
+  input[type="radio"] {
     position: absolute;
     right: -2px;
     opacity: 0;
@@ -291,42 +296,46 @@
       display: inline-block;
       width: 20px;
       height: 20px;
-      background: url(../images/radiobox.png) left top no-repeat;
+      background: @icon-choose-box left top no-repeat;
       margin-left: 2%;
     }
     &:checked + span {
-      background: url(../images/radio-ch.png) no-repeat;
+      background: @icon-choose-chd no-repeat;
     }
   }
 }
 
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs){
+  .product-options-bottom {
+    label {
+      position: relative;
+      &[for=yes] {
+        span:last-of-type {
+          left: -1px;
+        }
+      }
+      &[for=no] {
+        span:last-of-type {
+          left: 2px;
+        }
+      }
+    }
+  }
+}
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen_custom__xl){
   .product-options-bottom {
-    label{
+    label {
       //position: relative;
-      span:last-of-type{
+      span:last-of-type {
         //position: absolute;
         //top: 20px;
         right: -1px;
       }
     }
-    input[type="radio"]{
-      position: absolute;
-      right: -2px;
-      opacity: 0;
-      z-index: 100;
-      top: -3px;
-
+    input[type="radio"] {
       & + span {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        background: url(../images/radiobox.png) left top no-repeat;
         margin-left: 0;
-      }
-      &:checked + span {
-        background: url(../images/radio-ch.png) no-repeat;
       }
     }
   }
@@ -347,12 +356,102 @@
     .legend {
       &:extend(.abs-margin-for-forms-desktop all);
     }
-
     > .field {
 
-      .lib-form-field-type-revert();
-      margin: 0 0 @form-field__vertical-indent__desktop;
+      /*.lib-form-field-type-revert();
+      margin: 0 0 @form-field__vertical-indent__desktop;*/
 
+    }
+  }
+
+  //
+  // create account
+  //
+  .form.create.account.form-create-account .create.info {
+
+    h2 {
+      text-align: center;
+    }
+    .legend {
+      margin-left: 0;
+      font-size: @font-size__s;
+      font-style: italic;
+    }
+    input {
+      border: none;
+      border-bottom: 2px solid @color-gray91;
+    }
+    .field .control {
+      .nice-select {
+        width: 100%;
+        border-top: none;
+      }
+    }
+    //.birthday-gender {
+    //  input[name=birth] {
+    //    width: 35%;
+    //  }
+    //  input[name=gender] {
+    //    width: 45%;
+    //    float: right;
+    //  }
+    //}
+    .dob-block {
+      width: 40%;
+      display: inline-block;
+      float: left;
+    }
+    .gender-block {
+      width: 40%;
+      display: inline-block;
+      float: right;
+      label[for=gender]{
+        display: none;
+      }
+    }
+
+    .checkbox-block {
+      width: 100%;
+      display: inline-block;
+      margin-top: 30px;
+      position: relative;
+      label[for=specials_offers] {
+        position: relative;
+        span:last-of-type {
+          padding-left: 3%;
+        }
+        span:first-of-type {
+          position: absolute;
+          width: 21px;
+          height: 21px;
+          left: -4px;
+          top: -1px;
+          background: @icon-choose-box no-repeat;
+        }
+      }
+      label[for=tos] {
+        position: relative;
+        span:last-of-type {
+          padding-left: 3%;
+        }
+        span:first-of-type {
+          position: absolute;
+          width: 21px;
+          height: 21px;
+          left: -4px;
+          top: -1px;
+          background: @icon-choose-box no-repeat;
+        }
+      }
+      input[type='checkbox'] {
+        opacity: 0;
+        &:checked + span:first-of-type {
+          background: @icon-choose-chd no-repeat;
+        }
+      }
+      .field.choice.tos {
+        margin-top: 25px;
+      }
     }
   }
 }
