@@ -50,7 +50,7 @@
             ->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
 
         <div class="field country required">
-                        <label for="country" class="label"><span>
+            <label for="country" class="label"><span>
             <?php echo $block->escapeHtml(__('Country')) ?></span></label>
             <div class="control">
                 <?= $block->getCountryHtmlSelect() ?>
@@ -72,7 +72,7 @@
             <?php endif ?>
         </div>
         <div class="gender-block">
-             <?php $_gender = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Gender') ?>
+            <?php $_gender = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Gender') ?>
             <?php if ($_gender->isEnabled()): ?>
                 <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
             <?php endif ?>
@@ -83,7 +83,6 @@
                     <input type="checkbox" name="specials_offers"
                            title="<?php /* @escapeNotVerified */
                            echo __('I would like to receive specials offers') ?>"
-                           value="1"
                            id="specials_offers"
                            checked="checked" class="checkbox">
 
@@ -96,7 +95,6 @@
                     <input type="checkbox" name="specials_offers"
                            title="<?php /* @escapeNotVerified */
                            echo __('I agree to the Terms od Service') ?>"
-                           value="2"
                            id="tos"
                            class="checkbox">
 
