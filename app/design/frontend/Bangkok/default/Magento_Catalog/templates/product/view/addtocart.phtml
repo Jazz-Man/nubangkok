@@ -18,7 +18,7 @@
                         title="<?= /* @escapeNotVerified */
                         $buttonTitle ?>"
                         class="action primary tocart"
-                        id="product-addtocart-button">
+                        id="product-addtocart-button" <?= ((bool)$_product->getAskAboutShoeSize()) ? 'disabled' : '' ?>>
                     <span><?= /* @escapeNotVerified */
                         $buttonTitle ?></span>
                 </button>
