@@ -1,0 +1,9 @@
+<a href="<?php echo $block->getUrl('sales/order/history', ['_secure' => true]);?>"><?php echo __('My orders')?></a>
+<a href="<?php echo $block->getUrl('updpoints', ['_secure' => true]);?>"><?php echo __('My UPPoints')?></a>
+<a href="<?php echo $block->getUrl('wishlist', ['_secure' => true]);?>"><?php echo __('My wishlist')?></a>
+<a href="#"><?php echo __('My account details ')?></a>
+
+<div class="my_account_details">
+    <?= $block->getChildHtml('customer_account_dashboard_information')?>
+    <?= $block->getChildHtml('customer_account_dashboard_addresses')?>
+</div>
