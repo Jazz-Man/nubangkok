@@ -1,0 +1,21 @@
+<?php
+/** @var \Magento\Customer\Block\Widget\Telephone $block */
+?>
+
+<div class="field mobile-numb">
+    <div class="control">
+        <?php
+            $_validationClass = $block->escapeHtmlAttr(
+                $this->helper('Magento\Customer\Helper\Address')
+                     ->getAttributeValidationClass('telephone')
+            );
+        ?>
+        <input type="text"
+               name="telephone"
+               id="mobile-numb"
+               value="<?= $block->escapeHtmlAttr($block->getTelephone()) ?>"
+               title="<?= $block->escapeHtmlAttr(__('Mobile No')) ?>"
+               class="input-text <?= $_validationClass ?: '' ?>"
+               placeholder="<?= __('Mobile No'); ?>">
+    </div>
+</div>
