@@ -108,6 +108,7 @@
 .modal-slide .action-close:before { font-size: 44px; color: #55463e;}
 .modal-content p {font-size: 14px;}
 
+
 @media screen and (max-width: 767px) {
     .modal-slide._inner-scroll .modal-footer{
         margin-top: 50px;
@@ -124,6 +125,12 @@
     .modal-footer .product-question-modal-btn-add-to-cart{
         margin-top: 25px;
     }
+}/*********************popup*******/
+
+
+/*customer icon dropdown menu*/
+.page-header .header.links .switcher:first-of-type .switcher-options.active {
+    background-color: #d9d2cb;
 }
 
 /* radio box PDP */
@@ -131,4 +138,12 @@
     .product-info-main .radio-box, .product-options-bottom .radio-box{
         margin-left: 1%;
     }
+}
+
+/*create account nice select fields*/
+.field.country.required .control .nice-select.open:after {
+    margin-top: 4px;
+}
+.gender-block .field.gender .nice-select.open:after {
+    margin-top: 4px;
 }
