@@ -10,16 +10,23 @@ use Magento\Framework\Setup\UpgradeDataInterface;
 class UpgradeData implements UpgradeDataInterface
 {
 
-    protected $_pageFactory;
-    protected $_blockFactory;
+    private $pageFactory;
+    private $blockFactory;
+    private $scopeConfig;
+    private $configResource;
 
 
     public function __construct(
         \Magento\Cms\Model\PageFactory $pageFactory,
-        \Magento\Cms\Model\BlockFactory $blockFactory
-    ) {
-        $this->_pageFactory = $pageFactory;
-        $this->_blockFactory = $blockFactory;
+        \Magento\Cms\Model\BlockFactory $blockFactory,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Config\Model\ResourceModel\Config $configResource
+    )
+    {
+        $this->pageFactory = $pageFactory;
+        $this->blockFactory = $blockFactory;
+        $this->scopeConfig = $scopeConfig;
+        $this->configResource = $configResource;
     }
 
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
@@ -31,9 +38,29 @@ class UpgradeData implements UpgradeDataInterface
                 'identifier' => 'register-form-right',
                 'stores' => [0],
                 'is_active' => 1,
-                'content' =>$content
+                'content' => $content
             ];
-            $this->_blockFactory->create()->setData($testBlock)->save();
+            $this->blockFactory->create()->setData($testBlock)->save();
         }
+
+        if (version_compare($context->getVersion(), '0.0.3', '<')) {
+            $this->modifyFooterCopyright();
+        }
+    }
+
+    private function modifyFooterCopyright()
+    {
+        $this->configResource->saveConfig('design/footer/copyright',
+            'nu Bangkok Copyright ©2018. All Rights Reserved',
+            'default',
+            0
+        );
+
+        $this->configResource->saveConfig('design/footer/copyright',
+            'nu Bangkok Copyright ©2018. All Rights Reserved',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORES,
+            1
+        );
+        return $this;
     }
 }
