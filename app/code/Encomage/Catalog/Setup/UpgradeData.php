@@ -22,7 +22,7 @@ class UpgradeData implements UpgradeDataInterface
 
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        if (version_compare($context->getVersion(), '0.0.3') < 0) {
+        if (version_compare($context->getVersion(), '0.0.2','<')) {
             $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
             $eavSetup->addAttribute(
                 \Magento\Catalog\Model\Product::ENTITY,

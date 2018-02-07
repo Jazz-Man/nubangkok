@@ -1,11 +1,13 @@
 <?php
 /** @var  \Encomage\Catalog\Block\Product\View\Shared $block */
+
+$css = $block->getCssClass() ? $block->getCssClass() : '';
 ?>
-<div class="product-shared-link">
+<div class="product-shared-link <?= $css; ?>">
     <a target="_blank" title="<?php echo __('Share on Facebook'); ?>"
        href="<?php echo $block->getFacebookSharedLink(); ?>">
         <div class="share-btn">
-            <span class="arrow-up">LINK</span>
+            <span class="arrow-up"></span>
         </div>
     </a>
 </div>

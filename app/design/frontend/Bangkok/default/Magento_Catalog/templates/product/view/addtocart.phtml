@@ -24,6 +24,9 @@
                 </button>
                 <?= $block->getChildHtml('', true) ?>
             </div>
+            <?= $block->getLayout()
+                ->createBlock('Encomage\Catalog\Block\Product\View\Shared', 'desktop.product.view.shared')
+                ->toHtml(); ?>
         </div>
 
     </div>
