@@ -59,8 +59,7 @@
     border: 3px solid white;
     overflow: hidden;
     text-overflow: ellipsis;
-    box-shadow: 0 0 0 0.5px #c6c6c6,
-    0 0 0 0.5px #c6c6c6;
+    box-shadow: 0 0 0 1px #c6c6c6, 0 0 0 1px #c6c6c6;
 }
 
 

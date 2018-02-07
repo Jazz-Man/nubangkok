@@ -25,7 +25,12 @@
             <div class="control">
                 <input type="password" name="password" id="password"
                        title="<?= $block->escapeHtmlAttr(__('Password')) ?>"
-                       class="input-text" placeholder="<?= $block->escapeHtml(__('Password*')) ?>">
+                       class="input-text"
+                       data-password-min-length="<?= $block->escapeHtmlAttr($block->getMinimumPasswordLength()) ?>"
+                       data-password-min-character-sets="<?= $block->escapeHtmlAttr($block->getRequiredCharacterClassesNumber()) ?>"
+                       data-validate="{required:true, 'validate-customer-password':true}"
+                       autocomplete="off"
+                       placeholder="<?= $block->escapeHtml(__('Password*')) ?>">
             </div>
 
         </div>
@@ -96,7 +101,7 @@
                            class="checkbox">
 
                     <span></span><span><?php /* @escapeNotVerified */
-                        echo __('I agree to the Terms od Service') ?></span>
+                        echo __('I agree to the ') ?><a href="#" target="_blank"><?= __('Terms of Service');?></a></span>
                 </label>
             </div>
         </div>
@@ -167,4 +172,14 @@
             }
         });
     });
+</script>
+
+<script type="text/x-magento-init">
+    {
+        ".field.password": {
+            "passwordStrengthIndicator": {
+                "formSelector": "form.form-create-account"
+            }
+        }
+    }
 </script>
