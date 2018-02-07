@@ -1,26 +1,33 @@
-<div class="message js-message" style="display:none;">
-    <p><?php echo __('Have you worn these shoes before?'); ?></p>
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
 
-   <div class="radio-box">
-       <label for="yes">
-        <input type="radio" id="yes"
-               name="answer" value="yes" class="js-answer">
-        <span></span><span><?php echo __('Yes'); ?></span></label>
+/** @var \Magento\Catalog\Model\Product $product */
+$product = $block->getParentBlock()->getProduct();
+?>
+<?php if ((bool)$product->getAskAboutShoeSize()): ?>
+    <div class="message js-message" style="display:none;">
+        <p><?php echo __('Have you worn these shoes before?'); ?></p>
+        <div class="radio-box">
+            <label for="yes">
+                <input type="radio" id="yes"
+                       name="answer" value="yes" class="js-answer">
+                <span></span><span><?php echo __('Yes'); ?></span></label>
 
-    <label for="no">
-        <input type="radio" id="no" class="js-answer js-show-model"
-               name="answer" value="no">
-        <span></span><span><?php echo __('No'); ?></span></label>
-   </div>
-</div>
-<div id="product-message-box-popup" style="display: none">
-    <p><?php echo __('Our consultant can help you with your size.'); ?></p>
-    <p><?php echo __('If you are sure about your size click "Add to bag now"'); ?></p>
-</div>
-<script type="text/x-magento-init">
+            <label for="no">
+                <input type="radio" id="no" class="js-answer js-show-model"
+                       name="answer" value="no">
+                <span></span><span><?php echo __('No'); ?></span></label>
+        </div>
+    </div>
+    <div id="product-message-box-popup" style="display: none">
+        <p><?php echo __('Our consultant can help you with your size.'); ?></p>
+        <p><?php echo __('If you are sure about your size click "Add to bag now"'); ?></p>
+    </div>
+    <script type="text/x-magento-init">
     {
         "#product-message-box-popup": {
             "Magento_Catalog/js/add-to-cart-question": {}
         }
     }
-</script>
+    </script>
+<?php endif; ?>
