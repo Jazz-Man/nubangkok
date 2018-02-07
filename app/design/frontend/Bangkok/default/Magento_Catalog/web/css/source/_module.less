@@ -151,7 +151,6 @@
   .product.info.detailed {
     clear: both;
     margin-bottom: 30px;
-    text-transform: uppercase;
 
     .additional-attributes {
       width: auto;
@@ -558,12 +557,15 @@
     .actions {
       .action.tocart {
         &:extend(.abs-button-responsive-smaller all);
-        height: 60px;
+        height: auto;
         text-transform: uppercase;
         background-color: @color-violet;
         border: 1px solid @color-violet;
-        margin-top: 50px;
-        font-size: 32px;
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 10px 0;
+        max-width: 250px;
         &:hover {
           background-color: @color-violet - 20%;
         }
