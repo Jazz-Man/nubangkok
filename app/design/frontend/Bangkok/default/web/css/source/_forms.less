@@ -194,7 +194,8 @@
         float: left;
         border-bottom: 2px solid @color-gray91;
         height: 35px;
-        width: 20%;
+        width: 13%;
+        color: @color-text-input;
         span {
           padding-left: 9px;
         }
@@ -208,11 +209,12 @@
     }
     .field.country .control {
       float: left;
-      width: 80%;
+      width: 87%;
       .nice-select {
         width: 100%;
         border-top: none;
         padding-left: 9px;
+        color: @color-text-input;
       }
     }
     .field.date.field-dob {
@@ -225,7 +227,8 @@
       float: left;
       border-bottom: 2px solid @color-gray91;
       height: 35px;
-      width: 42%;
+      width: 27%;
+      color: @color-text-input;
       span {
         padding-left: 9px;
         padding-top: 11px;
@@ -234,11 +237,12 @@
     }
     .field.gender .control {
       float: left;
-      width: 58%;
+      width: 73%;
       .nice-select {
         width: 100%;
         border-top: none;
         padding-left: 9px;
+        color: @color-text-input;
       }
     }
     //.birthday-gender {
@@ -251,12 +255,12 @@
     //  }
     //}
     .dob-block {
-      width: 40%;
+      width: 45%;
       display: inline-block;
       float: left;
     }
     .gender-block {
-      width: 40%;
+      width: 45%;
       display: inline-block;
       float: right;
 
@@ -321,7 +325,7 @@
         font-size: 14px;
         text-transform: uppercase;
         border-radius: 3px;
-        padding: 5px 0;
+        padding: 8px;
         display: block;
         width: 60%;
         margin: 0 auto;
@@ -481,6 +485,37 @@
       &[for=no] {
         span:last-of-type {
           left: 2px;
+        }
+      }
+    }
+  }
+  .form.create.account.form-create-account{
+    font-size: 12px;
+    input{
+      font-size: 12px;
+    }
+    .create.info {
+      .field {
+        label[for=country] {
+          width: 23%;
+        }
+        label[for=gender]{
+          width: 50%;
+        }
+      }
+      .field.country .control {
+        float: left;
+        width: 77%;
+        .nice-select {
+          font-size: 12px;
+          line-height: 29px;
+        }
+      }
+      .field.gender .control{
+        width: 50%;
+        .nice-select {
+          font-size: 12px;
+          line-height: 29px;
         }
       }
     }
