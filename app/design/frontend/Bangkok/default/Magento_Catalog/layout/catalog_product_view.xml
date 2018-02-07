@@ -10,16 +10,14 @@
         <referenceBlock name="product.info.main">
             <block class="Magento\Theme\Block\Html\Title" name="product.main.title"
                    before="-"
-                   template="Magento_Catalog::product/view/title.phtml" />
+                   template="Magento_Catalog::product/view/title.phtml"/>
         </referenceBlock>
-        <referenceContainer name="product.info.social">
-            <block class="Encomage\Catalog\Block\Product\View\Shared" name="product.view.shared"
-                   after="product.info.addtocart"
-                   template="Magento_Catalog::product/view/shared.phtml" />
-        </referenceContainer>
         <referenceContainer name="content.aside">
-            <block class="Encomage\Catalog\Block\Product\View\Shared" name="mobile.product.view.shared"
-                   template="Magento_Catalog::product/view/shared.phtml" />
+            <block class="Encomage\Catalog\Block\Product\View\Shared" name="mobile.product.view.shared">
+                <action method="setCssClass">
+                    <argument name="text" xsi:type="string">mob-share-btn</argument>
+                </action>
+            </block>
         </referenceContainer>
         <move element="product.main.name" destination="product.info.main" before="-"/>
         <move element="breadcrumbs" destination="content" before="product.info.main"/>
