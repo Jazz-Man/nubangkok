@@ -57,13 +57,10 @@
             </div>
         </div>
 
-
-        <div class="field mobile-numb">
-            <div class="control">
-                <input type="text" name="line_id" title="<?= $block->escapeHtmlAttr(__('Mobile No')) ?>"
-                       id="mobile-numb" class="input-text" placeholder="<?= __('Mobile No'); ?>">
-            </div>
-        </div>
+        <?php $_telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Telephone') ?>
+        <?php if ($_telephone->isEnabled()): ?>
+            <?= $_telephone->setTelephone($block->getFormData()->getTelephone())->toHtml() ?>
+        <?php endif ?>
 
         <div class="dob-block">
             <?php $_dob = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Dob') ?>
