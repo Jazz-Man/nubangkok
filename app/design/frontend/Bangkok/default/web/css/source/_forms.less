@@ -35,7 +35,6 @@
     > .fields > .field {
       //.lib-form-field();
       margin: 0;
-
       &.no-label {
         > .label {
           &:extend(.abs-visually-hidden all);
@@ -173,6 +172,170 @@
         }
       }
     }
+  }
+
+  .form.create.account.form-create-account .create.info {
+
+    h2 {
+      text-align: center;
+    }
+    .legend {
+      margin-left: 0;
+      font-size: @font-size__s;
+      font-style: italic;
+    }
+    input {
+      border: none;
+      border-bottom: 2px solid @color-gray91;
+    }
+    .field {
+      label[for=country] {
+        display: inline-block;
+        float: left;
+        border-bottom: 2px solid @color-gray91;
+        height: 35px;
+        width: 20%;
+        span {
+          padding-left: 9px;
+        }
+      }
+      //.control {
+      //  .nice-select {
+      //    border-top: none;
+      //    padding-left: 9px;
+      //  }
+      //}
+    }
+    .field.country .control {
+      float: left;
+      width: 80%;
+      .nice-select {
+        width: 100%;
+        border-top: none;
+        padding-left: 9px;
+      }
+    }
+    .field.date.field-dob {
+      .customer-dob {
+        margin-top: 5px;
+      }
+    }
+    label[for=gender] {
+      display: inline-block;
+      float: left;
+      border-bottom: 2px solid @color-gray91;
+      height: 35px;
+      width: 42%;
+      span {
+        padding-left: 9px;
+        padding-top: 11px;
+        display: block;
+      }
+    }
+    .field.gender .control {
+      float: left;
+      width: 58%;
+      .nice-select {
+        width: 100%;
+        border-top: none;
+        padding-left: 9px;
+      }
+    }
+    //.birthday-gender {
+    //  input[name=birth] {
+    //    width: 35%;
+    //  }
+    //  input[name=gender] {
+    //    width: 45%;
+    //    float: right;
+    //  }
+    //}
+    .dob-block {
+      width: 40%;
+      display: inline-block;
+      float: left;
+    }
+    .gender-block {
+      width: 40%;
+      display: inline-block;
+      float: right;
+
+    }
+
+    .checkbox-block {
+      width: 100%;
+      display: inline-block;
+      margin-top: 30px;
+      position: relative;
+      label[for=specials_offers] {
+        position: relative;
+        span:last-of-type {
+          padding-left: 3%;
+        }
+        span:first-of-type {
+          position: absolute;
+          width: 21px;
+          height: 21px;
+          left: -4px;
+          top: -1px;
+          background: @icon-choose-box no-repeat;
+        }
+      }
+      label[for=tos] {
+        position: relative;
+        span:last-of-type {
+          padding-left: 3%;
+        }
+        span:first-of-type {
+          position: absolute;
+          width: 21px;
+          height: 21px;
+          left: -4px;
+          top: -1px;
+          background: @icon-choose-box no-repeat;
+        }
+      }
+      input[type='checkbox'] {
+        opacity: 0;
+        &:checked + span:first-of-type {
+          background: @icon-choose-chd no-repeat;
+        }
+      }
+      .field.choice.tos {
+        margin-top: 25px;
+      }
+    }
+  }
+  .account-right-block {
+    width: 45%;
+    float: right;
+    margin-top: 70px;
+    .sign-in-block {
+      margin-top: 100px;
+      text-align: center;
+      p {
+        margin-top: 2rem;
+      }
+      a.action.login {
+        border: 2px solid @color-gray91;
+        font-size: 14px;
+        text-transform: uppercase;
+        border-radius: 3px;
+        padding: 5px 0;
+        display: block;
+        width: 60%;
+        margin: 0 auto;
+      }
+      a:last-of-type {
+        margin-top: 30px;
+        display: block;
+      }
+    }
+    .register-form-right-image {
+      //width: 45%;
+      //float: right;
+    }
+
   }
 }
 
@@ -364,178 +527,63 @@
       line-height: 43px;
     }
   }
-
-  //
-  // create account
-  //
-  .form.create.account.form-create-account .create.info {
-
-    h2 {
-      text-align: center;
-    }
-    .legend {
-      margin-left: 0;
-      font-size: @font-size__s;
-      font-style: italic;
-    }
-    input {
-      border: none;
-      border-bottom: 2px solid @color-gray91;
-    }
-    .field{
-      label[for=country]{
-        display: inline-block;
-        float: left;
-        border-bottom: 2px solid @color-gray91;
-        height: 35px;
-        width: 20%;
-        span{
-          padding-left: 9px;
-        }
-      }
-      //.control {
-      //  .nice-select {
-      //    border-top: none;
-      //    padding-left: 9px;
-      //  }
-      //}
-    }
-    .field.country .control{
-      float: left;
-      width: 80%;
-      .nice-select{
-        width: 100%;
-        border-top: none;
-        padding-left: 9px;
-      }
-    }
-    .field.date.field-dob{
-      .customer-dob{
-        margin-top: 5px;
-      }
-    }
-    label[for=gender]{
-      display: inline-block;
-      float: left;
-      border-bottom: 2px solid @color-gray91;
-      height: 35px;
-      width: 42%;
-      span{
-        padding-left: 9px;
-        padding-top: 11px;
-        display: block;
-      }
-    }
-    .field.gender .control{
-      float: left;
-      width: 58%;
-      .nice-select{
-        width: 100%;
-        border-top: none;
-        padding-left: 9px;
-      }
-    }
-    //.birthday-gender {
-    //  input[name=birth] {
-    //    width: 35%;
-    //  }
-    //  input[name=gender] {
-    //    width: 45%;
-    //    float: right;
-    //  }
-    //}
-    .dob-block {
-      width: 40%;
-      display: inline-block;
-      float: left;
-    }
-    .gender-block {
-      width: 40%;
-      display: inline-block;
-      float: right;
-
-    }
-
-    .checkbox-block {
-      width: 100%;
-      display: inline-block;
-      margin-top: 30px;
-      position: relative;
-      label[for=specials_offers] {
-        position: relative;
-        span:last-of-type {
-          padding-left: 3%;
-        }
-        span:first-of-type {
-          position: absolute;
-          width: 21px;
-          height: 21px;
-          left: -4px;
-          top: -1px;
-          background: @icon-choose-box no-repeat;
-        }
-      }
-      label[for=tos] {
-        position: relative;
-        span:last-of-type {
-          padding-left: 3%;
-        }
-        span:first-of-type {
-          position: absolute;
-          width: 21px;
-          height: 21px;
-          left: -4px;
-          top: -1px;
-          background: @icon-choose-box no-repeat;
-        }
-      }
-      input[type='checkbox'] {
-        opacity: 0;
-        &:checked + span:first-of-type {
-          background: @icon-choose-chd no-repeat;
-        }
-      }
-      .field.choice.tos {
-        margin-top: 25px;
-      }
-    }
-  }
-  .account-right-block {
-    width: 45%;
-    float: right;
-    margin-top: 70px;
-    .sign-in-block {
-      margin-top: 100px;
-      text-align: center;
-      p{
-        margin-top: 2rem;
-      }
-      a.action.login{
-        border: 2px solid @color-gray91;
-        font-size: 14px;
-        text-transform: uppercase;
-        border-radius: 3px;
-        padding: 5px 0;
-        display: block;
-        width: 60%;
-        margin: 0 auto;
-      }
-      a:last-of-type{
-        margin-top: 30px;
-        display: block;
-      }
-    }
-    .register-form-right-image {
-      //width: 45%;
-      //float: right;
-    }
-
-  }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m){
   .field .control .input-text {
     width: 36%;
+  }
+  .fieldset .field.qty {
+    margin-top: 30px;
+  }
+  .form.create.account.form-create-account {
+    .legend {
+      display: none;
+    }
+    .field .control .input-text {
+      width: 100%;
+      //border: none;
+      //border-bottom: 2px solid;
+    }
+    .create.info .field label[for=country] span {
+      padding-top: 11px;
+      display: inline-block;
+    }
+  }
+  .account-right-block {
+    width: 100%;
+    margin-top: 0;
+    .register-form-right-image {
+      display: none;
+    }
+    .sign-in-block {
+      margin-top: 0;
+      a.action.login {
+        width: 86%;
+        position: relative;
+        &:after{
+          content: '';
+          background: url(../images/mobile/icon-question.png) no-repeat;
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          right: -24px;
+          top: 7px;
+        }
+      }
+      p {
+        margin-top: 1rem;
+      }
+      //&:after{
+      //  content: '';
+      //  background: url(../images/mobile/icon-question.png) no-repeat;
+      //  position: absolute;
+      //  width: 16px;
+      //  height: 16px;
+      //  right: 0;
+      //  bottom: 98px;
+      //}
+    }
   }
 }
 
