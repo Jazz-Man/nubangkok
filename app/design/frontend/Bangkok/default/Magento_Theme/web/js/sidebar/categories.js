@@ -6,7 +6,8 @@ define([
 
     return function (config) {
 
-        var $html = $('html'), mediaBreakpoint = '(max-width: 768px)', baseMenuPlace = $('.js-menu-items-place'),
+        var $html = $('html'),
+            mediaBreakpoint = '(max-width: 768px)',
             desktopContainer = $('.sidebar.sidebar-additional .js-sidebar-container'),
             mobileContainer = $('.navigation .js-sidebar-container');
 
@@ -31,16 +32,13 @@ define([
 
         // toggle between mobile / desktop
         // ----------------------------------------------------------------
-        function menuHtmlToggleContainer(container) {
-            var html = '';
-            if (baseMenuPlace.html()) {
-                html = baseMenuPlace.html();
-                baseMenuPlace.html('');
-            } else {
-                html = container.html();
-                container.html('');
+        function menuHtmlToggleContainer(isMobile) {
+
+            if (isMobile === true && !mobileContainer.html()) {
+                mobileContainer.html(desktopContainer.html());
+            } else if (isMobile === false && !desktopContainer.html()) {
+                desktopContainer.html(mobileContainer.html());
             }
-            return html;
         }
 
         //  category tree
@@ -54,14 +52,14 @@ define([
                         // mobile
                         // ----------------------------------------------------------------
 
-                        mobileContainer.html(menuHtmlToggleContainer(desktopContainer));
+                        menuHtmlToggleContainer(true)
                     }, this),
                     exit: $.proxy(function () {
 
                         // desktop
                         // ----------------------------------------------------------------
 
-                        desktopContainer.html(menuHtmlToggleContainer(mobileContainer));
+                        menuHtmlToggleContainer(false)
                     }, this)
                 });
 
