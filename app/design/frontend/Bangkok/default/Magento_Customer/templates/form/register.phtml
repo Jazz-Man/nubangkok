@@ -1,0 +1,172 @@
+<?php
+/** @var \Magento\Customer\Block\Form\Register $block */
+?>
+<form class="form create account form-create-account"
+      action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>"
+      method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
+    <?= /* @noEscape */
+    $block->getBlockHtml('formkey'); ?>
+    <fieldset class="fieldset create info">
+        <h2>Create my account</h2>
+        <legend class="legend"><span><?= $block->escapeHtml(__('Personal Information')) ?></span></legend>
+        <br>
+        <input type="hidden" name="success_url" value="<?= $block->escapeUrl($block->getSuccessUrl()) ?>">
+        <input type="hidden" name="error_url" value="<?= $block->escapeUrl($block->getErrorUrl()) ?>">
+
+        <div class="field required">
+            <div class="control">
+                <input type="email" name="email" autocomplete="email" id="email_address"
+                       value="<?= $block->escapeHtmlAttr($block->getFormData()->getEmail()) ?>"
+                       title="" class="input-text"
+                       data-validate="{required:true, 'validate-email':true}" placeholder="<?= __('Email*'); ?>">
+            </div>
+        </div>
+        <div class="field password required">
+            <div class="control">
+                <input type="password" name="password" id="password"
+                       title="<?= $block->escapeHtmlAttr(__('Password')) ?>"
+                       class="input-text" placeholder="<?= $block->escapeHtml(__('Password*')) ?>">
+            </div>
+
+        </div>
+        <div class="field confirmation required">
+            <div class="control">
+                <input type="password" name="password_confirmation"
+                       title="<?= $block->escapeHtmlAttr(__('Confirm Password')) ?>" id="password-confirmation"
+                       class="input-text"
+                       data-validate="{required:true, equalTo:'#password'}"
+                       autocomplete="off" placeholder="<?= __('Confirm Password*'); ?>">
+            </div>
+        </div>
+
+        <div class="field line-id">
+            <div class="control">
+                <input type="text" name="line_id" title="" id="line_id"
+                       class="input-text" placeholder="<?= __('Line id:'); ?>">
+            </div>
+        </div>
+
+        <?php echo $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Name')
+            ->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
+
+        <div class="field country required">
+            <label for="country" class="label"><span>
+            <?php echo $block->escapeHtml(__('Country')) ?></span></label>
+            <div class="control">
+                <?= $block->getCountryHtmlSelect() ?>
+            </div>
+        </div>
+
+        <?php $_telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Telephone') ?>
+        <?php if ($_telephone->isEnabled()): ?>
+            <?= $_telephone->setTelephone($block->getFormData()->getTelephone())->toHtml() ?>
+        <?php endif ?>
+
+        <div class="dob-block">
+            <?php $_dob = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Dob') ?>
+            <?php if ($_dob->isEnabled()): ?>
+                <?= $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
+            <?php endif ?>
+        </div>
+        <div class="gender-block">
+            <?php $_gender = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Gender') ?>
+            <?php if ($_gender->isEnabled()): ?>
+                <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
+            <?php endif ?>
+        </div>
+        <div class="checkbox-block">
+            <div class="field choice specials_offers">
+                <label for="specials_offers" class="label">
+                    <input type="checkbox" name="specials_offers"
+                           title="<?php /* @escapeNotVerified */
+                           echo __('I would like to receive specials offers') ?>"
+                           id="specials_offers"
+                           checked="checked" class="checkbox">
+
+                    <span></span><span><?php /* @escapeNotVerified */
+                        echo __('I would like to receive specials offers') ?></span>
+                </label>
+            </div>
+            <div class="field choice tos">
+                <label for="tos" class="label">
+                    <input type="checkbox" name="specials_offers"
+                           title="<?php /* @escapeNotVerified */
+                           echo __('I agree to the Terms od Service') ?>"
+                           id="tos"
+                           class="checkbox">
+
+                    <span></span><span><?php /* @escapeNotVerified */
+                        echo __('I agree to the ') ?><a href="#" target="_blank"><?= __('Terms of Service');?></a></span>
+                </label>
+            </div>
+        </div>
+    </fieldset>
+
+
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action submit primary"
+                    id="form-register-button"
+                    disabled
+                    title="<?= $block->escapeHtmlAttr(__('Create an Account')) ?>">
+                <span><?= $block->escapeHtml(__('Create an Account')) ?></span></button>
+        </div>
+    </div>
+</form>
+<script>
+    require([
+        'jquery',
+        'mage/mage'
+    ], function ($) {
+        var dataForm = $('#form-validate');
+        var ignore = <?= /* @noEscape */ $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null' ?>;
+        dataForm.mage('validation', {
+            <?php if ($_dob->isEnabled()): ?>
+            errorPlacement: function (error, element) {
+                if (element.prop('id').search('full') !== -1) {
+                    var dobElement = $(element).parents('.customer-dob'),
+                        errorClass = error.prop('class');
+                    error.insertAfter(element.parent());
+                    dobElement.find('.validate-custom').addClass(errorClass)
+                        .after('<div class="' + errorClass + '"></div>');
+                }
+                else {
+                    error.insertAfter(element);
+                }
+            },
+            ignore: ':hidden:not(' + ignore + ')'
+            <?php else: ?>
+            ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
+            <?php endif ?>
+        }).find('input:text').attr('autocomplete', 'off');
+
+    });
+</script>
+
+
+<div class="account-right-block">
+    <?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId("register-form-right")->toHtml(); ?>
+    <div class="sign-in-block">
+        <p><?= $block->escapeHtml(__('Already registered?')) ?></p>
+        <a class="action login"
+           href="<?= $block->escapeUrl($block->getBackUrl()) ?>">
+            <span><?= $block->escapeHtml(__('Sign In')) ?></span>
+        </a>
+        <a href="#"><span>Or</span></a>
+    </div>
+</div>
+<script>
+    require([
+        'jquery',
+    ], function ($) {
+        $('input#tos').click(function () {
+            var element = $(this);
+            if (element.prop("checked")) {
+                $('button#form-register-button').attr('disabled', false)
+            }
+            else {
+                $('button#form-register-button').attr('disabled', true)
+            }
+        });
+    });
+</script>
