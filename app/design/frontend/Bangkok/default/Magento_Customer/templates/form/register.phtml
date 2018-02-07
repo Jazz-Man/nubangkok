@@ -25,7 +25,12 @@
             <div class="control">
                 <input type="password" name="password" id="password"
                        title="<?= $block->escapeHtmlAttr(__('Password')) ?>"
-                       class="input-text" placeholder="<?= $block->escapeHtml(__('Password*')) ?>">
+                       class="input-text"
+                       data-password-min-length="<?= $block->escapeHtmlAttr($block->getMinimumPasswordLength()) ?>"
+                       data-password-min-character-sets="<?= $block->escapeHtmlAttr($block->getRequiredCharacterClassesNumber()) ?>"
+                       data-validate="{required:true, 'validate-customer-password':true}"
+                       autocomplete="off"
+                       placeholder="<?= $block->escapeHtml(__('Password*')) ?>">
             </div>
 
         </div>
@@ -142,8 +147,6 @@
 
     });
 </script>
-
-
 <div class="account-right-block">
     <?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId("register-form-right")->toHtml(); ?>
     <div class="sign-in-block">
@@ -169,4 +172,14 @@
             }
         });
     });
+</script>
+
+<script type="text/x-magento-init">
+    {
+        ".field.password": {
+            "passwordStrengthIndicator": {
+                "formSelector": "form.form-create-account"
+            }
+        }
+    }
 </script>

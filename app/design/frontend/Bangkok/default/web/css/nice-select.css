@@ -63,6 +63,7 @@
     width: 9px; }
   .nice-select.open:after {
     top: 20px;
+
     -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
             transform: rotate(45deg); }

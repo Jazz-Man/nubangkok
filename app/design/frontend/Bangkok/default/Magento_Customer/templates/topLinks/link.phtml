@@ -1,0 +1,14 @@
+<?php
+/** @var  $block \Encomage\Customer\Block\Account\TopLinks */
+?>
+<li class="switcher">
+    <div class="actions dropdown options switcher-options">
+        <a href="#" class="top-link-myaccount actions dropdown customer-name"
+           data-mage-init='{"dropdown":{}}'
+           data-toggle="dropdown"
+           data-trigger-keypress-button="true"></a>
+        <ul class="dropdown switcher-dropdown" data-target="dropdown"
+            data-mage-init='{"Magento_Customer/js/top-link":<?php echo $block->getJsConfig() ?>}'>
+        </ul>
+    </div>
+</li>
