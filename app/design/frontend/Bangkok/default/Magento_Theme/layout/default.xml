@@ -6,7 +6,7 @@
             <block class="Magento\Framework\View\Element\Html\Link" name="store.locator" after="my-account-link">
                 <arguments>
                     <argument name="class" xsi:type="string">top-link-locate</argument>
-                    <argument name="path" xsi:type="string" translate="false">locator</argument>
+                    <argument name="path" xsi:type="string" translate="false">where-to-buy</argument>
                     <argument name="sortOrder" xsi:type="number">110</argument>
                 </arguments>
         </block>
