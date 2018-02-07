@@ -1,7 +1,8 @@
 .nice-select {
 
   -webkit-tap-highlight-color: transparent;
-  background-color: #fff;
+  /*background-color: #fff;*/
+  background-color: transparent;
   border: solid 2px #e8e8e8;
   border-left: none;
   border-right: none;
@@ -30,14 +31,16 @@
   width: 90%; }
 .fieldset.create.info .nice-select{
   height: 32px;
+  line-height: 32px;
+  margin-top: 5px;
 }
 .fieldset.create.info .nice-select:after{
   top: 7px;
 }
   .nice-select:hover {
     border-color: #dbdbdb; }
-  .nice-select:active, .nice-select.open, .nice-select:focus {
-    border-color: #999; }
+  /*.nice-select:active, .nice-select.open, .nice-select:focus {*/
+    /*border-color: #999; }*/
   .nice-select:after {
     border-top: 2px solid darkgray;
     border-left: 2px solid darkgray;

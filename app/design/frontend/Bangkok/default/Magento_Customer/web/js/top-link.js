@@ -13,9 +13,15 @@ define([
             var customer = customerData.get('customer'),
                 isLogged = customer() && customer().firstname;
             if (isLogged) {
-                $('.js-logged-customer .customer-name').text("Hi " + customer().firstname);
+                if($('.customer-name').hasClass("top-link-myaccount")){
+                    $('.customer-name').removeClass("top-link-myaccount")
+                }
+                $('.customer-name').text("Hi " + customer().firstname);
                 renderLinks(config.logged);
             } else {
+                if(!$('.customer-name').hasClass("top-link-myaccount")){
+                    $('.customer-name').addClass("top-link-myaccount")
+                }
                 renderLinks(config.notLogged);
             }
         }
