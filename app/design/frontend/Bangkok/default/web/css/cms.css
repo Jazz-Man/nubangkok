@@ -1,0 +1,44 @@
+/** Left sidebar cms static block */
+/** ------------------------------ */
+
+.violet-link {
+    color: #6e2f91;
+}
+
+.violet-link:hover, .violet-link:active, .violet-link:focus {
+    color: #582574;
+}
+
+/** Coming soon category */
+/** ------------------------------ */
+
+.catalog-category-empty .cms-button-small {
+    border-radius: 3px;
+    border: 1px solid #55463e;
+    background-color: #55463e;
+    color: white;
+    padding: 7px;
+    font-weight: 600;
+    margin-top: -4px;
+    margin-left: 20px;
+}
+
+.catalog-category-empty .cms-button-small:hover, .cms-button-small:active, cms-button-small:focus, cms-button-small.active, cms-button-small.focus {
+    border: 1px solid #372820;;
+    background-color: #372820;
+    color: white;
+    text-decoration: none;
+}
+
+.catalog-category-empty .input-notify-email {
+    width: 300px;
+    border-radius: 3px;
+}
+
+@media only screen and (max-width: 500px) {
+    .catalog-category-empty .cms-button-small {
+        margin-left: 0;
+        margin-top: 10px;
+        display: block;
+    }
+}

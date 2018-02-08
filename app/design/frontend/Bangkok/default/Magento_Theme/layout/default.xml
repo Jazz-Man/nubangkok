@@ -83,21 +83,6 @@
         <referenceContainer name="header-wrapper">
             <block class="Magento\Framework\View\Element\Template" name="nav-toggle" as="nav-toggle" before="-"
                    template="Magento_Theme::html/mobile/page/nav/toggle.phtml"/>
-            <container name="js-menu-items-place" as="js-menu-items-place"
-                       htmlTag="div"
-                       htmlClass="menu-items-place js-menu-items-place">
-                <block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="sidebar_categories"
-                       as="sidebar.categories"
-                       template="Magento_Theme::html/page/sidebar/categories.phtml" before="-"/>
-                <block class="Magento\Framework\View\Element\Template" name="links_sidebar" as="links.sidebar"
-                       template="Magento_Theme::html/page/sidebar/links.phtml">
-                    <block class="Magento\Cms\Block\Block" name="left_sidebar_cms_static_block">
-                        <arguments>
-                            <argument name="block_id" xsi:type="string">left_sidebar_cms_static_block</argument>
-                        </arguments>
-                    </block>
-                </block>
-            </container>
         </referenceContainer>
 
 
@@ -106,7 +91,19 @@
                        htmlTag="div"
                        htmlClass="left-sidebar-container js-sticky-sidebar">
                 <block class="Magento\Framework\View\Element\Template" name="sidebar-menu-container" as="sidebar-menu-container"
-                       template="Magento_Theme::html/page/sidebar-container.phtml"/>
+                       template="Magento_Theme::html/page/sidebar-container.phtml">
+                    <block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="sidebar_categories"
+                           as="sidebar.categories"
+                           template="Magento_Theme::html/page/sidebar/categories.phtml" before="-"/>
+                    <block class="Magento\Framework\View\Element\Template" name="links_sidebar" as="links.sidebar"
+                           template="Magento_Theme::html/page/sidebar/links.phtml">
+                        <block class="Magento\Cms\Block\Block" name="left_sidebar_cms_static_block">
+                            <arguments>
+                                <argument name="block_id" xsi:type="string">left_sidebar_cms_static_block</argument>
+                            </arguments>
+                        </block>
+                    </block>
+                </block>
             </container>
         </referenceContainer>
         <referenceBlock name="navigation.sections">

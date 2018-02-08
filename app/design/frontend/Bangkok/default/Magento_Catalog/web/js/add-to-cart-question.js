@@ -34,7 +34,7 @@ define([
                     innerScroll: true,
                     buttons: [
                         {
-                            text: $.mage.__('Chat with consultant'),
+                            text: $.mage.__('Open Live Chat'),
                             class: 'product-question-modal-btn-consultant',
                             click: function () {
                                 //TODO: open chant
