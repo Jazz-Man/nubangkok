@@ -8,65 +8,103 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-    .actions-toolbar {
-        > .primary,
-        > .secondary {
-            text-align: center;
-            .action {
-                &:extend(.abs-button-responsive all);
-                margin-bottom: @indent__s;
+  .actions-toolbar {
+    > .primary,
+    > .secondary {
+      text-align: center;
+      .action {
+        &:extend(.abs-button-responsive all);
+        margin-bottom: @indent__s;
 
-                &:last-child {
-                    margin-bottom: 0;
-                    width: 100%;
-                    background-color: @color-brown;
-                    border: none;
-                    padding: 10px;
-                }
-            }
-
-            margin-bottom: @indent__s;
-            &:last-child {
-                margin-bottom: 0;
-                width: 100%;
-            }
+        &:last-child {
+          margin-bottom: 0;
         }
+      }
+      margin-bottom: @indent__s;
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
+    //.action.submit.primary{
+    //    margin-bottom: 0;
+    //    width: 100%;
+    //    background-color: @color-brown;
+    //    border: none;
+    //    padding: 10px;
+    //}
+  }
 }
 
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m){
-    .actions-toolbar > .primary .action:last-child,
-    .actions-toolbar > .secondary .action:last-child{
-        width: 86%;
-    }
-}
+//.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m){
+//    .actions-toolbar > .primary .action:last-child,
+//    .actions-toolbar > .secondary .action:last-child{
+//        width: 86%;
+//    }
+//}
+
 
 //
 //  Desktop
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .actions-toolbar {
+    margin-top: 25px;
+    margin-left: 0;
+    .lib-actions-toolbar();
+    > .primary,
+    > .secondary {
+      margin-bottom: 0;
+      .action {
+        margin-bottom: 0;
+        width: auto;
+      }
+    }
+  }
+  form {
     .actions-toolbar {
-        .lib-actions-toolbar();
-        > .primary,
-        > .secondary {
-            margin-bottom: 0;
+      .column:not(.sidebar-main) &,
+      .column:not(.sidebar-additional) & {
+        //&:extend(.abs-margin-for-forms-desktop all);
 
-            .action {
-                margin-bottom: 0;
-                width: auto;
-            }
-        }
+      }
     }
+  }
+  form.form.create.account.form-create-account {
+    .actions-toolbar {
+      width: 80%;
+      margin: 0 auto;
+      .primary {
+       width: 100%;
+        button{
+          width: 100%;
+          background-color: @color-brown;
+          border: none;
+          padding: 12px;
+          &:hover{
+            background-color: @color-brown/2;
+          }
+        }
+      }
+    }
+  }
+}
 
-    form {
-        .actions-toolbar {
-            .column:not(.sidebar-main) &,
-            .column:not(.sidebar-additional) & {
-                //&:extend(.abs-margin-for-forms-desktop all);
-                margin-left: 10%;
-                width: 80%;
-            }
+//
+// Mobile
+//
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  form.form.create.account.form-create-account {
+    .actions-toolbar {
+      width: 93%;
+      margin: 0 auto;
+      .primary {
+        button{
+          background-color: @color-brown;
+          border: none;
+          padding: 12px;
         }
+      }
     }
+  }
 }
