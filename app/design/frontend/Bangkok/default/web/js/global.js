@@ -12,11 +12,12 @@ define([
 
     //sticky elements
     //---------------------------------------------
-    $('.js-sticky-sidebar').sticky({topSpacing: 43, bottomSpacing: $('.page-footer').outerHeight()});
+    $('.js-sticky-sidebar').sticky({topSpacing: 45, bottomSpacing: $('.page-footer').outerHeight()});
     $('header.page-header').sticky({zIndex: 9999});
 
 
     //Use for change image on click
+    //included on where-to-buy CMS page
     //---------------------------------------------
     $(document).on('click', '.js-revert-image-on-click', function () {
         var target = $($(this).data('target'));
