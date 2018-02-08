@@ -215,7 +215,7 @@
     outline: none;
 }
 
-.cms-customer-care .active:hover, .accordion:hover {
+.cms-customer-care .active:hover, .cms-customer-care .accordion:hover {
     color: #8f8278;
     text-decoration: underline;
 }
@@ -237,7 +237,7 @@
     left: -15px;
 }
 
-.cms-customer-care .panel {
+.cms-customer-care .accordion-container .panel {
     padding-right: 150px;
     padding-left:  61px;
     max-height: 0;
@@ -291,7 +291,7 @@
     outline: none;
 }
 
-.cms-product-care .active:hover, .accordion:hover {
+.cms-product-care .active:hover, .cms-product-care .accordion:hover {
     color: #8f8278;
     text-decoration: underline;
 }
@@ -313,7 +313,7 @@
     left: -15px;
 }
 
-.cms-product-care .panel {
+.cms-product-care .accordion-container .panel {
     padding-right: 150px;
     padding-left:  61px;
     max-height: 0;
@@ -337,4 +337,25 @@
         left: 0;
         top: 17px;
     }
+}
+
+/** 404 no route page  */
+/** ------------------------------ */
+
+.cms-404 .cms-heading {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+.cms-404 .cms-heading-line {
+    border-top: 1px solid #55463e;
+    opacity: 0.6;
+}
+.cms-404 .violet-link {
+    color: #6e2f91;;
+}
+.cms-404 .violet-link:hover, .cms-404 .violet-link:active, .cms-404 .violet-link:focus {
+    color: #582574;
 }

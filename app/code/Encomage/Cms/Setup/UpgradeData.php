@@ -68,6 +68,10 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.0.8', '<')) {
             $this->addCmsPagesContactCustomerCareFaqPoliciesProductCare();
         }
+
+        if (version_compare($context->getVersion(), '0.0.9', '<')) {
+            $this->modify404pageRemoveUnusedPages();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -531,6 +535,27 @@ EOM
             $pageObject->addData($pageData);
             $this->pageRepository->save($pageObject);
         }
+        return $this;
+    }
+
+    private function modify404pageRemoveUnusedPages()
+    {
+        $pageNoRoute = $this->pageRepository->getById('no-route');
+        $pageNoRouteContent = <<<EOD
+<div class="cms-404">
+<h1 class="cms-heading">The page you requested was not found!</h1>
+<hr class="cms-heading-line" />
+<div style="padding: 30px 0;"><span style="font-size: 16px;"><strong><a class="violet-link" onclick="history.go(-1); return false;" href="#">Go back</a></strong> to the previous page.</span></div>
+<div><span style="font-size: 16px;">Follow these links to get you back on track!</span></div>
+<div><span style="font-size: 16px;"><strong><a class="violet-link" href="{{store url=""}}">Store Home</a> <span class="separator">|</span> <a class="violet-link" href="{{store url="customer/account"}}">My Account</a></strong></span></div>
+</div>
+EOD;
+        $pageNoRoute->setContent($pageNoRouteContent);
+        $pageNoRoute->setPageLayout('2columns-left');
+        $this->pageRepository->save($pageNoRoute);
+
+        $this->pageRepository->deleteById('enable-cookies');
+        $this->pageRepository->deleteById('privacy-policy-cookie-restriction-mode');
         return $this;
     }
 }
