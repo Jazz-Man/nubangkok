@@ -4,8 +4,8 @@ namespace Encomage\Catalog\Helper;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    public function getFacebookShareUrl(\Magento\Catalog\Model\Product $product)
+    public function getNotifyMeEmptyCategoryUrl(\Magento\Catalog\Model\Category $category)
     {
-        return 'http://www.facebook.com/sharer/sharer.php?u=' . $product->getProductUrl();
+        return $this->_getUrl('bangkok_catalog/category/notifyEmpty', ['category_id' => (int)$category->getId()]);
     }
 }

@@ -61,7 +61,9 @@
 /* popup *********************/
 
 .modal-popup._inner-scroll .modal-inner-wrap{
-    max-width: 700px;
+    background-color: #D8D1CA;
+    max-width: 600px;
+    border-radius: 4px;
 }
 .modal-content p {
     font-size: 20px;
@@ -71,29 +73,40 @@
 }
 
 /* popup buttons*/
+.modal-popup .modal-footer {
+    padding-top: 1rem;
+}
+
 .modal-footer .product-question-modal-btn-consultant {
-    min-width: 204px;
-    border: 2px solid #aeaeae;
+    min-width: 175px;
+    background-color: #55463e;
+    border: 1px solid #55463e;
+    text-transform: none;
     font-size: 14px;
-    text-transform: uppercase;
-    background-color: transparent;
     border-radius: 3px;
+    color: white;
 }
 .modal-footer .product-question-modal-btn-consultant:hover{
-    background-color: gainsboro;
+    background-color: #372820;
+    border: 1px solid #372820;
 }
 
 .modal-footer .product-question-modal-btn-add-to-cart{
     font-size: 14px;
-    background-color: #55463e;
-    border: 2px solid #55463e;
-    text-transform: uppercase;
-    min-width: 204px;
-    color: white;
+    background-color: transparent;
+    text-transform: none;
+    color: inherit;
+    min-width: 175px;
+    border: 1px solid #55463e;
+    font-weight: normal;
 }
 .modal-footer .product-question-modal-btn-add-to-cart:hover{
     background-color: #6b584e;
+    color: white;
 }
+.modal-slide .action-close {padding: 5px 1px;}
+.modal-slide .action-close:before { font-size: 44px; color: #55463e;}
+.modal-content p {font-size: 14px;}
 
 
 @media screen and (max-width: 767px) {

@@ -9,7 +9,7 @@
 /** @var $block \Magento\Catalog\Block\Product\View */
 ?>
 <?php $_product = $block->getProduct(); ?>
-<?php $buttonTitle = __('Add to Cart'); ?>
+<?php $buttonTitle = __('Add to bag'); ?>
 <?php if ($_product->isSaleable()): ?>
     <div class="box-tocart">
         <div class="fieldset">
@@ -24,12 +24,9 @@
                 </button>
                 <?= $block->getChildHtml('', true) ?>
             </div>
-            <a target="_blank" title="<?php echo __('Share on Facebook'); ?>"
-               href="<?php echo $this->helper('Encomage\Catalog\Helper\Data')->getFacebookShareUrl($_product); ?>">
-                <div class="share-btn">
-                    <span class="arrow-up"></span>
-                </div>
-            </a>
+            <?= $block->getLayout()
+                ->createBlock('Encomage\Catalog\Block\Product\View\Shared', 'desktop.product.view.shared')
+                ->toHtml(); ?>
         </div>
 
     </div>

@@ -28,7 +28,7 @@ class Slider extends \Mageplaza\BetterSlider\Block\Slider
                 'loop' => (bool)$this->getLoop(),
                 'dots' => (bool)$this->getDots(),
                 'items' => ($this->getItems() && $this->getItems() > 1) ? $this->getItems() : 1,
-                'navigation' => (bool)!$this->getShowNav(),
+                'nav' => (bool)$this->getNav(),
                 'autoHeight' => (bool)$this->getAutoHeight(),
             ]
         );
