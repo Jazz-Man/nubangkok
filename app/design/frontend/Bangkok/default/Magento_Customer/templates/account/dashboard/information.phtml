@@ -1,9 +1,16 @@
-<a href="<?php echo $block->getUrl('sales/order/history', ['_secure' => true]);?>"><?php echo __('My orders')?></a>
-<a href="<?php echo $block->getUrl('updpoints', ['_secure' => true]);?>"><?php echo __('My UPPoints')?></a>
-<a href="<?php echo $block->getUrl('wishlist', ['_secure' => true]);?>"><?php echo __('My wishlist')?></a>
-<a href="#"><?php echo __('My account details ')?></a>
-
-<div class="my_account_details">
-    <?= $block->getChildHtml('customer_account_dashboard_information')?>
-    <?= $block->getChildHtml('customer_account_dashboard_addresses')?>
+<a href="<?php echo $block->escapeUrl($block->getUrl('sales/order/history', ['_secure' => true])); ?>"><?php echo __('My orders') ?></a>
+<a href="<?php echo $block->escapeUrl($block->getUrl('updpoints', ['_secure' => true])); ?>"><?php echo __('My UPPoints') ?></a>
+<a href="<?php echo $block->escapeUrl($block->getUrl('wishlist', ['_secure' => true])); ?>"><?php echo __('My wishlist') ?></a>
+<div data-mage-init='{"accordion":{
+"openedState": "active",
+"collapsible": true,
+"active": false,
+"multipleCollapsible": true}}'>
+    <span href="#" data-role="collapsible">
+        <?php echo __('My account details ') ?>
+    </span>
+    <div data-role="content">
+        <?= $block->getChildHtml('customer_account_dashboard_information') ?>
+        <?= $block->getChildHtml('customer_account_dashboard_addresses') ?>
+    </div>
 </div>
