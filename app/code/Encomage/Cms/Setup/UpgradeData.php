@@ -4,6 +4,10 @@ namespace Encomage\Cms\Setup;
 
 use Magento\Cms\Api\BlockRepositoryInterface;
 use Magento\Cms\Api\PageRepositoryInterface;
+use Magento\Cms\Model\BlockFactory;
+use Magento\Cms\Model\PageFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
@@ -13,6 +17,7 @@ class UpgradeData implements UpgradeDataInterface
 {
     private $pageRepository;
     private $blockRepository;
+    private $pageFactory;
     private $blockFactory;
     private $scopeConfig;
     private $configResource;
@@ -20,14 +25,16 @@ class UpgradeData implements UpgradeDataInterface
     public function __construct(
         PageRepositoryInterface $pageRepository,
         BlockRepositoryInterface $blockRepository,
-        \Magento\Cms\Model\BlockFactory $blockFactory,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Config\Model\ResourceModel\Config $configResource
+        BlockFactory $blockFactory,
+        PageFactory $pageFactory,
+        ScopeConfigInterface $scopeConfig,
+        Config $configResource
     )
     {
         $this->pageRepository = $pageRepository;
         $this->blockRepository = $blockRepository;
         $this->blockFactory = $blockFactory;
+        $this->pageFactory = $pageFactory;
         $this->scopeConfig = $scopeConfig;
         $this->configResource = $configResource;
     }
@@ -52,6 +59,14 @@ class UpgradeData implements UpgradeDataInterface
 
         if (version_compare($context->getVersion(), '0.0.6', '<')) {
             $this->comingSoonCategoryBlockWomenClothing();
+        }
+
+        if (version_compare($context->getVersion(), '0.0.7', '<')) {
+            $this->addCmsPagesWhyNuWhereToBuyTerms();
+        }
+
+        if (version_compare($context->getVersion(), '0.0.8', '<')) {
+            $this->addCmsPagesContactCustomerCareFaqPoliciesProductCare();
         }
     }
 
@@ -130,12 +145,14 @@ EOD;
     private function comingSoonCategoryBlockWomenClothing()
     {
         $content = <<<EOD
-<p><img src="{{view url=images/cms/05Women-clothes.jpg}}" width="1000" height="288" /></p>
+        <div class="cms-coming-soon-category">
+<p><img src="{{media url="wysiwyg/cms/05Women-clothes.jpg"}}" width="1000" height="288" /></p>
 <p><strong><span style="font-size: x-large; margin-bottom: 2rem;">OUR WOMEN CLOTHING IS COMING LATER!</span></strong>
 </p>
 <p></p>
 <p style="margin-bottom: 2rem;">Stay tuned!</p>
 <p style="margin-bottom: 2rem;">If you would like to be notified when it launches please enter your email below!</p>
+</div>
 EOD;
         $block = $this->blockFactory->create();
         $block->addData(
@@ -148,6 +165,372 @@ EOD;
             ]
         );
         $this->blockRepository->save($block);
+        return $this;
+    }
+
+    private function addCmsPagesWhyNuWhereToBuyTerms()
+    {
+        $pages = [
+            'why-nu' => [
+                'title' => 'Why NU',
+                'identifier' => 'why-nu',
+                'active' => true,
+                'page_layout' => '2columns-left',
+                'stores' => [0],
+                'content' => <<<EOD
+<div class="cms-why-nu-page">
+<p>OUR SHOES</p>
+<table style="margin-bottom: 40px;" border="0">
+<tbody>
+<tr>
+<td style="display: inline-block; padding-right: 25px;"><img src='{{media url="wysiwyg/cms/grip-icon.png"}}' width="35" /></td>
+<td style="display: inline-block; padding-right: 50px; padding-top: 15px;">Grip</td>
+<td style="display: inline-block;"></td>
+<td style="display: inline-block; padding-right: 25px;"><img src='{{media url="wysiwyg/cms/grip-icon.png"}}' width="35" /></td>
+<td style="display: inline-block; padding-top: 15px;">Grip</td>
+</tr>
+<tr>
+<td style="display: inline-block; padding-right: 25px;"><img src='{{media url="wysiwyg/cms/grip-icon.png"}}' width="35" /></td>
+<td style="display: inline-block; padding-right: 50px; padding-top: 15px;">Grip</td>
+<td style="display: inline-block;"></td>
+<td style="display: inline-block; padding-right: 25px;"><img src='{{media url="wysiwyg/cms/grip-icon.png"}}' width="35" /></td>
+<td style="display: inline-block; padding-top: 15px;">Grip</td>
+</tr>
+<tr>
+<td style="display: inline-block; padding-right: 25px;"><img src='{{media url="wysiwyg/cms/grip-icon.png"}}' width="35" /></td>
+<td style="display: inline-block; padding-right: 50px; padding-top: 15px;">Grip</td>
+<td style="display: inline-block;"></td>
+<td style="display: inline-block; padding-right: 25px;"><img src='{{media url="wysiwyg/cms/grip-icon.png"}}' width="35" /></td>
+<td style="display: inline-block; padding-top: 15px;">Grip</td>
+</tr>
+</tbody>
+</table>
+<p><img style="max-width: 90%;" src='{{media url="wysiwyg/cms/why-nu1.jpg"}}' width="1500" height="999" /></p>
+<p>In the interests of hygiene we do not accept returns of, or refunds on earrings unless it is defective or a wrong item sent.</p>
+<p><img style="max-width: 90%; margin-top: 40px;" src='{{media url="wysiwyg/cms/why-nu2.jpg"}}' width="1500" height="999" /></p>
+<p>In the interests of hygiene we do not accept returns of, or refunds on earrings unless it is defective or a wrong item sent.</p>
+<p></p>
+<p style="margin: 20px 0;">WE GUARANTEE</p>
+<p></p>
+<div style="margin-bottom: 10px;">
+<div class="numberCircle" style="display: inline-block;">1</div>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">In the interests of hygiene we do not accept returns of.</p>
+</div>
+<div style="margin-bottom: 10px;">
+<div class="numberCircle" style="display: inline-block;">2</div>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
+</div>
+<div style="margin-bottom: 10px;">
+<div class="numberCircle" style="display: inline-block;">3</div>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
+</div>
+</div>
+EOD
+            ],
+            'where-to-buy' => [
+                'title' => 'Where to buy',
+                'identifier' => 'where-to-buy',
+                'active' => true,
+                'page_layout' => '2columns-left',
+                'stores' => [0],
+                'content' => <<<EOD
+<div class="cms-where-to-buy-page">
+<div class="desktop-change-position-left">
+<h1 class="cms-heading" style="margin-bottom: 30px;">WHERE TO BUY</h1>
+<div class="accordion-container" style="border-top: 1px solid #55463e;">
+<div class="accordion active js-revert-image-on-click" data-target="#myImage" data-src="{{media url="wysiwyg/cms/outlet-mini-shops.jpg"}}">Outlet mini shops</div>
+</div>
+<div class="accordion-container">
+<div class="accordion js-revert-image-on-click" data-target="#myImage" data-src="{{media url="wysiwyg/cms/nu-roadshow3.jpg"}}">Thailand Malls</div>
+</div>
+<div class="accordion-container">
+<div class="accordion js-revert-image-on-click" data-target="#myImage" data-src="{{media url="wysiwyg/cms/bangkok-map.png"}}">Roadshows &amp; Evenets</div>
+</div>
+</div>
+<div class="desktop-change-position-right"><img id="myImage" src="{{media url="wysiwyg/cms/outlet-mini-shops.jpg"}}" alt="" />
+<p style="text-align: center;"><a class="cms-button">Open with google map</a></p>
+</div>
+</div>
+EOD
+
+            ],
+
+            'terms-of-services' => [
+                'title' => 'Terms of services',
+                'identifier' => 'terms-of-service',
+                'active' => true,
+                'page_layout' => '2columns-left',
+                'stores' => [0],
+                'content' => <<<EOD
+<div class="cms-terms-of-service-page">
+<h1 class="cms-heading">TERMS OF SERVICE</h1>
+<hr class="cms-heading-line" /><ol>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+</ol>
+</div>
+EOD
+
+            ]
+        ];
+
+        foreach ($pages as $pageData) {
+            $pageObject = $this->pageFactory->create();
+            $pageObject->addData($pageData);
+            $this->pageRepository->save($pageObject);
+        }
+        return $this;
+    }
+
+    private function addCmsPagesContactCustomerCareFaqPoliciesProductCare()
+    {
+        $pages = [
+            'contact-us' => [
+                'title' => 'Contact Us',
+                'identifier' => 'contact-us',
+                'active' => true,
+                'page_layout' => '2columns-left',
+                'stores' => [0],
+                'content' => <<<EOD
+<div class="cms-contact-us">
+<h3 class="cms-subheading">Need help?</h3>
+<p>Check our <a style="text-decoration: underline;" href="{{store url='faq'}}">Frequently Asked Questions</a> section for help in finding an immediate answer to our most commonly asked questions.</p>
+<p></p>
+<p></p>
+<p></p>
+<h3 class="cms-subheading">Find shop?</h3>
+<div style="overflow-x: auto;">
+<table style="width: 600px;" border="0">
+<tbody>
+<tr>
+<td style="padding-left: 0; width: 25%;" rowspan="6">OUTLET SHOPS</td>
+<td>Ari (outside gate 3/4)</td>
+<td>062-006-9553</td>
+</tr>
+<tr>
+<td>Siam (inside exit 5)</td>
+<td>094-547-9771</td>
+</tr>
+<tr>
+<td>Ching Nonsi</td>
+<td>099-454-8646</td>
+</tr>
+<tr>
+<td>Chit Lom</td>
+<td>094-547-9778</td>
+</tr>
+<tr>
+<td>Nana</td>
+<td>099-192-0019</td>
+</tr>
+<tr>
+<td>Asok</td>
+<td>094-454-9776</td>
+</tr>
+<tr>
+<td rowspan="5"></td>
+<td>Thong Lo</td>
+<td>094-547-9775</td>
+</tr>
+<tr>
+<td>Ekkamai</td>
+<td>094-697-5160</td>
+</tr>
+<tr>
+<td>Phra Khanong</td>
+<td>099-391-7884</td>
+</tr>
+<tr>
+<td>Udomsuk</td>
+<td>092-050-0577</td>
+</tr>
+<tr>
+<td>Bearing</td>
+<td>094-649-9006</td>
+</tr>
+<tr>
+<td colspan="3"><img src="{{media url="wysiwyg/cms/central-plaza.png"}}" width="150" /><img style="padding-left: 20px;" src="{{media url="wysiwyg/cms/central-festival.jpeg"}}" width="150" /></td>
+</tr>
+<tr>
+<td rowspan="4"></td>
+<td>Ubon Ratchathani</td>
+<td>095-046-0492</td>
+</tr>
+<tr>
+<td>Hat Yai</td>
+<td>062-053-3811</td>
+</tr>
+<tr>
+<td>Phitsanulok</td>
+<td>061-995-8864</td>
+</tr>
+<tr>
+<td>Chiang Rai</td>
+<td>094-605-0530</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p></p>
+<h3 class="cms-subheading">Customer Service</h3>
+<div style="overflow-x: auto;">
+<table border="0">
+<tbody>
+<tr>
+<td style="text-align: right;"><img src="{{media url="wysiwyg/cms/phone-icon.png"}}" alt="" width="18" /></td>
+<td>
+<p>+66(0)83-455-1000</p>
+<p>Monday - Saturday</p>
+<p>9:00am - 6:00pm Bangkok Time</p>
+</td>
+</tr>
+<tr>
+<td style="text-align: right;"><img src="{{media url="wysiwyg/cms/line-icon.png"}}" alt="" width="18" /></td>
+<td>nuBangkok</td>
+</tr>
+<tr>
+<td style="text-align: right;"><img src="{{media url="wysiwyg/cms/locate-icon.png"}}" alt="" width="13" /></td>
+<td>
+<p>nuBangkok Head Office</p>
+<p>199/74 Sukhumvit 8 Road, Khlong Toey,</p>
+<p>Khlong Toey, Bangkok,</p>
+<p>Thailand 10110</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+EOD
+            ],
+            'faq' => [
+                'title' => 'FAQ',
+                'identifier' => 'faq',
+                'active' => true,
+                'page_layout' => '2columns-left',
+                'stores' => [0],
+                'content' => <<<EOD
+<div class="cms-faq">
+<h1 class="cms-heading">FAQ</h1>
+<hr class="cms-heading-line" />
+<p><em>Lorem ipsum dolor sit amet?</em></p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p><em>Lorem ipsum dolor sit amet?</em></p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p><em>Lorem ipsum dolor sit amet?</em></p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p><em>Lorem ipsum dolor sit amet?</em></p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p><em>Lorem ipsum dolor sit amet?</em></p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+EOD
+            ],
+            'policies' => [
+                'title' => 'Policies',
+                'identifier' => 'policies',
+                'active' => true,
+                'page_layout' => '2columns-left',
+                'stores' => [0],
+                'content' => <<<EOD
+<div class="cms-policies">
+<h1 class="cms-heading">Policies</h1>
+<hr class="cms-heading-line" /><ol>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+<li><span style="font-size: small;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+</ol>
+</div>
+EOD
+            ],
+
+            'customer-care' => [
+                'title' => 'Customer Care',
+                'identifier' => 'customer-care',
+                'active' => true,
+                'page_layout' => '2columns-left',
+                'stores' => [0],
+                'content' => <<<EOM
+<div class="cms-customer-care">
+<h1 class="cms-heading">Customer Care</h1>
+<hr class="cms-heading-line" />
+<div class="accordion-container">
+<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url="wysiwyg/cms/arrow-right.png"}}" width="9" height="11" /></a></p>
+</div>
+EOM
+            ],
+            'product-care' => [
+                'title' => 'Product Care',
+                'identifier' => 'product-care',
+                'active' => true,
+                'page_layout' => '2columns-left',
+                'stores' => [0],
+                'content' => <<<EOM
+<div class="cms-product-care">
+<h1 class="cms-heading">Product Care</h1>
+<hr class="cms-heading-line" />
+<div class="accordion-container">
+<p class="accordion js-accordion">Shoes <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Bags<img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+</div>
+EOM
+            ]
+        ];
+        foreach ($pages as $pageData) {
+            $pageObject = $this->pageFactory->create();
+            $pageObject->addData($pageData);
+            $this->pageRepository->save($pageObject);
+        }
         return $this;
     }
 }
