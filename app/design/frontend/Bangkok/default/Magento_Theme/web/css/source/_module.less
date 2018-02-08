@@ -133,6 +133,14 @@
         display: block;
         background-size: cover;
       }
+      li.switcher-language, li.switcher-currency{
+        .options{
+          ul.switcher-dropdown{
+            min-width: 52px;
+          }
+        }
+      }
+
     }
 
     .lib-css(background-color, @header__background-color);
@@ -242,9 +250,9 @@
   .footer {
     &.content {
       border-top: 1px solid @border-color__base;
-      margin-top: 25px;
-      padding-bottom: 25px;
-      padding-top: 25px;
+      margin-top: 0;
+      padding-bottom: 10px;
+      padding-top: 10px;
 
       ul {
         &:extend(.abs-reset-list all);
@@ -265,8 +273,11 @@
 
     .copyright,
     .bugs {
+      text-align: center;
+      padding-top: 1px;
       display: block;
-      margin: 20px 0 0;
+      margin: 0;
+
     }
   }
 
