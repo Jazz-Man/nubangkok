@@ -147,3 +147,15 @@
 .gender-block .field.gender .nice-select.open:after {
     margin-top: 4px;
 }
+
+/*style for inputs sign in*/
+input:-webkit-autofill{
+    background-color: #ffffff;
+}
+
+/* Sign in page */
+@media screen and (min-width: 1206px){
+    .block.block-customer-login .block-content fieldset .control .customer-show-password{
+        right: 14px !important;
+    }
+}
