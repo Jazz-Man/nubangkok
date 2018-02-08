@@ -6,7 +6,7 @@ $helper = $this->helper('Encomage\Catalog\Helper\Data');
 $categoryViewBlock = $block->getLayout()->getBlock('category.products');
 ?>
 <?php if ($categoryViewBlock->getCurrentCategory()): ?>
-    <div class="catalog-category-empty">
+    <div class="catalog-category-empty cms-coming-soon-category">
         <?= $block->getChildHtml(); ?>
         <div class="notify-input-container">
             <form action="<?= $helper->getNotifyMeEmptyCategoryUrl($categoryViewBlock->getCurrentCategory()); ?>"

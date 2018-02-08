@@ -31,6 +31,9 @@
     color: white;
     text-decoration: none;
 }
+.cms-coming-soon-category form input{
+    width: 300px; border-radius: 3px;
+}
 
 @media only screen and (max-width: 500px) {
     .cms-coming-soon-category .cms-button-small {

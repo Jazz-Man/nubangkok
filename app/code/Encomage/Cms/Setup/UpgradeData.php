@@ -242,17 +242,17 @@ EOD
 <div class="desktop-change-position-left">
 <h1 class="cms-heading" style="margin-bottom: 30px;">WHERE TO BUY</h1>
 <div class="accordion-container" style="border-top: 1px solid #55463e;">
-<div class="accordion active js-revert-image-on-click" data-target="#myImage" data-src="{{media url="wysiwyg/cms/outlet-mini-shops.jpg"}}">Outlet mini shops</div>
+<div class="accordion active js-revert-image-on-click" data-gmp-btn="false" data-target="#myImage" data-src="{{media url="wysiwyg/cms/outlet-mini-shops.jpg"}}">Outlet mini shops</div>
 </div>
 <div class="accordion-container">
-<div class="accordion js-revert-image-on-click" data-target="#myImage" data-src="{{media url="wysiwyg/cms/nu-roadshow3.jpg"}}">Thailand Malls</div>
+<div class="accordion js-revert-image-on-click" data-gmp-btn="true" data-target="#myImage" data-src="{{media url="wysiwyg/cms/nu-roadshow3.jpg"}}">Thailand Malls</div>
 </div>
 <div class="accordion-container">
-<div class="accordion js-revert-image-on-click" data-target="#myImage" data-src="{{media url="wysiwyg/cms/bangkok-map.png"}}">Roadshows &amp; Evenets</div>
+<div class="accordion js-revert-image-on-click" data-gmp-btn="false" data-target="#myImage" data-src="{{media url="wysiwyg/cms/bangkok-map.png"}}">Roadshows &amp; Evenets</div>
 </div>
 </div>
 <div class="desktop-change-position-right"><img id="myImage" src="{{media url="wysiwyg/cms/outlet-mini-shops.jpg"}}" alt="" />
-<p style="text-align: center;"><a class="cms-button">Open with google map</a></p>
+<p class="js-show-gm-btn" style="text-align: center; display: none;"><a href="https://goo.gl/gk4eqW" target="_blank" class="cms-button">Open with google map</a></p>
 </div>
 </div>
 EOD
