@@ -11,7 +11,7 @@
         <referenceContainer name="content">
             <block class="Magento\Framework\View\Element\Template" name="customer_account_info"
                    template="Magento_Customer::account/dashboard/information.phtml">
-                <block class="Magento\Customer\Block\Account\Dashboard\Info"
+                <block class="Encomage\Customer\Block\Account\Dashboard\Information"
                        name="customer_account_dashboard_information"
                        template="Magento_Customer::account/dashboard/info.phtml" cacheable="false"/>
                 <block class="Magento\Customer\Block\Account\Dashboard\Address"
