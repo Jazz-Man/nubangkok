@@ -1,0 +1,14 @@
+<?php
+/** @var \Encomage\Wishlist\Block\Customer\Wishlist\Item\Shared * */
+?>
+<?php
+$css = $block->getCssClass() ? $block->getCssClass() : '';
+?>
+<div class="product-shared-link <?= $css; ?>">
+    <a target="_blank" title="<?php echo __('Share on Facebook'); ?>"
+       href="<?php echo $block->getFacebookSharedLink(); ?>">
+        <div class="share-btn">
+            <span class="arrow-up"></span>
+        </div>
+    </a>
+</div>
