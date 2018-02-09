@@ -159,3 +159,8 @@ input:-webkit-autofill{
         right: 14px !important;
     }
 }
+
+/* class for hide elements on desktop*/
+.hide-dsk{
+    display: none !important;
+}
