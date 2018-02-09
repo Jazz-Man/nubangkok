@@ -1,0 +1,10 @@
+<tr class="totals promo-code excl">
+    <th class="mark" colspan="1" scope="row" data-bind="text: title"></th>
+    <td class="input">
+        <input name="redeem" id="promo-code" data-bind="value: couponCode"/>
+        <button type="button" data-bind="click: applyPromoCode"><span data-bind="text: $t('Apply')"></span></button>
+    </td>
+    <td class="amount">
+        <span class="price" data-bind="text: getValue()"></span>
+    </td>
+</tr>
