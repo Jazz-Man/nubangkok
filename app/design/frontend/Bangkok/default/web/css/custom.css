@@ -160,7 +160,27 @@ input:-webkit-autofill{
     }
 }
 
+/*message (change position) */
+.page.messages .message-success.success.message{
+    position: inherit !important;
+}
+.message.success > *:first-child:before{
+    position: inherit;
+    line-height: 19px;
+    margin: 0;
+}
+
+.message.info.empty{
+    position: inherit !important;
+}
+.message.info > *:first-child:before {
+    position: inherit;
+    line-height: 19px;
+    margin: 0;
+}
+
 /* class for hide elements on desktop*/
 .hide-dsk{
     display: none !important;
 }
+
