@@ -90,9 +90,6 @@
         }
     }
 
-    .modes {
-        //display: none;
-    }
 
     .limiter-options {
         margin: 0 5px 0 7px;
@@ -108,6 +105,39 @@
             display: none;
         }
     }
+}
+
+.modes-mode {
+    .lib-css(color, @text__color__muted);
+    float: right;
+    font-weight: @font-weight__regular;
+    line-height: 1;
+    padding: 7px 10px;
+    text-align: center;
+
+    &:not(.active) {
+        &:hover {
+            .lib-css(color, @text__color__muted);
+            background: darken(@toolbar-element-background, 7%);
+        }
+    }
+
+
+    &.active {
+        .lib-css(color, @primary__color__light);
+    }
+
+    .lib-icon-font(
+            @icon-grid,
+        @_icon-font-size: @toolbar-mode-icon-font-size,
+        @_icon-font-text-hide: true,
+        @_icon-font-color: @text__color__muted,
+        @_icon-font-color-hover: @text__color__muted
+    );
+}
+
+.mode-list {
+    .lib-icon-font-symbol(@icon-list);
 }
 
 //
@@ -151,43 +181,7 @@
         &:extend(.abs-visually-hidden-desktop all);
     }
 
-    .modes-mode {
-        .lib-css(color, @text__color__muted);
-        //border: 1px solid @border-color__base;
-        border-right: 0;
-        float: right;
-        font-weight: @font-weight__regular;
-        line-height: 1;
-        padding: 7px 10px;
-        text-align: center;
 
-        &:not(.active) {
-            &:hover {
-                .lib-css(color, @text__color__muted);
-                background: darken(@toolbar-element-background, 7%);
-            }
-        }
-
-        &:last-child {
-            //border-right: 1px solid @border-color__base;
-        }
-
-        &.active {
-            .lib-css(color, @primary__color__light);
-        }
-
-        .lib-icon-font(
-        @icon-grid,
-        @_icon-font-size: @toolbar-mode-icon-font-size,
-        @_icon-font-text-hide: true,
-        @_icon-font-color: @text__color__muted,
-        @_icon-font-color-hover: @text__color__muted
-        );
-    }
-
-    .mode-list {
-        .lib-icon-font-symbol(@icon-list);
-    }
 
     .limiter {
         float: right;
