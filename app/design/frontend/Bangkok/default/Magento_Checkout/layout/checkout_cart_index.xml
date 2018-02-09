@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.cart.order.actions">
+            <block class="Magento\Checkout\Block\Cart\Grid"
+                   name="cart.buttons"
+                   template="Magento_Checkout::cart/form/cart-buttons.phtml"/>
+        </referenceBlock>
+
+        <referenceBlock name="checkout.cart.totals">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="block-totals" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="shipping" xsi:type="array">
+                                    <item name="config" xsi:type="array">
+                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                    </item>
+                                </item>
+                                <item name="promo-code" xsi:type="array">
+                                    <item name="component"  xsi:type="string">Magento_Checkout/js/view/cart/totals/promo-code</item>
+                                    <item name="config" xsi:type="array">
+                                        <item name="title" xsi:type="string" translate="true">Promo code</item>
+                                        <item name="ajaxUrl" xsi:type="url" path="bangkok_checkout/cart/couponAjax"/>
+                                        <item name="template" xsi:type="string">Magento_Checkout/cart/totals/promo-code</item>
+                                    </item>
+                                </item>
+                                <item name="redeem" xsi:type="array">
+                                    <item name="component"  xsi:type="string">Magento_Checkout/js/view/cart/totals/redeem</item>
+                                    <item name="config" xsi:type="array">
+                                        <item name="title" xsi:type="string" translate="true">Redeem</item>
+                                        <item name="ajaxUrl" xsi:type="url" path="bangkok_checkout/cart/couponPost"/>
+                                        <item name="template" xsi:type="string">Magento_Checkout/cart/totals/redeem</item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.shipping">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="block-summary" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="componentDisabled" xsi:type="boolean">true</item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+
+        <move element="cart.summary" destination="checkout.cart.order.actions" before="-"/>
+
+
+<!--
+        <referenceBlock name="checkout.cart.shipping" remove="true"/>
+-->
+        <referenceBlock name="checkout.cart.coupon" remove="true"/>
+        <referenceBlock name="checkout.cart.crosssell" remove="true"/>
+        <referenceBlock name="checkout.cart.summary.title" remove="true"/>
+
+    </body>
+</page>
