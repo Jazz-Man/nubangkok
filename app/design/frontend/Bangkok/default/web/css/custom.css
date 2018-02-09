@@ -160,6 +160,11 @@ input:-webkit-autofill{
     }
 }
 
+/* class for hide elements on desktop*/
+.hide-dsk{
+    display: none !important;
+}
+
 /*message (change position) */
 .page.messages .message-success.success.message{
     position: inherit !important;
@@ -178,9 +183,3 @@ input:-webkit-autofill{
     line-height: 19px;
     margin: 0;
 }
-
-/* class for hide elements on desktop*/
-.hide-dsk{
-    display: none !important;
-}
-
