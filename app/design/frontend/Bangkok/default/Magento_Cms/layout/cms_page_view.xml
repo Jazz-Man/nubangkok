@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="breadcrumbs" remove="true"/>
+        <referenceContainer name="content.aside">
+            <block class="Magento\Framework\View\Element\Template" name="cms.page.view.js" as="cms.page.view.js"
+                   template="Magento_Cms::page/view/js.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

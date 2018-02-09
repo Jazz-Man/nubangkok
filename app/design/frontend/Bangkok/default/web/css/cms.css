@@ -1,0 +1,364 @@
+/** Left sidebar cms static block */
+/** ------------------------------ */
+
+.violet-link {
+    color: #6e2f91;
+}
+
+.violet-link:hover, .violet-link:active, .violet-link:focus {
+    color: #582574;
+}
+
+/** Coming soon category */
+/** ------------------------------ */
+
+.cms-coming-soon-category .cms-button-small {
+    border-radius: 3px;
+    border: 1px solid #55463e;
+    background-color: #55463e;
+    color: white;
+    padding: 7px;
+    font-weight: 600;
+    margin-top: -4px;
+    margin-left: 20px;
+}
+
+.cms-coming-soon-category .cms-button-small:hover,
+.cms-coming-soon-category .cms-button-small:active,
+.cms-coming-soon-category .cms-button-small:focus{
+    border: 1px solid #372820;;
+    background-color: #372820;
+    color: white;
+    text-decoration: none;
+}
+.cms-coming-soon-category form input{
+    width: 300px; border-radius: 3px;
+}
+
+@media only screen and (max-width: 500px) {
+    .cms-coming-soon-category .cms-button-small {
+        margin-left: 0;
+        margin-top: 10px;
+        display: block;
+    }
+}
+
+/** Why NU Page */
+/** ------------------------------ */
+
+.cms-why-nu-page .numberCircle {
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    padding: 2px 5px 7px 5px;
+    border: 2px solid #55463e;
+    text-align: center;
+    vertical-align: top;
+}
+
+
+/** Where to buy */
+/** ------------------------------ */
+
+.cms-where-to-buy-page .cms-heading {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+.cms-where-to-buy-page .accordion-container {
+    position: relative;
+    padding: 10px;
+    border-bottom: 1px solid #55463e;
+}
+.cms-where-to-buy-page .accordion {
+    cursor: pointer;
+    padding: 5px;
+    border: 0;
+    text-align: left;
+    outline: none;
+    border-radius: 0;
+    background: transparent;
+}
+.cms-where-to-buy-page .active:hover, .cms-where-to-buy-page .accordion:hover {
+    color: #8f8278;
+    text-decoration: underline;
+}
+.cms-where-to-buy-page .accordion.active {
+    font-weight: bold;
+    color: #55463e;
+    text-decoration: none;
+}
+.cms-where-to-buy-page .accordion.active:before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #55463e;
+    position: absolute;
+    left: 0px;
+    bottom: 21px;
+}
+.cms-where-to-buy-page .cms-button {
+    border-radius: 0;
+    border: none;
+    background-color: #55463e;
+    color: white;
+    text-transform: uppercase;
+    padding: 10px 60px;
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+.cms-where-to-buy-page .cms-button:hover, .cms-where-to-buy-page .cms-button:active, .cms-where-to-buy-page .focus {
+    border: none;
+    background-color: #372820;
+    color: white;
+    text-decoration: none;
+}
+
+@media only screen and (min-width:768px) {
+    .cms-where-to-buy-page .desktop-change-position-left {
+        display: inline-block;
+        width: 34%;
+    }
+    .cms-where-to-buy-page .desktop-change-position-right {
+        display: inline-block;
+        width: 64%;
+        float: right;
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .cms-where-to-buy-page img {
+        margin-top: 50px;
+    }
+}
+
+/** Terms of services */
+/** ------------------------------ */
+
+.cms-terms-of-service-page .cms-heading {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+.cms-terms-of-service-page .cms-heading-line {
+    border-top: 1px solid #55463e;
+    opacity: 0.6;
+}
+
+/** Contact Us*/
+/** ------------------------------ */
+
+.cms-contact-us.cms-subheading {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    margin-bottom: 2.5rem;
+}
+
+/** FAQ */
+/** ------------------------------ */
+
+.cms-faq .cms-heading {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+.cms-faq .cms-heading-line {
+    border-top: 1px solid #55463e;
+    opacity: 0.6;
+}
+
+/** Policies */
+/** ------------------------------ */
+
+.cms-policies .cms-heading {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+.cms-policies .cms-heading-line {
+    border-top: 1px solid #55463e;
+    opacity: 0.6;
+}
+
+/** Customer Care */
+/** ------------------------------ */
+
+.cms-customer-care. cms-heading {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+.cms-customer-care. cms-heading-line {
+    border-top: 1px solid #55463e;
+    opacity: 0.6;
+}
+.cms-customer-care. accordion-container {
+    position: relative;
+}
+.cms-customer-care .accordion {
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 5px;
+    border: none;
+    text-align: left;
+    outline: none;
+}
+
+.cms-customer-care .active:hover, .cms-customer-care .accordion:hover {
+    color: #8f8278;
+    text-decoration: underline;
+}
+
+.cms-customer-care .accordion.active {
+    font-weight: bold;
+    color: #55463e;
+    text-decoration: none;
+}
+
+.cms-customer-care .accordion.active:before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #55463e;
+    position: absolute;
+    top: 12px;
+    left: -15px;
+}
+
+.cms-customer-care .accordion-container .panel {
+    padding-right: 150px;
+    padding-left:  61px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+@media only screen and (max-width:768px) {
+    .cms-customer-care .panel {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    .cms-customer-care .accordion {
+        padding-left: 15px;
+        border-bottom: 1px solid #a3a3a3;
+        padding-bottom: 10px;
+        margin-bottom: 0;
+        padding-top: 10px;
+    }
+    .cms-customer-care .accordion.active:before {
+        left: 0;
+        top: 17px;
+    }
+}
+
+
+/** Product Care */
+/** ------------------------------ */
+
+.cms-product-care .cms-heading {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+.cms-product-care .cms-heading-line {
+    border-top: 1px solid #55463e;
+    opacity: 0.6;
+}
+.cms-product-care .accordion-container {
+    position: relative;
+}
+.cms-product-care .accordion {
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 5px;
+    border: none;
+    text-align: left;
+    outline: none;
+}
+
+.cms-product-care .active:hover, .cms-product-care .accordion:hover {
+    color: #8f8278;
+    text-decoration: underline;
+}
+
+.cms-product-care .accordion.active {
+    font-weight: bold;
+    color: #55463e;
+    text-decoration: none;
+}
+
+.cms-product-care .accordion.active:before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #55463e;
+    position: absolute;
+    top: 12px;
+    left: -15px;
+}
+
+.cms-product-care .accordion-container .panel {
+    padding-right: 150px;
+    padding-left:  61px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+@media only screen and (max-width:768px) {
+    .cms-product-care .panel {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    .cms-product-care .accordion {
+        padding-left: 15px;
+        border-bottom: 1px solid #a3a3a3;
+        padding-bottom: 10px;
+        margin-bottom: 0;
+        padding-top: 10px;
+    }
+    .cms-product-care .accordion.active:before {
+        left: 0;
+        top: 17px;
+    }
+}
+
+/** 404 no route page  */
+/** ------------------------------ */
+
+.cms-404 .cms-heading {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+.cms-404 .cms-heading-line {
+    border-top: 1px solid #55463e;
+    opacity: 0.6;
+}
+.cms-404 .violet-link {
+    color: #6e2f91;;
+}
+.cms-404 .violet-link:hover, .cms-404 .violet-link:active, .cms-404 .violet-link:focus {
+    color: #582574;
+}
