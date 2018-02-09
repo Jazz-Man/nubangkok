@@ -19,24 +19,25 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
 <div class="modes">
     <?php $_modes = $block->getModes(); ?>
     <?php if ($_modes && count($_modes) > 1): ?>
-<!--    <strong class="modes-label" id="modes-label">--><?//= /* @escapeNotVerified */ __('View as') ?><!--</strong>-->
     <?php foreach ($block->getModes() as $_code => $_label): ?>
         <?php if ($block->isModeActive($_code)): ?>
-            <strong title="<?= /* @escapeNotVerified */ $_label ?>"
-                class="modes-mode active mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>"
-                data-value="<?= /* @escapeNotVerified */ strtolower($_code) ?>">
-                <span><img src="<?php echo $this->getViewFileUrl('images/grid-icon-mobile.png'); ?>" alt=''></span>
-            </strong>
+                <strong title="<?= /* @escapeNotVerified */ $_label ?>"
+                        class="modes-mode active mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>"
+                        data-value="<?= /* @escapeNotVerified */ strtolower($_code) ?>">
+                    <span><?= /* @escapeNotVerified */ $_label ?></span>
+<!--                    <span><img src="--><?php //echo $this->getViewFileUrl('images/grid-icon-mobile.png'); ?><!--" alt=''></span>-->
+                </strong>
         <?php else: ?>
-            <a class="modes-mode mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>"
-               title="<?= /* @escapeNotVerified */ $_label ?>"
-               href="#"
-               data-role="mode-switcher"
-               data-value="<?= /* @escapeNotVerified */ strtolower($_code) ?>"
-               id="mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>"
-               aria-labelledby="modes-label mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>">
-                <span><img src="<?php echo $this->getViewFileUrl('images/list-icon-mobile.png'); ?>" alt=''></span>
-            </a>
+                <a class="modes-mode mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>"
+                   title="<?= /* @escapeNotVerified */ $_label ?>"
+                   href="#"
+                   data-role="mode-switcher"
+                   data-value="<?= /* @escapeNotVerified */ strtolower($_code) ?>"
+                   id="mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>"
+                   aria-labelledby="modes-label mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>">
+                    <span><?= /* @escapeNotVerified */ $_label ?></span>
+<!--                    <span><img src="--><?php //echo $this->getViewFileUrl('images/list-icon-mobile.png'); ?><!--" alt=''></span>-->
+                </a>
             <?php endif; ?>
         <?php endforeach; ?>
     <?php endif; ?>
