@@ -2,7 +2,7 @@
 /** @var \Magento\Wishlist\Block\Customer\Wishlist\Items $block */
 $columns = $block->getColumns();
 ?>
-
+<div class="title"><?=__('My Wishlist')?></div>
 <div class="products-grid wishlist" data-mage-init='{"Magento_Wishlist/js/qty-add":{}}'>
     <?php $iterator = 1; ?>
     <?php if (count($block->getItems())): ?>
