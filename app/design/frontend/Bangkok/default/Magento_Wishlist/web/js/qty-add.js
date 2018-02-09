@@ -1,14 +1,16 @@
 define([
         'jquery'
     ], function ($) {
-    var i;
+        var i;
         $(".qty-enhance").click(function () {
             i = $(this).parent().find('input').val();
-            console.log($(this).parent().find('input').val(++i));
+            $(this).parent().find('input').val(++i);
         });
         $(".qty-reduce").click(function () {
             i = $(this).parent().find('input').val();
-            console.log($(this).parent().find('input').val(--i));
+            if (--i > 0) {
+                return $(this).parent().find('input').val(i);
+            }
         });
     }
 );
