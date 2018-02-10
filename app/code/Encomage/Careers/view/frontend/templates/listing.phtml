@@ -4,9 +4,13 @@
  */
 $_collection = $block->getCareersCollection();
 ?>
-<h2>Welcome to Career Page</h2>
-<p>Available position:</p>
-<?php foreach ($_collection as $item) : ?>
-    title: <?php echo $item->getTitle(); ?>
-    <a href="<?php echo $block->getUrlView($item->getId()); ?>">view</a> <br/>
-<?php endforeach; ?>
+<div class="careers-listing-index">
+    <h2>Welcome to Career Page</h2>
+    <p>Available position:</p>
+    <?php foreach ($_collection as $item) : ?>
+        <?php if ($item->getStatus() == 1) : ?>
+            title: <?php echo $item->getTitle(); ?>
+            <a href="<?php echo $block->getUrlView($item->getId()); ?>">view</a> <br/>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</div>

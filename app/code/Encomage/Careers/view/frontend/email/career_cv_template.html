@@ -1,0 +1,12 @@
+<!--@subject CV from customer:@-->
+<!--@vars {
+"var data.content":"Test",
+"var data.email":"Sender Email",
+"var data.name":"Sender Name",
+"var data.message":"Sender Message"
+} @-->
+
+{{trans "Name: %name" name=$data.name}}
+{{trans "Email: %email" email=$data.email}}
+
+{{trans "Message: %message" message=$data.message}}

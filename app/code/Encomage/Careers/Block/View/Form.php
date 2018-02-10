@@ -46,6 +46,9 @@ class Form extends \Magento\Framework\View\Element\Template
         return ($career) ? $career : false;
     }
 
+    /**
+     * @return string
+     */
     public function getFormAction()
     {
         return $this->getUrl('careers/view/sendEmail');

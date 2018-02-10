@@ -6,7 +6,6 @@ use Magento\Ui\Component\MassAction\Filter;
 use Encomage\Careers\Model\ResourceModel\Careers\CollectionFactory;
 use Encomage\Careers\Model\ResourceModel\Careers as CareersResource;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\LocalizedException;
 
 class MassDelete extends \Magento\Backend\App\Action

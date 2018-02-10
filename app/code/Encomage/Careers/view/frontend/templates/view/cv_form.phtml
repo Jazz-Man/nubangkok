@@ -5,68 +5,49 @@
 $_career = $block->getCareer();
 
 ?>
+<div class="form-content">
+    <form class="form career-cv" action="<?= /* @escapeNotVerified */ $block->getFormAction(); ?>" id="career-cv-form" method="post" enctype="multipart/form-data" data-hasrequired="* Required Fields">
+        <fieldset class="fieldset">
+            <div class="field email">
+                <label class="label" for="email"><span><?= /* @escapeNotVerified */ __('To:'); ?></span></label>
+                <div class="control">
+                    <input name="recipient[email]" title="To" value="<?= /* @escapeNotVerified */ $_career->getRecipientEmail(); ?>"
+                           class="input-text" type="email" disabled/>
+                    <input name="recipient[email]" id="email" value="<?= /* @escapeNotVerified */ $_career->getRecipientEmail(); ?>" hidden/>
+                </div>
+            </div>
+            <div class="field personal-data required">
+                <label class="label" for="firstName lastName email"><span><?= /* @escapeNotVerified */ __('Personal Information'); ?></span></label>
+                    <input required="true" name="customer[firstName]" id="firstName" title="First Name" value=""
+                           class="input-text customer-first-name" type="text" placeholder="<?= /* @escapeNotVerified */ __('First Name'); ?>"/>
 
-<form class="form contact-inchoo" action="<?= /* @escapeNotVerified */
-$block->getFormAction(); ?>" id="contact-form" method="post" data-hasrequired="* Required Fields">
-    <h2>Apply now: </h2>
-    <fieldset class="fieldset">
-        <div class="field email required">
-            <label class="label" for="email"><span>To</span></label>
-            <div class="control">
-                <input required="true" name="recipient[email]" id="email" title="To"
-                       value="<?= $_career->getRecipientEmail() ?>" class="input-text" type="email" disabled/>
-            </div>
-        </div>
-<h2>Personal Information:</h2>
-        <div class="field firstName required">
-            <label class="label" for="firstName"><span>First Name</span></label>
-            <div class="control">
-                <input required="true" name="customer[firstName]" id="firstName" title="First Name" value=""
-                       class="input-text" type="text"/>
-            </div>
-        </div>
-        <div class="field lastName required">
-            <label class="label" for="lastName"><span>Last Name</span></label>
-            <div class="control">
-                <input required="true" name="customer[lastName]" id="lastName" title="Last Name" value=""
-                       class="input-text" type="text"/>
-            </div>
-        </div>
-        <div class="field email required">
-            <label class="label" for="email"><span>Email</span></label>
-            <div class="control">
-                <input required="true" name="customer[email]" id="email" title="Email" value="" class="input-text"
-                       type="email"/>
-            </div>
-        </div>
-        <h2>Attach File:</h2>
-        <div class="field files required">
-            <label class="label" for="field3"><span>cv</span></label>
-            <div class="control">
-                <input required="true" name="customer[cv]" id="cv" title="cv" value="" class="input-text" type="file"/>
-            </div>
+                    <input required="true" name="customer[lastName]" id="lastName" title="Last Name" value=""
+                           class="input-text customer-last-name" type="text" placeholder="<?= /* @escapeNotVerified */ __('Last Name'); ?>"/>
 
-            <label class="label" for="field3"><span>photo</span></label>
-            <div class="control">
-                <input required="true" name="customer[photo]" id="photo" title="photo" value="" class="input-text"
-                       type="file"/>
+                    <input required="true" name="customer[email]" id="email" title="Email" value=""
+                           class="input-text customer-email" type="email" placeholder="<?= /* @escapeNotVerified */ __('Email'); ?>"/>
+            </div>
+            <div class="field files required">
+                <label class="label" for="field3"><span><?= /* @escapeNotVerified */ __('Attach File:'); ?></span></label>
+                    <input required="true" name="customer_cv" id="cv" title="cv" value="" class="input-text attach-file"
+                           type="file" placeholder="<?= /* @escapeNotVerified */ __('Choose file'); ?>"/>
+
+                    <input required="true" name="customer_photo" id="photo" title="photo" value="" class="input-text attach-photo"
+                           type="file" placeholder="<?= /* @escapeNotVerified */ __('Choose photo'); ?>"/>
+            </div>
+            <h2>MESSAGE:</h2>
+            <div class="field message required">
+                    <input required="true" name="customer[message]" id="message" title="message" value=""
+                           class="input-text " type="text"/>
+            </div>
+        </fieldset>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <input type="hidden" name="hideit" id="hideit" value=""/>
+                <button type="submit" title="Submit" class="action submit ">
+                    <span><?= __('APPLY NOW'); ?></span>
+                </button>
             </div>
         </div>
-        <h2>MESSAGE:</h2>
-        <div class="field message required">
-            <label class="label" for="field4"><span>message</span></label>
-            <div class="control">
-                <input required="true" name="customer[message]" id="message" title="message" value=""
-                       class="input-text textarea" type="text"/>
-            </div>
-        </div>
-    </fieldset>
-    <div class="actions-toolbar">
-        <div class="primary">
-            <input type="hidden" name="hideit" id="hideit" value=""/>
-            <button type="submit" title="Submit" class="action submit primary">
-                <span><?= __('APPLY NOW'); ?></span>
-            </button>
-        </div>
-    </div>
-</form>
+    </form>
+</div>
