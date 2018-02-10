@@ -18,14 +18,6 @@
                                         <item name="componentDisabled" xsi:type="boolean">true</item>
                                     </item>
                                 </item>
-                                <item name="promo-code" xsi:type="array">
-                                    <item name="component"  xsi:type="string">Magento_Checkout/js/view/cart/promo-code</item>
-                                    <item name="config" xsi:type="array">
-                                        <item name="title" xsi:type="string" translate="true">Promo code</item>
-                                        <item name="ajaxUrl" xsi:type="url" path="bangkok_checkout/cart/couponAjax"/>
-                                        <item name="template" xsi:type="string">Magento_Checkout/cart/promo-code</item>
-                                    </item>
-                                </item>
                             </item>
                         </item>
                     </item>
@@ -49,10 +41,6 @@
         <move element="cart.summary" destination="checkout.cart.order.actions" before="-"/>
 
 
-<!--
-        <referenceBlock name="checkout.cart.shipping" remove="true"/>
--->
-        <referenceBlock name="checkout.cart.coupon" remove="true"/>
         <referenceBlock name="checkout.cart.crosssell" remove="true"/>
         <referenceBlock name="checkout.cart.summary.title" remove="true"/>
 
