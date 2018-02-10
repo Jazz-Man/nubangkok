@@ -39,13 +39,10 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 
         $items = $this->collection->getItems();
         $this->loadedData = array();
-        /** @var Customer $customer */
-        foreach ($items as $careers) {
-            $this->loadedData[$careers->getId()]['careers'] = $careers->getData();
+        foreach ($items as $career) {
+            $this->loadedData[$career->getId()]['career'] = $career->getData();
         }
 
-
         return $this->loadedData;
-
     }
 }

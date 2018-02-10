@@ -33,19 +33,19 @@ class InstallSchema implements InstallSchemaInterface
                 'status',
                 \Magento\Framework\DB\Ddl\Table::TYPE_BOOLEAN,
                 null,
-                ['nullable' => true],
+                ['nullable' => false],
                 'Career Status'
             )->addColumn(
                 'title',
                 \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                 64,
-                ['nullable' => true],
+                ['nullable' => false],
                 'Career Title'
             )->addColumn(
                 'position',
                 \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                 10,
-                ['nullable' => true],
+                ['nullable' => false],
                 'Career Position'
             )->addColumn(
                 'description',
@@ -57,19 +57,19 @@ class InstallSchema implements InstallSchemaInterface
                 'about_description',
                 \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                 255,
-                ['nullable' => true],
+                ['nullable' => false],
                 'Career About Description'
             )->addColumn(
                 'skills',
                 \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                 255,
-                ['nullable' => true],
+                ['nullable' => false],
                 'Career Skills'
             )->addColumn(
                 'recipient_email',
                 \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                 64,
-                ['nullable' => true],
+                ['nullable' => false],
                 'Career Email'
             )->addColumn(
                 'image',

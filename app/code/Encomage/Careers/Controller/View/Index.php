@@ -54,6 +54,11 @@ class Index extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
+        $id = (int)$this->getRequest()->getParam('id');
+        if (!$id) {
+            $this->_redirect('careers/listing');
+            return;
+        }
         $this->_initModel();
         return $this->_pageFactory->create();
     }
