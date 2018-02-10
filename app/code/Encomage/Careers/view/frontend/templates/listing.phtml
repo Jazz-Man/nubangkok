@@ -1,0 +1,12 @@
+<?php
+/**
+ * @var $block Encomage\Careers\Block\Listing;
+ */
+$_collection = $block->getCareersCollection();
+?>
+<h2>Welcome to Career Page</h2>
+<p>Available position:</p>
+<?php foreach ($_collection as $item) : ?>
+    title: <?php echo $item->getTitle(); ?>
+    <a href="<?php echo $block->getUrlView($item->getId()); ?>">view</a> <br/>
+<?php endforeach; ?>
