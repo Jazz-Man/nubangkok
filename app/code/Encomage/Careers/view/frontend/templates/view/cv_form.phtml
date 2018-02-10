@@ -1,0 +1,72 @@
+<?php
+/**
+ * @var $block Encomage\Careers\Block\View\Form;
+ */
+$_career = $block->getCareer();
+
+?>
+
+<form class="form contact-inchoo" action="<?= /* @escapeNotVerified */
+$block->getFormAction(); ?>" id="contact-form" method="post" data-hasrequired="* Required Fields">
+    <h2>Apply now: </h2>
+    <fieldset class="fieldset">
+        <div class="field email required">
+            <label class="label" for="email"><span>To</span></label>
+            <div class="control">
+                <input required="true" name="recipient[email]" id="email" title="To"
+                       value="<?= $_career->getRecipientEmail() ?>" class="input-text" type="email" disabled/>
+            </div>
+        </div>
+<h2>Personal Information:</h2>
+        <div class="field firstName required">
+            <label class="label" for="firstName"><span>First Name</span></label>
+            <div class="control">
+                <input required="true" name="customer[firstName]" id="firstName" title="First Name" value=""
+                       class="input-text" type="text"/>
+            </div>
+        </div>
+        <div class="field lastName required">
+            <label class="label" for="lastName"><span>Last Name</span></label>
+            <div class="control">
+                <input required="true" name="customer[lastName]" id="lastName" title="Last Name" value=""
+                       class="input-text" type="text"/>
+            </div>
+        </div>
+        <div class="field email required">
+            <label class="label" for="email"><span>Email</span></label>
+            <div class="control">
+                <input required="true" name="customer[email]" id="email" title="Email" value="" class="input-text"
+                       type="email"/>
+            </div>
+        </div>
+        <h2>Attach File:</h2>
+        <div class="field files required">
+            <label class="label" for="field3"><span>cv</span></label>
+            <div class="control">
+                <input required="true" name="customer[cv]" id="cv" title="cv" value="" class="input-text" type="file"/>
+            </div>
+
+            <label class="label" for="field3"><span>photo</span></label>
+            <div class="control">
+                <input required="true" name="customer[photo]" id="photo" title="photo" value="" class="input-text"
+                       type="file"/>
+            </div>
+        </div>
+        <h2>MESSAGE:</h2>
+        <div class="field message required">
+            <label class="label" for="field4"><span>message</span></label>
+            <div class="control">
+                <input required="true" name="customer[message]" id="message" title="message" value=""
+                       class="input-text textarea" type="text"/>
+            </div>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <input type="hidden" name="hideit" id="hideit" value=""/>
+            <button type="submit" title="Submit" class="action submit primary">
+                <span><?= __('APPLY NOW'); ?></span>
+            </button>
+        </div>
+    </div>
+</form>
