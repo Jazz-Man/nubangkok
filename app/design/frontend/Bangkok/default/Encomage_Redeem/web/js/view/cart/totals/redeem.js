@@ -30,7 +30,7 @@ define([
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: this.ajaxUrl,
+                url: $this.ajaxUrl,
                 data: {},
                 success: function (response) {
                     //TODO
