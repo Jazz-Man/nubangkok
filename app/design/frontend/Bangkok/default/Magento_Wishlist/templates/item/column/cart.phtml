@@ -1,0 +1,45 @@
+<?php
+/** @var \Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart $block */
+/** @var \Magento\Wishlist\Model\Item $item */
+$item = $block->getItem();
+$product = $item->getProduct();
+$stockStatus=$block->getItemStockStatus();
+?>
+<?php foreach ($block->getChildNames() as $childName): ?>
+    <?= /* @noEscape */
+    $block->getLayout()->renderElement($childName, false) ?>
+<?php endforeach; ?>
+<div class="box-tocart">
+    <fieldset class="fieldset">
+        <?php if ($item->canHaveQty() && $product->isVisibleInSiteVisibility()): ?>
+            <div class="field qty">
+
+                <label class="label" for="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
+                <div class="control">
+                    <span class="qty-enhance">+</span>
+                    <input type="number" data-role="qty" id="qty[<?= $block->escapeHtmlAttr($item->getId())?>]"
+                           class="input-text qty"
+                           data-validate="{'required-number':true,'validate-greater-than-zero':true}"
+                           name="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]" value="<?= (int)($block->getAddToCartQty($item) * 1) ?>">
+                    <span class="qty-reduce">-</span>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php if ($product->isSaleable() && $stockStatus): ?>
+            <div class="product-item-actions">
+                <div class="actions-primary">
+                    <button type="button" data-role="tocart" data-post='<?= /* @noEscape */
+                    $block->getItemAddToCartParams($item) ?>' title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                            data-item-id="<?= $block->escapeHtmlAttr($item->getId()) ?>" class="action tocart primary">
+                        <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                    </button>
+                </div>
+            </div>
+        <?php else: ?>
+            <button type="button" disabled>
+                <span><?= $block->escapeHtml(__(' Currently Unavailable')) ?></span>
+            </button>
+        <?php endif; ?>
+    </fieldset>
+</div>
+

@@ -1,0 +1,12 @@
+<?php
+/** @var \Magento\Wishlist\Model\Item $item */
+$item = $block->getItem();
+$product = $item->getProduct();
+?>
+<div>
+    <a href="<?= $block->escapeUrl($block->getProductUrl($item)) ?>"
+       title="<?= $block->escapeHtmlAttr($product->getName()) ?>"
+       class="product-item-link">
+        <?= __($product->getName().''.$product->getSku()) ?>
+    </a>
+</div>
