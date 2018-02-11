@@ -22,7 +22,7 @@ use Magento\Framework\UrlFactory;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\ObjectManager;
-class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
+class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
 {
     private $cookieMetadataFactory;
 
@@ -142,6 +142,8 @@ class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
                 $resultRedirect->setUrl($this->_redirect->success($url));
             } else {
                 $this->session->setCustomerDataAsLoggedIn($customer);
+
+                $this->addDefaultBillingAddress($customer->getId(),$this->getRequest()->getParams());
                 $this->messageManager->addSuccess($this->getSuccessMessage());
                 $requestedRedirect = $redirectUrl =$this->urlModel->getUrl('/');
                 $resultRedirect->setUrl($this->_redirect->success($requestedRedirect));
@@ -204,5 +206,33 @@ class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
             }
         } else {$message = __('Account created. Welcome to UPBangkok!');}
         return $message;
+    }
+
+    /**
+     * @param $id
+     * @param $request
+     */
+    protected function addDefaultBillingAddress($id,$request)
+    {
+        $set_address = ObjectManager::getInstance()
+            ->get(\Magento\Customer\Model\AddressFactory::class)
+            ->create();
+        $customerData = [
+            'id' => $id,
+            'firstname' => $request['firstname'],
+            'lastname' => $request['lastname'],
+            'country_id' => $request['country_id'],
+            'telephone' => $request['telephone'],
+            'city'=>'',
+            'postcode'=>'69000',
+            'street'=>'',
+            'is_default_billing' => 1
+        ];
+        $set_address->addData($customerData);
+        try {
+            $set_address->save();
+        } catch (Exception $e) {
+            $this->messageManager->addError($e->getMessage());
+        }
     }
 }
