@@ -5,6 +5,11 @@ namespace Encomage\Customer\Block\Account\Dashboard;
 class Information extends \Magento\Customer\Block\Account\Dashboard\Info
 {
     /**
+     * @var \Magento\Customer\Helper\Session\CurrentCustomerAddress
+     */
+    protected $currentCustomerAddress;
+
+    /**
      * Information constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Customer\Helper\Session\CurrentCustomer $currentCustomer
@@ -13,6 +18,7 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
      * @param array $data
      */
     public function __construct(
+        \Magento\Customer\Helper\Session\CurrentCustomerAddress $currentCustomerAddress,
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Customer\Helper\Session\CurrentCustomer $currentCustomer,
         \Magento\Newsletter\Model\SubscriberFactory $subscriberFactory,
@@ -24,6 +30,7 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
             $subscriberFactory,
             $helperView,
             $data);
+        $this->currentCustomerAddress = $currentCustomerAddress;
     }
 
     /**
@@ -62,5 +69,23 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
         };
         return $lineId;
     }
+
+    /**
+     * @return null|string
+     */
+    public function getTelephone()
+    {
+        $telephone = $this->getBillingAddress() ? $this->getBillingAddress()->getTelephone() : null;
+        return $telephone;
+    }
+
+    /**
+     * @return \Magento\Customer\Api\Data\AddressInterface|null
+     */
+    public function getBillingAddress()
+    {
+        return $this->currentCustomerAddress->getDefaultBillingAddress();
+    }
+
 
 }

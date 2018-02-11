@@ -1,11 +1,4 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-// @codingStandardsIgnoreFile
-
 /** @var \Magento\Customer\Block\Address\Edit $block */
 ?>
 <?php $_company = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Company') ?>
@@ -97,24 +90,6 @@
                        id="city">
             </div>
         </div>
-        <div class="field region required">
-            <label class="label" for="region_id">
-                <span><?= $block->escapeHtml(__('State/Province')) ?></span>
-            </label>
-            <div class="control">
-                <select id="region_id" name="region_id"
-                        title="<?= $block->escapeHtmlAttr(__('State/Province')) ?>"
-                        class="validate-select" <?= /* @noEscape */ !$block->getConfig('general/region/display_all') ? ' disabled="disabled"' : '' ?>>
-                    <option value=""><?= $block->escapeHtml(__('Please select a region, state or province.')) ?></option>
-                </select>
-                <input type="text"
-                       id="region"
-                       name="region"
-                       value="<?= $block->escapeHtmlAttr($block->getRegion()) ?>"
-                       title="<?= $block->escapeHtmlAttr(__('State/Province')) ?>"
-                       class="input-text <?= $block->escapeHtmlAttr($this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('region')) ?>"<?= !$block->getConfig('general/region/display_all') ? ' disabled="disabled"' : '' ?>/>
-            </div>
-        </div>
         <div class="field zip required">
             <label class="label" for="zip">
                 <span><?= $block->escapeHtml(__('Zip/Postal Code')) ?></span>
@@ -175,7 +150,7 @@
             </button>
         </div>
         <div class="secondary">
-            <a class="action back" href="<?= $block->escapeUrl($block->getBackUrl()) ?>">
+            <a class="action back" href="<?= $block->escapeUrl($block->getUrl('customer/account', ['_secure' => true])) ?>">
                 <span><?= $block->escapeHtml(__('Go back')) ?></span>
             </a>
         </div>
