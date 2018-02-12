@@ -22,7 +22,8 @@ use Magento\Framework\UrlFactory;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\ObjectManager;
-class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
+
+class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
 {
     private $cookieMetadataFactory;
 
@@ -73,7 +74,7 @@ class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
             $customerExtractor,
             $dataObjectHelper,
             $accountRedirect
-            );
+        );
     }
 
     private function getCookieManager()
@@ -113,7 +114,7 @@ class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
 
             $password = $this->getRequest()->getParam('password');
             $confirmation = $this->getRequest()->getParam('password_confirmation');
-            $redirectUrl =$this->urlModel->getUrl('/');
+            $redirectUrl = $this->urlModel->getUrl('/');
 
             $this->checkPasswordConfirmation($password, $confirmation);
 
@@ -142,8 +143,10 @@ class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
                 $resultRedirect->setUrl($this->_redirect->success($url));
             } else {
                 $this->session->setCustomerDataAsLoggedIn($customer);
+
+                $this->addDefaultBillingAddress($customer->getId(), $this->getRequest()->getParams());
                 $this->messageManager->addSuccess($this->getSuccessMessage());
-                $requestedRedirect = $redirectUrl =$this->urlModel->getUrl('/');
+                $requestedRedirect = $redirectUrl = $this->urlModel->getUrl('/');
                 $resultRedirect->setUrl($this->_redirect->success($requestedRedirect));
                 return $resultRedirect;
             }
@@ -202,7 +205,32 @@ class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
                     $this->urlModel->getUrl('customer/address/edit')
                 );
             }
-        } else {$message = __('Account created. Welcome to UPBangkok!');}
+        } else {
+            $message = __('Account created. Welcome to UPBangkok!');
+        }
         return $message;
+    }
+
+    /**
+     * @param $id
+     * @param $request
+     */
+    protected function addDefaultBillingAddress($id, $request)
+    {
+        $address = ObjectManager::getInstance()
+            ->get(\Magento\Customer\Model\AddressFactory::class)
+            ->create();
+        $address->setCustomerId($id)
+            ->setFirstname($request['firstname'])
+            ->setLastname($request['lastname'])
+            ->setCountryId($request['country_id'])
+            ->setPostcode('10110')
+            ->setTelephone($request['telephone'])
+            ->setIsDefaultBilling('1');
+        try {
+            $address->save();
+        } catch (Exception $e) {
+            Zend_Debug::dump($e->getMessage());
+        }
     }
 }
