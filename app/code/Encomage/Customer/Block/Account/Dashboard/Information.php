@@ -7,7 +7,12 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
     /**
      * @var \Magento\Customer\Helper\Session\CurrentCustomerAddress
      */
-    protected $currentCustomerAddress;
+    private $currentCustomerAddress;
+
+    /**
+     * @var \Magento\Directory\Model\CountryFactory
+     */
+    private $_countryFactory;
 
     /**
      * Information constructor.
@@ -23,6 +28,7 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
         \Magento\Customer\Helper\Session\CurrentCustomer $currentCustomer,
         \Magento\Newsletter\Model\SubscriberFactory $subscriberFactory,
         \Magento\Customer\Helper\View $helperView,
+        \Magento\Directory\Model\CountryFactory $countryFactory,
         array $data = [])
     {
         parent::__construct($context,
@@ -31,6 +37,7 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
             $helperView,
             $data);
         $this->currentCustomerAddress = $currentCustomerAddress;
+        $this->_countryFactory = $countryFactory;
     }
 
     /**
@@ -39,6 +46,14 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
     public function getLastname()
     {
         return $this->getCustomer()->getLastname();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->getCustomer()->getFirstname();
     }
 
     /**
@@ -62,12 +77,47 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
      */
     public function getLineId()
     {
-        $lineId = [];
         $attr = $this->getCustomer()->getCustomAttributes();
-        foreach ($attr as $item) {
-            $lineId = $item->getValue();
-        };
-        return $lineId;
+        if ($attr) {
+            $lineId = [];
+            foreach ($attr as $item) {
+                $lineId = $item->getValue();
+            };
+            return $lineId;
+        }
+        return null;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getCountryName()
+    {
+        $countryId = $this->getBillingAddress() ? $this->getBillingAddress()->getCountryId() : null;
+        if ($countryId) {
+            $country = $this->_countryFactory->create()->loadByCode($countryId);
+            return $country->getName();
+        }
+        return $countryId;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getGender()
+    {
+        $genderCodeId = $this->getCustomer()->getGender();
+        if ($genderCodeId) {
+            switch ((int)$genderCodeId) {
+                case 1:
+                    return "Male";
+                case 2:
+                    return "Female";
+                case 3:
+                    return "Not Specified";
+            }
+        }
+        return null;
     }
 
     /**
