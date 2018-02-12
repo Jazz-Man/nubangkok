@@ -41,7 +41,7 @@ class UpgradeData implements UpgradeDataInterface
 
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        if (version_compare($context->getVersion(), '0.0.3', '<')) {
+        if (version_compare($context->getVersion(), '0.0.2', '<')) {
             $setup->startSetup();
             /** @var CustomerSetup $customerSetup */
             $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
