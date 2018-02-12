@@ -9,11 +9,11 @@ $_career = $block->getCareer();
         <p class="description"><?= $block->escapeHtml($_career->getDescription()); ?></p>
     </div>
     <div class="about-description-container">
-        <p class="about-description-title"><?= /* @escapeNotVerified */ __('ABOUT THE ROLE ') . $_career->getTitle(); ?></p>
+        <p class="about-description-title"><?= /* @escapeNotVerified */ __('About the role ') . $_career->getTitle(); ?></p>
         <p class="about-description"><?= $block->escapeHtml($_career->getAboutDescription()); ?></p>
     </div>
     <div class="skills-container">
-        <p class="skills-title"><?= /* @escapeNotVerified */ __('SKILLS & EXPERIENCE'); ?></p>
+        <p class="skills-title"><?= /* @escapeNotVerified */ __('Skills & Experience'); ?></p>
         <p class="skills"><?= /* @escapeNotVerified */ $_career->getSkills(); ?></p>
     </div>
     <?= $block->getChildHtml('careers_view_form'); ?>
