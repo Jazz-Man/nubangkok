@@ -29,6 +29,8 @@ class Listing extends \Magento\Framework\View\Element\Template
     public function getCareersCollection()
     {
         $collection = $this->_careersCollectionFactory->create();
+        $collection->addFieldToFilter('status', ['eq' => \Encomage\Careers\Model\Careers\Source\Status::STATUS_ENABLED])
+        ->addOrder('position', \Magento\Framework\Data\Collection::SORT_ORDER_ASC);
         return $collection;
     }
 

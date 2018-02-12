@@ -35,11 +35,11 @@ class Status implements OptionSourceInterface
             return $this->options;
         }
         $options[] = [
-            'label' => 'Enabled',
+            'label' => 'Yes',
             'value' => self::STATUS_ENABLED,
         ];
         $options[] = [
-            'label' => 'Disabled',
+            'label' => 'No',
             'value' => self::STATUS_DISABLED,
         ];
         $this->options = $options;
