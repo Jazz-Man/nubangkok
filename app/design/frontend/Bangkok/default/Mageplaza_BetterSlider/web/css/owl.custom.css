@@ -1,0 +1,58 @@
+.owl-carousel .owl-nav .owl-next, .owl-carousel .owl-nav .owl-prev {
+    position: absolute;
+    top: 45%;
+    height: 51px;
+    width: 35px;
+    background-image: url(../images/gallery-arrows.png);
+    background-repeat: no-repeat;
+}
+
+.owl-carousel .owl-nav .owl-prev {
+    left: 0;
+    background-position: left top;
+}
+
+.owl-carousel .owl-nav .owl-next{
+    right: 0;
+    background-position: right top;
+}
+
+.owl-prev.disabled, .owl-next.disabled {
+    opacity: 0.5;
+}
+
+.owl-carousel .owl-dots {
+    position: absolute;
+    transition-duration: 0ms;
+    transform: translate3d(0px, 0px, 0px);
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    max-width: 50px;
+}
+
+.owl-carousel .owl-dot {
+    border: 1px solid #858585;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.owl-carousel .owl-dot.active {
+    background-color: #55463e;
+    border-color: #55463e;
+
+}
+
+@media only screen and (max-width: 770px) {
+    .owl-carousel .owl-nav .owl-next, .owl-carousel .owl-nav .owl-prev {
+        position: absolute;
+        top: 0;
+        height: auto;
+        width: 45%;
+        background-image: none;
+    }
+}
