@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="category.products.list">
+            <block class="Magento\Catalog\Block\Category\View" name="category.empty"
+                   as="category.empty"
+                   template="Magento_Catalog::category/empty-container.phtml">
+                <container name="category.empty.cms.block" htmlTag="div" htmlClass="catalog-category-empty-cms-block"/>
+            </block>
+        </referenceBlock>
+        <move element="breadcrumbs" destination="product_list_toolbar" before="-"/>
+        <referenceBlock name="product_list_toolbar_pager" remove="true"/>
+        <referenceBlock name="category.product.addto.compare" remove="true"/>
+        <referenceBlock name="category.product.type.details.renderers" remove="true"/>
+        <referenceBlock name="category.product.addto" remove="true"/>
+        <referenceBlock name="product.review.form" remove="true"/>
+        <referenceContainer name="catalog.leftnav" remove="true" />
+    </body>
+</page>

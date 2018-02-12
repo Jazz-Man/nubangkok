@@ -5,7 +5,7 @@
 $product = $block->getParentBlock()->getProduct();
 ?>
 <?php if ((bool)$product->getAskAboutShoeSize()): ?>
-    <div class="message js-message" style="display:none;">
+    <div class="message js-message" <?= ($product->getTypeId() == 'configurable') ? 'style="display:none;"' : ''; ?>>
         <p><?php echo __('Have you worn these shoes before?'); ?></p>
         <div class="radio-box">
             <label for="yes">
