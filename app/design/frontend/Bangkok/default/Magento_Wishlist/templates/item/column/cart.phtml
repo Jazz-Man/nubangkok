@@ -5,10 +5,6 @@ $item = $block->getItem();
 $product = $item->getProduct();
 $stockStatus=$block->getItemStockStatus();
 ?>
-<?php foreach ($block->getChildNames() as $childName): ?>
-    <?= /* @noEscape */
-    $block->getLayout()->renderElement($childName, false) ?>
-<?php endforeach; ?>
 <div class="box-tocart">
     <fieldset class="fieldset">
         <?php if ($item->canHaveQty() && $product->isVisibleInSiteVisibility()): ?>
@@ -24,6 +20,7 @@ $stockStatus=$block->getItemStockStatus();
                     <span class="qty-reduce">-</span>
                 </div>
             </div>
+            <?=$block->getChildHtml('customer.wishlist.item.option')?>
         <?php endif; ?>
         <?php if ($product->isSaleable() && $stockStatus): ?>
             <div class="product-item-actions">

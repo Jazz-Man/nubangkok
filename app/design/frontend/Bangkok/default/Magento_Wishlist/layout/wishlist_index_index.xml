@@ -2,8 +2,11 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="customer.wishlist.items">
-            <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Shared" name="wishlist.product.shared" template="Magento_Wishlist::item/column/shared.phtml"/>
             <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Stock" name="wishlist.stock.item.info" template="Magento_Wishlist::item/column/stock-info.phtml"/>
+            <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Shared" name="wishlist.product.shared" template="Magento_Wishlist::item/column/shared.phtml" after="wishlist.stock.item.info"/>
+            <block class="Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart" name="customer.wishlist.item.cart" template="Magento_Wishlist::item/column/cart.phtml" cacheable="false">
+                <block class="Magento\Wishlist\Block\Customer\Wishlist\Item\Options" name="customer.wishlist.item.option" cacheable="false"/>
+            </block>
         </referenceBlock>
         <referenceContainer name="customer.wishlist.buttons">
             <block class="Magento\Wishlist\Block\Customer\Wishlist\Button" name="customer.wishlist.bottom.buttons" template="Magento_Wishlist::button/bottom-buttons.phtml" cacheable="false">
@@ -13,7 +16,11 @@
             </block>
         </referenceContainer>
 
+        <move element="customer.wishlist.item.price" destination="customer.wishlist.items" after="-"/>
+        <move element="customer.wishlist.item.actions" destination="customer.wishlist.items" before="customer.wishlist.item.price"/>
+
         <referenceBlock name="customer.wishlist.item.comment" remove="true" />
+        <referenceBlock name="customer.wishlist.item.options" remove="true" />
         <referenceBlock name="customer.wishlist.item.edit" remove="true" />
         <referenceBlock name="customer.wishlist.button.update" remove="true" />
         <referenceBlock name="customer.wishlist.button.share" remove="true" />
