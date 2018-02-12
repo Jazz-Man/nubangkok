@@ -6,11 +6,11 @@ $_career = $block->getCareer();
 ?>
 <div class="careers-view-content">
     <div class="description-container">
-        <p class="description"><?= $block->escapeHtml($_career->getDescription()); ?></p>
+        
     </div>
-    <div class="about-description-container">
-        <p class="about-description-title"><?= /* @escapeNotVerified */ __('About the role ') . $_career->getTitle(); ?></p>
-        <p class="about-description"><?= $block->escapeHtml($_career->getAboutDescription()); ?></p>
+    <div class="short-description-container">
+        <p class="short-description-title"><?= /* @escapeNotVerified */ __('About the role ') . $_career->getTitle(); ?></p>
+        <p class="short-description"><?= $block->escapeHtml($_career->getAboutDescription()); ?></p>
     </div>
     <div class="skills-container">
         <p class="skills-title"><?= /* @escapeNotVerified */ __('Skills & Experience'); ?></p>

@@ -16,5 +16,4 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     {
         $this->_init('Encomage\Careers\Model\Careers', 'Encomage\Careers\Model\ResourceModel\Careers');
     }
-
 }

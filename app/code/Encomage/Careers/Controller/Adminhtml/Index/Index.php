@@ -8,8 +8,13 @@ use \Magento\Framework\View\Result\PageFactory;
 
 class Index extends \Magento\Backend\App\Action
 {
+    /**
+     * @var Registry
+     */
     protected $_coreRegistry;
-
+    /**
+     * @var bool|PageFactory
+     */
     protected $resultPageFactory = false;
 
     /**

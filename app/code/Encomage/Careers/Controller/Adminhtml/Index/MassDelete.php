@@ -32,7 +32,12 @@ class MassDelete extends \Magento\Backend\App\Action
      * @param CollectionFactory $collectionFactory
      * @param CareersResource $careersResource
      */
-    public function __construct(Context $context, Filter $filter, CollectionFactory $collectionFactory, CareersResource $careersResource)
+    public function __construct(
+        Context $context, 
+        Filter $filter, 
+        CollectionFactory $collectionFactory, 
+        CareersResource $careersResource
+    )
     {
         $this->careersResource = $careersResource;
         $this->filter = $filter;
