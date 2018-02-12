@@ -22,6 +22,8 @@ use Magento\Framework\UrlFactory;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\ObjectManager;
+use Magento\Customer\Model\AddressFactory;
+use Magento\Customer\Api\AddressRepositoryInterface;
 
 class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
 {
@@ -29,9 +31,12 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
 
     private $cookieMetadataManager;
 
-    private $accountRedirect;
+    private $addressFactory;
+
+    private $addressRepository;
 
     protected $formKeyValidator;
+
 
     public function __construct(
         Context $context,
@@ -52,7 +57,10 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
         CustomerExtractor $customerExtractor,
         DataObjectHelper $dataObjectHelper,
         AccountRedirect $accountRedirect,
-        Validator $formKeyValidator = null)
+        Validator $formKeyValidator = null,
+        AddressFactory $addressFactory,
+        AddressRepositoryInterface $addressRepository
+    )
     {
         $this->formKeyValidator = $formKeyValidator ?: ObjectManager::getInstance()->get(Validator::class);
         parent::__construct(
@@ -75,6 +83,9 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
             $dataObjectHelper,
             $accountRedirect
         );
+
+        $this->addressFactory = $addressFactory;
+        $this->addressRepository = $addressRepository;
     }
 
     private function getCookieManager()
@@ -211,15 +222,10 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
         return $message;
     }
 
-    /**
-     * @param $id
-     * @param $request
-     */
+
     protected function addDefaultBillingAddress($id, $request)
     {
-        $address = ObjectManager::getInstance()
-            ->get(\Magento\Customer\Model\AddressFactory::class)
-            ->create();
+        $address = $this->addressFactory->create();
         $address->setCustomerId($id)
             ->setFirstname($request['firstname'])
             ->setLastname($request['lastname'])
@@ -228,9 +234,9 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
             ->setTelephone($request['telephone'])
             ->setIsDefaultBilling('1');
         try {
-            $address->save();
-        } catch (Exception $e) {
-            Zend_Debug::dump($e->getMessage());
+            $this->addressRepository->save($address);
+        } catch (LocalizedException $e) {
+            $this->messageManager->addException($e, __($e->getMessage()));
         }
     }
 }
