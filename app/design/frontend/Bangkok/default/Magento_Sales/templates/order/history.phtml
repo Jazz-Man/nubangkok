@@ -2,14 +2,15 @@
 <?= $block->getChildHtml('info') ?>
 <?php if ($_orders && count($_orders)): ?>
     <div class="table-wrapper orders-history">
+        <h2>My orders</h2>
         <table class="data table table-order-items history" id="my-orders-table">
             <caption class="table-caption"><?= /* @escapeNotVerified */ __('Orders') ?></caption>
             <thead>
                 <tr>
                     <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Date') ?></th>
-                    <th scope="col" class="col id"><?= /* @escapeNotVerified */ __('Order #') ?></th>
+                    <th scope="col" class="col id"><?= /* @escapeNotVerified */ __('Order No.') ?></th>
                     <?= /* @noEscape */ $block->getChildHtml('extra.column.header') ?>
-                    <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Order Total') ?></th>
+                    <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Total') ?></th>
                     <th scope="col" class="col status"><?= /* @escapeNotVerified */ __('Status') ?></th>
                     <th scope="col" class="col actions"><?= /* @escapeNotVerified */ __('nuPoints') ?></th>
                 </tr>
@@ -24,7 +25,7 @@
                             <?php $extra->setOrder($_order); ?>
                             <?= /* @noEscape */ $extra->getChildHtml() ?>
                         <?php endif; ?>
-                        <td data-th="<?= $block->escapeHtml(__('Order Total')) ?>" class="col total"><?= /* @escapeNotVerified */ $_order->formatPrice($_order->getGrandTotal()) ?></td>
+                        <td data-th="<?= $block->escapeHtml(__('Total')) ?>" class="col total"><?= /* @escapeNotVerified */ $_order->formatPrice($_order->getGrandTotal()) ?></td>
                         <td data-th="<?= $block->escapeHtml(__('Status')) ?>" class="col status"><?= /* @escapeNotVerified */ $_order->getStatusLabel() ?></td>
                         <td data-th="<?= $block->escapeHtml(__('nuPoints')) ?>" class="col points">+ 500</td>
                     </tr>
