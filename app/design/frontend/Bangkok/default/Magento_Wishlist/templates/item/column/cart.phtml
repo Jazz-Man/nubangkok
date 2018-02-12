@@ -12,15 +12,15 @@ $stockStatus=$block->getItemStockStatus();
 
                 <label class="label" for="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
                 <div class="control">
-                    <span class="qty-enhance">+</span>
+                    <span class="qty-enhance"><span>+</span></span>
                     <input type="number" data-role="qty" id="qty[<?= $block->escapeHtmlAttr($item->getId())?>]"
                            class="input-text qty"
                            data-validate="{'required-number':true,'validate-greater-than-zero':true}"
                            name="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]" value="<?= (int)($block->getAddToCartQty($item) * 1) ?>">
-                    <span class="qty-reduce">-</span>
+                    <span class="qty-reduce"><span>-</span></span>
                 </div>
             </div>
-            <?=$block->getChildHtml('customer.wishlist.item.option')?>
+
         <?php endif; ?>
         <?php if ($product->isSaleable() && $stockStatus): ?>
             <div class="product-item-actions">
@@ -38,5 +38,6 @@ $stockStatus=$block->getItemStockStatus();
             </button>
         <?php endif; ?>
     </fieldset>
+    <?=$block->getChildHtml('customer.wishlist.item.option')?>
 </div>
 
