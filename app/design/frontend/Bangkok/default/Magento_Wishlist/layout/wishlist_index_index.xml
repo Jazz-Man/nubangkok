@@ -5,8 +5,16 @@
             <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Stock" name="wishlist.stock.item.info" template="Magento_Wishlist::item/column/stock-info.phtml"/>
             <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Shared" name="wishlist.product.shared" template="Magento_Wishlist::item/column/shared.phtml" after="wishlist.stock.item.info"/>
             <block class="Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart" name="customer.wishlist.item.cart" template="Magento_Wishlist::item/column/cart.phtml" cacheable="false">
-                <block class="Magento\Wishlist\Block\Customer\Wishlist\Item\Options" name="customer.wishlist.item.option" cacheable="false"/>
+                <block class="Magento\Wishlist\Block\Customer\Wishlist\Item\Options"
+                       name="customer.wishlist.item.option.size"
+                       cacheable="false"
+                       template="Magento_Wishlist::item/column/option_size.phtml"/>
             </block>
+            <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\OptionsColor"
+                   name="customer.wishlist.item.option.color"
+                   cacheable="false"
+                   template="Magento_Wishlist::item/column/option_color.phtml"
+                   before="customer.wishlist.item.cart"/>
         </referenceBlock>
         <referenceContainer name="customer.wishlist.buttons">
             <block class="Magento\Wishlist\Block\Customer\Wishlist\Button" name="customer.wishlist.bottom.buttons" template="Magento_Wishlist::button/bottom-buttons.phtml" cacheable="false">
