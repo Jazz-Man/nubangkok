@@ -9,7 +9,7 @@ $_career = $block->getCareer();
     <form class="form career-cv" action="<?= /* @escapeNotVerified */ $block->getFormAction(); ?>" id="career-cv-form" method="post" enctype="multipart/form-data" data-hasrequired="* Required Fields">
         <fieldset class="fieldset">
             <div class="field email">
-                <label class="label" for="email"><span><?= /* @escapeNotVerified */ __('To:'); ?></span></label>
+                <label class="label" for="email"><span><?= /* @escapeNotVerified */ __('To'); ?>:</span></label>
                 <div class="control">
                     <input name="recipient[email]" title="To" value="<?= /* @escapeNotVerified */ $_career->getRecipientEmail(); ?>"
                            class="input-text" type="email" disabled/>
@@ -28,14 +28,14 @@ $_career = $block->getCareer();
                            class="input-text customer-email" type="email" placeholder="<?= /* @escapeNotVerified */ __('Email'); ?>"/>
             </div>
             <div class="field files required">
-                <label class="label" for="field3"><span><?= /* @escapeNotVerified */ __('Attach File:'); ?></span></label>
+                <label class="label" for="field3"><span><?= /* @escapeNotVerified */ __('Attach File'); ?>:</span></label>
                     <input required="true" name="customer_cv" id="cv" title="cv" value="" class="input-text attach-file"
                            type="file" placeholder="<?= /* @escapeNotVerified */ __('Choose file'); ?>"/>
 
                     <input required="true" name="customer_photo" id="photo" title="photo" value="" class="input-text attach-photo"
                            type="file" placeholder="<?= /* @escapeNotVerified */ __('Choose photo'); ?>"/>
             </div>
-            <h2>MESSAGE:</h2>
+            <h2><?= __('Message'); ?>:</h2>
             <div class="field message required">
                     <input required="true" name="customer[message]" id="message" title="message" value=""
                            class="input-text " type="text"/>
@@ -45,7 +45,7 @@ $_career = $block->getCareer();
             <div class="primary">
                 <input type="hidden" name="hideit" id="hideit" value=""/>
                 <button type="submit" title="Submit" class="action submit ">
-                    <span><?= __('APPLY NOW'); ?></span>
+                    <span><?= __('Apply now'); ?></span>
                 </button>
             </div>
         </div>
