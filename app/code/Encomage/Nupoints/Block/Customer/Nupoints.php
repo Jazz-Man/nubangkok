@@ -41,11 +41,10 @@ class Nupoints extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * /**
      * @return mixed
      */
     public function getNupoints()
     {
-        return $this->getCurrentCustomer()->getNupointItem()->getNupoints();
+        return (int)$this->getCurrentCustomer()->getNupointItem()->getNupoints();
     }
 }
