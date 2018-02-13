@@ -14,4 +14,9 @@ class Shared extends \Magento\Catalog\Block\Product\View
     {
         return 'http://www.facebook.com/sharer/sharer.php?u=' . $this->getProduct()->getProductUrl();
     }
+
+    protected function _prepareLayout()
+    {
+        return $this;
+    }
 }

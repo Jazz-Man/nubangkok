@@ -4,8 +4,7 @@
 <form class="form create account form-create-account"
       action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>"
       method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
-    <?= /* @noEscape */
-    $block->getBlockHtml('formkey'); ?>
+    <?= $block->getBlockHtml('formkey'); ?>
     <fieldset class="fieldset create info">
         <h2>Create my account</h2>
         <legend class="legend"><span><?= $block->escapeHtml(__('Personal Information')) ?></span></legend>
@@ -51,12 +50,12 @@
             </div>
         </div>
 
-        <?php echo $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Name')
+        <?= $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Name')
             ->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
 
         <div class="field country required">
             <label for="country" class="label"><span>
-            <?php echo $block->escapeHtml(__('Country')) ?></span></label>
+            <?= __('Country') ?></span></label>
             <div class="control">
                 <?= $block->getCountryHtmlSelect() ?>
             </div>
@@ -83,25 +82,23 @@
             <div class="field choice specials_offers">
                 <label for="specials_offers" class="label">
                     <input type="checkbox" name="specials_offers"
-                           title="<?php /* @escapeNotVerified */
-                           echo __('I would like to receive specials offers') ?>"
+                           title="<?= __('I would like to receive specials offers') ?>"
                            id="specials_offers"
                            checked="checked" class="checkbox">
 
-                    <span></span><span><?php /* @escapeNotVerified */
-                        echo __('I would like to receive specials offers') ?></span>
+                    <span></span><span><?= __('I would like to receive specials offers') ?></span>
                 </label>
             </div>
             <div class="field choice tos">
                 <label for="tos" class="label">
                     <input type="checkbox" name="specials_offers"
-                           title="<?php /* @escapeNotVerified */
-                           echo __('I agree to the Terms od Service') ?>"
+                           title="<?= __('I agree to the Terms od Service') ?>"
                            id="tos"
                            class="checkbox">
 
-                    <span></span><span><?php /* @escapeNotVerified */
-                        echo __('I agree to the ') ?><a href="#" target="_blank"><?= __('Terms of Service');?></a></span>
+                    <span></span><span><?= __('I agree to the ') ?><a
+                                href="<?= $block->getUrl('terms-of-service'); ?>"
+                                target="_blank"><?= __('Terms of Service'); ?></a></span>
                 </label>
             </div>
         </div>
@@ -113,8 +110,8 @@
             <button type="submit" class="action submit primary"
                     id="form-register-button"
                     disabled
-                    title="<?= $block->escapeHtmlAttr(__('Create an Account')) ?>">
-                <span><?= $block->escapeHtml(__('Create an Account')) ?></span></button>
+                    title="<?= __('Create an Account') ?>">
+                <span><?= __('Create an Account') ?></span></button>
         </div>
     </div>
 </form>

@@ -22,15 +22,21 @@ use Magento\Framework\UrlFactory;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\ObjectManager;
-class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
+use Magento\Customer\Api\AddressRepositoryInterface;
+use Magento\Customer\Api\Data\AddressInterfaceFactory as CustomerAddressFactory;
+
+class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
 {
     private $cookieMetadataFactory;
 
     private $cookieMetadataManager;
 
-    private $accountRedirect;
+    private $addressFactory;
+
+    private $addressRepository;
 
     protected $formKeyValidator;
+
 
     public function __construct(
         Context $context,
@@ -51,7 +57,10 @@ class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
         CustomerExtractor $customerExtractor,
         DataObjectHelper $dataObjectHelper,
         AccountRedirect $accountRedirect,
-        Validator $formKeyValidator = null)
+        Validator $formKeyValidator = null,
+        CustomerAddressFactory $addressFactory,
+        AddressRepositoryInterface $addressRepository
+    )
     {
         $this->formKeyValidator = $formKeyValidator ?: ObjectManager::getInstance()->get(Validator::class);
         parent::__construct(
@@ -73,7 +82,10 @@ class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
             $customerExtractor,
             $dataObjectHelper,
             $accountRedirect
-            );
+        );
+
+        $this->addressFactory = $addressFactory;
+        $this->addressRepository = $addressRepository;
     }
 
     private function getCookieManager()
@@ -113,7 +125,7 @@ class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
 
             $password = $this->getRequest()->getParam('password');
             $confirmation = $this->getRequest()->getParam('password_confirmation');
-            $redirectUrl =$this->urlModel->getUrl('/');
+            $redirectUrl = $this->urlModel->getUrl('/');
 
             $this->checkPasswordConfirmation($password, $confirmation);
 
@@ -142,8 +154,10 @@ class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
                 $resultRedirect->setUrl($this->_redirect->success($url));
             } else {
                 $this->session->setCustomerDataAsLoggedIn($customer);
+
+                $this->addDefaultBillingAddress($customer->getId(), $this->getRequest()->getParams());
                 $this->messageManager->addSuccess($this->getSuccessMessage());
-                $requestedRedirect = $redirectUrl =$this->urlModel->getUrl('/');
+                $requestedRedirect = $redirectUrl = $this->urlModel->getUrl('/');
                 $resultRedirect->setUrl($this->_redirect->success($requestedRedirect));
                 return $resultRedirect;
             }
@@ -202,7 +216,29 @@ class LoginPost extends \Magento\Customer\Controller\Account\CreatePost
                     $this->urlModel->getUrl('customer/address/edit')
                 );
             }
-        } else {$message = __('Account created. Welcome to UPBangkok!');}
+        } else {
+            $message = __('Account created. Welcome to UPBangkok!');
+        }
         return $message;
+    }
+
+
+    protected function addDefaultBillingAddress($id, $request)
+    {
+        $address = $this->addressFactory->create();
+        $address->setCustomerId($id)
+            ->setFirstname($request['firstname'])
+            ->setLastname($request['lastname'])
+            ->setCountryId($request['country_id'])
+            ->setPostcode('10110')
+            ->setStreet(['street'])
+            ->setCity('bangkok')
+            ->setTelephone($request['telephone'])
+            ->setIsDefaultBilling(true);
+        try {
+            $this->addressRepository->save($address);
+        } catch (LocalizedException $e) {
+            $this->messageManager->addException($e, __($e->getMessage()));
+        }
     }
 }
