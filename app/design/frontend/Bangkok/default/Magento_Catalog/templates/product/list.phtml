@@ -63,7 +63,12 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
                                 <?= /* @escapeNotVerified */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
                         </strong>
-                        <?= /* @escapeNotVerified */ $block->getProductPrice($_product) ?>
+                        <div class="product-price-row">
+                            <?= $block->getProductPrice($_product) ?>
+                            <?php if ($_product->getClearance()): ?>
+                                <div class="clearance-att"><?= __('Clearance'); ?></div>
+                            <?php endif; ?>
+                        </div>
                         <?= $block->getProductDetailsHtml($_product) ?>
                     </div>
                 </div>
