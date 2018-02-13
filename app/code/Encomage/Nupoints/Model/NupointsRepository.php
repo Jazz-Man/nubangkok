@@ -104,15 +104,14 @@ class NupointsRepository implements NupointsRepositoryInterface
 
     /**
      * @param $customerId
-     * @return Nupoints|mixed
-     * @throws NoSuchEntityException
+     * @return mixed
      */
     public function getByCustomerId($customerId)
     {
         $nupoint = $this->nupointsFactory->create();
         $this->resource->load($nupoint, $customerId, 'customer_id');
         if (!$nupoint->getId()) {
-            throw new NoSuchEntityException(__('Item for customer does not exist.'));
+           $nupoint->setCustomerId($customerId);
         }
         return $nupoint;
     }
