@@ -264,6 +264,10 @@
   }
 
   $.fn.sticky = function(method) {
+      //TODO: Need fix it;
+      if($(this).hasClass('cart-summary')){
+          return;
+      }
     if (methods[method]) {
       return methods[method].apply(this, slice.call(arguments, 1));
     } else if (typeof method === 'object' || !method ) {
