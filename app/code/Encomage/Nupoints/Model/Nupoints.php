@@ -11,21 +11,60 @@ use Magento\Framework\Model\AbstractModel;
  */
 class Nupoints extends AbstractModel implements NupointsInterface
 {
+    protected $_nuPointsToMoneyRates = [];
+
     /**
      * Class construct.
      */
     protected function _construct()
     {
         $this->_init(\Encomage\Nupoints\Model\ResourceModel\Nupoints::class);
+        $this->_nuPointsToMoneyRates[50] = ['from' => 3000, 'to' => 3999];
+        $this->_nuPointsToMoneyRates[100] = ['from' => 4000, 'to' => 4999];
+        $this->_nuPointsToMoneyRates[150] = ['from' => 5000];
+
     }
 
     /**
      * @param $baht
      * @return float|int
      */
-    public function convertMoneyToNupoints($baht)
+    public function getConvertedMoneyToNupoints($baht)
     {
         return (floor($baht / 100)) * 100;
+    }
+
+    public function getConvertedNupointsToMoney($nuPoints = null)
+    {
+        if ($nuPoints === null) {
+            $nuPoints = $this->getNupoints();
+        }
+        $money = 0;
+        foreach ($this->_nuPointsToMoneyRates as $coast => $rate) {
+            if (isset($rate['to'])) {
+                if ($nuPoints >= $rate['from'] && $nuPoints <= $rate['to']) {
+                    return $coast;
+                }
+            } else {
+                if ($nuPoints >= $rate['from']) {
+                    return $coast;
+                }
+            }
+        }
+        return $money;
+    }
+
+    public function redeemNupoints()
+    {
+        $convertedToMoney = $this->getConvertedNupointsToMoney();
+        if ($convertedToMoney) {
+            $redeemed = $this->_nuPointsToMoneyRates[$convertedToMoney];
+            if ($this->getNupoints() < $redeemed) {
+                //TODO:: Throw exception;
+            }
+            $this->setNupoints((int)$this->getNupoints() - (int)$redeemed);
+        }
+        return $this;
     }
 
     /**
@@ -36,7 +75,7 @@ class Nupoints extends AbstractModel implements NupointsInterface
     public function addNupoints($value, $isConvert = false)
     {
         if ($isConvert) {
-            $value = $this->convertMoneyToNupoints($value);
+            $value = $this->getConvertedMoneyToNupoints($value);
         }
         return $this->setNupoints((int)$this->getNupoints() + (int)$value);
     }
@@ -62,7 +101,7 @@ class Nupoints extends AbstractModel implements NupointsInterface
      */
     public function getNupoints()
     {
-        return $this->_getData(self::NUPOINTS_VALUE);
+        return (int)$this->_getData(self::NUPOINTS_VALUE);
     }
 
     /**

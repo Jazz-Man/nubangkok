@@ -1,16 +1,18 @@
 define([
     'jquery',
     'Magento_Checkout/js/view/summary/abstract-total',
-    'Magento_Checkout/js/model/quote'
-], function ($, Component, quote) {
+    'Magento_Checkout/js/model/quote',
+    'Magento_Customer/js/customer-data'
+], function ($, Component, quote, customerData) {
     'use strict';
 
     return Component.extend({
 
-        getCustomerRedeem: function () {
-            return this.getFormattedPrice(1000);
+        getCustomerNupoints: function () {
+            var customerNupoints = customerData.get('nupoints');
+            //return this.getFormattedPrice(customerNupoints().value);
+            return customerNupoints().value;
         },
-
 
         getDiscountValue: function () {
             var totals = quote.getTotals()();
