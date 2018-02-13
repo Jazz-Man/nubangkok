@@ -2,6 +2,8 @@
 
 namespace Encomage\Customer\Controller\Account;
 
+use Magento\Customer\Helper\Address;
+
 class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
 {
 
