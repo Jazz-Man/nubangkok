@@ -1,5 +1,8 @@
 <?php
-/** @var \Magento\Customer\Block\Account\Dashboard\Info $block */
+/** @var \Encomage\Customer\Block\Account\Dashboard\Info $block */
+
+/** @var \Encomage\Customer\Model\Data\Customer $customer */
+$customer = $block->getCustomer();
 ?>
 <div class="block block-dashboard-info">
     <div class="block-content">
@@ -9,14 +12,14 @@
             </strong>
             <div class="box-content">
                 <p>
-                    <span><?= __('Name') ?></span><?= $block->getName() ?><br>
-                    <span><?= __('Lastname') ?></span><?= $block->getLastname()?><br>
-                    <span><?= __('Email') ?></span><?= $block->getEmail() ?><br>
+                    <span><?= __('Name') ?></span><?= $customer->getFirstname() ?><br>
+                    <span><?= __('Lastname') ?></span><?= $customer->getLastname()?><br>
+                    <span><?= __('Email') ?></span><?= $customer->getEmail() ?><br>
                     <span><?= __('Country') ?></span><?=__($block->getCountryName())?><br>
-                    <span><?= __('Mobile') ?></span><?=$block->getTelephone()?><br>
-                    <span><?= __('Line Id') ?></span><?=$block->getLineId()?><br>
-                    <span><?= __('Date of Birth') ?></span><?= $block->getDob() ?><br>
-                    <span><?= __('Gender') ?></span><?= __($block->getGender())?><br>
+                    <span><?= __('Mobile') ?></span><?= $block->getTelephone()?><br>
+                    <span><?= __('Line Id') ?></span><?=$customer->getLineId()?><br>
+                    <span><?= __('Date of Birth') ?></span><?= $customer->getDob() ?><br>
+                    <span><?= __('Gender') ?></span><?= __($customer->getGenderLabel())?><br>
                 </p>
             </div>
             <div class="box-actions">

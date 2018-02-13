@@ -2,7 +2,7 @@
 
 namespace Encomage\Customer\Block\Account\Dashboard;
 
-class Information extends \Magento\Customer\Block\Account\Dashboard\Info
+class Info extends \Magento\Customer\Block\Account\Dashboard\Info
 {
     /**
      * @var \Magento\Customer\Helper\Session\CurrentCustomerAddress
@@ -43,46 +43,6 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
     }
 
     /**
-     * @return string
-     */
-    public function getLastname()
-    {
-        return $this->getCustomer()->getLastname();
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getCustomer()->getFirstname();
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->getCustomer()->getEmail();
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getDob()
-    {
-        return $this->getCustomer()->getDob();
-    }
-
-    /**
-     * @return mixed|null
-     */
-    public function getLineId()
-    {
-       return $this->getCustomer()->getLineId();
-    }
-
-    /**
      * @return null|string
      */
     public function getCountryName()
@@ -95,21 +55,13 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
         return $countryId;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getGender()
-    {
-      return $this->getCustomer()->getGenderLabel();
-    }
 
     /**
      * @return null|string
      */
     public function getTelephone()
     {
-        $telephone = $this->getBillingAddress() ? $this->getBillingAddress()->getTelephone() : null;
-        return $telephone;
+        return $this->getBillingAddress() ? $this->getBillingAddress()->getTelephone() : null;
     }
 
     /**
