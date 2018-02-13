@@ -15,6 +15,11 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
     private $_countryFactory;
 
     /**
+     * @var \Encomage\Customer\Model\CustomerInfo
+     */
+    private $_customerInfo;
+
+    /**
      * Information constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Customer\Helper\Session\CurrentCustomer $currentCustomer
@@ -23,6 +28,7 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
      * @param array $data
      */
     public function __construct(
+        \Encomage\Customer\Model\CustomerInfo $customerInfo,
         \Magento\Customer\Helper\Session\CurrentCustomerAddress $currentCustomerAddress,
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Customer\Helper\Session\CurrentCustomer $currentCustomer,
@@ -38,6 +44,7 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
             $data);
         $this->currentCustomerAddress = $currentCustomerAddress;
         $this->_countryFactory = $countryFactory;
+        $this->_customerInfo =$customerInfo;
     }
 
     /**
@@ -73,19 +80,11 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
     }
 
     /**
-     * @return array|mixed
+     * @return mixed|null
      */
     public function getLineId()
     {
-        $attr = $this->getCustomer()->getCustomAttributes();
-        if ($attr) {
-            $lineId = [];
-            foreach ($attr as $item) {
-                $lineId = $item->getValue();
-            };
-            return $lineId;
-        }
-        return null;
+       return $this->_customerInfo->getLineId();
     }
 
     /**
@@ -106,18 +105,7 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
      */
     public function getGender()
     {
-        $genderCodeId = $this->getCustomer()->getGender();
-        if ($genderCodeId) {
-            switch ((int)$genderCodeId) {
-                case 1:
-                    return "Male";
-                case 2:
-                    return "Female";
-                case 3:
-                    return "Not Specified";
-            }
-        }
-        return null;
+      return $this->_customerInfo->getGender();
     }
 
     /**

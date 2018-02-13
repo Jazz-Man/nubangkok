@@ -22,8 +22,8 @@ use Magento\Framework\UrlFactory;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\ObjectManager;
-use Magento\Customer\Model\AddressFactory;
 use Magento\Customer\Api\AddressRepositoryInterface;
+use Magento\Customer\Api\Data\AddressInterfaceFactory as CustomerAddressFactory;
 
 class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
 {
@@ -58,7 +58,7 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
         DataObjectHelper $dataObjectHelper,
         AccountRedirect $accountRedirect,
         Validator $formKeyValidator = null,
-        AddressFactory $addressFactory,
+        CustomerAddressFactory $addressFactory,
         AddressRepositoryInterface $addressRepository
     )
     {
@@ -231,8 +231,10 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
             ->setLastname($request['lastname'])
             ->setCountryId($request['country_id'])
             ->setPostcode('10110')
+            ->setStreet(['street'])
+            ->setCity('bangkok')
             ->setTelephone($request['telephone'])
-            ->setIsDefaultBilling('1');
+            ->setIsDefaultBilling(true);
         try {
             $this->addressRepository->save($address);
         } catch (LocalizedException $e) {
