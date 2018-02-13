@@ -3,14 +3,14 @@
 ?>
 <h1>MY nuPOINTS</h1>
 <p>Rewards information</p>
-<p><?= sprintf(__('Your balance is %s nuPoints'), $block->getNupoints()); ?></p>
+<p><?= sprintf(__('Your balance is %s nuPoints'), '<span class="js-my-nupoints"></span>'); ?></p>
 <div data-mage-init='{"accordion":{
 "openedState": "active",
 "collapsible": true,
 "active": false,
 "multipleCollapsible": true}}'>
     <div style="width: 50%;float: left" href="#" data-role="collapsible">
-        <?php echo __('my nu ?') ?>
+        <?= __('my nu ?') ?>
     </div>
     <div data-role="content">
         After your first purchase, you will automatically
@@ -24,7 +24,7 @@
 "active": false,
 "multipleCollapsible": true}}'>
     <div style="width: 50%;float: right" href="#" data-role="collapsible">
-        <?php echo __('my nu Gold ?') ?>
+        <?= __('my nu Gold ?') ?>
     </div>
     <div data-role="content">
         When you have 12.000 pts in your balance, you will
@@ -77,3 +77,11 @@
         <?= $block->escapeHtml(__('Back')) ?></span>
     </a>
 </div>
+
+<script type="text/x-magento-init">
+        {
+            ".js-my-nupoints": {
+                "Encomage_Nupoints/js/customer/my-nupoints": {}
+            }
+        }
+</script>

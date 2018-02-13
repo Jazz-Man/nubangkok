@@ -11,7 +11,7 @@
                                     <item name="component"  xsi:type="string">Encomage_Nupoints/js/view/cart/totals/redeem</item>
                                     <item name="config" xsi:type="array">
                                         <item name="title" xsi:type="string" translate="true">Redeem</item>
-                                        <item name="ajaxUrl" xsi:type="url" path="redeem/cart/redeemAjax"/>
+                                        <item name="ajaxUrl" xsi:type="url" path="nupoints/cart/redeemAjax"/>
                                         <item name="template" xsi:type="string">Encomage_Nupoints/cart/totals/redeem</item>
                                     </item>
                                 </item>
