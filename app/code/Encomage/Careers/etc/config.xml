@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <careers_email_settings>
+            <email>
+                <career_send_email>careers_email_settings_email_career_send_email</career_send_email>
+            </email>
+        </careers_email_settings>
+    </default>
+</config>

@@ -15,20 +15,16 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
     private $_countryFactory;
 
     /**
-     * @var \Encomage\Customer\Model\CustomerInfo
-     */
-    private $_customerInfo;
-
-    /**
      * Information constructor.
+     * @param \Magento\Customer\Helper\Session\CurrentCustomerAddress $currentCustomerAddress
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Customer\Helper\Session\CurrentCustomer $currentCustomer
      * @param \Magento\Newsletter\Model\SubscriberFactory $subscriberFactory
      * @param \Magento\Customer\Helper\View $helperView
+     * @param \Magento\Directory\Model\CountryFactory $countryFactory
      * @param array $data
      */
     public function __construct(
-        \Encomage\Customer\Model\CustomerInfo $customerInfo,
         \Magento\Customer\Helper\Session\CurrentCustomerAddress $currentCustomerAddress,
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Customer\Helper\Session\CurrentCustomer $currentCustomer,
@@ -44,7 +40,6 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
             $data);
         $this->currentCustomerAddress = $currentCustomerAddress;
         $this->_countryFactory = $countryFactory;
-        $this->_customerInfo =$customerInfo;
     }
 
     /**
@@ -84,7 +79,7 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
      */
     public function getLineId()
     {
-       return $this->_customerInfo->getLineId();
+       return $this->getCustomer()->getLineId();
     }
 
     /**
@@ -105,7 +100,7 @@ class Information extends \Magento\Customer\Block\Account\Dashboard\Info
      */
     public function getGender()
     {
-      return $this->_customerInfo->getGender();
+      return $this->getCustomer()->getGenderLabel();
     }
 
     /**
