@@ -2,7 +2,7 @@
 
 namespace Encomage\Wishlist\Block\Customer\Wishlist\Item;
 
-class OptionsColor extends \Encomage\Wishlist\Block\Customer\Wishlist\Item\Options{
+class OptionsColor extends \Magento\Wishlist\Block\Customer\Wishlist\Item\Options{
 
     /**
      * @return array
