@@ -62,13 +62,13 @@ class SendEmail extends Action\Action
             $this->inlineTranslation->suspend();
             $senderData = $this->_careers->validatedParams();
             $this->_careers->sendMail($senderData, $recipientData, $file, $image);
-            $this->messageManager->addSuccess(
+            $this->messageManager->addSuccessMessage(
                 __('Thanks for contacting us with your comments and questions. We\'ll respond to you very soon.')
             );
             $this->_redirect('*/listing/');
         } catch (\Exception $e) {
             $this->inlineTranslation->resume();
-            $this->messageManager->addError(
+            $this->messageManager->addErrorMessage(
                 __('We can\'t process your request right now. Sorry, that\'s all we know.' . $e->getMessage())
             );
             $this->_redirect('*/listing/');
