@@ -31,7 +31,7 @@
         <referenceBlock name="reviews.tab" remove="true"/>
         <referenceBlock name="review_view" remove="true"/>
         <referenceBlock name="product.info.options.wrapper.bottom">
-            <block class="Magento\Framework\View\Element\Template" name="message.box" as="message_box" template="Magento_Catalog::product/view/message_box.phtml" before="product.info.addtocart.additional"/>
+            <block class="Encomage\Catalog\Block\Product\View\QuestionAboutSize" name="message.box" as="message_box" template="Magento_Catalog::product/view/message_box.phtml" before="product.info.addtocart.additional"/>
             <block class="Magento\Framework\View\Element\Template" name="product.stock.items.qty" as="product_stock_items_qty" template="Magento_Catalog::product/view/items_qty.phtml" before="message.box"/>
         </referenceBlock>
         <referenceBlock name="product.info.stock.sku" remove="true" />

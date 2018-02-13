@@ -1,0 +1,10 @@
+<tr class="totals redeem excl">
+    <th class="mark" colspan="1" scope="row" data-bind="text: title"></th>
+    <td class="input">
+        <span data-bind="text: getCustomerRedeem()"></span>
+        <button type="button" data-bind="click: applyRedeem"><span data-bind="text: $t('Redeem')"></span></button>
+    </td>
+    <td class="amount">
+        <span class="price" data-bind="text: getValue()"></span>
+    </td>
+</tr>

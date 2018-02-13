@@ -1,0 +1,17 @@
+<?php
+/**
+ * @var $block Encomage\Careers\Block\Listing;
+ */
+$_collection = $block->getCareersCollection();
+?>
+<div class="careers-listing-content">
+    <?= $block->getVideoCmsBlock(); ?>
+    <?= $block->getImageCmsBlock(); ?>
+    <p><?= /** @escapeNotVerified */ __('Available position'); ?>:</p>
+    <?php foreach ($_collection as $item) : ?>
+        <?php if ($item->getStatus() == 1) : ?>
+            <?= __($item->getTitle()); ?>
+            <a href="<?= $block->escapeUrl($block->getUrlView($item->getId())); ?>"><?= /** @escapeNotVerified */ __('more'); ?></a> <br/>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</div>

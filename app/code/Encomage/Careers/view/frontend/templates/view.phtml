@@ -1,0 +1,20 @@
+<?php
+/**
+ * @var $block Encomage\Careers\Block\View;
+ */
+$_career = $block->getCareer();
+?>
+<div class="careers-view-content">
+    <div class="description-container">
+        
+    </div>
+    <div class="short-description-container">
+        <p class="short-description-title"><?= /* @escapeNotVerified */ __('About the role ') . $_career->getTitle(); ?></p>
+        <p class="short-description"><?= $block->escapeHtml($_career->getAboutDescription()); ?></p>
+    </div>
+    <div class="skills-container">
+        <p class="skills-title"><?= /* @escapeNotVerified */ __('Skills & Experience'); ?></p>
+        <p class="skills"><?= /* @escapeNotVerified */ $_career->getSkills(); ?></p>
+    </div>
+    <?= $block->getChildHtml('careers_view_form'); ?>
+</div>
