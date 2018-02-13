@@ -1,0 +1,10 @@
+<?php
+/* @var \Encomage\Wishlist\Block\Customer\Wishlist\Item\Options $block */
+?>
+<?php $option = $block->getSizes(); ?>
+<?php if ($option): ?>
+    <div class="wrapper size">
+        <div class="label"><?= $block->escapeHtml(__($option['label'])) ?></div>
+        <div class="values"><?=$block->escapeHtml($option['value']) ?></div>
+    </div>
+<?php endif ?>

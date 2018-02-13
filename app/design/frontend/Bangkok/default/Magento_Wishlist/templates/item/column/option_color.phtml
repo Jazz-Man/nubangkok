@@ -1,0 +1,10 @@
+<?php
+/* @var \Encomage\Wishlist\Block\Customer\Wishlist\Item\OptionsColor $block */
+?>
+<?php $option = $block->getColors(); ?>
+<?php if ($option): ?>
+    <div class="wrapper color">
+        <div class="label"><?= $block->escapeHtml(__($option['label'])) ?></div>
+        <div class="values"><?=$block->escapeHtml(__($option['value'])) ?></div>
+    </div>
+<?php endif ?>
