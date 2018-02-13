@@ -1,0 +1,20 @@
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+?>
+
+<a href="<?= $block->escapeUrl($block->getUrl('sales/order/history', ['_secure' => true])); ?>"><?php echo __('My orders') ?></a>
+<a href="<?= $block->escapeUrl($block->getUrl('redeem', ['_secure' => true])); ?>"><?php echo __('My UPPoints') ?></a>
+<a href="<?= $block->escapeUrl($block->getUrl('wishlist', ['_secure' => true])); ?>"><?php echo __('My wishlist') ?></a>
+<div data-mage-init='{"accordion":{
+"openedState": "active",
+"collapsible": true,
+"active": false,
+"multipleCollapsible": true}}'>
+    <span href="#" data-role="collapsible">
+        <?php echo __('My account details ') ?>
+    </span>
+    <div data-role="content">
+        <?= $block->getChildHtml('customer_account_dashboard_information') ?>
+        <?= $block->getChildHtml('customer_account_dashboard_addresses') ?>
+    </div>
+</div>
