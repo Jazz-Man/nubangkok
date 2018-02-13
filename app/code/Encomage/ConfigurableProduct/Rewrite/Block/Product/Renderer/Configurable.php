@@ -19,7 +19,8 @@ class Configurable extends \Magento\Swatches\Block\Product\Renderer\Configurable
 {
 
     protected $_localeFormat;
-    protected $_stockItemRepository;
+    protected $_stockRegistry;
+
     public function __construct(
         Context $context,
         ArrayUtils $arrayUtils,
@@ -33,12 +34,12 @@ class Configurable extends \Magento\Swatches\Block\Product\Renderer\Configurable
         Media $swatchMediaHelper,
         array $data = [],
         SwatchAttributesProvider $swatchAttributesProvider = null,
-        \Magento\CatalogInventory\Model\Stock\StockItemRepository $stockItemRepository,
+        \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
         Format $localeFormat
     )
     {
         $this->_localeFormat = $localeFormat;
-        $this->_stockItemRepository = $stockItemRepository;
+        $this->_stockRegistry = $stockRegistry;
         parent::__construct($context, $arrayUtils, $jsonEncoder, $helper, $catalogProduct, $currentCustomer, $priceCurrency, $configurableAttributeData, $swatchHelper, $swatchMediaHelper, $data, $swatchAttributesProvider);
     }
 
@@ -91,9 +92,10 @@ class Configurable extends \Magento\Swatches\Block\Product\Renderer\Configurable
         $allProducts = $this->getProduct()->getTypeInstance()->getUsedProducts($this->getProduct(), null);
         foreach ($allProducts as $product) {
             if ($product->isSaleable()) {
+                $stockItem = $this->_stockRegistry->getStockItem($product->getId());
                 $item[$product->getColor()]['size'] = $product->getSize();
-                $item[$product->getColor()]['stock'] = $this->_stockItemRepository->get($product->getID())->getIsInStock();
-                $item[$product->getColor()]['qty'] = $this->_stockItemRepository->get($product->getID())->getQty();
+                $item[$product->getColor()]['stock'] = $stockItem->getIsInStock();
+                $item[$product->getColor()]['qty'] = $stockItem->getQty();
                 $stockStatus[] = $item;
                 unset ($item);
             }
