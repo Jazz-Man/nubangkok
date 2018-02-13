@@ -5,7 +5,7 @@
     color: #6e2f91;
 }
 
-.violet-link:hover, .violet-link:active, .violet-link:focus {
+.violet-link:hover, .violet-link:active, .violet-link:focus, .violet-link:visited {
     color: #582574;
 }
 
@@ -195,18 +195,18 @@
 /** Customer Care */
 /** ------------------------------ */
 
-.cms-customer-care. cms-heading {
+.cms-customer-care .cms-heading {
     font-size: 30px;
     text-transform: uppercase;
     text-align: center;
     margin-bottom: 0;
     font-weight: 400;
 }
-.cms-customer-care. cms-heading-line {
+.cms-customer-care .cms-heading-line {
     border-top: 1px solid #55463e;
     opacity: 0.6;
 }
-.cms-customer-care. accordion-container {
+.cms-customer-care .accordion-container {
     position: relative;
 }
 .cms-customer-care .accordion {
