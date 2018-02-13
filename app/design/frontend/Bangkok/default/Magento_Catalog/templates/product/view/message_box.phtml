@@ -1,11 +1,9 @@
 <?php
-/** @var $block \Magento\Framework\View\Element\Template */
+/** @var $block \Encomage\Catalog\Block\Product\View\QuestionAboutSize */
 
-/** @var \Magento\Catalog\Model\Product $product */
-$product = $block->getParentBlock()->getProduct();
 ?>
-<?php if ((bool)$product->getAskAboutShoeSize()): ?>
-    <div class="message js-message" style="display:none;">
+<?php if ($block->isShowQuestion()): ?>
+    <div class="message js-message" <?= ($block->getProduct()->getTypeId() == 'configurable') ? 'style="display:none;"' : ''; ?>>
         <p><?php echo __('Have you worn these shoes before?'); ?></p>
         <div class="radio-box">
             <label for="yes">
