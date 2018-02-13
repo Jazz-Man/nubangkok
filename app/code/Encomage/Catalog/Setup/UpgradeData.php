@@ -22,7 +22,7 @@ class UpgradeData implements UpgradeDataInterface
 
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        if (version_compare($context->getVersion(), '0.0.2','<')) {
+        if (version_compare($context->getVersion(), '0.0.2', '<')) {
             $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
             $eavSetup->addAttribute(
                 \Magento\Catalog\Model\Product::ENTITY,
@@ -99,5 +99,15 @@ class UpgradeData implements UpgradeDataInterface
                 ]
             );
         }
+
+        if (version_compare($context->getVersion(), '0.0.5', '<')) {
+            $this->removeDuplicateAtt();
+        }
+    }
+
+    private function removeDuplicateAtt()
+    {
+        $eavSetup = $this->eavSetupFactory->create();
+        $eavSetup->removeAttribute(\Magento\Catalog\Model\Product::ENTITY, 'worn_these_shoes_before');
     }
 }
