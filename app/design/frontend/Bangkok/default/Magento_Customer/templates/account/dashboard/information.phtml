@@ -1,3 +1,4 @@
+<h2 class="mobile-my-account-title">My account</h2>
 <a href="<?php echo $block->escapeUrl($block->getUrl('sales/order/history', ['_secure' => true])); ?>"><?php echo __('My orders') ?></a>
 <a href="<?php echo $block->escapeUrl($block->getUrl('updpoints', ['_secure' => true])); ?>"><?php echo __('My UPPoints') ?></a>
 <a href="<?php echo $block->escapeUrl($block->getUrl('wishlist', ['_secure' => true])); ?>"><?php echo __('My wishlist') ?></a>
@@ -6,8 +7,8 @@
 "collapsible": true,
 "active": false,
 "multipleCollapsible": true}}'>
-    <span href="#" data-role="collapsible">
-        <?php echo __('My account details ') ?>
+    <span href="#" data-role="collapsible" class="open-account-details">
+        <?php echo __('My account details (Edit)') ?>
     </span>
     <div data-role="content">
         <?= $block->getChildHtml('customer_account_dashboard_information') ?>

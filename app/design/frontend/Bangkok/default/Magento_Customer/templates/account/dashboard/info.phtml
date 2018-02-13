@@ -4,28 +4,44 @@
 <div class="block block-dashboard-info">
     <div class="block-content">
         <div class="box box-information">
-            <strong class="box-title">
-                <span><?= $block->escapeHtml(__('Contact Information')) ?></span>
-            </strong>
+<!--            <strong class="box-title">-->
+<!--                <span>--><?php //echo $block->escapeHtml(__('Contact Information')) ?><!--</span>-->
+<!--            </strong>-->
             <div class="box-content">
-                <p>
-                    <span><?php echo __('Name') ?></span><?= $block->getName() ?><br>
-                    <span><?php echo __('Lastname') ?></span><?= $block->getLastname()?><br>
-                    <span><?php echo __('Email') ?></span><?= $block->getEmail() ?><br>
-                    <span><?php echo __('Country') ?></span><?=__($block->getCountryName())?><br>
-                    <span><?php echo __('Mobile') ?></span><?=$block->getTelephone()?><br>
-                    <span><?php echo __('Line Id') ?></span><?=$block->getLineId()?><br>
-                    <span><?php echo __('Date of Birth') ?></span><?= $block->getDob() ?><br>
-                    <span><?php echo __('Gender') ?></span><?= __($block->getGender())?><br>
-                </p>
-            </div>
-            <div class="box-actions">
-                <a class="action edit" href="<?= $block->escapeUrl($block->getUrl('customer/account/edit')) ?>">
-                    <span><?= $block->escapeHtml(__('Edit')) ?></span>
-                </a>
-                <a href="<?= $block->escapeUrl($block->getChangePasswordUrl()) ?>" class="action change-password">
-                    <?= $block->escapeHtml(__('Change Password')) ?>
-                </a>
+                <table>
+                    <tr>
+                        <th><?= __('First Name') ?></th>
+                        <td><?= $block->getName() ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Lastname') ?></th>
+                        <td><?= $block->getLastname() ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Email') ?></th>
+                        <td><?= $block->getEmail() ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Country') ?></th>
+                        <td><?= __($block->getCountryName()) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Mobile') ?></th>
+                        <td><?= $block->getTelephone() ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Line Id') ?></th>
+                        <td><?= $block->getLineId() ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Date of Birth') ?></th>
+                        <td><?= $block->getDob() ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Gender') ?></th>
+                        <td><?= __($block->getGender()) ?></td>
+                    </tr>
+                </table>
             </div>
         </div>
         <?php if ($block->isNewsletterEnabled()): ?>
@@ -49,5 +65,13 @@
                 </div>
             </div>
         <?php endif; ?>
+    </div>
+    <div class="box-actions">
+        <a class="action edit" href="<?= $block->escapeUrl($block->getUrl('customer/account/edit')) ?>">
+            <span><?= $block->escapeHtml(__('Edit Profile')) ?></span>
+        </a>
+        <!--                <a href="--><?php //echo $block->escapeUrl($block->getChangePasswordUrl()) ?><!--" class="action change-password">-->
+        <!--                    --><?php //echo $block->escapeHtml(__('Change Password')) ?>
+        <!--                </a>-->
     </div>
 </div>

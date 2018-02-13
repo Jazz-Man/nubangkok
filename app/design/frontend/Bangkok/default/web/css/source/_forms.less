@@ -176,6 +176,50 @@
     }
   }
 
+  .checkbox-block {
+    width: 100%;
+    display: inline-block;
+    margin-top: 30px;
+    position: relative;
+    label[for=specials_offers] {
+      position: relative;
+      span:last-of-type {
+        padding-left: 3%;
+      }
+      span:first-of-type {
+        position: absolute;
+        width: 21px;
+        height: 21px;
+        left: -4px;
+        top: -1px;
+        background: @icon-choose-box no-repeat;
+      }
+    }
+    label[for=tos] {
+      position: relative;
+      span:last-of-type {
+        padding-left: 3%;
+      }
+      span:first-of-type {
+        position: absolute;
+        width: 21px;
+        height: 21px;
+        left: -4px;
+        top: -1px;
+        background: @icon-choose-box no-repeat;
+      }
+    }
+    input[type='checkbox'] {
+      opacity: 0;
+      &:checked + span:first-of-type {
+        background: @icon-choose-chd no-repeat;
+      }
+    }
+    .field.choice.tos {
+      margin-top: 25px;
+    }
+  }
+
   .form.create.account.form-create-account .create.info {
 
     h2 {
@@ -268,49 +312,49 @@
 
     }
 
-    .checkbox-block {
-      width: 100%;
-      display: inline-block;
-      margin-top: 30px;
-      position: relative;
-      label[for=specials_offers] {
-        position: relative;
-        span:last-of-type {
-          padding-left: 3%;
-        }
-        span:first-of-type {
-          position: absolute;
-          width: 21px;
-          height: 21px;
-          left: -4px;
-          top: -1px;
-          background: @icon-choose-box no-repeat;
-        }
-      }
-      label[for=tos] {
-        position: relative;
-        span:last-of-type {
-          padding-left: 3%;
-        }
-        span:first-of-type {
-          position: absolute;
-          width: 21px;
-          height: 21px;
-          left: -4px;
-          top: -1px;
-          background: @icon-choose-box no-repeat;
-        }
-      }
-      input[type='checkbox'] {
-        opacity: 0;
-        &:checked + span:first-of-type {
-          background: @icon-choose-chd no-repeat;
-        }
-      }
-      .field.choice.tos {
-        margin-top: 25px;
-      }
-    }
+    //.checkbox-block {
+    //  width: 100%;
+    //  display: inline-block;
+    //  margin-top: 30px;
+    //  position: relative;
+    //  label[for=specials_offers] {
+    //    position: relative;
+    //    span:last-of-type {
+    //      padding-left: 3%;
+    //    }
+    //    span:first-of-type {
+    //      position: absolute;
+    //      width: 21px;
+    //      height: 21px;
+    //      left: -4px;
+    //      top: -1px;
+    //      background: @icon-choose-box no-repeat;
+    //    }
+    //  }
+    //  label[for=tos] {
+    //    position: relative;
+    //    span:last-of-type {
+    //      padding-left: 3%;
+    //    }
+    //    span:first-of-type {
+    //      position: absolute;
+    //      width: 21px;
+    //      height: 21px;
+    //      left: -4px;
+    //      top: -1px;
+    //      background: @icon-choose-box no-repeat;
+    //    }
+    //  }
+    //  input[type='checkbox'] {
+    //    opacity: 0;
+    //    &:checked + span:first-of-type {
+    //      background: @icon-choose-chd no-repeat;
+    //    }
+    //  }
+    //  .field.choice.tos {
+    //    margin-top: 25px;
+    //  }
+    //}
   }
   .account-right-block {
     width: 45%;
@@ -342,6 +386,21 @@
       //float: right;
     }
 
+  }
+  .legend-contact-info, .legend-address {
+    margin-bottom: 0 !important;
+  }
+  .form-address-edit .field.country.required{
+    margin-top: 25px;
+    .control{
+      .nice-select{
+        width: 100%;
+        padding-left: 9px;
+      }
+    }
+    label[for='country']{
+      font-size: 2rem;
+    }
   }
 }
 
@@ -436,7 +495,8 @@
   box-shadow: none;
 }
 
-.product-options-bottom {
+.radio-box {
+  width: 20%;
   label {
     position: relative;
     &[for=yes] {
@@ -491,9 +551,9 @@
       }
     }
   }
-  .form.create.account.form-create-account{
+  .form.create.account.form-create-account {
     font-size: 12px;
-    input{
+    input {
       font-size: 12px;
     }
     .create.info {
@@ -501,7 +561,7 @@
         label[for=country] {
           width: 23%;
         }
-        label[for=gender]{
+        label[for=gender] {
           width: 50%;
         }
       }
@@ -513,7 +573,7 @@
           line-height: 29px;
         }
       }
-      .field.gender .control{
+      .field.gender .control {
         width: 50%;
         .nice-select {
           font-size: 12px;
@@ -553,20 +613,42 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .mobile-my-account-title{
+    display: none;
+  }
   .fieldset {
     .legend {
       &:extend(.abs-margin-for-forms-desktop all);
     }
+    .legend-contact-info, .legend-address {
+      margin-left: 0 !important;
+      margin-bottom: 0;
+    }
     > .field {
-
       /*.lib-form-field-type-revert();
       margin: 0 0 @form-field__vertical-indent__desktop;*/
       line-height: 43px;
+    }
+    .form-address-edit .country {
+      margin-top: 30px;
+      .control .nice-select {
+        width: 100%;
+        padding-left: 9px;
+      }
+      label[for='country'] {
+        font-size: 2rem;
+      }
     }
   }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m){
+  .mobile-my-account-title{
+    display: block;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
   .field .control .input-text {
     width: 36%;
   }
@@ -598,7 +680,7 @@
       a.action.login {
         width: 86%;
         position: relative;
-        &:after{
+        &:after {
           content: '';
           background: url(../images/mobile/icon-question.png) no-repeat;
           position: absolute;
@@ -620,6 +702,17 @@
       //  right: 0;
       //  bottom: 98px;
       //}
+    }
+  }
+  .form-address-edit{
+    .field .control .input-text{
+      width: 100%;
+    }
+    .actions-toolbar .action.primary{
+      width: 50%;
+    }
+    .country .nice-select{
+      padding-left: 9px;
     }
   }
 }
