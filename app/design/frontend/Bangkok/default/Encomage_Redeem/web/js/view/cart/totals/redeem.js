@@ -14,7 +14,6 @@ define([
 
         getDiscountValue: function () {
             var totals = quote.getTotals()();
-            debugger;
             if (totals) {
                 return totals.discount_amount;
             }
@@ -25,7 +24,6 @@ define([
         },
 
         applyRedeem: function () {
-            debugger;
             var $this = this;
             $.ajax({
                 type: "POST",
@@ -34,7 +32,6 @@ define([
                 data: {},
                 success: function (response) {
                     //TODO
-                    debugger;
                 },
                 error: function (error) {
                     //TODO
