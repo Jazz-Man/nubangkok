@@ -1,9 +1,11 @@
 <?php
+
 namespace Encomage\Catalog\Controller\Category;
 
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Encomage\Catalog\Model\Category\ComingSoonProductFactory;
+use Magento\Framework\Controller\ResultFactory;
 
 class notifyEmpty extends \Magento\Framework\App\Action\Action
 {
@@ -36,11 +38,10 @@ class notifyEmpty extends \Magento\Framework\App\Action\Action
     public function execute()
     {
         $params = $this->getRequest()->getParams();
-        var_dump($params);
         $this->_comingSoonProductFactory->create()->setData(
-            ['category_id' => $params['category_id'], 'email' => $params['notify-email']]
-        )->save();
-
-        die();
+            ['category_id' => $params['category_id'], 'email' => $params['notify-email']])->save();
+        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+        $resultRedirect->setPath('/');
+        return $resultRedirect;
     }
 }

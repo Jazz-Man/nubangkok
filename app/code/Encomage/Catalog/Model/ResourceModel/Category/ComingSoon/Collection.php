@@ -1,4 +1,5 @@
 <?php
+
 namespace Encomage\Catalog\Model\ResourceModel\Category\ComingSoon;
 
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
