@@ -7,12 +7,18 @@
                     <item name="components" xsi:type="array">
                         <item name="block-totals" xsi:type="array">
                             <item name="children" xsi:type="array">
-                                <item name="redeem" xsi:type="array">
-                                    <item name="component"  xsi:type="string">Encomage_Nupoints/js/view/cart/totals/redeem</item>
-                                    <item name="config" xsi:type="array">
-                                        <item name="title" xsi:type="string" translate="true">Redeem</item>
-                                        <item name="ajaxUrl" xsi:type="url" path="nupoints/cart/redeemAjax"/>
-                                        <item name="template" xsi:type="string">Encomage_Nupoints/cart/totals/redeem</item>
+                                <item name="before_grandtotal" xsi:type="array">
+                                    <item name="component"  xsi:type="string">uiComponent</item>
+                                    <item name="sortOrder" xsi:type="string">30</item>
+                                    <item name="children" xsi:type="array">
+                                        <item name="redeem" xsi:type="array">
+                                            <item name="component"  xsi:type="string">Encomage_Nupoints/js/view/cart/totals/redeem</item>
+                                            <item name="config" xsi:type="array">
+                                                <item name="title" xsi:type="string" translate="true">Redeem</item>
+                                                <item name="ajaxUrl" xsi:type="url" path="nupoints/cart/redeemAjax"/>
+                                                <item name="template" xsi:type="string">Encomage_Nupoints/cart/totals/redeem</item>
+                                            </item>
+                                        </item>
                                     </item>
                                 </item>
                             </item>

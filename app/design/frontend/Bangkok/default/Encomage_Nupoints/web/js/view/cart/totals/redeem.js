@@ -2,32 +2,31 @@ define([
     'jquery',
     'Magento_Checkout/js/view/summary/abstract-total',
     'Magento_Checkout/js/model/quote',
-    'Magento_Customer/js/customer-data'
-], function ($, Component, quote, customerData) {
+    'Magento_Customer/js/customer-data',
+    'Magento_Checkout/js/model/cart/totals-processor/default',
+    'Magento_Checkout/js/model/cart/cache'
+], function ($, Component, quote, customerData, defaultTotal, cartCache) {
     'use strict';
 
     return Component.extend({
 
+        isLogged: function () {
+            var customer = customerData.get('customer');
+            return customer() && customer().firstname;
+        },
         getCustomerNupoints: function () {
-            var customerNupoints = customerData.get('nupoints');
-            //return this.getFormattedPrice(customerNupoints().value);
-            return customerNupoints().value;
+            return this.getNupointsData().value;
         },
 
-        getDiscountValue: function () {
-            var totals = quote.getTotals()();
-            debugger;
-            if (totals) {
-                return totals.discount_amount;
-            }
-            return quote.discount_amount;
+        getNupointsData: function () {
+            return customerData.get('nupoints')();
         },
+
         getValue: function () {
-            return this.getFormattedPrice(this.getDiscountValue());
+            return this.getFormattedPrice(this.getNupointsData().redeem_value);
         },
 
         applyRedeem: function () {
-            debugger;
             var $this = this;
             $.ajax({
                 type: "POST",
@@ -35,8 +34,8 @@ define([
                 url: $this.ajaxUrl,
                 data: {},
                 success: function (response) {
-                    //TODO
-                    debugger;
+                    cartCache.set('totals', null);
+                    defaultTotal.estimateTotals();
                 },
                 error: function (error) {
                     //TODO

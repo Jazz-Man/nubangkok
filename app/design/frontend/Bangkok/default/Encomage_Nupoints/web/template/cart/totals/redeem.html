@@ -1,3 +1,4 @@
+<!-- ko if: !isBothPricesDisplayed() && !isIncludingTaxDisplayed() -->
 <tr class="totals redeem excl">
     <th class="mark" colspan="1" scope="row" data-bind="text: title"></th>
     <td class="input">
@@ -8,3 +9,4 @@
         <span class="price" data-bind="text: getValue()"></span>
     </td>
 </tr>
+<!-- /ko -->
