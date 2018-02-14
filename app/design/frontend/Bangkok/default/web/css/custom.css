@@ -22,12 +22,12 @@
     height: 6px;
 }
 
-
 /*stores, carrency dropp-icon*/
 
 .page-header .switcher .options .action.toggle:after,
 .page-footer .switcher .options .action.toggle:after {
-    position: absolute; background: url(../images/select-arrow-down.png);
+    position: absolute;
+    background: url(../images/select-arrow-down.png);
     width: 14px;
     height: 9px;
     background-size: contain;
@@ -60,15 +60,17 @@
 
 /* popup *********************/
 
-.modal-popup._inner-scroll .modal-inner-wrap{
+.modal-popup._inner-scroll .modal-inner-wrap {
     background-color: #D8D1CA;
     max-width: 600px;
     border-radius: 4px;
 }
+
 .modal-content p {
     font-size: 20px;
 }
-.modal-popup.modal-slide footer.modal-footer{
+
+.modal-popup.modal-slide footer.modal-footer {
     border-top: none;
 }
 
@@ -86,12 +88,13 @@
     border-radius: 3px;
     color: white;
 }
-.modal-footer .product-question-modal-btn-consultant:hover{
+
+.modal-footer .product-question-modal-btn-consultant:hover {
     background-color: #372820;
     border: 1px solid #372820;
 }
 
-.modal-footer .product-question-modal-btn-add-to-cart{
+.modal-footer .product-question-modal-btn-add-to-cart {
     font-size: 14px;
     background-color: transparent;
     text-transform: none;
@@ -100,20 +103,31 @@
     border: 1px solid #55463e;
     font-weight: normal;
 }
-.modal-footer .product-question-modal-btn-add-to-cart:hover{
+
+.modal-footer .product-question-modal-btn-add-to-cart:hover {
     background-color: #6b584e;
     color: white;
 }
-.modal-slide .action-close {padding: 5px 1px;}
-.modal-slide .action-close:before { font-size: 44px; color: #55463e;}
-.modal-content p {font-size: 14px;}
 
+.modal-slide .action-close {
+    padding: 5px 1px;
+}
+
+.modal-slide .action-close:before {
+    font-size: 44px;
+    color: #55463e;
+}
+
+.modal-content p {
+    font-size: 14px;
+}
 
 @media screen and (max-width: 767px) {
-    .modal-slide._inner-scroll .modal-footer{
+    .modal-slide._inner-scroll .modal-footer {
         margin-top: 50px;
     }
-    .modal-content{
+
+    .modal-content {
         margin-top: 50px;
     }
 
@@ -122,11 +136,13 @@
         width: 100%;
         height: 50px;
     }
-    .modal-footer .product-question-modal-btn-add-to-cart{
+
+    .modal-footer .product-question-modal-btn-add-to-cart {
         margin-top: 25px;
     }
-}/*********************popup*******/
+}
 
+/*********************popup*******/
 
 /*customer icon dropdown menu*/
 .page-header .header.links .switcher:first-of-type .switcher-options.active {
@@ -135,7 +151,7 @@
 
 /* radio box PDP */
 @media screen and (max-width: 1076px) {
-    .product-info-main .radio-box, .product-options-bottom .radio-box{
+    .product-info-main .radio-box, .product-options-bottom .radio-box {
         margin-left: 1%;
     }
 }
@@ -144,42 +160,58 @@
 .field.country.required .control .nice-select.open:after {
     margin-top: 4px;
 }
+
 .gender-block .field.gender .nice-select.open:after {
     margin-top: 4px;
 }
 
 /*style for inputs sign in*/
-input:-webkit-autofill{
+input:-webkit-autofill {
     background-color: #ffffff;
 }
 
+::-webkit-input-placeholder {
+    color: #C0C0C0;
+}
+
+::-moz-placeholder {
+    color: #C0C0C0;
+}
+
+:-ms-input-placeholder {
+    color: #C0C0C0;
+}
+
+:-moz-placeholder {
+    color: #C0C0C0;
+}
+
 /* Sign in page */
-@media screen and (min-width: 1206px){
-    .block.block-customer-login .block-content fieldset .control .customer-show-password{
+@media screen and (min-width: 1206px) {
+    .block.block-customer-login .block-content fieldset .control .customer-show-password {
         right: 14px !important;
     }
 }
 
 /* class for hide elements on desktop*/
-.hide-dsk{
+.hide-dsk {
     display: none !important;
 }
 
 /*message (change position) */
-.page.messages .message-success.success.message{
-    position: inherit !important;
-}
-.message.success > *:first-child:before{
+.message.notice {
     position: inherit;
+}
+.message.notice > *:first-child:before{
+    position: inherit !important;
     line-height: 19px;
     margin: 0;
 }
-
-.message.info.empty{
-    position: inherit !important;
-}
-.message.info > *:first-child:before {
+.page.messages .message{
     position: inherit;
+}
+.page.messages .message > *:first-child:before{
+    position: inherit !important;
     line-height: 19px;
     margin: 0;
 }

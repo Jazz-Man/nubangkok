@@ -8,4 +8,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         return $this->_getUrl('bangkok_catalog/category/notifyEmpty', ['category_id' => (int)$category->getId()]);
     }
+
+    public function getFacebookSharedLink(\Magento\Catalog\Model\Product $product)
+    {
+        return 'http://www.facebook.com/sharer/sharer.php?u=' . $product->getProductUrl();
+    }
 }
