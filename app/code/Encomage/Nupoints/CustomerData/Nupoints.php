@@ -3,7 +3,8 @@
 namespace Encomage\Nupoints\CustomerData;
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
-use Magento\Customer\Model\Session;
+use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Checkout\Model\Session as CheckoutSession;
 
 /**
  * Class Nupoints
@@ -12,17 +13,24 @@ use Magento\Customer\Model\Session;
 class Nupoints implements SectionSourceInterface
 {
     /**
-     * @var Session
+     * @var Session|CustomerSession
      */
-    protected $customerSession;
+    private $customerSession;
+
+    /**
+     * @var CheckoutSession
+     */
+    private $checkoutSession;
 
     /**
      * Nupoints constructor.
-     * @param Session $customerSession
+     * @param CustomerSession $customerSession
+     * @param CheckoutSession $checkoutSession
      */
-    public function __construct(Session $customerSession)
+    public function __construct(CustomerSession $customerSession, CheckoutSession $checkoutSession)
     {
         $this->customerSession = $customerSession;
+        $this->checkoutSession = $checkoutSession;
     }
 
     /**
@@ -30,7 +38,21 @@ class Nupoints implements SectionSourceInterface
      */
     public function getSectionData()
     {
-        return ['value' => $this->_getCustomerNupontsCount()];
+        return [
+            'value' => $this->_getCustomerNupontsCount(),
+            'is_used_nupoints' => (bool)$this->checkoutSession->getUseCustomerNuPoints(),
+            'redeem_value' => $this->_getRedeemValue()
+        ];
+    }
+
+    protected function _getRedeemValue()
+    {
+        if ($this->customerSession->isLoggedIn()) {
+            if ($this->checkoutSession->getUseCustomerNuPoints()) {
+                return $this->_getNupointItem()->getConvertedNupointsToMoney();
+            }
+        }
+        return 0;
     }
 
     /**
@@ -39,8 +61,19 @@ class Nupoints implements SectionSourceInterface
     protected function _getCustomerNupontsCount()
     {
         if ($this->customerSession->isLoggedIn()) {
-            return (int)$this->customerSession->getCustomer()->getNupointItem()->getNupoints();
+            if (!$this->checkoutSession->getUseCustomerNuPoints()) {
+                return (int)$this->_getNupointItem()->getNupoints();
+            }
+            return (int)$this->_getNupointItem()->getNupoints() - $this->_getNupointItem()->getConvertedNupointsToMoney(null, true);
         }
         return 0;
+    }
+
+    /**
+     * @return \Encomage\Nupoints\Model\Nupoints $nuPointsItem
+     */
+    protected function _getNupointItem()
+    {
+        return $this->customerSession->getCustomer()->getNupointItem();
     }
 }

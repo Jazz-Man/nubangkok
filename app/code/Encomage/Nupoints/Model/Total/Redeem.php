@@ -2,54 +2,74 @@
 
 namespace Encomage\Nupoints\Model\Total;
 
-class Redeem extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
-{
-    protected $quoteValidator = null;
+use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Model\Session as CustomerSession;
 
-    public function __construct(\Magento\Quote\Model\QuoteValidator $quoteValidator)
+class Redeem extends AbstractTotal
+{
+    /**
+     * @var CheckoutSession
+     */
+    protected $checkoutSession;
+    /**
+     * @var CustomerSession
+     */
+    protected $customerSession;
+
+    /**
+     * Redeem constructor.
+     * @param CheckoutSession $checkoutSession
+     * @param CustomerSession $customerSession
+     */
+    public function __construct(CheckoutSession $checkoutSession, CustomerSession $customerSession)
     {
-        $this->quoteValidator = $quoteValidator;
+        $this->checkoutSession = $checkoutSession;
+        $this->customerSession = $customerSession;
     }
 
+    /**
+     * @param \Magento\Quote\Model\Quote $quote
+     * @param \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment
+     * @param \Magento\Quote\Model\Quote\Address\Total $total
+     * @return $this
+     */
     public function collect(
         \Magento\Quote\Model\Quote $quote,
         \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment,
         \Magento\Quote\Model\Quote\Address\Total $total
-    ) {
+    )
+    {
         parent::collect($quote, $shippingAssignment, $total);
 
+        if (!$this->checkoutSession->getUseCustomerNuPoints()) {
+            $total->setNupointsRedeemTotal(0);
+            $total->setBaseNupointsRedeemTotal(0);
+        } else {
+            if (!$total->getSubtotal() && !$total->getBaseSubtotal()) {
+                $total->setNupointsRedeemTotal(0);
+                $total->setBaseNupointsRedeemTotal(0);
+            } else {
+                /** @var \Encomage\Customer\Model\Customer $customer */
+                $customer = $this->customerSession->getCustomer();
+                $redeem = (int)$customer->getNupointItem()->getConvertedNupointsToMoney();
+                if ($redeem) {
+                    $total->setNupointsRedeemTotal(-$redeem);
+                    $total->setBaseNupointsRedeemTotal(-$redeem);
 
-        $exist_amount = 0; //$quote->getCustomfee();
-        $customfee = 2; //enter amount which you want to set
-        //$balance = $customfee - $exist_amount;//final amount
+                    //$total->setTotalAmount('nupoints_redeem_total', -$redeem);
+                    //$total->setBaseTotalAmount('nupoints_redeem_total', -$redeem);
 
-        $balance = $customfee;
+                    $total->setSubtotal($total->getSubtotal() - $redeem);
+                    $total->setBaseSubtotal($total->getBaseSubtotal() - $redeem);
 
-        $total->setTotalAmount('nupoints_redeem_total', $balance);
-        $total->setBaseTotalAmount('nupoints_redeem_total', $balance);
-
-        $total->setRedeemTotal($balance);
-        $total->setBaseRedeemTotal($balance);
-
-        //$total->setSubtotal($total->getSubtotal() - $balance);
-        //$total->setBaseSubtotal($total->getBaseSubtotal() - $balance);
-
+                    $total->setTotalAmount('subtotal', $total->getSubtotal());
+                    $total->setBaseTotalAmount('subtotal', $total->getSubtotal());
+                }
+            }
+        }
 
         return $this;
-    }
-
-    protected function clearValues(\Magento\Quote\Model\Quote\Address\Total $total)
-    {
-        $total->setTotalAmount('subtotal', 0);
-        $total->setBaseTotalAmount('subtotal', 0);
-        $total->setTotalAmount('tax', 0);
-        $total->setBaseTotalAmount('tax', 0);
-        $total->setTotalAmount('discount_tax_compensation', 0);
-        $total->setBaseTotalAmount('discount_tax_compensation', 0);
-        $total->setTotalAmount('shipping_discount_tax_compensation', 0);
-        $total->setBaseTotalAmount('shipping_discount_tax_compensation', 0);
-        $total->setSubtotalInclTax(0);
-        $total->setBaseSubtotalInclTax(0);
     }
 
     public function fetch(\Magento\Quote\Model\Quote $quote, \Magento\Quote\Model\Quote\Address\Total $total)
@@ -57,7 +77,7 @@ class Redeem extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         return [
             'code' => 'nupoints_redeem_total',
             'title' => 'Nupoints Redeem',
-            'value' => 100
+            'value' => $this->_getValue()
         ];
     }
 
@@ -69,5 +89,16 @@ class Redeem extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
     public function getLabel()
     {
         return __('Nupoints Redeem');
+    }
+
+    /**
+     * @return int
+     */
+    protected function _getValue()
+    {
+        if ($this->checkoutSession->getUseCustomerNuPoints()) {
+            return (int)$this->customerSession->getCustomer()->getNupointItem()->getConvertedNupointsToMoney();
+        }
+        return 0;
     }
 }

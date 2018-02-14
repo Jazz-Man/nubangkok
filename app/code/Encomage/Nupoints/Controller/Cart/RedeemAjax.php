@@ -63,16 +63,10 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
             //TODO: fix
             return;
         }
-
-        /** @var \Encomage\Customer\Model\Customer $customer */
-        $customer = $this->customerSession->getCustomer();
-        $moneyFromNupoints = $customer->getNupointItem()->getConvertedNupointsToMoney();
-        if ($moneyFromNupoints) {
-            $quote = $this->checkoutSession->getQuote();
-            $quote->setData('redeem_value', $moneyFromNupoints);
-            $quote->getShippingAddress()->setCollectShippingRates(true);
-            $quote->collectTotals();
-            $this->quoteRepository->save($quote);
-        }
+        $this->checkoutSession->setUseCustomerNuPoints(true);
+        $quote = $this->checkoutSession->getQuote();
+        $quote->getShippingAddress()->setCollectShippingRates(true);
+        $quote->collectTotals();
+        $this->quoteRepository->save($quote);
     }
 }

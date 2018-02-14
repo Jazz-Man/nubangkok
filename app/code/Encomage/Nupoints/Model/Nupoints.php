@@ -11,6 +11,9 @@ use Magento\Framework\Model\AbstractModel;
  */
 class Nupoints extends AbstractModel implements NupointsInterface
 {
+    /**
+     * @var array
+     */
     protected $_nuPointsToMoneyRates = [];
 
     /**
@@ -22,7 +25,6 @@ class Nupoints extends AbstractModel implements NupointsInterface
         $this->_nuPointsToMoneyRates[50] = ['from' => 3000, 'to' => 3999];
         $this->_nuPointsToMoneyRates[100] = ['from' => 4000, 'to' => 4999];
         $this->_nuPointsToMoneyRates[150] = ['from' => 5000];
-
     }
 
     /**
@@ -34,26 +36,37 @@ class Nupoints extends AbstractModel implements NupointsInterface
         return (floor($baht / 100)) * 100;
     }
 
-    public function getConvertedNupointsToMoney($nuPoints = null)
+    /**
+     * @param null $nuPoints
+     * @param bool $returnNupointsForRedeem
+     * @return int|string
+     */
+    public function getConvertedNupointsToMoney($nuPoints = null, $returnNupointsForRedeem = false)
     {
         if ($nuPoints === null) {
             $nuPoints = $this->getNupoints();
         }
         $money = 0;
+        $redeem = 0;
         foreach ($this->_nuPointsToMoneyRates as $coast => $rate) {
             if (isset($rate['to'])) {
                 if ($nuPoints >= $rate['from'] && $nuPoints <= $rate['to']) {
-                    return $coast;
+                    $redeem = $rate['from'];
+                    $money = $coast;
                 }
             } else {
                 if ($nuPoints >= $rate['from']) {
-                    return $coast;
+                    $redeem = $rate['from'];
+                    $money = $coast;
                 }
             }
         }
-        return $money;
+        return (!$returnNupointsForRedeem) ? $money : $redeem;
     }
 
+    /**
+     * @return $this
+     */
     public function redeemNupoints()
     {
         $convertedToMoney = $this->getConvertedNupointsToMoney();
