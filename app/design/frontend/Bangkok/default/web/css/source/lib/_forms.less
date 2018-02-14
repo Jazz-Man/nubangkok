@@ -273,7 +273,19 @@
   input[type="number"],
   input[type="datetime"],
   input[type="email"] {
-    .lib-form-element-input(@_type: input-text);
+    //.lib-form-element-input(@_type: input-text);
+    border: none;
+    border-bottom: 2px solid #e8e8e8;
+    background: #fff;
+    background-clip: padding-box;
+    border-radius: 1px;
+    font-size: 14px;
+    height: 32px;
+    line-height: 1.428571429;
+    padding: 0 9px;
+    vertical-align: baseline;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   input[type="number"] {
