@@ -12,8 +12,14 @@ class ComingSoonProduct extends \Magento\Framework\Model\ResourceModel\Db\Abstra
         $this->_init('coming_soon_category_emails', 'id');
     }
 
-    public function getUserEmailByCategoryId($categoryId){
-
+    /**
+     * @param $categoryId
+     * @return $this
+     */
+    public function deleteEmailsByCategoryId($categoryId)
+    {
+        $where = ['category_id = ?' => $categoryId];
+        $this->getConnection()->delete($this->getTable($this->getMainTable()), $where);
+        return $this;
     }
-
 }
