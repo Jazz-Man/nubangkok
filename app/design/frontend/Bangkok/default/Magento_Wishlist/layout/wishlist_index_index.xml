@@ -2,14 +2,30 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="customer.wishlist.items">
-            <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Stock" name="wishlist.stock.item.info" template="Magento_Wishlist::item/column/stock-info.phtml"/>
-            <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Shared" name="wishlist.product.shared" template="Magento_Wishlist::item/column/shared.phtml" after="wishlist.stock.item.info"/>
-            <block class="Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart" name="customer.wishlist.item.cart" template="Magento_Wishlist::item/column/cart.phtml" cacheable="false">
-                <block class="Magento\Wishlist\Block\Customer\Wishlist\Item\Options" name="customer.wishlist.item.option" cacheable="false"/>
+            <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Shared" name="wishlist.product.shared"
+                   template="Magento_Catalog::product/view/shared.phtml"/>
+            <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Cart" name="customer.wishlist.item.cart" template="Magento_Wishlist::item/column/cart.phtml" cacheable="false">
+
+                <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Option"
+                       name="customer.wishlist.item.option.size"
+                       cacheable="false">
+                    <action method="setProductAtt">
+                        <argument name="text" xsi:type="string">Size</argument>
+                    </action>
+                </block>
+                <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Option"
+                       name="customer.wishlist.item.option.color"
+                       cacheable="false"
+                       before="customer.wishlist.item.cart">
+                    <action method="setProductAtt">
+                        <argument name="text" xsi:type="string">Color</argument>
+                    </action>
+                </block>
+
             </block>
         </referenceBlock>
         <referenceContainer name="customer.wishlist.buttons">
-            <block class="Magento\Wishlist\Block\Customer\Wishlist\Button" name="customer.wishlist.bottom.buttons" template="Magento_Wishlist::button/bottom-buttons.phtml" cacheable="false">
+            <block class="Magento\Wishlist\Block\Customer\Wishlist\Button" name="customer.wishlist.bottom.buttons" template="Magento_Wishlist::button/bottom-buttons.phtml">
                 <action method="setCssClass">
                     <argument name="text" xsi:type="string">mob-share-btn</argument>
                 </action>
