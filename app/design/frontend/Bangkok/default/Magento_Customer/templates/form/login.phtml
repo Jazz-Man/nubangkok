@@ -4,7 +4,7 @@
 
 <div class="block block-customer-login">
     <div class="block-content" aria-labelledby="block-customer-login-heading">
-        <h2>Sign in</h2>
+        <h2><?= __('Sign in');?></h2>
         <?= $block->getChildHtml('social-login-popup-authentication-social-login')?>
         <form class="form form-login"
               action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>"

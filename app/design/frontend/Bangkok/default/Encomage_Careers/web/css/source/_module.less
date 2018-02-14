@@ -1,7 +1,197 @@
-.careers-view-content {
-  .description-container {
-    .description {
-
+.careers-listing-content {
+  .careers-listing-title {
+    margin-top: 30px;
+    line-height: 43px;
+  }
+  .short-description-container {
+    margin-bottom: 30px;
+    .short-description-title {
+      font-size: 15px;
+      line-height: 19px;
+      position: relative;
+      &:after {
+        content: url('../images/arrow-right.png');
+        margin-left: 10px;
+        position: absolute;
+        bottom: 0;
+      }
+    }
+    .short-description {
+      .morelink {
+        color: #8f8278;
+        font-weight: 700;
+      }
     }
   }
 }
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .careers-listing-content {
+    .careers-listing-title {
+      margin-top: 0;
+    }
+    .short-description-container {
+      padding-bottom: 9px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #aeaeae;
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+  .careers-view-content {
+    .careers-view-title {
+      margin: 20px 0 10px 0;
+      text-transform: uppercase;
+      font-size: 16px;
+    }
+    .form-content {
+      form {
+        fieldset {
+          margin: 0 0 10px;
+          input, textarea {
+            border: 1px solid #8a837f;
+            color: #8f8278;
+            ::placeholder {
+              color: #8f8278;
+            }
+          }
+          .field.email {
+            .control {
+              display: inline-block;
+              width: 46%;
+              .input-text {
+                background-color: #e6e6e6;
+                font-size: 13px;
+                font-family: Arial, sans-serif;
+                margin-left: 10px;
+              }
+            }
+          }
+          .field.personal-data {
+            width: 50%;
+            label {
+              line-height: 20px;
+            }
+            .name-container {
+              margin-bottom: 35px;
+              .customer-first-name {
+                width: 48%;
+                float: left;
+              }
+              .customer-last-name {
+                width: 50%;
+                float: right;
+              }
+            }
+          }
+          .field.files {
+            width: 50%;
+            label {
+              display: block;
+            }
+            .files-container {
+              .file-upload {
+                height: 2em;
+                line-height: 2em;
+                position: relative;
+                overflow: hidden;
+                width: 49%;
+                display: inline-block;
+                border: 1px solid #8a837f;
+                input[type=file] {
+                  position: absolute;
+                  left: 0;
+                  width: 100%;
+                  opacity: 0;
+                  cursor: pointer;
+                }
+                &:first-child {
+                  float: left
+                }
+                &:last-child {
+                  float: right
+                }
+                span {
+                  position: relative;
+                  span {
+                    padding-left: 20px;
+                    color: #8f8278;
+                    opacity: 0.5;
+                    &:before {
+                      content: url('../images/icon-attach.png');
+                      position: absolute;
+                      top: -2px;
+                      left: 5px;
+                    }
+                  }
+                }
+              }
+              .file-upload > span {
+                cursor: pointer;
+                background: transparent;
+                height: 2em;
+                line-height: 2em;
+                font-size: 12px;
+                position: relative;
+              }
+            }
+          }
+          .message-heading {
+            margin: 50px 0 10px 0;
+            text-transform: uppercase;
+            font-size: 16px;
+          }
+          textarea {
+            resize: none;
+          }
+        }
+        .actions-toolbar {
+          float: right;
+          margin-top: 0;
+          .primary {
+            button.action.submit {
+              width: 100%;
+              background-color: #55463e;
+              border: 1px solid #55463e;
+              text-transform: uppercase;
+              padding: 10px 40px;
+              color: white;
+              &:hover {
+                background-color: #372820;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .careers-view-content {
+    .form-content {
+      form {
+        fieldset {
+          .field.email {
+            .control {
+              width: 90%;
+              .input-text {
+                width: 100%;
+              }
+            }
+          }
+          .field.personal-data {
+            width: 100%;
+          }
+          .field.files {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
