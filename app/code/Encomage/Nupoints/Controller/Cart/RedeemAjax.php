@@ -67,7 +67,7 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
             //TODO: fix
             return;
         }
-        $this->checkoutSession->setUseCustomerNuPoints(false);
+        $this->checkoutSession->setUseCustomerNuPoints(true);
         $this->reCalculateQuote->reCalculate();
     }
 }

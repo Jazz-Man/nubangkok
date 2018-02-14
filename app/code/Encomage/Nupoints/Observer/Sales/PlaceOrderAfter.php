@@ -4,7 +4,8 @@ namespace Encomage\Nupoints\Observer\Sales;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Customer\Model\Session;
+use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Encomage\Nupoints\Api\NupointsRepositoryInterface;
 
 /**
@@ -14,7 +15,7 @@ use Encomage\Nupoints\Api\NupointsRepositoryInterface;
 class PlaceOrderAfter implements ObserverInterface
 {
     /**
-     * @var Session
+     * @var CustomerSession
      */
     private $customerSession;
 
@@ -24,13 +25,24 @@ class PlaceOrderAfter implements ObserverInterface
     private $nupointsRepository;
 
     /**
+     * @var CheckoutSession
+     */
+    private $checkoutSession;
+
+    /**
      * PlaceOrderAfter constructor.
-     * @param Session $customerSession
+     * @param CustomerSession $customerSession
+     * @param CheckoutSession $checkoutSession
      * @param NupointsRepositoryInterface $nupointsRepository
      */
-    public function __construct(Session $customerSession, NupointsRepositoryInterface $nupointsRepository)
+    public function __construct(
+        CustomerSession $customerSession,
+        CheckoutSession $checkoutSession,
+        NupointsRepositoryInterface $nupointsRepository
+    )
     {
         $this->customerSession = $customerSession;
+        $this->checkoutSession = $checkoutSession;
         $this->nupointsRepository = $nupointsRepository;
     }
 
@@ -40,10 +52,15 @@ class PlaceOrderAfter implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+
         /** @var \Encomage\Customer\Model\Customer $customer */
         $customer = $this->customerSession->getCustomer();
         if ($customer->getId()) {
             $customerNupointItem = $customer->getNupointItem();
+            if ($this->checkoutSession->getUseCustomerNuPoints()) {
+                $customerNupointItem->redeemNupoints();
+                $this->checkoutSession->setUseCustomerNuPoints(false);
+            }
             $customerNupointItem->addNupoints($observer->getOrder()->getSubtotal(), true);
             $this->nupointsRepository->save($customerNupointItem);
         }
