@@ -21,8 +21,8 @@ $stockItem=$block->getItemStockStatus();
                     <span class="qty-reduce"><span>-</span></span>
                 </div>
             </div>
-            <?=$block->getChildHtml('customer.wishlist.item.option.size')?>
-            <?=$block->getChildHtml('customer.wishlist.item.option.color')?>
+            <?=$block->getChildHtml('customer.wishlist.item.option.size', false)?>
+            <?=$block->getChildHtml('customer.wishlist.item.option.color', false)?>
             <?php if ($stockItem->getQty() <= 5): ?>
                 <div><?= __('Only a few in stock – order now') ?></div>
             <?php endif; ?>
