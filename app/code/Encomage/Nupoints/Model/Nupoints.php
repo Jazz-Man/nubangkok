@@ -84,7 +84,7 @@ class Nupoints extends AbstractModel implements NupointsInterface
     {
         $convertedToMoney = $this->getConvertedNupointsToMoney();
         if ($convertedToMoney) {
-            $redeemed = $this->_nuPointsToMoneyRates[$convertedToMoney];
+            $redeemed = $this->_nuPointsToMoneyRates[$convertedToMoney]['from'];
             if ($this->getNupoints() < $redeemed) {
                 //TODO:: Throw exception;
             }
