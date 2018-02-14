@@ -1,0 +1,47 @@
+<?php
+/** @var \Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart $block */
+/** @var \Magento\Wishlist\Model\Item $item */
+/**@var \Magento\CatalogInventory\Model\Stock\Item $stockItem*/
+$item = $block->getItem();
+$product = $item->getProduct();
+$stockItem=$block->getItemStockStatus();
+?>
+<div class="box-tocart">
+    <fieldset class="fieldset">
+        <?php if ($item->canHaveQty() && $product->isVisibleInSiteVisibility()): ?>
+            <div class="field qty">
+
+                <label class="label" for="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
+                <div class="control">
+                    <span class="qty-reduce"><span>-</span></span>
+                    <input type="number" data-role="qty" id="qty[<?= $block->escapeHtmlAttr($item->getId())?>]"
+                           class="input-text qty"
+                           data-validate="{'required-number':true,'validate-greater-than-zero':true}"
+                           name="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]" value="<?= (int)($block->getAddToCartQty($item) * 1) ?>">
+                    <span class="qty-enhance "><span>+</span></span>
+                </div>
+            </div>
+            <?=$block->getChildHtml('customer.wishlist.item.option.size', false)?>
+            <?=$block->getChildHtml('customer.wishlist.item.option.color', false)?>
+            <?php if ($stockItem->getQty() <= 5): ?>
+                <div><?= __('Only a few in stock – order now') ?></div>
+            <?php endif; ?>
+        <?php endif; ?>
+    </fieldset>
+ <?php if ($product->isSaleable() && $stockItem->getIsInStock()): ?>
+            <div class="product-item-actions">
+                <div class="actions-primary">
+                    <button type="button" data-role="tocart" data-post='<?= /* @noEscape */
+                    $block->getItemAddToCartParams($item) ?>' title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                            data-item-id="<?= $block->escapeHtmlAttr($item->getId()) ?>" class="action tocart primary">
+                        <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                    </button>
+                </div>
+            </div>
+        <?php else: ?>
+            <button type="button" disabled>
+                <span><?=__(' Currently Unavailable')?></span>
+            </button>
+        <?php endif; ?>
+</div>
+

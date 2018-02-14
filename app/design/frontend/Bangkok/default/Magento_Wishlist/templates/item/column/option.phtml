@@ -1,0 +1,10 @@
+<?php
+/* @var \Encomage\Wishlist\Block\Customer\Wishlist\Item\Option $block */
+?>
+<?php $option = $block->getOption(); ?>
+<?php if ($option): ?>
+    <div class="wrapper <?= $block->getCssClass() ?>">
+        <div class="label"><?= $block->escapeHtml(__($option['label'])) ?></div>
+        <div class="values"><?= $block->escapeHtml(__($option['value'])) ?></div>
+    </div>
+<?php endif ?>
