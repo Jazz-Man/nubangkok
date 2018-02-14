@@ -18,6 +18,14 @@ define([
             return this.getNupointsData().value;
         },
 
+        isCanCancelRedeem: function () {
+            return this.getNupointsData().is_used_nupoints;
+        },
+
+        isCanRedeem: function () {
+            return this.getNupointsData().is_can_redeem
+        },
+
         getNupointsData: function () {
             return customerData.get('nupoints')();
         },
@@ -32,7 +40,21 @@ define([
                 type: "POST",
                 dataType: "json",
                 url: $this.ajaxUrl,
-                data: {},
+                success: function (response) {
+                    cartCache.set('totals', null);
+                    defaultTotal.estimateTotals();
+                },
+                error: function (error) {
+                    //TODO
+                }
+            });
+        },
+        revertRedeem: function () {
+            var $this = this;
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: $this.revertAjaxUrl,
                 success: function (response) {
                     cartCache.set('totals', null);
                     defaultTotal.estimateTotals();

@@ -5,10 +5,10 @@ namespace Encomage\Nupoints\Controller\Cart;
 use Magento\Framework\App\Action\Context;
 
 /**
- * Class RedeemAjax
+ * Class RevertRedeemAjax
  * @package Encomage\Nupoints\Controller\Cart
  */
-class RedeemAjax extends \Magento\Framework\App\Action\Action
+class CancelRedeemAjax extends \Magento\Framework\App\Action\Action
 {
     /**
      * @var \Magento\Framework\Controller\Result\JsonFactory

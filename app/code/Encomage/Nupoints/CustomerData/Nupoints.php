@@ -13,7 +13,7 @@ use Magento\Checkout\Model\Session as CheckoutSession;
 class Nupoints implements SectionSourceInterface
 {
     /**
-     * @var Session|CustomerSession
+     * @var CustomerSession
      */
     private $customerSession;
 
@@ -40,6 +40,7 @@ class Nupoints implements SectionSourceInterface
     {
         return [
             'value' => $this->_getCustomerNupontsCount(),
+            'is_can_redeem' => $this->_getIsEnoughNuPointsForRedeem(),
             'is_used_nupoints' => (bool)$this->checkoutSession->getUseCustomerNuPoints(),
             'redeem_value' => $this->_getRedeemValue()
         ];
@@ -67,6 +68,12 @@ class Nupoints implements SectionSourceInterface
             return (int)$this->_getNupointItem()->getNupoints() - $this->_getNupointItem()->getConvertedNupointsToMoney(null, true);
         }
         return 0;
+    }
+
+    protected function _getIsEnoughNuPointsForRedeem()
+    {
+        return (bool)!$this->checkoutSession->getUseCustomerNuPoints()
+            && $this->_getNupointItem()->getNupoints() >= $this->_getNupointItem()->getMinNuPointsCountForRedeem();
     }
 
     /**
