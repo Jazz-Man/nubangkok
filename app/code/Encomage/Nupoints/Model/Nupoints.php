@@ -65,6 +65,19 @@ class Nupoints extends AbstractModel implements NupointsInterface
     }
 
     /**
+     * @return bool|int
+     */
+    public function getMinNuPointsCountForRedeem()
+    {
+        if (count($this->_nuPointsToMoneyRates)) {
+            $rates = $this->_nuPointsToMoneyRates;
+            $firstRate = array_shift($rates);
+            return (int)$firstRate['from'];
+        }
+        return false;
+    }
+
+    /**
      * @return $this
      */
     public function redeemNupoints()
