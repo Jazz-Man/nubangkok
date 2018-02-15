@@ -11,7 +11,7 @@ $stockItem=$block->getItemStockStatus();
         <?php if ($item->canHaveQty() && $product->isVisibleInSiteVisibility()): ?>
             <div class="field qty">
 
-                <label class="label" for="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
+                <label class="label" for="qty[<?= $block->escapeHtmlAttr($item->getId()) ?>]"><span><?= $block->escapeHtml(__('Qty:')) ?></span></label>
                 <div class="control">
                     <span class="qty-reduce"><span>-</span></span>
                     <input type="number" data-role="qty" id="qty[<?= $block->escapeHtmlAttr($item->getId())?>]"
@@ -24,7 +24,7 @@ $stockItem=$block->getItemStockStatus();
             <?=$block->getChildHtml('customer.wishlist.item.option.size')?>
             <?=$block->getChildHtml('customer.wishlist.item.option.color')?>
             <?php if ($stockItem->getQty() <= 5): ?>
-                <div><?= __('Only a few in stock – order now') ?></div>
+                <div class="message-count-in-stock"><span><?= __('Only a few in stock – order now') ?></span></div>
             <?php endif; ?>
         <?php endif; ?>
     </fieldset>
