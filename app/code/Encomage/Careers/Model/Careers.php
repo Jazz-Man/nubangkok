@@ -13,6 +13,7 @@ use \Magento\Store\Model\StoreManagerInterface;
 use \Magento\Framework\DataObject;
 use \Magento\Framework\Registry;
 use \Magento\Framework\Escaper;
+use \Magento\Framework\App\RequestInterface;
 
 
 class Careers extends AbstractModel implements DataObject\IdentityInterface
@@ -46,6 +47,10 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
      * @var StateInterface
      */
     protected $_inlineTranslation;
+    /**
+     * @var RequestInterface
+     */
+    protected $_request;
 
 
     public function __construct(
@@ -57,12 +62,14 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
         StateInterface $inlineTranslation,
         DataObject $dataObject,
         Escaper $escaper,
+        RequestInterface $request,
         CareersResource $resource,
         CareersCollection $resourceCollection = null,
         array $data = []
     )
     {
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
+        $this->_request = $request;
         $this->_inlineTranslation = $inlineTranslation;
         $this->_transportBuilder = $transportBuilder;
         $this->_storeManager = $storeManager;
@@ -125,7 +132,7 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
      */
     public function validatedParams()
     {
-        $request = $this->getRequest()->getParam('customer');
+        $request = $this->_request->getParam('customer');
         if (trim($request['lastName']) === '') {
             throw new LocalizedException(__('Last Name is missing'));
         }
@@ -138,7 +145,7 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
         if (false === \strpos($request['email'], '@')) {
             throw new LocalizedException(__('Invalid email address'));
         }
-        if (trim($this->getRequest()->getParam('hideit')) !== '') {
+        if (trim($this->_request->getParam('hideit')) !== '') {
             throw new \Exception();
         }
         $result = [
