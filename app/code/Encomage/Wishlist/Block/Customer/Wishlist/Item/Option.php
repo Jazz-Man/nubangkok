@@ -58,7 +58,7 @@ class Option extends \Magento\Wishlist\Block\Customer\Wishlist\Item\Options
             }
         }
 
-        if ($options['label'] == 'Color') {
+        if (isset($options['label']) && $options['label'] == 'Color') {
             $options['rgb_code'] = $this->getColorRgbCode($options['option_value']);
         }
         return $options;
