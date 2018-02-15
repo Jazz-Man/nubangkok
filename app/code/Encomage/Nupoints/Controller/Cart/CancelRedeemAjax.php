@@ -3,6 +3,7 @@
 namespace Encomage\Nupoints\Controller\Cart;
 
 use Magento\Framework\App\Action\Context;
+use \Magento\Framework\Exception\NotFoundException;
 
 /**
  * Class RevertRedeemAjax
@@ -56,12 +57,12 @@ class CancelRedeemAjax extends \Magento\Framework\App\Action\Action
 
     /**
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @throws NotFoundException
      */
     public function execute()
     {
         if (!$this->getRequest()->isAjax()) {
-            //TODO: fix
-            return;
+            throw new NotFoundException(__('Incorrect method.'));
         }
         if (!$this->customerSession->isLoggedIn()) {
             //TODO: fix
