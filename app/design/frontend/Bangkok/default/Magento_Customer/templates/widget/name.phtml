@@ -73,7 +73,7 @@ $suffix = $block->showSuffix();
                 <input type="text" id="<?= $block->escapeHtmlAttr($block->getFieldId('firstname')) ?>"
                        name="<?= $block->escapeHtmlAttr($block->getFieldName('firstname')) ?>"
                        value="<?= $block->escapeHtmlAttr($block->getObject()->getFirstname()) ?>"
-                       title="<?= $block->escapeHtmlAttr($block->getStoreLabel('firstname')) ?>" placeholder="<?php echo __('First name'); ?>"
+                       title="<?= $block->escapeHtmlAttr($block->getStoreLabel('firstname')) ?>" placeholder="<?php echo __('First name*'); ?>"
                        class="input-text <?= $block->escapeHtmlAttr($block->getAttributeValidationClass('firstname')) ?>" <?php if ($block->getAttributeValidationClass('firstname') == 'required-entry') echo ' data-validate="{required:true}"' ?>>
             </div>
         </div>
@@ -102,7 +102,7 @@ $suffix = $block->showSuffix();
                 <input type="text" id="<?= $block->escapeHtmlAttr($block->getFieldId('lastname')) ?>"
                        name="<?= $block->escapeHtmlAttr($block->getFieldName('lastname')) ?>"
                        value="<?= $block->escapeHtmlAttr($block->getObject()->getLastname()) ?>"
-                       title="<?= $block->escapeHtmlAttr($block->getStoreLabel('lastname')) ?>" placeholder="<?php echo __('Last name'); ?>"
+                       title="<?= $block->escapeHtmlAttr($block->getStoreLabel('lastname')) ?>" placeholder="<?php echo __('Last name*'); ?>"
                        class="input-text <?= $block->escapeHtmlAttr($block->getAttributeValidationClass('lastname')) ?>" <?php if ($block->getAttributeValidationClass('lastname') == 'required-entry') echo ' data-validate="{required:true}"' ?>>
             </div>
         </div>
