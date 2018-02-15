@@ -21,8 +21,8 @@ $stockItem=$block->getItemStockStatus();
                     <span class="qty-enhance "><span>+</span></span>
                 </div>
             </div>
-            <?=$block->getChildHtml('customer.wishlist.item.option.size')?>
-            <?=$block->getChildHtml('customer.wishlist.item.option.color')?>
+            <?=$block->getChildHtml('customer.wishlist.item.option.size', false)?>
+            <?=$block->getChildHtml('customer.wishlist.item.option.color', false)?>
             <?php if ($stockItem->getQty() <= 5): ?>
                 <div class="message-count-in-stock"><span><?= __('Only a few in stock – order now') ?></span></div>
             <?php endif; ?>
