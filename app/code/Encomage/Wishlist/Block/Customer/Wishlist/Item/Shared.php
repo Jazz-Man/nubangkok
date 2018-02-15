@@ -2,22 +2,28 @@
 
 namespace Encomage\Wishlist\Block\Customer\Wishlist\Item;
 
-class Shared extends \Magento\Wishlist\Block\Customer\Wishlist\Item\Column {
+class Shared extends \Magento\Wishlist\Block\Customer\Wishlist\Item\Column
+{
 
+    private $helper;
+
+    public function __construct(
+        \Magento\Catalog\Block\Product\Context $context,
+        \Magento\Framework\App\Http\Context $httpContext,
+        \Encomage\Catalog\Helper\Data $helper,
+        array $data = []
+    )
+    {
+        parent::__construct($context, $httpContext, $data);
+        $this->helper = $helper;
+    }
 
     /**
      * @return string
      */
-    public function getFacebookSharedLink()
+    public function getLink()
     {
-        return 'http://www.facebook.com/sharer/sharer.php?u=' . $this->getProductItem()->getProductUrl();
+        return $this->helper->getFacebookSharedLink($this->getItem()->getProduct());
     }
 
-    /**
-     * @return \Magento\Catalog\Model\Product
-     */
-    public function getProductItem()
-    {
-        return $this->getItem()->getProduct();
-    }
 }
