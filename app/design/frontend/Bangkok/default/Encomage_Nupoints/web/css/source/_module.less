@@ -1,0 +1,155 @@
+.points-container {
+
+  h2 {
+    text-align: center;
+  }
+
+  .points-balance {
+    span {
+      display: inline-block;
+      width: 20px;
+      margin: 0 40px;
+      text-align: center;
+    }
+  }
+
+  .left-block {
+    width: 48%;
+    position: relative;
+    display: inline-block;
+    float: left;
+    p:first-of-type {
+      text-align: center;
+    }
+    .content {
+      border: 1px solid;
+      min-height: 469px;
+      max-height: 469px;
+      overflow: hidden;
+      .left-points-part {
+        padding: 5%;
+        > p {
+          font-size: 13px;
+          span {
+            display: block;
+          }
+        }
+      }
+      .open-close-link {
+        position: absolute;
+        content: url(../images/mobile/icon-question.png);
+        top: 3px;
+        right: 38%;
+      }
+      .float-left-content {
+        background-color: silver;
+        width: 79%;
+        position: absolute;
+        border: 1px solid;
+        padding: 10%;
+        z-index: 2;
+        .close-js{
+          content: url(../images/mobile/nav/close-mob.png);
+          float: right;
+        }
+        p {
+          text-align: center;
+          line-height: 30px;
+        }
+      }
+    }
+  }
+
+  .right-block {
+    position: relative;
+    display: inline-block;
+    width: 48%;
+    p:first-of-type {
+      text-align: center;
+    }
+    .content {
+      border: 1px solid;
+      background-color: #d9d2cb;
+      min-height: 469px;
+      max-height: 469px;
+      overflow: hidden;
+      .right-points-part {
+        padding: 5%;
+        > p {
+          font-size: 13px;
+          span {
+            display: block;
+          }
+        }
+      }
+      .open-close-link {
+        position: absolute;
+        content: url(../images/mobile/icon-question.png);
+        top: 3px;
+        right: 34%;
+      }
+      .float-right-content {
+        background-color: silver;
+        width: 79%;
+        position: absolute;
+        border: 1px solid;
+        padding: 10%;
+        .close-js{
+          content: url(../images/mobile/nav/close-mob.png);
+          float: right;
+        }
+        p {
+          text-align: center;
+          line-height: 30px;
+        }
+      }
+    }
+  }
+  .bottom-points-block{
+    span{
+      color: red;
+    }
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen_custom__xl){
+  .points-container .left-block .content .open-close-link{
+    right: 36%;
+  }
+  .points-container .right-block .content .open-close-link{
+    right: 32%;
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__l){
+  .points-container .left-block .content .open-close-link{
+    right: 33%;
+  }
+  .points-container .right-block .content .open-close-link{
+    right: 26%;
+  }
+}
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m){
+  .points-container .left-block .content .float-left-content {
+    width: 246px;
+    right: -99%;
+  }
+  .points-container .right-block .content .float-right-content{
+    width: 246px;
+    left: -99%;
+  }
+  .points-container .left-block .content .open-close-link{
+    right: 30%;
+  }
+  .points-container .right-block .content .open-close-link{
+    right: 23%;
+  }
+}
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m){
+  .points-container .left-block .content .open-close-link{
+    right: 36%;
+  }
+  .points-container .right-block .content .open-close-link{
+    right: 31%;
+  }
+}
