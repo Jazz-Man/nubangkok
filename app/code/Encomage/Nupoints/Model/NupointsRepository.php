@@ -120,7 +120,6 @@ class NupointsRepository implements NupointsRepositoryInterface
      * @param $customerId
      * @return bool|mixed
      * @throws CouldNotDeleteException
-     * @throws NoSuchEntityException
      */
     public function deleteByCustomerId($customerId)
     {

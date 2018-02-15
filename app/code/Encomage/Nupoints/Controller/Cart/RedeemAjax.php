@@ -3,6 +3,8 @@
 namespace Encomage\Nupoints\Controller\Cart;
 
 use Magento\Framework\App\Action\Context;
+use \Magento\Framework\Exception\NotFoundException;
+use Magento\Framework\Controller\ResultFactory;
 
 /**
  * Class RedeemAjax
@@ -55,17 +57,19 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * @throws NotFoundException
      */
     public function execute()
     {
         if (!$this->getRequest()->isAjax()) {
-            //TODO: fix
-            return;
+            throw new NotFoundException(__('Incorrect method.'));
+
         }
         if (!$this->customerSession->isLoggedIn()) {
-            //TODO: fix
-            return;
+            $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+            return $resultRedirect;
         }
         $this->checkoutSession->setUseCustomerNuPoints(true);
         $this->reCalculateQuote->reCalculate();
