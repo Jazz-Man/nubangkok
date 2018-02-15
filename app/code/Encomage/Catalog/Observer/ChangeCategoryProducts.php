@@ -35,18 +35,20 @@ class ChangeCategoryProducts implements \Magento\Framework\Event\ObserverInterfa
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $sender['email'] = $this->_scopeConfig->getValue('trans_email/ident_support/email', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-        $sender['name'] = $this->_scopeConfig->getValue('trans_email/ident_support/name', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         $category = $observer->getCategory();
         $collection = $this->_comingSoonProductCollection->create();
         $collection->addFieldToFilter('category_id', ['eq' => $category->getId()]);
         $collection->getSelect()->group('email');
         $collection->getItems();
+        if (!empty($collection)) {
+            $sender['email'] = $this->_scopeConfig->getValue('trans_email/ident_support/email', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+            $sender['name'] = $this->_scopeConfig->getValue('trans_email/ident_support/name', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+            foreach ($collection as $item) {
+                $this->_comingSoonProduct->sendEmail($sender, $item->getEmail(), self::COMING_SOON_PRODUCT_TEMPLATE_EMAIL);
+            }
+            $this->_soonProductResource->deleteEmailsByCategoryId($category->getId());
 
-        foreach ($collection as $item) {
-            $this->_comingSoonProduct->sendEmail($sender, $item->getEmail(), self::COMING_SOON_PRODUCT_TEMPLATE_EMAIL);
         }
-        $this->_soonProductResource->deleteEmailsByCategoryId($category->getId());
         return $this;
     }
 }
