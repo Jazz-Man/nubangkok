@@ -60,11 +60,16 @@ class Redeem extends AbstractTotal
                     //$total->setTotalAmount('nupoints_redeem_total', -$redeem);
                     //$total->setBaseTotalAmount('nupoints_redeem_total', -$redeem);
 
+                    if ($total->getSubtotal() < $redeem) {
+                        $redeem = $total->getSubtotal();
+                    }
                     $total->setSubtotal($total->getSubtotal() - $redeem);
                     $total->setBaseSubtotal($total->getBaseSubtotal() - $redeem);
 
                     $total->setTotalAmount('subtotal', $total->getSubtotal());
                     $total->setBaseTotalAmount('subtotal', $total->getSubtotal());
+
+                    $this->checkoutSession->setNupointsRedeemedMoney($redeem);
                 }
             }
         }
