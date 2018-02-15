@@ -1,6 +1,6 @@
 <?php
 
-namespace Encomage\Nupoints\Model\ResourceModel\Redeem;
+namespace Encomage\Nupoints\Model\ResourceModel\Nupoints;
 
 use \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 

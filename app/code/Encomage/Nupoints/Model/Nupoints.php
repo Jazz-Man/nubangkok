@@ -4,6 +4,13 @@ namespace Encomage\Nupoints\Model;
 
 use Encomage\Nupoints\Api\Data\NupointsInterface;
 use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Registry;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Framework\Exception\LocalizedException;
+
 
 /**
  * Class Nupoints
@@ -11,6 +18,32 @@ use Magento\Framework\Model\AbstractModel;
  */
 class Nupoints extends AbstractModel implements NupointsInterface
 {
+    /**
+     * @var CheckoutSession
+     */
+    private $checkoutSession;
+
+    /**
+     * Nupoints constructor.
+     * @param Context $context
+     * @param Registry $registry
+     * @param CheckoutSession $checkoutSession
+     * @param AbstractResource|null $resource
+     * @param AbstractDb|null $resourceCollection
+     * @param array $data
+     */
+    public function __construct(
+        Context $context,
+        Registry $registry,
+        CheckoutSession $checkoutSession,
+        AbstractResource $resource = null,
+        AbstractDb $resourceCollection = null,
+        array $data = []
+    ) {
+        parent::__construct($context, $registry, $resource, $resourceCollection, $data);
+        $this->checkoutSession = $checkoutSession;
+    }
+
     /**
      * @var array
      */
@@ -79,17 +112,29 @@ class Nupoints extends AbstractModel implements NupointsInterface
 
     /**
      * @return $this
+     * @throws LocalizedException
      */
-    public function redeemNupoints()
+    public function redeemNupointsAfterOrderPlaced()
     {
-        $convertedToMoney = $this->getConvertedNupointsToMoney();
-        if ($convertedToMoney) {
+        if ($this->checkoutSession->getUseCustomerNuPoints()) {
+            $convertedToMoney = $this->getConvertedNupointsToMoney();
             $redeemed = $this->_nuPointsToMoneyRates[$convertedToMoney]['from'];
             if ($this->getNupoints() < $redeemed) {
-                //TODO:: Throw exception;
+                throw new LocalizedException(__('Not enough nupoints for redeem'));
             }
             $this->setNupoints((int)$this->getNupoints() - (int)$redeemed);
+            $this->clearSession();
         }
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function clearSession()
+    {
+        $this->checkoutSession->setNupointsRedeemedMoney(false);
+        $this->checkoutSession->setUseCustomerNuPoints(false);
         return $this;
     }
 
