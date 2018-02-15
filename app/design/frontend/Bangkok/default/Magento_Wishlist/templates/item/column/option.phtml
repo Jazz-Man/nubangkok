@@ -7,7 +7,7 @@
         <div class="label"><?= $block->escapeHtml(__($option['label'])) ?></div>
         <div class="values"><?= $block->escapeHtml(__($option['value'])) ?></div>
         <?php if(!empty($option['rgb_code'])) : ?>
-            <div class="rgb" style="background:<?=$option['value']?>;width: 20px;height: 20px; border-radius: 50%"></div>
+            <div class="rgb" style="background:<?=$option['value']?>;"></div>
         <?php endif;?>
     </div>
 <?php endif ?>
