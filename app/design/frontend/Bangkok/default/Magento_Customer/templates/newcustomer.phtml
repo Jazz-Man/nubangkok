@@ -3,6 +3,7 @@
 ?>
 <?php if ($block->getRegistration()->isAllowed()): ?>
 <div class="block block-new-customer">
+    <?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId("register-form-right")->toHtml(); ?>
     <div class="block-content" aria-labelledby="block-new-customer-heading">
         <p><?= $block->escapeHtml(__('Don`t have an account ? ')) ?></p>
         <div class="actions-toolbar">
