@@ -63,14 +63,6 @@
                    template="Magento_Directory::currency.phtml"/>
             <block class="Magento\Store\Block\Switcher" name="select_store_language" as="select_store_language"
                    after="minicart" template="Magento_Store::switch/languages.phtml"/>
-            <block class="Encomage\Customer\Block\Account\TopLinks"
-                   name="my-account-link"
-                   template="Magento_Customer::topLinks/link.phtml">
-                <arguments>
-                    <argument name="class" xsi:type="string">top-link-myaccount</argument>
-                    <argument name="label" xsi:type="string"/>
-                </arguments>
-            </block>
         </referenceBlock>
 
         <referenceBlock name="my-account-link">
