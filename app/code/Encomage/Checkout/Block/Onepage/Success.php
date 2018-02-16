@@ -2,7 +2,6 @@
 
 namespace Encomage\Checkout\Block\Onepage;
 
-use Magento\Customer\Model\Context as CustomerContext;
 use Magento\Sales\Model\Order\Config;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\App\Http\Context as HttpContext;
@@ -59,7 +58,7 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
     }
 
     /**
-     * @return null|string
+     * @return string
      */
     public function getCountryNameByCode()
     {
@@ -68,7 +67,7 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
             $country = $this->_countryFactory->create()->loadByCode($countryCode['country_id']);
             return $country->getName();
         }
-        return null;
+        return '';
     }
 
 }
