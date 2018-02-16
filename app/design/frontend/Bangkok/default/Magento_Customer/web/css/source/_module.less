@@ -203,6 +203,7 @@
           .box-content{
               table {
                 margin-top: 20px !important;
+                width: 50%;
                 th {
                   width: 30%;
                   padding: 0;
@@ -529,6 +530,9 @@
         border-top: 2px solid @color-gray68;
         border-bottom: 2px solid @color-gray68;
       }
+      .block-content .box-information .box-content table{
+        width: 100%;
+      }
     }
     .page.messages {
       margin-bottom: @indent__xl;
@@ -657,12 +661,12 @@
         text-align: left;
         outline: none;
         &:after {
-          content: @icon-select-arrow-up;
+          content: @icon-select-arrow-down;
           padding-left: 5px;
           vertical-align: middle;
         }
         &.active:after {
-          content: @icon-select-arrow-down;
+          content: @icon-select-arrow-up;
         }
       }
     }
@@ -737,7 +741,6 @@
       }
     }
   }
-
   //
   //  Welcome block
   //  ---------------------------------------------
