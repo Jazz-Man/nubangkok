@@ -25,18 +25,11 @@ class TopLinks extends \Magento\Customer\Block\Account\Link
         $this->json = $json;
     }
 
-    public function getJsConfig()
+    public function getConfig()
     {
         return $this->json->serialize(
             [
-                'logged' => [
-                    ['label' => __('Log out'), 'href' => $this->urlBuilder->getUrl('customer/account/logout')],
-                    ['label' => __('My account'), 'href' => $this->urlBuilder->getUrl('customer/account')]
-                ],
-                'notLogged' => [
-                    ['label' => __('Sign in'), 'href' => $this->urlBuilder->getUrl('customer/account/login')],
-                    ['label' => __('Create account'), 'href' => $this->urlBuilder->getUrl('customer/account/create')]
-                ]
+                'websiteId' => $this->_storeManager->getWebsite()->getId()
             ]
         );
     }

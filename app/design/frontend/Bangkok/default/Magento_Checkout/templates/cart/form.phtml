@@ -17,7 +17,7 @@
       data-mage-init='{"validation":{}}'
       class="form form-cart">
     <?= $block->getBlockHtml('formkey') ?>
-    <div class="cart table-wrapper<?= $mergedCells == 2 ? ' detailed' : '' ?>">
+    <div class="cart table-wrapper<?= $mergedCells == 2 ? ' detailed' : '' ?>" data-mage-init='{"Magento_Theme/js/qty/qty-add":{}}'>
         <?php if ($block->getPagerHtml()): ?>
             <div class="cart-products-toolbar cart-products-toolbar-top toolbar" data-attribute="cart-products-toolbar-top"><?= $block->getPagerHtml() ?></div>
         <?php endif ?>

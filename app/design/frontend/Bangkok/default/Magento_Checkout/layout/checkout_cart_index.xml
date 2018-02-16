@@ -18,6 +18,11 @@
                                         <item name="componentDisabled" xsi:type="boolean">true</item>
                                     </item>
                                 </item>
+                                <item name="tax" xsi:type="array">
+                                    <item name="config" xsi:type="array">
+                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                    </item>
+                                </item>
                             </item>
                         </item>
                     </item>
@@ -43,6 +48,7 @@
 
         <referenceBlock name="checkout.cart.crosssell" remove="true"/>
         <referenceBlock name="checkout.cart.summary.title" remove="true"/>
+        <referenceBlock name="checkout.cart.methods.multishipping" remove="true"/>
 
     </body>
 </page>
