@@ -3,4 +3,34 @@
     <preference for="Magento\Customer\Controller\Account\CreatePost" type="Encomage\Customer\Controller\Account\CreatePost" />
     <preference for="Magento\Customer\Model\Data\Customer" type="Encomage\Customer\Model\Data\Customer" />
     <preference for="Magento\Customer\Model\Customer" type="Encomage\Customer\Model\Customer" />
+
+    <type name="Magento\Customer\CustomerData\Customer">
+        <plugin name="encomage_customer" type="Encomage\Customer\Plugin\CustomerData\Customer" sortOrder="1" />
+    </type>
+    <type name="Encomage\Customer\Plugin\CustomerData\Customer">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="loggedCustomerUrls" xsi:type="array">
+                    <item name="logout" xsi:type="array">
+                        <item name="label" xsi:type="string">Log out</item>
+                        <item name="path" xsi:type="string">customer/account/logout</item>
+                    </item>
+                    <item name="account" xsi:type="array">
+                        <item name="label" xsi:type="string">My account</item>
+                        <item name="path" xsi:type="string">customer/account</item>
+                    </item>
+                </item>
+                <item name="notLoggedCustomerUrls" xsi:type="array">
+                    <item name="login" xsi:type="array">
+                        <item name="label" xsi:type="string">Sign in</item>
+                        <item name="path" xsi:type="string">customer/account/login</item>
+                    </item>
+                    <item name="create" xsi:type="array">
+                        <item name="label" xsi:type="string">Create account</item>
+                        <item name="path" xsi:type="string">customer/account/create</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>
