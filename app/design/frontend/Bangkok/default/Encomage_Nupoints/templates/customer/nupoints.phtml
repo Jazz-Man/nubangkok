@@ -7,18 +7,14 @@
     <p class="points-balance"><?= sprintf(__('Your balance is %s nuPoints'), '<span class="js-my-nupoints"></span>'); ?></p>
 
     <div class="left-block">
-        <p><?= __('my nu ?') ;?></p>
+        <p class="title"><?= __('my nu ?') ;?><span class="js-open-left"></span></p>
         <div class="content">
-            <div
-                data-mage-init='{"accordion":{"openedState": "active","collapsible": true,"active": false,"multipleCollapsible": true}}'>
-                <div class="open-close-link" data-role="collapsible"></div>
-                <div class="float-left-content" data-role="content">
-                    <div class="close-js"></div>
+                <div class="float-left-content">
+                    <div class="js-close-left"></div>
                     <p> After your first purchase, you will automatically
                         become our my nu member. You will receive a my nu
                         card with the following rewards and benefits.</p>
                 </div>
-            </div>
             <div class="left-points-part">
                 <p>Earn 100 nuPoints for every 100 &#3647; purchase.</p>
                 <p>Earn nuPoints from shopping special promotion products.</p>
@@ -28,20 +24,18 @@
             </div>
         </div>
     </div>
+    
     <div class="right-block">
-        <p><?= __('my nu Gold ?') ?></p>
+        <p class="title"><?= __('my nu Gold ?') ?><span class="js-open"></span></p>
         <div class="content">
-            <div
-                data-mage-init='{"accordion":{"openedState": "active","collapsible": true,"active": false,"multipleCollapsible": true}}'>
-                <div class="open-close-link" data-role="collapsible"></div>
-                <div class="float-right-content" data-role="content">
-                    <div class="close-js"></div>
+                <div class="float-right-content">
+                    <div class="js-close"></div>
                     <p> When you have 12.000 pts in your balance, you will
                         automatically become our my nu Gold. You will receive
                         a new gold card with the following rewards and benefits.
                     </p>
                 </div>
-            </div>
+           
             <div class="right-points-part">
                 <p>Earn 100 nuPoints for every 100 &#3647; purchase.</p>
                 <p>Earn nuPoints from shopping special promotion products.</p>
@@ -72,10 +66,9 @@
         {
             ".js-my-nupoints": {
                 "Encomage_Nupoints/js/customer/my-nupoints": {}
+            },
+            ".js-open":{
+            "Encomage_Nupoints/js/customer/points-popup": {}
             }
         }
-
-
-
-
 </script>
