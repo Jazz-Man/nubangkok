@@ -636,6 +636,39 @@
       }
     }
   }
+  .form-edit-account{
+    .fieldset{
+      .legend{
+        margin-left: 0;
+      }
+      .gender{
+        .label{
+          position: absolute;
+          margin-left: 9px;
+        }
+        .control{
+          position: relative;
+          .nice-select{
+            width: 100%;
+            border-top: none;
+          }
+        }
+      }
+    }
+    .actions-toolbar{
+      .primary{
+        width: 200px;
+        button{
+          width: 100%;
+          background-color: @color-brown;
+          border: none;
+          &:hover{
+            background-color: @color-brown -20%;
+          }
+        }
+      }
+    }
+  }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m){
@@ -709,6 +742,47 @@
     }
     .country .nice-select{
       padding-left: 9px;
+    }
+  }
+
+
+  .form-edit-account{
+    .fieldset{
+      .field .control .input-text{
+        width: 100%;
+      }
+      .gender{
+        .label{
+          position: absolute;
+          margin-top: 7px;
+          margin-left: 9px;
+        }
+        .control{
+          position: relative;
+          .nice-select{
+            width: 100%;
+            border-top: none;
+            height: 32px;
+          }
+        }
+      }
+    }
+    .actions-toolbar{
+      .primary{
+        width: 200px;
+        margin: 0 auto;
+        button{
+          width: 100%;
+          background-color: @color-brown;
+          border: none;
+          &:hover{
+            background-color: @color-brown -20%;
+          }
+        }
+      }
+      .secondary{
+        margin-top: 30px;
+      }
     }
   }
 }
