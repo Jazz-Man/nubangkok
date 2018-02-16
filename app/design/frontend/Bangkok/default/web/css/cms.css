@@ -1,3 +1,59 @@
+/** GENERAL STYLES */
+
+/** Heading */
+/** ------------------------------ */
+
+.cms-heading {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+.cms-heading-line {
+    border-top: 1px solid #55463e;
+    opacity: 0.6;
+}
+
+@media only screen and (max-width: 500px) {
+    .cms-button-small {
+        margin-left: 0;
+        margin-top: 10px;
+        display: block;
+    }
+}
+
+.cms-subheading {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    margin-bottom: 2.5rem;
+}
+
+/** Buttons */
+/** ------------------------------ */
+
+.cms-button-small {
+    border-radius: 3px;
+    border: 1px solid #55463e;
+    background-color: #55463e;
+    color: white;
+    padding: 7px;
+    font-weight: 600;
+    margin-top: -4px;
+    margin-left: 20px;
+}
+
+.cms-button-small:hover,
+.cms-button-small:active,
+.cms-button-small:focus{
+    border: 1px solid #372820;;
+    background-color: #372820;
+    color: white;
+    text-decoration: none;
+}
+
 /** Left sidebar cms static block */
 /** ------------------------------ */
 
@@ -12,36 +68,8 @@
 /** Coming soon category */
 /** ------------------------------ */
 
-.cms-coming-soon-category .cms-button-small {
-    border-radius: 3px;
-    border: 1px solid #55463e;
-    background-color: #55463e;
-    color: white;
-    padding: 7px;
-    font-weight: 600;
-    margin-top: -4px;
-    margin-left: 20px;
-}
-
-.cms-coming-soon-category .cms-button-small:hover,
-.cms-coming-soon-category .cms-button-small:active,
-.cms-coming-soon-category .cms-button-small:focus{
-    border: 1px solid #372820;;
-    background-color: #372820;
-    color: white;
-    text-decoration: none;
-}
 .cms-coming-soon-category form input{
     width: 300px;
-    /*border-radius: 3px;*/
-}
-
-@media only screen and (max-width: 500px) {
-    .cms-coming-soon-category .cms-button-small {
-        margin-left: 0;
-        margin-top: 10px;
-        display: block;
-    }
 }
 
 /** Why NU Page */
@@ -61,13 +89,6 @@
 /** Where to buy */
 /** ------------------------------ */
 
-.cms-where-to-buy-page .cms-heading {
-    font-size: 30px;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 0;
-    font-weight: 400;
-}
 .cms-where-to-buy-page .accordion-container {
     position: relative;
     padding: 10px;
@@ -81,6 +102,8 @@
     outline: none;
     border-radius: 0;
     background: transparent;
+    text-transform: none;
+    margin-bottom: 0;
 }
 .cms-where-to-buy-page .active:hover, .cms-where-to-buy-page .accordion:hover {
     color: #8f8278;
@@ -99,7 +122,7 @@
     background-color: #55463e;
     position: absolute;
     left: 0px;
-    bottom: 21px;
+    top: 21px;
 }
 .cms-where-to-buy-page .cms-button {
     border-radius: 0;
@@ -137,79 +160,13 @@
     }
 }
 
-/** Terms of services */
+/** Accordeon */
 /** ------------------------------ */
 
-.cms-terms-of-service-page .cms-heading {
-    font-size: 30px;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 0;
-    font-weight: 400;
-}
-.cms-terms-of-service-page .cms-heading-line {
-    border-top: 1px solid #55463e;
-    opacity: 0.6;
-}
-
-/** Contact Us*/
-/** ------------------------------ */
-
-.cms-contact-us.cms-subheading {
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 1.6rem;
-    margin-bottom: 2.5rem;
-}
-
-/** FAQ */
-/** ------------------------------ */
-
-.cms-faq .cms-heading {
-    font-size: 30px;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 0;
-    font-weight: 400;
-}
-.cms-faq .cms-heading-line {
-    border-top: 1px solid #55463e;
-    opacity: 0.6;
-}
-
-/** Policies */
-/** ------------------------------ */
-
-.cms-policies .cms-heading {
-    font-size: 30px;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 0;
-    font-weight: 400;
-}
-.cms-policies .cms-heading-line {
-    border-top: 1px solid #55463e;
-    opacity: 0.6;
-}
-
-/** Customer Care */
-/** ------------------------------ */
-
-.cms-customer-care .cms-heading {
-    font-size: 30px;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 0;
-    font-weight: 400;
-}
-.cms-customer-care .cms-heading-line {
-    border-top: 1px solid #55463e;
-    opacity: 0.6;
-}
-.cms-customer-care .accordion-container {
+.accordion-container {
     position: relative;
 }
-.cms-customer-care .accordion {
+.accordion {
     margin-bottom: 20px;
     text-transform: uppercase;
     cursor: pointer;
@@ -219,18 +176,34 @@
     outline: none;
 }
 
-.cms-customer-care .active:hover, .cms-customer-care .accordion:hover {
+.accordion-container .accordion img {
+    transform: rotate(180deg);
+    padding-right: 10px;
+}
+
+.accordion-container .accordion.active img {
+    transform: none;
+    padding-right: 0;
+    padding-left: 10px;
+}
+
+.cms-customer-care > .accordion img {
+    transform: none;
+    padding-right: 10px;
+}
+
+.active:hover, .accordion:hover {
     color: #8f8278;
     text-decoration: underline;
 }
 
-.cms-customer-care .accordion.active {
+.accordion.active {
     font-weight: bold;
     color: #55463e;
     text-decoration: none;
 }
 
-.cms-customer-care .accordion.active:before {
+.accordion.active:before {
     content: '';
     width: 7px;
     height: 7px;
@@ -241,7 +214,7 @@
     left: -15px;
 }
 
-.cms-customer-care .accordion-container .panel {
+.accordion-container .panel {
     padding-right: 150px;
     padding-left:  61px;
     max-height: 0;
@@ -250,94 +223,19 @@
 }
 
 @media only screen and (max-width:768px) {
-    .cms-customer-care .panel {
+    .accordion-container .panel {
         padding-right: 15px;
         padding-left: 15px;
+        padding-top: 15px;
     }
-    .cms-customer-care .accordion {
+    .accordion {
         padding-left: 15px;
         border-bottom: 1px solid #a3a3a3;
         padding-bottom: 10px;
         margin-bottom: 0;
         padding-top: 10px;
     }
-    .cms-customer-care .accordion.active:before {
-        left: 0;
-        top: 17px;
-    }
-}
-
-
-/** Product Care */
-/** ------------------------------ */
-
-.cms-product-care .cms-heading {
-    font-size: 30px;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 0;
-    font-weight: 400;
-}
-.cms-product-care .cms-heading-line {
-    border-top: 1px solid #55463e;
-    opacity: 0.6;
-}
-.cms-product-care .accordion-container {
-    position: relative;
-}
-.cms-product-care .accordion {
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    cursor: pointer;
-    padding: 5px;
-    border: none;
-    text-align: left;
-    outline: none;
-}
-
-.cms-product-care .active:hover, .cms-product-care .accordion:hover {
-    color: #8f8278;
-    text-decoration: underline;
-}
-
-.cms-product-care .accordion.active {
-    font-weight: bold;
-    color: #55463e;
-    text-decoration: none;
-}
-
-.cms-product-care .accordion.active:before {
-    content: '';
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background-color: #55463e;
-    position: absolute;
-    top: 12px;
-    left: -15px;
-}
-
-.cms-product-care .accordion-container .panel {
-    padding-right: 150px;
-    padding-left:  61px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.2s ease-out;
-}
-
-@media only screen and (max-width:768px) {
-    .cms-product-care .panel {
-        padding-right: 15px;
-        padding-left: 15px;
-    }
-    .cms-product-care .accordion {
-        padding-left: 15px;
-        border-bottom: 1px solid #a3a3a3;
-        padding-bottom: 10px;
-        margin-bottom: 0;
-        padding-top: 10px;
-    }
-    .cms-product-care .accordion.active:before {
+    .accordion.active:before {
         left: 0;
         top: 17px;
     }
@@ -346,17 +244,6 @@
 /** 404 no route page  */
 /** ------------------------------ */
 
-.cms-404 .cms-heading {
-    font-size: 30px;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 0;
-    font-weight: 400;
-}
-.cms-404 .cms-heading-line {
-    border-top: 1px solid #55463e;
-    opacity: 0.6;
-}
 .cms-404 .violet-link {
     color: #6e2f91;;
 }
