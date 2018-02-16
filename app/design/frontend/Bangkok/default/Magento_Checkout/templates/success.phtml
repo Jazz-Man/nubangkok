@@ -7,9 +7,9 @@ $country = $block->getCountryNameByCode();
 <div class="checkout-success">
     <?php if ($block->getOrderId()): ?>
         <?php if ($block->getCanViewOrder()) : ?>
-            <p><?= __('Your order number is: %1.', sprintf('<strong>%s</strong>', $block->escapeHtml($block->escapeHtml($block->getOrderId())))) ?></p>
+            <p><?= __('Your order number is: %1.', $block->getOrderId()) ?></p>
         <?php endif; ?>
-        <p><?= __('An email receipt including the details about your order has been sent to ') . $addressInfo['email'] ?></p>
+        <p><?= __('An email receipt including the details about your order has been sent to  %1', $addressInfo['email'])?></p>
     <?php endif; ?>
 
     <p><span><?= __('firstname') ?></span> &nbsp;&nbsp;<?= $addressInfo['firstname'] ?></p>
