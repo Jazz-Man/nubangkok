@@ -14,9 +14,9 @@ $country = $block->getCountryNameByCode();
 
     <p><span><?= __('firstname') ?></span> &nbsp;&nbsp;<?= $addressInfo['firstname'] ?></p>
     <p><span><?= __('lastname') ?></span> &nbsp;&nbsp;<?= $addressInfo["lastname"] ?></p>
-    <p><span><?= __('street') ?></span> &nbsp;&nbsp;<?= __($addressInfo['street']) ?></p>
-    <p><span><?= __('city') ?></span> &nbsp;&nbsp;<?= __($addressInfo['city']) ?></p>
+    <p><span><?= __('street') ?></span> &nbsp;&nbsp;<?= $addressInfo['street'] ?></p>
+    <p><span><?= __('city') ?></span> &nbsp;&nbsp;<?= $addressInfo['city'] ?></p>
     <p><span><?= __('telephone') ?></span> &nbsp;&nbsp;<?= $addressInfo['telephone'] ?></p>
     <p><span><?= __('postcode') ?></span> &nbsp;&nbsp;<?= $addressInfo['postcode'] ?></p>
-    <p><span><?= __('country') ?></span><?= __($country) ?></p>
+    <p><span><?= __('country') ?></span><?= $country?></p>
 </div>
