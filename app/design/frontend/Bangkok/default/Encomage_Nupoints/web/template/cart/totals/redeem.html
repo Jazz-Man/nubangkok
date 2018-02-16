@@ -1,0 +1,17 @@
+<!-- ko if: isLogged() -->
+<div class="totals redeem excl">
+    <div class="mark" data-bind="text: title"></div>
+    <div class="input">
+        <span data-bind="text: getCustomerNupoints()"></span>
+        <!-- ko if: isCanRedeem() -->
+        <button type="button" data-bind="click: applyRedeem"><span data-bind="text: $t('Redeem')"></span></button>
+        <!-- /ko -->
+        <!-- ko if: isCanCancelRedeem() -->
+        <button type="button" data-bind="click: revertRedeem"><span data-bind="text: $t('Cancel redeem')"></span></button>
+        <!-- /ko -->
+    </div>
+    <div class="amount">
+        <span class="price" data-bind="text: getValue()"></span>
+    </div>
+</div>
+<!-- /ko -->

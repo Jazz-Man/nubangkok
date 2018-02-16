@@ -1,0 +1,43 @@
+<?php
+/** @var \Magento\Customer\Block\Account\Dashboard\Address $block */
+?>
+<div class="block block-dashboard-addresses">
+    <div class="block-content">
+        <div class="box box-billing-address">
+            <strong class="box-title">
+                <span><?= $block->escapeHtml(__('Default Address Information')) ?></span>
+            </strong>
+            <div class="box-content">
+                <div class="adress">
+                    <span><?= __('Adress 1:'); ?></span>
+                </div>
+                <address>
+                    <?= $block->getPrimaryBillingAddressHtml() ?>
+                </address>
+            </div>
+            <div class="box-actions">
+                <a class="action edit" href="<?= $block->escapeUrl($block->getPrimaryBillingAddressEditUrl()) ?>"
+                   data-ui-id="default-billing-edit-link">
+                    <span><?= $block->escapeHtml(__('Edit Address')) ?></span>
+                </a>
+            </div>
+        </div>
+        <div class="box box-shipping-address">
+            <strong class="box-title">
+                <span><?= $block->escapeHtml(__('Shipping Address Information')) ?></span>
+            </strong>
+            <div class="box-content">
+                <address>
+                    <?= $block->getPrimaryShippingAddressHtml() ?>
+                </address>
+            </div>
+            <div class="or">
+                <span>or</span>
+            </div>
+            <div class="box-actions">
+                <a class="action edit" href="<?= $block->escapeUrl($block->getPrimaryShippingAddressEditUrl()) ?>"
+                   data-ui-id="default-shipping-edit-link"><span><?= $block->escapeHtml(__('Edit Address')) ?></span></a>
+            </div>
+        </div>
+    </div>
+</div>

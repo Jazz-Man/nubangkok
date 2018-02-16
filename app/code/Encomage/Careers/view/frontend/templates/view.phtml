@@ -1,0 +1,11 @@
+<?php
+/**
+ * @var $block Encomage\Careers\Block\View;
+ */
+$_career = $block->getCareer();
+?>
+<div class="careers-view-content">
+        <p><?= /* @escapeNotVerified */ $_career->getSkills(); ?></p>
+    <p class="careers-view-title"><?= /** @escapeNotVerified */ __('Apply Now'); ?></p>
+    <?= $block->getChildHtml('careers_view_form'); ?>
+</div>

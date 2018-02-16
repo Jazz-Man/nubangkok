@@ -1,0 +1,67 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //
+    //  Checkout Estimated Total
+    //  ---------------------------------------------
+
+    .opc-estimated-wrapper {
+        &:extend(.abs-add-clearfix all);
+        &:extend(.abs-no-display-desktop all);
+        .lib-css(border-bottom, @border-width__base solid @color-gray80);
+        margin: 0 0 15px;
+        padding: 18px 15px;
+
+        .estimated-block {
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 5px;;
+            float: left;
+            font-size: 16px;
+
+
+            .estimated-label {
+                display: block;
+                margin: 0 0 @indent__xs;
+            }
+        }
+
+        .minicart-wrapper {
+            float: right;
+            .action {
+                &.showcart {
+                    background-color: #D8D1CA;
+                    border: 1px solid #D8D1CA;
+                    &:before {
+                        content: '\e611';
+                        color: #55463e;
+                        margin-right: 10px;
+                    }
+                    .counter {
+                        &.qty {
+                            background: #55463e;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .opc-estimated-wrapper {
+        display: none;
+    }
+}
