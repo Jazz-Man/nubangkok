@@ -28,7 +28,6 @@
     &:extend(.abs-add-box-sizing all);
     margin-bottom: @indent__m;
     padding: 0;
-
     > .title {
       display: block;
       .lib-heading(h3);
@@ -156,18 +155,15 @@
         margin-right: @indent__s;
 
         &.action-delete {
-          margin-right: 0;
           position: absolute;
           bottom: 0;
           right: 12%;
           border: none;
           background-color: transparent;
-          margin: 0;
-          span:after {
-            content: url(../images/basket.png);
-            height: 27px;
-            background-size: cover;
-          }
+          content: url(../images/basket.png);
+          height: 27px;
+          background-size: cover;
+          padding: 0;
         }
       }
     }
@@ -205,7 +201,7 @@
     .item-options {
 
       font-size: 14px;
-      margin-bottom: 10px;
+      //margin-bottom: 10px;
       dt {
         font-weight: 400 !important;
         margin: 0 10px 10px 0;
@@ -218,18 +214,20 @@
       margin-top: @indent__s;
       line-height: 30px;
       .label {
-        width: 50px;
+        //width: 50px;
         float: left;
         &:after {
           content: ':';
         }
       }
+      div:nth-child(2):after {
+        content: url(../images/select-arrow-down.png);
+        vertical-align: middle;
+      }
       div:last-of-type {
         float: left;
-        border-bottom: 2px solid @color-active-bgk;
         &:after {
           content: url(../images/select-arrow-down.png);
-          padding-left: 5px;
           vertical-align: middle;
         }
       }
@@ -392,6 +390,7 @@
   }
 
   .cart-summary {
+    font-size: 11px;
     .actions-toolbar {
       .column.main & {
         &:extend(.abs-reset-left-margin-desktop all);
@@ -420,6 +419,7 @@
 
           input {
             width: 100%;
+            font-size: 11px;
           }
         }
       }
@@ -427,7 +427,7 @@
 
         .primary {
           .action.apply.primary {
-
+            font-size: 11px;
           }
         }
       }
@@ -493,6 +493,9 @@
           &:extend(.abs-reset-left-margin-desktop all);
           .action-towishlist {
             margin-left: 26%;
+            background-color: @color-brown;
+            color: @color-white;
+            border: none;
           }
         }
       }
@@ -663,19 +666,47 @@
   }
 
 }
+
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s){
-  .cart.table-wrapper .item-actions .actions-toolbar .action-towishlist{
-    margin-left: 10% !important;
-  }
-  .cart.table-wrapper .cart-price{
-    top: -47px;
+  .cart.table-wrapper {
+    .item-actions .actions-toolbar .action-towishlist {
+      margin-left: 10% !important;
+    }
+    .cart-price {
+      top: -47px;
+    }
   }
 }
+
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs){
-  .cart.table-wrapper .actions-toolbar > .action.action-delete{
+  .cart.table-wrapper .actions-toolbar > .action.action-delete {
     right: 5%;
   }
+  .cart.table-wrapper .item-actions .actions-toolbar .action-towishlist {
+    font-size: 10px;
+    padding: 4px 4px;
+  }
+  .cart.table-wrapper .col.qty {
+    .field.qty {
+      .control.qty {
+        .qty-reduce, .qty-enhance {
+          height: 10px;
+          width: 10px;
+          span {
+            left: 3px;
+            top: -5px;
+          }
+        }
+        .qty {
+          height: 20px;
+          width: 30px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
 }
+
 //
 //  Desktop
 //  _____________________________________________
@@ -823,8 +854,8 @@
 
         &-item-details {
           display: inline-block;
-          width: 35%;
-          margin-left: 10%;
+          width: 33%;
+          margin-left: 8%;
           float: left;
           .col.qty {
             background: antiquewhite;
@@ -850,15 +881,16 @@
           margin-top: 0;
 
           .action-towishlist {
-            margin-left: 10%;
+            margin-left: 14%;
             background-color: transparent;
-            border: 1px solid @color-active-bgk;
-            color: @color-active-bgk;
+            border: 2px solid @color-gray-light3;
+            color: @color-gray-light3;
+            text-transform: uppercase;
+            font-size: @font-size__s;
           }
           .action-edit {
             display: none;
           }
-
           &:extend(.abs-reset-left-margin-desktop all);
         }
       }
