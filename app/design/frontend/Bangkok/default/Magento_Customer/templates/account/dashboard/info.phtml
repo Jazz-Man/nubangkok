@@ -14,15 +14,15 @@ $customer = $block->getCustomer();
                 <table>
                     <tr>
                         <th><?= __('First Name') ?></th>
-                        <td><?= $block->getName() ?></td>
+                        <td><?= $customer->getFirstname() ?></td>
                     </tr>
                     <tr>
-                        <th><?= __('Lastname') ?></th>
-                        <td><?= $block->getLastname() ?></td>
+                        <th><?= __('Last Name') ?></th>
+                        <td><?= $customer->getLastname() ?></td>
                     </tr>
                     <tr>
                         <th><?= __('Email') ?></th>
-                        <td><?= $block->getEmail() ?></td>
+                        <td><?= $customer->getEmail() ?></td>
                     </tr>
                     <tr>
                         <th><?= __('Country') ?></th>
@@ -34,15 +34,15 @@ $customer = $block->getCustomer();
                     </tr>
                     <tr>
                         <th><?= __('Line Id') ?></th>
-                        <td><?= $block->getLineId() ?></td>
+                        <td><?= $customer->getLineId() ?></td>
                     </tr>
                     <tr>
                         <th><?= __('Date of Birth') ?></th>
-                        <td><?= $block->getDob() ?></td>
+                        <td><?= $customer->getDob() ?></td>
                     </tr>
                     <tr>
                         <th><?= __('Gender') ?></th>
-                        <td><?= __($block->getGender()) ?></td>
+                        <td><?= __($customer->getGenderLabel()) ?></td>
                     </tr>
                 </table>
             </div>
