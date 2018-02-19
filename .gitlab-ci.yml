@@ -19,4 +19,4 @@ deploy_staging:
     name: staging
     url: https://staging.example.com
   only:
-  - master
+  - develop
