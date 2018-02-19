@@ -25,11 +25,7 @@
             </block>
         </referenceBlock>
         <referenceContainer name="customer.wishlist.buttons">
-            <block class="Magento\Wishlist\Block\Customer\Wishlist\Button" name="customer.wishlist.bottom.buttons" template="Magento_Wishlist::button/bottom-buttons.phtml">
-                <action method="setCssClass">
-                    <argument name="text" xsi:type="string">mob-share-btn</argument>
-                </action>
-            </block>
+            <block class="Encomage\Wishlist\Block\Customer\Wishlist\Button" name="customer.wishlist.bottom.buttons" template="Magento_Wishlist::button/bottom-buttons.phtml"/>
         </referenceContainer>
 
         <move element="customer.wishlist.item.price" destination="customer.wishlist.items" after="-"/>

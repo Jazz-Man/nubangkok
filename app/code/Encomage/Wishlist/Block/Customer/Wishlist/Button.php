@@ -1,6 +1,6 @@
 <?php
 
-namespace Encomage\Wishlist\Block\Customer\Wishlist\Item;
+namespace Encomage\Wishlist\Block\Customer\Wishlist;
 
 class Button extends \Magento\Wishlist\Block\Customer\Wishlist\Button
 {
