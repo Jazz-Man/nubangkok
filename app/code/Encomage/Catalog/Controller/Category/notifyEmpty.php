@@ -52,7 +52,7 @@ class notifyEmpty extends \Magento\Framework\App\Action\Action
             ['category_id' => $params['category_id'], 'email' => $params['notify-email']]);
         $this->_resource->save($model);
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-        $resultRedirect->setPath('/');
+        $resultRedirect->setPath($this->_redirect->getRefererUrl());
         return $resultRedirect;
     }
 }
