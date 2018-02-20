@@ -1,8 +1,9 @@
 define([
     'uiComponent',
     'Magento_Customer/js/customer-data',
-    'jquery'
-], function (Component, customerData, $) {
+    'jquery',
+    'matchMedia'
+], function (Component, customerData, $, mediaCheck) {
     'use strict';
 
 
@@ -16,6 +17,22 @@ define([
             if (customer()['website_id'] !== window.checkout.websiteId) {
                 customerData.reload(['customer'], false);
             }
+            mediaCheck({
+                media: '(max-width: 768px)',
+                entry: $.proxy(function () {
+
+                    $(document).on('click', 'a.top-link-myaccount', function () {
+
+                        $('html').toggleClass('mobile-account-top-links');
+                        event.preventDefault();
+                    })
+                }, this),
+                exit: $.proxy(function () {
+                    alert('desktop')
+
+                }, this)
+            });
+
             return this._super();
         },
         getLinks: function () {
@@ -35,4 +52,5 @@ define([
         }
 
     });
+
 });
