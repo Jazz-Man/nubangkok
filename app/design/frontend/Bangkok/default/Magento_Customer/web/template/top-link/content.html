@@ -1,13 +1,13 @@
 <div class="actions dropdown options switcher-options">
-    <a href="#" class="top-link-myaccount actions dropdown customer-name"
+    <a href="#" class="top-link-myaccount js-customer-top-link actions dropdown customer-name"
        data-mage-init='{"dropdown":{}}'
        data-toggle="dropdown"
        data-trigger-keypress-button="true"></a>
     <div class="account-links-list">
         <ul class="dropdown switcher-dropdown" data-target="dropdown">
-            <span class="close-account-links-js">Close</span>
+            <span class="close-account-links-js"></span>
             <each args="getLinks()">
-                <li class="account-link-item">
+                <li data-bind="attr:{class: cssClass}">
                     <a class="mob-active-item" data-bind="{text:label, attr:{href:url}}"></a>
                 </li>
             </each>

@@ -152,6 +152,14 @@
 }
 
 @media only screen and (max-width: 767px) {
+    .mobile-account-top-links .page-wrapper {
+        webkit-transition: left 0.3s;
+        -moz-transition: left 0.3s;
+        -ms-transition: left 0.3s;
+        transition: right 0.3s;
+        position: relative;
+        right: 100%;
+    }
     .modal-popup.popup-authentication .block[class] + .block {
         border-left: 1px solid #6b584e;
     }
@@ -179,6 +187,8 @@
         position: absolute;
         right: 10px;
         width: 20px;
+        top: -32px;
+        cursor: pointer;
     }
     .mobile-account-top-links .page-header .links li:first-of-type .options .dropdown.switcher-dropdown{
         display: block;
@@ -201,7 +211,7 @@
         padding: 10px;
         font-size: 14px;
     }
-    .mobile-account-top-links .account-link-item.active:before{
+    .mobile-account-top-links .account-links-list li.active:before{
         content: url(../images/mobile/nav/marker.png);
         float: left;
         margin-top: 12px;
