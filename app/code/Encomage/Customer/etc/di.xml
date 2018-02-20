@@ -18,16 +18,19 @@
                     <item name="account" xsi:type="array">
                         <item name="label" xsi:type="string">My account</item>
                         <item name="path" xsi:type="string">customer/account</item>
+                        <item name="handle" xsi:type="string">customer-account-index</item>
                     </item>
                 </item>
                 <item name="notLoggedCustomerUrls" xsi:type="array">
                     <item name="login" xsi:type="array">
                         <item name="label" xsi:type="string">Sign in</item>
                         <item name="path" xsi:type="string">customer/account/login</item>
+                        <item name="handle" xsi:type="string">customer-account-login</item>
                     </item>
                     <item name="create" xsi:type="array">
                         <item name="label" xsi:type="string">Create account</item>
                         <item name="path" xsi:type="string">customer/account/create</item>
+                        <item name="handle" xsi:type="string">customer-account-create</item>
                     </item>
                 </item>
             </argument>
