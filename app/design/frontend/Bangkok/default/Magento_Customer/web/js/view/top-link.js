@@ -23,9 +23,19 @@ define([
 
                     $(document).on('click', 'a.top-link-myaccount', function () {
 
-                        $('html').toggleClass('mobile-account-top-links');
+                        // $('html').toggleClass('mobile-account-top-links');
+                        $('html').addClass('mobile-account-top-links');
+
+                        event.preventDefault();
+                    });
+                    $(document).on('click', '.close-account-links-js', function () {
+
+                        // $('html').toggleClass('mobile-account-top-links');
+                        $('html').removeClass('mobile-account-top-links');
+
                         event.preventDefault();
                     })
+
                 }, this),
                 exit: $.proxy(function () {
                     alert('desktop')

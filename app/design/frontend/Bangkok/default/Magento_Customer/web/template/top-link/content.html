@@ -5,9 +5,10 @@
        data-trigger-keypress-button="true"></a>
     <div class="account-links-list">
         <ul class="dropdown switcher-dropdown" data-target="dropdown">
+            <span class="close-account-links-js">Close</span>
             <each args="getLinks()">
-                <li class="account-link-item" style="list-style-type: disc !important;">
-                    <a style="list-style-type: disc !important;" data-bind="{text:label, attr:{href:url}}"></a>
+                <li class="account-link-item">
+                    <a class="mob-active-item" data-bind="{text:label, attr:{href:url}}"></a>
                 </li>
             </each>
         </ul>
