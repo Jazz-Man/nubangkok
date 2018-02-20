@@ -6,6 +6,7 @@ use \Magento\Framework\View\Element\Template\Context;
 
 class Listing extends \Magento\Framework\View\Element\Template
 {
+    const STRING_COUNT_CHARACTERS = 360;
     /**
      * @var CollectionFactory
      */
@@ -68,14 +69,14 @@ class Listing extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param $string
+     * @param string $string
      * @return string
      */
-    public function getCutLength($string)
+    public function getCutLength(string $string)
     {
         $count = iconv_strlen($string);
-        if ($count > 325) {
-            $string = iconv_substr(trim($string), 0, 324) . '... ';
+        if ($count > self::STRING_COUNT_CHARACTERS) {
+            $string = iconv_substr(trim($string), 0, self::STRING_COUNT_CHARACTERS - 30) . '... ';
         }
         return $string;
     }
