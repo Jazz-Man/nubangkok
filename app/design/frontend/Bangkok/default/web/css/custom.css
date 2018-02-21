@@ -564,6 +564,11 @@ input:-webkit-autofill {
     }
 }
 
-
+/*new icons*/
+.mode-list{
+    content: url(../images/icons/productPage/desktop-list.svg);
+    width: 25px !important;
+    padding: 6px 9px !important;
+}
 
 
