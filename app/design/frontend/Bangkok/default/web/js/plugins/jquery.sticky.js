@@ -118,11 +118,12 @@
           var unstick = (s.stickyElement.offset().top + s.stickyElement.outerHeight() >= stickyWrapperContainer.offset().top + stickyWrapperContainer.outerHeight()) && (s.stickyElement.offset().top <= s.topSpacing);
 
           if( unstick ) {
-            s.stickyElement
+              //TODO: Custom fix
+            /*s.stickyElement
               .css('position', 'absolute')
               .css('top', '')
               .css('bottom', 0)
-              .css('z-index', '');
+              .css('z-index', '');*/
           } else {
             s.stickyElement
               .css('position', 'fixed')
@@ -264,10 +265,11 @@
   }
 
   $.fn.sticky = function(method) {
-      //TODO: Need fix it;
+      //TODO: Need fix it : Plugin custom fix;
       if($(this).hasClass('cart-summary')){
           return;
       }
+      //TODO: end
     if (methods[method]) {
       return methods[method].apply(this, slice.call(arguments, 1));
     } else if (typeof method === 'object' || !method ) {
