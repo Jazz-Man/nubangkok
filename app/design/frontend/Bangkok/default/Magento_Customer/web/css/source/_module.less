@@ -495,8 +495,8 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
   .block.block-dashboard-info, .block.block-dashboard-addresses {
     .box-actions {
-      a {
-        width: 100% !important;
+      .action.edit {
+        width: 100%;
       }
     }
   }
@@ -518,8 +518,8 @@
   }
   .block.block-dashboard-info, .block.block-dashboard-addresses {
     .box-actions {
-      a {
-        width: 80%;
+      .action.edit {
+        width: 40%;
       }
     }
   }
@@ -562,22 +562,6 @@
         .control .input-text {
           width: 100%;
         }
-      }
-    }
-    .actions-toolbar {
-      .primary {
-        width: 80%;
-        margin: 0 auto;
-        .action {
-          background-color: @color-brown;
-          border: none;
-          &:hover{
-            background-color: @color-brown - 20%;
-          }
-        }
-      }
-      .secondary {
-        margin-top: 30px;
       }
     }
   }
