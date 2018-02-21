@@ -87,3 +87,4 @@ LICENSE_AFL.txt
 PULL_REQUEST_TEMPLATE.md
 auth.json.sample
 php.ini.sample
+deploy.sh
