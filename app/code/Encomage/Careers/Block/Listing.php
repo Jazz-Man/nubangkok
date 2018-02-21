@@ -6,6 +6,7 @@ use \Magento\Framework\View\Element\Template\Context;
 
 class Listing extends \Magento\Framework\View\Element\Template
 {
+    const STRING_COUNT_CHARACTERS = 360;
     /**
      * @var CollectionFactory
      */
@@ -30,7 +31,7 @@ class Listing extends \Magento\Framework\View\Element\Template
     {
         $collection = $this->_careersCollectionFactory->create();
         $collection->addFieldToFilter('status', ['eq' => \Encomage\Careers\Model\Careers\Source\Status::STATUS_ENABLED])
-        ->addOrder('position', \Magento\Framework\Data\Collection::SORT_ORDER_ASC);
+        ->addOrder('updated_at', \Magento\Framework\Data\Collection::SORT_ORDER_DESC);
         return $collection;
     }
 
@@ -65,5 +66,18 @@ class Listing extends \Magento\Framework\View\Element\Template
             ->createBlock('Magento\Cms\Block\Block')
             ->setBlockId('career-images-listing-page')
             ->toHtml();
+    }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    public function getCutLength(string $string)
+    {
+        $count = iconv_strlen($string);
+        if ($count > self::STRING_COUNT_CHARACTERS) {
+            $string = iconv_substr(trim($string), 0, self::STRING_COUNT_CHARACTERS - 30) . '... ';
+        }
+        return $string;
     }
 }
