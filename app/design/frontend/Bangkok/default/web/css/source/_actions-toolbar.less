@@ -184,6 +184,13 @@
         margin-bottom: 0;
         width: auto;
       }
+      .action.primary.add {
+        background-color: @color-brown;
+        border: 1px solid @color-brown;
+        &:hover {
+          background-color: @color-brown -20%;
+        }
+      }
     }
   }
   form {
@@ -230,6 +237,20 @@
           padding: 12px;
         }
       }
+    }
+  }
+  .actions-toolbar {
+    > .primary {
+      text-align: center;
+      width: 60%;
+      margin: 0 auto;
+      button.action.primary.add{
+        background-color: @color-brown;
+        border: 1px solid @color-brown;
+      }
+    }
+    > .secondary {
+      margin-top: 20px;
     }
   }
   .login-container {
