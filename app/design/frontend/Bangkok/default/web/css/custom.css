@@ -155,7 +155,19 @@
     .modal-popup.popup-authentication .block[class] + .block {
         border-left: 1px solid #6b584e;
     }
+
+    /*mobile icon dropdown*/
+    .page-header .links li:first-of-type:hover .options, .page-header .links li:first-of-type:focus .options,
+    .page-header .links li:first-of-type:active .options {
+        background-color: transparent;
+    }
+    .page-header .links li:first-of-type:hover .options .dropdown.switcher-dropdown, .page-header .links li:first-of-type:focus .options .dropdown.switcher-dropdown, .page-header .links li:first-of-type:active .options .dropdown.switcher-dropdown {
+        display: none;
+    }
+    /* END mobile icon dropdown*/
 }
+
+
 
 @media only screen and (max-width: 767px) {
     .modal-slide._inner-scroll .modal-footer {
@@ -510,36 +522,48 @@ input:-webkit-autofill {
     /* shopping cart */
     .cart.table-wrapper .product-item-name + .item-options .label {
         font-size: 11px;
-        width: 35px ;
+        width: 35px;
     }
+
     .cart.table-wrapper .item-options .options-value {
         font-size: 11px;
     }
+
     .cart.table-wrapper .product-item-photo .product-image-container .product-image-wrapper .image-block {
         width: 85px;
         height: 82px;
     }
-    .cart.table-wrapper .product-item-details{
+
+    .cart.table-wrapper .product-item-details {
         /*line-height: 10px;*/
     }
-    .cart.table-wrapper .col.subtotal span{
+
+    .cart.table-wrapper .col.subtotal span {
         font-size: 11px;
     }
-    .cart.table-wrapper .col.qty{
+
+    .cart.table-wrapper .col.qty {
         margin-top: 15px;
     }
+
     .cart.table-wrapper .cart-price {
         top: -54px;
     }
-    .cart.table-wrapper .item-actions .actions-toolbar .action-towishlist{
+
+    .cart.table-wrapper .item-actions .actions-toolbar .action-towishlist {
         padding: 2px 4px;
     }
-    .cart.table-wrapper .actions-toolbar > .action.action-delete{
+
+    .cart.table-wrapper .actions-toolbar > .action.action-delete {
         height: 23px;
     }
-    .cart.table-wrapper .item-actions .actions-toolbar{
+
+    .cart.table-wrapper .item-actions .actions-toolbar {
         width: 70%;
         margin-left: 30%;
     }
 }
+
+
+
 

@@ -537,14 +537,21 @@
     margin-bottom: 0;
     .links {
       li:first-of-type {
-        list-style-type: none;
+        //list-style-type: none;
         display: inline-block;
         float: left;
         margin-right: 10px;
         padding-top: 13px;
       }
-      li:nth-child(2), li:nth-child(3), li:nth-child(5), li:nth-child(6) {
+      li:nth-child(2), li:nth-child(3), li:nth-child(5), li:nth-child(6){
         display: none;
+      }
+      .account-links-list{
+        .dropdown.switcher-dropdown{
+          li.account-link-item{
+            display: block;
+          }
+        }
       }
     }
   }
