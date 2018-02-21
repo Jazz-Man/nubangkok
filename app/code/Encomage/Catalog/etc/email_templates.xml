@@ -3,7 +3,7 @@
     <template id="coming_soon_category_product"
               label="Coming Soon Category Product"
               file="coming_soon_category_product.html"
-              type="text"
-              module="Encomage_Catalog"
+              type="html"
+              module="Magento_Catalog"
               area="frontend"/>
 </config>

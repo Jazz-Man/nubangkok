@@ -505,6 +505,41 @@ input:-webkit-autofill {
     .form-wishlist-items .products-grid.wishlist .product-item .product-shared-link {
         margin-left: 5px;
     }
+
+    /* ***** END Wishlist*/
+    /* shopping cart */
+    .cart.table-wrapper .product-item-name + .item-options .label {
+        font-size: 11px;
+        width: 35px ;
+    }
+    .cart.table-wrapper .item-options .options-value {
+        font-size: 11px;
+    }
+    .cart.table-wrapper .product-item-photo .product-image-container .product-image-wrapper .image-block {
+        width: 85px;
+        height: 82px;
+    }
+    .cart.table-wrapper .product-item-details{
+        /*line-height: 10px;*/
+    }
+    .cart.table-wrapper .col.subtotal span{
+        font-size: 11px;
+    }
+    .cart.table-wrapper .col.qty{
+        margin-top: 15px;
+    }
+    .cart.table-wrapper .cart-price {
+        top: -54px;
+    }
+    .cart.table-wrapper .item-actions .actions-toolbar .action-towishlist{
+        padding: 2px 4px;
+    }
+    .cart.table-wrapper .actions-toolbar > .action.action-delete{
+        height: 23px;
+    }
+    .cart.table-wrapper .item-actions .actions-toolbar{
+        width: 70%;
+        margin-left: 30%;
+    }
 }
 
-/* ***** END Wishlist*/
