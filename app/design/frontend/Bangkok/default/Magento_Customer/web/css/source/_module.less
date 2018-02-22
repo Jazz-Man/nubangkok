@@ -98,7 +98,7 @@
       padding: 7px 17px;
       background-color: @color-brown;
       border: none;
-      &:hover{
+      &:hover {
         background-color: @color-brown - 20%;
       }
     }
@@ -118,7 +118,7 @@
       line-height: 26px;
     }
   }
-  .box-newsletter{
+  .box-newsletter {
     display: none;
   }
 
@@ -198,22 +198,23 @@
       .block:not(.widget) {
         &:extend(.abs-account-blocks all);
       }
-      .block-content{
-        .box-information{
-          .box-content{
-              table {
-                margin-top: 20px !important;
-                th {
-                  width: 30%;
-                  padding: 0;
-                  font-weight: 500;
-                }
-                td {
-                  width: 50%;
-                  padding: 0;
-                  color: @color-gray52;
-                }
+      .block-content {
+        .box-information {
+          .box-content {
+            table {
+              margin-top: 20px !important;
+              width: 50%;
+              th {
+                width: 30%;
+                padding: 0;
+                font-weight: 500;
               }
+              td {
+                width: 50%;
+                padding: 0;
+                color: @color-gray52;
+              }
+            }
           }
         }
       }
@@ -346,7 +347,7 @@
     }
   }
   .block.block-dashboard-info, .block.block-dashboard-addresses {
-    .box-title span{
+    .box-title span {
       text-transform: uppercase;
       font-weight: 500 !important;
     }
@@ -493,9 +494,9 @@
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
   .block.block-dashboard-info, .block.block-dashboard-addresses {
-    .box-actions{
-      a{
-        width: 100% !important;
+    .box-actions {
+      .action.edit {
+        width: 100%;
       }
     }
   }
@@ -516,18 +517,21 @@
     }
   }
   .block.block-dashboard-info, .block.block-dashboard-addresses {
-    .box-actions{
-      a{
-        width: 80%;
+    .box-actions {
+      .action.edit {
+        width: 40%;
       }
     }
   }
   .account {
-    .column.main{
+    .column.main {
       margin: 0;
       > a {
         border-top: 2px solid @color-gray68;
         border-bottom: 2px solid @color-gray68;
+      }
+      .block-content .box-information .box-content table {
+        width: 100%;
       }
     }
     .page.messages {
@@ -549,6 +553,16 @@
   .customer-account-index {
     .page-title-wrapper {
       position: relative;
+    }
+  }
+  .form.password.forget {
+    .fieldset {
+      .field {
+        margin-bottom: 30px;
+        .control .input-text {
+          width: 100%;
+        }
+      }
     }
   }
 }
@@ -619,7 +633,19 @@
     width: 50%;
     display: inline-block;
   }
-
+  .form.password.forget {
+    .actions-toolbar {
+      .primary {
+        .action {
+          background-color: @color-brown;
+          border: none;
+          &:hover{
+            background-color: @color-brown - 20%;
+          }
+        }
+      }
+    }
+  }
   //
   //  My account
   //  ---------------------------------------------
@@ -657,12 +683,12 @@
         text-align: left;
         outline: none;
         &:after {
-          content: @icon-select-arrow-up;
+          content: @icon-select-arrow-down;
           padding-left: 5px;
           vertical-align: middle;
         }
         &.active:after {
-          content: @icon-select-arrow-down;
+          content: @icon-select-arrow-up;
         }
       }
     }
@@ -737,7 +763,6 @@
       }
     }
   }
-
   //
   //  Welcome block
   //  ---------------------------------------------

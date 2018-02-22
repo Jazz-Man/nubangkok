@@ -48,7 +48,7 @@ class PlaceOrderAfter implements ObserverInterface
 
     /**
      * @param Observer $observer
-     * @return $this|void
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute(Observer $observer)
     {
@@ -58,7 +58,7 @@ class PlaceOrderAfter implements ObserverInterface
         if ($customer->getId()) {
             $customerNupointItem = $customer->getNupointItem();
             if ($this->checkoutSession->getUseCustomerNuPoints()) {
-                $customerNupointItem->redeemNupoints();
+                $customerNupointItem->redeemNupointsAfterOrderPlaced();
                 $this->checkoutSession->setUseCustomerNuPoints(false);
             }
             $customerNupointItem->addNupoints($observer->getOrder()->getSubtotal(), true);

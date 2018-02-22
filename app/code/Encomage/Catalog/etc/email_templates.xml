@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Email/etc/email_templates.xsd">
+    <template id="coming_soon_category_product"
+              label="Coming Soon Category Product"
+              file="coming_soon_category_product.html"
+              type="html"
+              module="Magento_Catalog"
+              area="frontend"/>
+</config>

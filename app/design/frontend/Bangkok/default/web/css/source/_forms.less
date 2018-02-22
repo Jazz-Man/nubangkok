@@ -108,6 +108,7 @@
   .field-error,
   div.mage-error[generated] {
     margin-top: 7px;
+    line-height: 10px;
   }
 
   .field-error {
@@ -397,6 +398,8 @@
       .nice-select{
         width: 100%;
         padding-left: 9px;
+        float: none;
+        margin-bottom: 20px;
       }
     }
     label[for='country']{
@@ -603,12 +606,6 @@
   }
 }
 
-//.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l){
-//  .product-options-bottom input[type="radio"] + span{
-//    //margin-left: 10%;
-//  }
-//}
-
 //
 //  Desktop
 //  _____________________________________________
@@ -638,6 +635,39 @@
       }
       label[for='country'] {
         font-size: 2rem;
+      }
+    }
+  }
+  .form-edit-account{
+    .fieldset{
+      .legend{
+        margin-left: 0;
+      }
+      .gender{
+        .label{
+          position: absolute;
+          margin-left: 9px;
+        }
+        .control{
+          position: relative;
+          .nice-select{
+            width: 100%;
+            border-top: none;
+          }
+        }
+      }
+    }
+    .actions-toolbar{
+      .primary{
+        width: 200px;
+        button{
+          width: 100%;
+          background-color: @color-brown;
+          border: none;
+          &:hover{
+            background-color: @color-brown -20%;
+          }
+        }
       }
     }
   }
@@ -681,15 +711,6 @@
       a.action.login {
         width: 86%;
         position: relative;
-        &:after {
-          content: '';
-          background: url(../images/mobile/icon-question.png) no-repeat;
-          position: absolute;
-          width: 16px;
-          height: 16px;
-          right: -24px;
-          top: 7px;
-        }
       }
       p {
         margin-top: 1rem;
@@ -714,6 +735,47 @@
     }
     .country .nice-select{
       padding-left: 9px;
+    }
+  }
+
+
+  .form-edit-account{
+    .fieldset{
+      .field .control .input-text{
+        width: 100%;
+      }
+      .gender{
+        .label{
+          position: absolute;
+          margin-top: 7px;
+          margin-left: 9px;
+        }
+        .control{
+          position: relative;
+          .nice-select{
+            width: 100%;
+            border-top: none;
+            height: 32px;
+          }
+        }
+      }
+    }
+    .actions-toolbar{
+      .primary{
+        width: 200px;
+        margin: 0 auto;
+        button{
+          width: 100%;
+          background-color: @color-brown;
+          border: none;
+          &:hover{
+            background-color: @color-brown -20%;
+          }
+        }
+      }
+      .secondary{
+        margin-top: 30px;
+      }
     }
   }
 }

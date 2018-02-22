@@ -48,6 +48,7 @@
 
         <referenceBlock name="checkout.cart.crosssell" remove="true"/>
         <referenceBlock name="checkout.cart.summary.title" remove="true"/>
+        <referenceBlock name="checkout.cart.methods.multishipping" remove="true"/>
 
     </body>
 </page>

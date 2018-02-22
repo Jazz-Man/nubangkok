@@ -50,7 +50,7 @@ class Nupoints implements SectionSourceInterface
     {
         if ($this->customerSession->isLoggedIn()) {
             if ($this->checkoutSession->getUseCustomerNuPoints()) {
-                return $this->_getNupointItem()->getConvertedNupointsToMoney();
+                return (int)$this->checkoutSession->getNupointsRedeemedMoney();
             }
         }
         return 0;
