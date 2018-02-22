@@ -95,9 +95,13 @@
           width: 20%;
         }
       }
+      .totals{
+        .mark{
+          text-transform: uppercase;
+        }
+      }
     }
   }
-
   //  Products table
   .cart.table-wrapper {
     .items {
@@ -664,7 +668,17 @@
 
     }
   }
-
+.fieldset.coupon.applied{
+  .actions-toolbar{
+    .primary{
+      width: 65%;
+      .action.cancel.primary{
+        font-size: 11px;
+        width: 100%;
+      }
+    }
+  }
+}
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s){
@@ -701,9 +715,22 @@
           height: 20px;
           width: 30px;
           font-size: 12px;
+          padding: 0;
         }
       }
     }
+  }
+  .fieldset.coupon.applied{
+    .actions-toolbar{
+      .primary{
+        .action.cancel.primary{
+          padding: 1px;
+        }
+      }
+    }
+  }
+  .cart.table-wrapper .product-item-details{
+    width: 24%;
   }
 }
 
