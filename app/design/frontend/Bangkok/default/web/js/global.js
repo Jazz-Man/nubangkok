@@ -6,14 +6,27 @@ define([
 ], function ($) {
     "use strict";
 
+    //variables
+    //---------------------------------------------
+    var $pageHeader = $('header.page-header'), $sidebarAdditionalEl = $('.sidebar.sidebar-additional');
+
     //init selections
     //---------------------------------------------
     $('select').niceSelect();
 
+    $sidebarAdditionalEl.css('min-height', $('.columns').outerHeight());
+
+    $('.js-sidebar-categories').on('sub-menu-show', function (e) {
+        $sidebarAdditionalEl.css('min-height', $('.left-sidebar-container.js-sticky-sidebar').outerHeight());
+    });
+
     //sticky elements
     //---------------------------------------------
-    $('.js-sticky-sidebar').sticky({topSpacing: 45, bottomSpacing: $('.page-footer').outerHeight()});
-    $('header.page-header').sticky({zIndex: 9999});
+    $('.js-sticky-sidebar').sticky({
+        topSpacing: $pageHeader.outerHeight() + 5,
+        bottomSpacing: $('.page-footer').outerHeight()
+    });
+    $pageHeader.sticky({zIndex: 9999});
 
 
     //Use for change image on click
