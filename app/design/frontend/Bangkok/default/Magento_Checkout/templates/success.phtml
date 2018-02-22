@@ -1,0 +1,26 @@
+<?php /** @var $block \Magento\Checkout\Block\Onepage\Success */ ?>
+<?php
+$addressInfo = $block->getShippingAddress();
+$country = $block->getCountryNameByCode();
+?>
+<div class="checkout-success">
+    <h2><?= __('Thank you!') ?> <br><?= __('Your order transaction is successfully') ?></h2>
+    <div class="top-block-success">
+        <?php if ($block->getOrderId()): ?>
+            <?php if ($block->getCanViewOrder()) : ?>
+                <p class="order-number"><?= __('Order No. is %1.', $block->getOrderId()) ?></p>
+            <?php endif; ?>
+            <p><?= __('An email receipt including the details about your order') ?></p><p><?= __('has been sent to  %1', $addressInfo['email']) ?></p>
+        <?php endif; ?>
+</div>
+<div class="bottom-block-success">
+        <p><?= __('Shipping Address') ?></p>
+        <p><?= __('This order will shipped to:') ?></p>
+
+        <p><span><?= __('Customer Name') ?></span> &nbsp;&nbsp;
+            <?= $addressInfo['firstname'] ?>&nbsp;<span><?= $addressInfo['lastname'] ?></span></p>
+        <p><span><?= __('Adress') ?></span> &nbsp;&nbsp;<?= $addressInfo['street'] ?></p>
+        <p><span><?= __('Adress 2') ?></span></p>
+        <p><?= $country ?>,&nbsp<span><?= $addressInfo['city'] ?></span></p>
+    </div>
+</div>

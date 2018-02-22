@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="encomage_storelocator" class="Encomage\Slider\Block\Widget\Slider">
+        <label translate="true">Slider</label>
+        <description>Slider</description>
+        <parameters>
+            <parameter xsi:type="select" name="loop" required="false" visible="true">
+                <label translate="true">Loop</label>
+                <options>
+                    <option name="yes" value="1" selected="true">
+                        <label translate="true">Enable</label>
+                    </option>
+                    <option name="no" value="0">
+                        <label translate="true">Disable</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter xsi:type="select" name="dots" required="false" visible="true">
+                <label translate="true">Dots</label>
+                <options>
+                    <option name="yes" value="1" selected="true">
+                        <label translate="true">Enable</label>
+                    </option>
+                    <option name="no" value="0">
+                        <label translate="true">Disable</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter xsi:type="select" name="nav" required="false" visible="true">
+                <label translate="true">Navigation</label>
+                <options>
+                    <option name="yes" value="1" selected="true">
+                        <label translate="true">Enable</label>
+                    </option>
+                    <option name="no" value="0">
+                        <label translate="true">Disable</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter xsi:type="select" name="auto_height" required="false" visible="true">
+                <label translate="true">Auto Height</label>
+                <options>
+                    <option name="yes" value="1" selected="true">
+                        <label translate="true">Enable</label>
+                    </option>
+                    <option name="no" value="0">
+                        <label translate="true">Disable</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="slider" xsi:type="select" required="false" visible="true"
+                       source_model="Encomage\Slider\Model\Config\Source\Params">
+                <label translate="true">Slider</label>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>
