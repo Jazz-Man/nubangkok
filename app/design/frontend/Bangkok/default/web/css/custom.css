@@ -390,7 +390,6 @@ input:-webkit-autofill {
     .form-wishlist-items .products-grid.wishlist .product-item .box-tocart .wrapper.color {
         display: inline-flex;
         width: 35%;
-        background-color: aliceblue;
         margin-top: 15px;
     }
 
