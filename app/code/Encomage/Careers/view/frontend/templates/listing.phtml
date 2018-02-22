@@ -5,15 +5,15 @@
 $_collection = $block->getCareersCollection();
 ?>
 <div class="careers-listing-content">
+    <?= $block->getVideoCmsBlock(); ?>
+    <?= $block->getImageCmsBlock(); ?>
     <?php if ($_collection->getSize()) : ?>
-        <?= $block->getVideoCmsBlock(); ?>
-        <?= $block->getImageCmsBlock(); ?>
-        <p class="careers-listing-title"><?= /** @escapeNotVerified */ __('Available positions'); ?>:</p>
+        <p class="careers-listing-title"><?= /** @escapeNotVerified */__('Available positions'); ?>:</p>
         <?php foreach ($_collection as $item) : ?>
             <div class="short-description-container">
-                <p class="short-description-title"><?= /** @escapeNotVerified */ __($item->getTitle()); ?></p>
+                <p class="short-description-title"><?= /** @escapeNotVerified */__($item->getTitle()); ?></p>
                 <p class="short-description"><?= $block->escapeHtml($block->getCutLength($item->getShortDescription())); ?>
-                    <a class="morelink" href="<?= $block->escapeUrl($block->getUrlView($item->getId())); ?>"><?= /** @escapeNotVerified */ __('more'); ?></a>
+                    <a class="morelink" href="<?= $block->escapeUrl($block->getUrlView($item->getId())); ?>"><?= /** @escapeNotVerified */__('more'); ?></a>
                     <br/>
                 </p>
             </div>
