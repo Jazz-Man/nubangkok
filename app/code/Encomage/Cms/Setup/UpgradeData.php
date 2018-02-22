@@ -76,6 +76,10 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.1.0', '<')) {
             $this->updateLeftLinksSidebarBlock010();
         }
+
+        if (version_compare($context->getVersion(), '0.1.1', '<')) {
+            $this->updateContactUs();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -587,6 +591,125 @@ EOD;
 
         $this->pageRepository->deleteById('enable-cookies');
         $this->pageRepository->deleteById('privacy-policy-cookie-restriction-mode');
+        return $this;
+    }
+
+    private function updateContactUs()
+    {
+        $contactUs = $this->pageRepository->getById('contact-us');
+        $content = <<<EOD
+<div class="cms-contact-us">
+<h3 class="cms-subheading">Need help?</h3>
+<p>Check our <a style="text-decoration: underline;" href="{{store url='faq'}}">Frequently Asked Questions</a> section for help in finding an immediate answer to our most commonly asked questions.</p>
+<p></p>
+<p></p>
+<p></p>
+<h3 class="cms-subheading">Find shop?</h3>
+<div style="overflow-x: auto;">
+<table style="width: 600px;" border="0">
+<tbody>
+<tr>
+<td style="padding-left: 0; width: 25%;" rowspan="6">OUTLET SHOPS</td>
+<td>Ari (outside gate 3/4)</td>
+<td>062-006-9553</td>
+</tr>
+<tr>
+<td>Siam (inside exit 5)</td>
+<td>094-547-9771</td>
+</tr>
+<tr>
+<td>Ching Nonsi</td>
+<td>099-454-8646</td>
+</tr>
+<tr>
+<td>Chit Lom</td>
+<td>094-547-9778</td>
+</tr>
+<tr>
+<td>Nana</td>
+<td>099-192-0019</td>
+</tr>
+<tr>
+<td>Asok</td>
+<td>094-454-9776</td>
+</tr>
+<tr>
+<td rowspan="5"></td>
+<td>Thong Lo</td>
+<td>094-547-9775</td>
+</tr>
+<tr>
+<td>Ekkamai</td>
+<td>094-697-5160</td>
+</tr>
+<tr>
+<td>Phra Khanong</td>
+<td>099-391-7884</td>
+</tr>
+<tr>
+<td>Udomsuk</td>
+<td>092-050-0577</td>
+</tr>
+<tr>
+<td>Bearing</td>
+<td>094-649-9006</td>
+</tr>
+<tr>
+<td colspan="3"><img src="{{media url="wysiwyg/cms/central-plaz.svg"}}" width="150" /><img style="padding-left: 20px;" src="{{media url="wysiwyg/cms/central-central.svg"}}" width="150" /></td>
+</tr>
+<tr>
+<td rowspan="4"></td>
+<td>Ubon Ratchathani</td>
+<td>095-046-0492</td>
+</tr>
+<tr>
+<td>Hat Yai</td>
+<td>062-053-3811</td>
+</tr>
+<tr>
+<td>Phitsanulok</td>
+<td>061-995-8864</td>
+</tr>
+<tr>
+<td>Chiang Rai</td>
+<td>094-605-0530</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p></p>
+<h3 class="cms-subheading">Customer Service</h3>
+<div style="overflow-x: auto;">
+<table border="0">
+<tbody>
+<tr>
+<td style="text-align: right;"><img src="{{media url="wysiwyg/cms/phone-icon.png"}}" alt="" width="18" /></td>
+<td>
+<p>+66(0)83-455-1000</p>
+<p>Monday - Saturday</p>
+<p>9:00am - 6:00pm Bangkok Time</p>
+</td>
+</tr>
+<tr>
+<td style="text-align: right;"><img src="{{media url="wysiwyg/cms/line-icon.png"}}" alt="" width="18" /></td>
+<td>nuBangkok</td>
+</tr>
+<tr>
+<td style="text-align: right;"><img src="{{media url="wysiwyg/cms/locate-icon.png"}}" alt="" width="13" /></td>
+<td>
+<p>nuBangkok Head Office</p>
+<p>199/74 Sukhumvit 8 Road, Khlong Toey,</p>
+<p>Khlong Toey, Bangkok,</p>
+<p>Thailand 10110</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+EOD;
+        $contactUs->setContent($content);
+        $this->pageRepository->save($contactUs);
         return $this;
     }
 }
