@@ -177,9 +177,22 @@
     display: inline-block;
     width: 30%;
     border-bottom: 2px solid #e8e8e8;
+    padding-bottom: 6px;
+    //button {
+    //  margin-left: 20px;
+    //  width: 90px;
+    //  border: 1px solid #aeaeae;
+    //  text-transform: uppercase;
+    //  background-color: transparent;
+    //}
+  }
+  .btn{
+    width: 90px;
+    display: inline-block;
+    margin-left: 15px;
     button {
-      margin-left: 20px;
-      width: 90px;
+      //margin-left: 20px;
+      width: 100%;
       border: 1px solid #aeaeae;
       text-transform: uppercase;
       background-color: transparent;
@@ -201,5 +214,23 @@
   .points-container .right-block .content .float-right-content {
     width: 246px;
   }
+  .totals.redeem.excl{
+    .btn{
+      button{
+        font-size: 11px;
+      }
+    }
+  }
 }
 
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs){
+  .totals.redeem.excl{
+    .btn{
+      width: 50px;
+      button{
+        padding: 7px 0;
+        font-size: 11px;
+      }
+    }
+  }
+}
