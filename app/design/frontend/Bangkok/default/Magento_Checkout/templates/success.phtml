@@ -3,20 +3,24 @@
 $addressInfo = $block->getShippingAddress();
 $country = $block->getCountryNameByCode();
 ?>
-<h1><?= __('Thank you!') ?> <br><?= __('Your order transaction is successfully') ?></h1>
 <div class="checkout-success">
-    <?php if ($block->getOrderId()): ?>
-        <?php if ($block->getCanViewOrder()) : ?>
-            <p><?= __('Your order number is: %1.', $block->getOrderId()) ?></p>
+    <h2><?= __('Thank you!') ?> <br><?= __('Your order transaction is successfully') ?></h2>
+    <div class="top-block-success">
+        <?php if ($block->getOrderId()): ?>
+            <?php if ($block->getCanViewOrder()) : ?>
+                <p class="order-number"><?= __('Order No. is %1.', $block->getOrderId()) ?></p>
+            <?php endif; ?>
+            <p><?= __('An email receipt including the details about your order') ?></p><p><?= __('has been sent to  %1', $addressInfo['email']) ?></p>
         <?php endif; ?>
-        <p><?= __('An email receipt including the details about your order has been sent to  %1', $addressInfo['email'])?></p>
-    <?php endif; ?>
+</div>
+<div class="bottom-block-success">
+        <p><?= __('Shipping Address') ?></p>
+        <p><?= __('This order will shipped to:') ?></p>
 
-    <p><span><?= __('firstname') ?></span> &nbsp;&nbsp;<?= $addressInfo['firstname'] ?></p>
-    <p><span><?= __('lastname') ?></span> &nbsp;&nbsp;<?= $addressInfo["lastname"] ?></p>
-    <p><span><?= __('street') ?></span> &nbsp;&nbsp;<?= $addressInfo['street'] ?></p>
-    <p><span><?= __('city') ?></span> &nbsp;&nbsp;<?= $addressInfo['city'] ?></p>
-    <p><span><?= __('telephone') ?></span> &nbsp;&nbsp;<?= $addressInfo['telephone'] ?></p>
-    <p><span><?= __('postcode') ?></span> &nbsp;&nbsp;<?= $addressInfo['postcode'] ?></p>
-    <p><span><?= __('country') ?></span><?= $country?></p>
+        <p><span><?= __('Customer Name') ?></span> &nbsp;&nbsp;
+            <?= $addressInfo['firstname'] ?>&nbsp;<span><?= $addressInfo['lastname'] ?></span></p>
+        <p><span><?= __('Adress') ?></span> &nbsp;&nbsp;<?= $addressInfo['street'] ?></p>
+        <p><span><?= __('Adress 2') ?></span></p>
+        <p><?= $country ?>,&nbsp<span><?= $addressInfo['city'] ?></span></p>
+    </div>
 </div>
