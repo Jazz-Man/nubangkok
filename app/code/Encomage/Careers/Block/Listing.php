@@ -45,30 +45,6 @@ class Listing extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @return mixed
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    public function getVideoCmsBlock()
-    {
-        return $this->getLayout()
-            ->createBlock('Magento\Cms\Block\Block')
-            ->setBlockId('career-image-video-listing-page')
-            ->toHtml();
-    }
-
-    /**
-     * @return mixed
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    public function getImageCmsBlock()
-    {
-        return $this->getLayout()
-            ->createBlock('Magento\Cms\Block\Block')
-            ->setBlockId('career-images-listing-page')
-            ->toHtml();
-    }
-
-    /**
      * @param string $string
      * @return string
      */

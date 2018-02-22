@@ -1,9 +1,10 @@
 <?php
+
 namespace Encomage\Careers\Model;
 
 use \Magento\Framework\Model\Context;
 use \Magento\Framework\Model\AbstractModel;
-use \Encomage\Careers\Model\ResourceModel\Careers as CareersResource ;
+use \Encomage\Careers\Model\ResourceModel\Careers as CareersResource;
 use \Magento\Framework\App\Config\ScopeConfigInterface;
 use \Magento\Framework\Translate\Inline\StateInterface;
 use \Magento\Framework\Mail\Template\TransportBuilder;
@@ -52,7 +53,21 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
      */
     protected $_request;
 
-
+    /**
+     * Careers constructor.
+     * @param Context $context
+     * @param Registry $registry
+     * @param StoreManagerInterface $storeManager
+     * @param ScopeConfigInterface $scopeConfig
+     * @param TransportBuilder $transportBuilder
+     * @param StateInterface $inlineTranslation
+     * @param DataObject $dataObject
+     * @param Escaper $escaper
+     * @param RequestInterface $request
+     * @param CareersResource $resource
+     * @param CareersCollection|null $resourceCollection
+     * @param array $data
+     */
     public function __construct(
         Context $context,
         Registry $registry,
@@ -96,6 +111,8 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
      * @param $recipientData
      * @param null $file
      * @param null $image
+     * @return $this
+     * @throws \Magento\Framework\Exception\MailException
      */
     public function sendMail(array $senderData, $recipientData, $file = null, $image = null)
     {
@@ -122,7 +139,7 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
         $transporter = $this->_transportBuilder->getTransport();
         $transporter->sendMessage();
         $this->_inlineTranslation->resume();
-        return;
+        return $this;
     }
 
     /**
@@ -133,16 +150,18 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
     public function validatedParams()
     {
         $request = $this->_request->getParam('customer');
-        if (trim($request['lastName']) === '') {
+        $emptyValidator = new \Zend_Validate_NotEmpty();
+        if (!$emptyValidator->isValid($request['lastName'])) {
             throw new LocalizedException(__('Last Name is missing'));
         }
-        if (trim($request['firstName']) === '') {
+        if (!$emptyValidator->isValid($request['firstName'])) {
             throw new LocalizedException(__('First Name is missing'));
         }
-        if (trim($request['message']) === '') {
+        if (!$emptyValidator->isValid($request['message'])) {
             throw new LocalizedException(__('Message is missing'));
         }
-        if (false === \strpos($request['email'], '@')) {
+        $emailValidator = new \Zend_Validate_EmailAddress();
+        if (false === $emailValidator->isValid($request['email'])) {
             throw new LocalizedException(__('Invalid email address'));
         }
         if (trim($this->_request->getParam('hideit')) !== '') {

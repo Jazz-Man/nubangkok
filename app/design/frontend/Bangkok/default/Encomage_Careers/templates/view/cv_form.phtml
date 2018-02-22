@@ -6,8 +6,8 @@ $_career = $block->getCareer();
 
 ?>
 <div class="form-content">
-    <form class="form career-cv" action="<?= /* @escapeNotVerified */
-    $block->getFormAction(); ?>" id="career-cv-form" method="post" enctype="multipart/form-data"
+    <form class="form career-cv" action="<?= /* @escapeNotVerified */ $block->escapeUrl($block->getFormAction()); ?>"
+          id="career-cv-form" method="post" enctype="multipart/form-data"
           data-hasrequired="* Required Fields">
         <fieldset class="fieldset">
             <div class="field email">
@@ -36,15 +36,15 @@ $_career = $block->getCareer();
                 <label class="label" for="field3"><span><?= /* @escapeNotVerified */ __('Attach File'); ?>:</span></label>
                 <div class="files-container">
                     <label class="file-upload" for="customer-cv">
-                        <span><span>Choose file</span></span>
-                        <input required="true" name="customer_cv" title="cv" value=""
+                        <span><span><?= /* @escapeNotVerified */ __('Choose file');?></span></span>
+                        <input required="true" name="customer_cv" title="cv"
                                class="js-input-cv input-text attach-file"
                                type="file" placeholder="<?= /* @escapeNotVerified */ __('Choose file'); ?>"/>
                     </label>
                     <label class="file-upload" for="customer-photo">
 
-                        <span><span>Choose photo</span></span>
-                        <input required="true" name="customer_photo" title="photo" value=""
+                        <span><span><?= /* @escapeNotVerified */ __('Choose photo'); ?></span></span>
+                        <input required="true" name="customer_photo" title="photo"
                                class="js-input-photo input-text attach-photo"
                                type="file" placeholder="<?= /* @escapeNotVerified */ __('Choose photo'); ?>"/>
                     </label>
@@ -68,9 +68,10 @@ $_career = $block->getCareer();
             </div>
             <p class="message-heading"><?= /* @escapeNotVerified */ __('Message'); ?>:</p>
             <div class="field message required">
-                <textarea required="true" name="customer[message]" id="message" title="message" value=""
-                          class="input-text" type="text" rows="10" placeholder="<?= /* @escapeNotVerified */
-                __('Tell us about yourself'); ?>"></textarea>
+                <textarea required="true" name="customer[message]" id="message" title="message"
+                          class="input-text"
+                          type="text" rows="10"
+                          placeholder="<?= /* @escapeNotVerified */ __('Tell us about yourself'); ?>"></textarea>
             </div>
         </fieldset>
         <div class="actions-toolbar">

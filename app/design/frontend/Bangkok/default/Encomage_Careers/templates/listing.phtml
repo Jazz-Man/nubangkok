@@ -5,8 +5,7 @@
 $_collection = $block->getCareersCollection();
 ?>
 <div class="careers-listing-content">
-    <?= $block->getVideoCmsBlock(); ?>
-    <?= $block->getImageCmsBlock(); ?>
+    <?= $block->getChildHtml('before_careers_list'); ?>
     <?php if ($_collection->getSize()) : ?>
         <p class="careers-listing-title"><?= /** @escapeNotVerified */__('Available positions'); ?>:</p>
         <?php foreach ($_collection as $item) : ?>
