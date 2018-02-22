@@ -5,12 +5,19 @@ define([
     "use strict";
     return function (config, element) {
         function setProperty(selector, name, size) {
+            var title = $('.js-file-field-title');
             if (name && size) {
                 $(selector + '-name').text(name);
                 $(selector + '-size').text(size);
+                $(selector + '-info').show();
+                title.show();
             } else {
                 $(selector + '-name').empty();
                 $(selector + '-size').empty();
+                $(selector + '-info').hide();
+                if (!$('.js-input-cv').prop('files')[0] && !$('.js-input-photo').prop('files')[0]) {
+                    title.hide();
+                }
             }
         }
 
