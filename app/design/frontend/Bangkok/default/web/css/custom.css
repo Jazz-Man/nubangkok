@@ -462,6 +462,7 @@ input:-webkit-autofill {
         height: 20px;
         width: 30px;
         font-size: 12px;
+        padding: 0;
     }
 
     .products-grid.wishlist .product-item .box-tocart .fieldset .field.qty .control .qty-reduce,
