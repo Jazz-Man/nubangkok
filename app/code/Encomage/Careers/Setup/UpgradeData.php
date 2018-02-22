@@ -34,8 +34,15 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.0.2', '<')) {
             $this->updateLeftLinksSidebarBlock();
         }
+        if (version_compare($context->getVersion(), '0.0.3', '<')) {
+            $this->updateCmsBlockCareerImagesListingPage();
+            $this->updateCmsBlockCareerImageVideoListingPage();
+        }
     }
 
+    /**
+     * Update a CMS block
+     */
     private function updateLeftLinksSidebarBlock()
     {
         $content = <<<EOD
@@ -59,6 +66,40 @@ class UpgradeData implements UpgradeDataInterface
 EOD;
         
         $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+    }
+
+    /**
+     * Update a CMS block
+     */
+    private function updateCmsBlockCareerImagesListingPage()
+    {
+        $content = <<<EOD
+<p>Don't bother making the facilities quite so clean. Save time and hassle and let the display get a little messy. Don't worry so much about one particular customer, because you're busy and hiring more people takes time and money.</p>
+<p><img src="{{media url="wysiwyg/cms/career1.JPG"}}" width="90%" /></p>
+<div style="width: 90%;">
+<p style="width: 49%; display: inline-block;"><img src="{{media url="wysiwyg/cms/career2.JPG"}}" /></p>
+<p style="width: 49%; display: inline-block; float: right;"><img src="{{media url="wysiwyg/cms/career3.JPG"}}" /></p>
+<div>
+<p>Don't bother making the facilities quite so clean. Save time and hassle and let the display get a little messy.</p>
+</div>
+</div>
+EOD;
+        $block = $this->blockRepository->getById('career-images-listing-page');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+    }
+
+    /**
+     * Update a CMS block
+     */
+    private function updateCmsBlockCareerImageVideoListingPage()
+    {
+        $content = <<<EOD
+<p><video width="90%" height="240" controls="controls" preload="auto" src="{{media url="wysiwyg/cms/video/SampleVideo_1280x720_1mb.mp4"}}"></video></p>
+EOD;
+        $block = $this->blockRepository->getById('career-image-video-listing-page');
         $block->setContent($content);
         $this->blockRepository->save($block);
     }

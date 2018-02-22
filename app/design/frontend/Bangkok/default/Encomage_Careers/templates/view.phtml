@@ -5,7 +5,7 @@
 $_career = $block->getCareer();
 ?>
 <div class="careers-view-content">
-        <p><?= /* @escapeNotVerified */ $_career->getSkills(); ?></p>
+    <div class="cms-skills-container"><?= /* @escapeNotVerified */ $_career->getSkills(); ?></div>
     <p class="careers-view-title"><?= /** @escapeNotVerified */ __('Apply Now'); ?></p>
     <?= $block->getChildHtml('careers_view_form'); ?>
 </div>
