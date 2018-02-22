@@ -9,7 +9,8 @@ define([
         var $html = $('html'),
             mediaBreakpoint = '(max-width: 768px)',
             desktopContainer = $('.sidebar.sidebar-additional .js-sidebar-container'),
-            mobileContainer = $('.navigation .js-sidebar-container');
+            mobileContainer = $('.navigation .js-sidebar-container'),
+            sidebarCategories =  $('.js-sidebar-categories');
 
 
         function activateSubMenu(categoryId) {
@@ -23,11 +24,12 @@ define([
             if (e.hasClass('active')) {
                 e.hide();
                 e.removeClass('active');
+                sidebarCategories.trigger('sub-menu-closed', e);
             } else {
                 e.show();
                 e.addClass('active');
+                sidebarCategories.trigger('sub-menu-show', e);
             }
-
         }
 
         // toggle between mobile / desktop
