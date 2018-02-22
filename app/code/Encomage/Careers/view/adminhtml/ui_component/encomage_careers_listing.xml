@@ -14,7 +14,7 @@
             </item>
         </item>
     </argument>
-    <dataSource name="nameOfDataSource">
+    <dataSource name="encomage_careers_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
             <argument name="name" xsi:type="string">encomage_careers_listing_data_source</argument>
@@ -124,5 +124,10 @@
                 </item>
             </argument>
         </column>
+        <actionsColumn name="actions" class="Encomage\Careers\Ui\Component\Listing\Column\RowActions">
+            <settings>
+                <indexField>id</indexField>
+            </settings>
+        </actionsColumn>
     </columns>
 </listing>

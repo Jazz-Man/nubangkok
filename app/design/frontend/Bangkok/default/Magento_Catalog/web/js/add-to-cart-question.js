@@ -37,8 +37,7 @@ define([
                             text: $.mage.__('Open Live Chat'),
                             class: 'product-question-modal-btn-consultant',
                             click: function () {
-                                //TODO: open chant
-                                //addToCartBtn.attr('disabled', false);
+                                Tawk_API.toggle();
                                 this.closeModal();
                             }
                         },
