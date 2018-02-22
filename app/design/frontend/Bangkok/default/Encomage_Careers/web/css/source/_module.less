@@ -42,6 +42,9 @@
 }
 
   .careers-view-content {
+    .cms-skills-container {
+      word-wrap: break-word;
+    }
     .careers-view-title {
       margin: 20px 0 10px 0;
       text-transform: uppercase;
@@ -121,7 +124,7 @@
                     color: #8f8278;
                     opacity: 0.5;
                     &:before {
-                      content: url('../images/icon-attach.png');
+                      content: url('../Encomage_Careers/images/icon-attach.png');
                       position: absolute;
                       top: -2px;
                       left: 5px;
@@ -150,6 +153,9 @@
                 display: inline-block;
                 margin-left: 14%;
               }
+            }
+            .js-file-field-title {
+              display: none;
             }
             .file-field {
               border-top: 1px solid #8a837f;
@@ -181,7 +187,7 @@
                 vertical-align: -10px;
               }
               .file-unset {
-                background: url("../images/bin.svg");
+                background: url("../Encomage_Careers/images/bin.svg");
                 display: inline-block;
                 float: right;
                 margin: 5px 0;
@@ -189,6 +195,12 @@
                 height: 25px;
                 background-size: cover;
               }
+            }
+            .js-cv-file-info {
+              display: none;
+            }
+            .js-photo-file-info {
+              display: none;
             }
           }
           .message-heading {
@@ -239,6 +251,11 @@
             width: 100%;
           }
           .field.files {
+            width: 100%;
+          }
+        }
+        .actions-toolbar {
+          .primary {
             width: 100%;
           }
         }
