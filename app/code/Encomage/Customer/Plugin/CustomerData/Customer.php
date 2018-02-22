@@ -35,7 +35,8 @@ class Customer
         foreach ($links as $link) {
             $result['customerTopLinks'][] = [
                 'label' => __($link['label']),
-                'url' => $this->urlBuilder->getUrl($link['path'])
+                'url' => $this->urlBuilder->getUrl($link['path']),
+                'handle' => (isset($link['handle'])) ? $link['handle'] : null
             ];
         }
         return $result;

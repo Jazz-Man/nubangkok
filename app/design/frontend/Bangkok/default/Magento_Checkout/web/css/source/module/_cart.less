@@ -244,6 +244,9 @@
   }
 
   .cart-container {
+    .grand.totals{
+      border-bottom: 2px solid #e8e8e8;
+    }
     .form-cart {
       &:extend(.abs-shopping-cart-items all);
     }
@@ -360,6 +363,42 @@
     }
     .control.qty {
       text-align: left;
+    }
+  }
+  //
+  // success page
+  //
+  .checkout-success {
+    h2 {
+      text-align: center;
+    }
+    .top-block-success {
+      .order-number {
+        font-weight: 700;
+        color: @color-gray19;
+      }
+      > p {
+        color: @color-gray55;
+      }
+    }
+    .bottom-block-success {
+      margin-top: 50px;
+      > p {
+        color: @color-gray55;
+      }
+      p:first-of-type {
+        color: @color-gray19;
+        font-weight: 700;
+      }
+      p:nth-child(2) {
+        color: @color-gray19;
+      }
+      p:nth-child(4){
+        text-transform: capitalize;
+      }
+      span {
+        text-transform: capitalize;
+      }
     }
   }
 }
