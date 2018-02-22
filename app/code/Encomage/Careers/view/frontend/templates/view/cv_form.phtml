@@ -33,36 +33,62 @@ $_career = $block->getCareer();
                        class="input-text customer-email" type="email" placeholder="<?= /* @escapeNotVerified */__('Email'); ?>"/>
             </div>
             <div class="field files required">
-                <label class="label" for="field3"><span><?= /* @escapeNotVerified */
-                        __('Attach File'); ?>:</span></label>
+                <label class="label" for="field3"><span><?= /* @escapeNotVerified */ __('Attach File'); ?>:</span></label>
                 <div class="files-container">
                     <label class="file-upload" for="customer-cv">
                         <span><span>Choose file</span></span>
-                        <input required="true" name="customer_cv" id="cv" title="cv" value="" class="input-text attach-file"
-                           type="file" placeholder="<?= /* @escapeNotVerified */__('Choose file'); ?>"/>
+                        <input required="true" name="customer_cv" title="cv" value=""
+                               class="js-input-cv input-text attach-file"
+                               type="file" placeholder="<?= /* @escapeNotVerified */ __('Choose file'); ?>"/>
                     </label>
                     <label class="file-upload" for="customer-photo">
 
                         <span><span>Choose photo</span></span>
-                        <input required="true" name="customer_photo" id="photo" title="photo" value=""
-                           class="input-text attach-photo"
-                           type="file" placeholder="<?= /* @escapeNotVerified */__('Choose photo'); ?>"/>
+                        <input required="true" name="customer_photo" title="photo" value=""
+                               class="js-input-photo input-text attach-photo"
+                               type="file" placeholder="<?= /* @escapeNotVerified */ __('Choose photo'); ?>"/>
                     </label>
                 </div>
             </div>
-            <p class="message-heading"><?= __('Message'); ?>:</p>
+            <div class="files-info">
+                <div class="file-field-title">
+                    <p class="file-name-title"><?= /* @escapeNotVerified */ __('Name'); ?></p>
+                    <p class="file-size-title"><?= /* @escapeNotVerified */ __('Size'); ?></p>
+                </div>
+                <div class="file-field">
+                    <p class="cv-file-name js-cv-file-name"></p>
+                    <p class="cv-file-size js-cv-file-size"></p>
+                    <a class="file-unset js-cv-file-unset" alt="#"></a>
+                </div>
+                <div class="file-field">
+                    <p class="photo-file-name js-photo-file-name"></p>
+                    <p class="photo-file-size js-photo-file-size" id="photo-file-size"></p>
+                    <a class="file-unset js-photo-file-unset" alt="#"></a>
+                </div>
+            </div>
+            <p class="message-heading"><?= /* @escapeNotVerified */ __('Message'); ?>:</p>
             <div class="field message required">
                 <textarea required="true" name="customer[message]" id="message" title="message" value=""
-                          class="input-text" type="text" rows="10" placeholder="Tell us about yourself"></textarea>
+                          class="input-text" type="text" rows="10" placeholder="<?= /* @escapeNotVerified */
+                __('Tell us about yourself'); ?>"></textarea>
             </div>
         </fieldset>
         <div class="actions-toolbar">
             <div class="primary">
                 <input type="hidden" name="hideit" id="hideit" value=""/>
                 <button type="submit" title="Submit" class="action submit ">
-                    <span><?= __('Apply now'); ?></span>
+                    <span><?= /* @escapeNotVerified */ __('Apply now'); ?></span>
                 </button>
             </div>
         </div>
     </form>
 </div>
+
+<script type="text/x-magento-init">
+        {
+            ".files": {
+                "Encomage_Careers/js/form/input_file": {}
+            }
+        }
+
+</script>
