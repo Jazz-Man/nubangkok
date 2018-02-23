@@ -6,36 +6,41 @@
             <item name="deps" xsi:type="string">encomage_careers_form.encomage_careers_form_data_source</item>
         </item>
         <item name="label" xsi:type="string" translate="true">Career Form</item>
-        <item name="layout" xsi:type="array">
-            <item name="type" xsi:type="string">tabs</item>
-        </item>
-
-        <item name="buttons" xsi:type="array">
-            <item name="back" xsi:type="string">Encomage\Careers\Block\Adminhtml\Careers\Edit\BackButton</item>
-            <item name="delete" xsi:type="string">Encomage\Careers\Block\Adminhtml\Careers\Edit\DeleteButton</item>
-            <item name="reset" xsi:type="string">Encomage\Careers\Block\Adminhtml\Careers\Edit\ResetButton</item>
-            <item name="save" xsi:type="string">Encomage\Careers\Block\Adminhtml\Careers\Edit\SaveButton</item>
-        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
     </argument>
-
+    <settings>
+        <buttons>
+            <button name="back" class="Encomage\Careers\Block\Adminhtml\Careers\Edit\BackButton"/>
+            <button name="delete" class="Encomage\Careers\Block\Adminhtml\Careers\Edit\DeleteButton"/>
+            <button name="reset" class="Encomage\Careers\Block\Adminhtml\Careers\Edit\ResetButton"/>
+            <button name="save" class="Encomage\Careers\Block\Adminhtml\Careers\Edit\SaveButton"/>
+        </buttons>
+        <namespace>encomage_careers_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>encomage_careers_form.encomage_careers_form_data_source</dep>
+        </deps>
+    </settings>
     <dataSource name="encomage_careers_form_data_source">
-        <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">Encomage\Careers\Model\Careers\DataProvider</argument>
-            <argument name="name" xsi:type="string">encomage_careers_form_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">id</argument>
-            <argument name="requestFieldName" xsi:type="string">id</argument>
-        </argument>
         <argument name="data" xsi:type="array">
             <item name="js_config" xsi:type="array">
                 <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
             </item>
         </argument>
+        <settings>
+            <submitUrl path="careers/index/save"/>
+        </settings>
+        <dataProvider class="Encomage\Careers\Model\Careers\DataProvider" name="encomage_careers_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>id</primaryFieldName>
+            </settings>
+        </dataProvider>
     </dataSource>
-
     <fieldset name="careers">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
-                <item name="label" xsi:type="string" translate="true">Career Fieldset</item>
+                <item name="label" xsi:type="string" translate="true">General</item>
             </item>
         </argument>
         <field name="id">

@@ -5,7 +5,7 @@ namespace Encomage\Careers\Controller\Adminhtml\Index;
 use \Magento\Backend\App\Action;
 use \Magento\Framework\View\Result\PageFactory;
 
-class Edit extends Action
+class Create extends Action
 {
     /**
      * @var bool|PageFactory
@@ -33,7 +33,7 @@ class Edit extends Action
     {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Encomage_Careers::careers');
-        $resultPage->getConfig()->getTitle()->prepend((__('Edit Vacancy')));
+        $resultPage->getConfig()->getTitle()->prepend((__('New Vacancy')));
         return $resultPage;
     }
 }
