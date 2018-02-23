@@ -292,7 +292,7 @@ input:-webkit-autofill {
     }
 
     .form-wishlist-items .products-grid.wishlist .product-item .fieldset .field.qty {
-        width: 70%;
+        width: 85%;
         margin-top: 2px;
     }
 
@@ -389,7 +389,7 @@ input:-webkit-autofill {
 
     .form-wishlist-items .products-grid.wishlist .product-item .box-tocart .wrapper.color {
         display: inline-flex;
-        width: 35%;
+        width: 60px;
         margin-top: 15px;
     }
 
@@ -417,6 +417,9 @@ input:-webkit-autofill {
     .fieldset.coupon.applied .action.cancel.primary {
         font-size: 12px;
         width: 85px;
+    }
+    .cart.table-wrapper .col.qty{
+        margin-top: 26px;
     }
 }
 
@@ -505,7 +508,7 @@ input:-webkit-autofill {
     }
 
     .form-wishlist-items .products-grid.wishlist .product-item .fieldset .field.qty {
-        width: 70%;
+        width: 80%;
         min-width: 115px;
     }
 
@@ -566,7 +569,7 @@ input:-webkit-autofill {
     }
 
     .form-wishlist-items .products-grid.wishlist .product-item .box-tocart .message-count-in-stock span {
-        margin-left: 0px;
+        margin-left: 0;
         font-size: 9px;
     }
 
@@ -578,7 +581,7 @@ input:-webkit-autofill {
     /* shopping cart */
     .cart.table-wrapper .product-item-name + .item-options .label {
         font-size: 11px;
-        width: 35px;
+        width: 33px;
     }
 
     .cart.table-wrapper .item-options .options-value {
@@ -599,11 +602,11 @@ input:-webkit-autofill {
     }
 
     .cart.table-wrapper .col.qty {
-        margin-top: 15px;
+        margin-top: 25px;
     }
 
     .cart.table-wrapper .cart-price {
-        top: -54px;
+        top: -46px;
     }
 
     .cart.table-wrapper .item-actions .actions-toolbar .action-towishlist {
@@ -618,6 +621,20 @@ input:-webkit-autofill {
         width: 70%;
         margin-left: 30%;
     }
+}
+/*shopping cart cuppon btn*/
+.fieldset.coupon.applied .action.cancel.primary {
+    margin-left: 20px;
+}
+/*wishlist red btn*/
+.products-grid.wishlist .box-tocart button[disabled] {
+    background-color: red;
+    color: white;
+    text-transform: uppercase;
+    border-radius: 0;
+    opacity: 1;
+    border: none;
+    margin-left: 10%;
 }
 
 /*new icons*/
