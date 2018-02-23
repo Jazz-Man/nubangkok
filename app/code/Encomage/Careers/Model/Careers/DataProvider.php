@@ -1,17 +1,23 @@
 <?php
+
 namespace Encomage\Careers\Model\Careers;
 
+use Magento\Ui\DataProvider\AbstractDataProvider;
 use Encomage\Careers\Model\ResourceModel\Careers\CollectionFactory;
 
-class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
+class DataProvider extends AbstractDataProvider
 {
+    /**
+     * @var
+     */
     private $loadedData;
 
     /**
-     * @param string $name
-     * @param string $primaryFieldName
-     * @param string $requestFieldName
-     * @param CollectionFactory $contactCollectionFactory
+     * Edit constructor.
+     * @param $name
+     * @param $primaryFieldName
+     * @param $requestFieldName
+     * @param \Encomage\Careers\Model\ResourceModel\Careers\CollectionFactory $contactCollectionFactory
      * @param array $meta
      * @param array $data
      */
