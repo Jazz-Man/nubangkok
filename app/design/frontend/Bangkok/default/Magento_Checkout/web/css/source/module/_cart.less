@@ -164,7 +164,7 @@
           right: 12%;
           border: none;
           background-color: transparent;
-          content: url(../images/basket.png);
+          content: @icon-basket-remove;
           height: 27px;
           background-size: cover;
           padding: 0;
@@ -523,6 +523,7 @@
           margin-left: 2%;
           .product-item-name {
             font-size: 12px;
+            width: 200px;
             div.item-options {
               margin-top: 0;
               font-size: 13px;
@@ -539,7 +540,8 @@
 
           &:extend(.abs-reset-left-margin-desktop all);
           .action-towishlist {
-            margin-left: 26%;
+            //margin-left: 26%;
+            margin-left: 11%;
             background-color: @color-brown;
             color: @color-white;
             border: none;
@@ -714,14 +716,25 @@
 .fieldset.coupon.applied{
   .actions-toolbar{
     .primary{
-      width: 65%;
+      width: 80%;
+      max-width: 120px;
+      margin: 0;
       .action.cancel.primary{
-        font-size: 11px;
+        font-size: 10px;
         width: 100%;
+        padding: 8px 0;
       }
     }
   }
 }
+  .fieldset.coupon{
+    .actions-toolbar{
+      .primary{
+        width: 100%;
+        margin: 0;
+      }
+    }
+  }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s){
