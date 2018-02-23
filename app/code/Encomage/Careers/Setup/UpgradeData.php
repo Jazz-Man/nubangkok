@@ -38,6 +38,9 @@ class UpgradeData implements UpgradeDataInterface
             $this->updateCmsBlockCareerImagesListingPage();
             $this->updateCmsBlockCareerImageVideoListingPage();
         }
+        if (version_compare($context->getVersion(), '0.0.4', '<')) {
+            $this->updateLeftLinksSidebarBlock();
+        }
     }
 
     /**
@@ -52,7 +55,7 @@ class UpgradeData implements UpgradeDataInterface
 <div style="margin-bottom: 1rem;"><a href='{{store url="customer-care"}}'>CUSTOMER CARE</a></div>
 <div style="margin-bottom: 1rem;"><a href='{{store url="product-care"}}'>PRODUCT CARE</a></div>
 <div style="margin-bottom: 1rem;"><a href='{{store url="contact-us"}}'>CONTACT US</a></div>
-<div><a href='{{store url="careers/listing"}}'>CAREER</a></div>
+<div><a href='{{store url="careers/listing/index"}}'>CAREER</a></div>
 <div class="social-links" style="margin-bottom: 1rem;">
 <a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/facebook.png}}" alt="facebook-icon" /> </a> 
 <a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/instagram.png}}" alt="instagram-icon" /> </a> 
