@@ -1,23 +1,28 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <referenceContainer name="content">
-        <block class="Encomage\Careers\Block\Listing" name="careers_listing_index"
-               template="Encomage_Careers::listing.phtml">
-            <container name="before_careers_list" htmlTag="div" htmlClass="before-careers-list"
-                       label="Before careers list">
-                <block class="Magento\Cms\Block\Block" name="career-image-video-listing-page">
-                    <arguments>
-                        <argument name="block_id" xsi:type="string">career-image-video-listing-page</argument>
-                    </arguments>
-                </block>
-                <block class="Magento\Cms\Block\Block" name="career-images-listing-page"
-                       after="career-image-video-listing-page">
-                    <arguments>
-                        <argument name="block_id" xsi:type="string">career-images-listing-page</argument>
-                    </arguments>
-                </block>
-            </container>
-        </block>
-    </referenceContainer>
+    <head>
+        <title>Careers</title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Encomage\Careers\Block\Listing" name="careers_listing_index"
+                   template="Encomage_Careers::listing.phtml">
+                <container name="before_careers_list" htmlTag="div" htmlClass="before-careers-list"
+                           label="Before careers list">
+                    <block class="Magento\Cms\Block\Block" name="career-image-video-listing-page">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">career-image-video-listing-page</argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Cms\Block\Block" name="career-images-listing-page"
+                           after="career-image-video-listing-page">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">career-images-listing-page</argument>
+                        </arguments>
+                    </block>
+                </container>
+            </block>
+        </referenceContainer>
+    </body>
 </page>
