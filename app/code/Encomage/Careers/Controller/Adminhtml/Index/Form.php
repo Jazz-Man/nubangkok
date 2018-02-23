@@ -7,9 +7,13 @@ use \Magento\Framework\Registry;
 use \Magento\Framework\View\Result\PageFactory;
 use Encomage\Careers\Model;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\PageCache\Model\Config;
+use Magento\Framework\App\Cache\TypeListInterface;
 
 class Form extends Action
 {
+    protected $config;
+    protected $typeList;
     /**
      * @var Registry
      */
@@ -27,6 +31,7 @@ class Form extends Action
      */
     protected $_careersResource;
 
+    protected $_cacheState;
     /**
      * Form constructor.
      * @param Action\Context $context
@@ -39,10 +44,16 @@ class Form extends Action
         Action\Context $context,
         Registry $coreRegistry,
         PageFactory $resultPageFactory,
+        Config $config,
+        TypeListInterface $typeList,
+        \Magento\Framework\App\Cache\StateInterface $cacheState,
         Model\ResourceModel\Careers $careersResource,
         Model\CareersFactory $careersFactory
     )
     {
+        $this->_cacheState = $cacheState;
+        $this->config = $config;
+        $this->typeList = $typeList;
         $this->_careersFactory = $careersFactory;
         $this->_careersResource = $careersResource;
         $this->_coreRegistry = $coreRegistry;
@@ -62,6 +73,9 @@ class Form extends Action
             $model->setData($params);
             try {
                 $this->_careersResource->save($model);
+                if ($this->_cacheState->isEnabled(\Magento\PageCache\Model\Cache\Type::TYPE_IDENTIFIER)) {
+                    $this->typeList->invalidate(['full_page', 'block_html']);
+                }
             } catch (\Exception $e) {
                 throw new LocalizedException(__($e));
             }
