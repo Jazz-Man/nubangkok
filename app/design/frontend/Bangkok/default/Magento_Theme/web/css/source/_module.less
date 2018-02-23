@@ -127,6 +127,10 @@
           background-size: cover;
         }
         &:hover, &:focus, &:active {
+          .top-link-myaccount{
+            background: @icon-customer-account-active;
+            background-size: cover;
+          }
           .options {
             background-color: @color-active-bgk;
             .dropdown.switcher-dropdown {
@@ -137,10 +141,14 @@
       }
       .top-link-locate {
         background: @icon-locate;
-        width: 16px;
+        width: 20px;
         height: 25px;
         display: block;
         background-size: cover;
+        &:hover, &:focus, &:active{
+          background: @icon-locate-active;
+          background-size: cover;
+        }
       }
       li.switcher-language, li.switcher-currency {
         .options {
@@ -452,6 +460,7 @@
   .page-header {
     border: 0;
     margin-bottom: 0;
+    z-index: 99999;
 
     .panel.wrapper {
       //border-bottom: 1px solid @secondary__color;
