@@ -273,6 +273,13 @@ input:-webkit-autofill {
     line-height: 19px;
     margin: 0;
 }
+.message.info{
+    position: inherit;
+}
+.message.info > *:first-child:before{
+    position: inherit;
+    padding-top: 6px;
+}
 
 /* **********Wishlist*/
 @media screen and (max-width: 992px) {
