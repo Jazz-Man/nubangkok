@@ -54,7 +54,7 @@ class MassDelete extends \Magento\Backend\App\Action
         $collection = $this->filter->getCollection($this->collectionFactory->create());
         $collectionSize = $collection->getSize();
         try {
-            $this->careersResource->delete($collection->fetchItem());
+            $this->careersResource->massDeleteById($collection->getAllIds());
             $this->messageManager->addSuccessMessage(__('A total of %1 element(s) have been deleted.', $collectionSize));
         } catch (\Exception $e) {
             throw new LocalizedException(__($e));

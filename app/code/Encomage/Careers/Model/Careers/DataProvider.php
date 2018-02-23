@@ -5,7 +5,7 @@ use Encomage\Careers\Model\ResourceModel\Careers\CollectionFactory;
 
 class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
-    public $loadedData;
+    private $loadedData;
 
     /**
      * @param string $name
@@ -36,13 +36,10 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         if (isset($this->loadedData)) {
             return $this->loadedData;
         }
-
         $items = $this->collection->getItems();
-        $this->loadedData = array();
         foreach ($items as $career) {
-            $this->loadedData[$career->getId()]['career'] = $career->getData();
+            $this->loadedData[$career->getId()] = $career->getData();
         }
-
         return $this->loadedData;
     }
 }
