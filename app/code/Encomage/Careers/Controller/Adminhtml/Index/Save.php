@@ -63,9 +63,12 @@ class Save extends Action
         if (!empty($params)) {
             $model = $this->careersFactory->create();
             try {
-                if ($id = $this->getRequest()->getParam('id', null)) {
-                    $this->careersResource->load($model, $id);
+                if (!empty($params['id'])) {
+                    $this->careersResource->load($model, $params['id']);
+                } else {
+                    unset($params['id']);
                 }
+                $params['position'] = 0;
                 $model->setData($params);
                 //TODO: will be better add validation
                 $this->careersResource->save($model);

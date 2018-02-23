@@ -37,7 +37,7 @@
             </settings>
         </dataProvider>
     </dataSource>
-    <fieldset name="careers">
+    <fieldset name="general">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="label" xsi:type="string" translate="true">General</item>
@@ -108,6 +108,20 @@
                 </item>
             </argument>
         </field>
+        <!--<field name="position">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Position</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">position</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>-->
         <field name="short_description">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -132,20 +146,6 @@
                     <item name="dataScope" xsi:type="string">skills</item>
                     <item name="source" xsi:type="string">skills</item>
                     <item name="additionalClasses" xsi:type="string">admin__field-wide</item>
-                    <item name="validation" xsi:type="array">
-                        <item name="required-entry" xsi:type="boolean">true</item>
-                    </item>
-                </item>
-            </argument>
-        </field>
-        <field name="position">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string">Position</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">position</item>
                     <item name="validation" xsi:type="array">
                         <item name="required-entry" xsi:type="boolean">true</item>
                     </item>
