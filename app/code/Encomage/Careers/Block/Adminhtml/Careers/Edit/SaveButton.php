@@ -17,7 +17,7 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
             'label' => __('Save Vacancy'),
             'class' => 'save primary',
             'data_attribute' => [
-                'mage-init' => ['button' => ['event' => 'save']],
+                'mage-init' => ['button' => ['event' => 'save', 'target' => '#edit_form']],
                 'form-role' => 'save',
             ],
             'sort_order' => 90,
