@@ -42,6 +42,9 @@
 }
 
   .careers-view-content {
+    .cms-skills-container {
+      word-wrap: break-word;
+    }
     .careers-view-title {
       margin: 20px 0 10px 0;
       text-transform: uppercase;
@@ -121,7 +124,7 @@
                     color: #8f8278;
                     opacity: 0.5;
                     &:before {
-                      content: url('../images/icon-attach.png');
+                      content: url('../Encomage_Careers/images/icon-attach.png');
                       position: absolute;
                       top: -2px;
                       left: 5px;
@@ -137,6 +140,67 @@
                 font-size: 12px;
                 position: relative;
               }
+            }
+          }
+          .files-info {
+            margin-top: 55px;
+            .file-field-title {
+              .file-name-title {
+                display: inline-block;
+                width: 50%;
+              }
+              .file-size-title {
+                display: inline-block;
+                margin-left: 14%;
+              }
+            }
+            .js-file-field-title {
+              display: none;
+            }
+            .file-field {
+              border-top: 1px solid #8a837f;
+              border-bottom: 1px solid #8a837f;
+              height: 40px;
+              opacity: 0.7;
+              .cv-file-name {
+                display: inline-block;
+                width: 50%;
+                margin-bottom: 0;
+                vertical-align: -10px;
+              }
+              .cv-file-size {
+                display: inline-block;
+                margin-left: 14%;
+                margin-bottom: 0;
+                vertical-align: -10px;
+              }
+              .photo-file-name {
+                display: inline-block;
+                width: 50%;
+                margin-bottom: 0;
+                vertical-align: -10px;
+              }
+              .photo-file-size {
+                display: inline-block;
+                margin-left: 14%;
+                margin-bottom: 0;
+                vertical-align: -10px;
+              }
+              .file-unset {
+                background: url("../Encomage_Careers/images/bin.svg");
+                display: inline-block;
+                float: right;
+                margin: 5px 0;
+                width: 25px;
+                height: 25px;
+                background-size: cover;
+              }
+            }
+            .js-cv-file-info {
+              display: none;
+            }
+            .js-photo-file-info {
+              display: none;
             }
           }
           .message-heading {
@@ -187,6 +251,11 @@
             width: 100%;
           }
           .field.files {
+            width: 100%;
+          }
+        }
+        .actions-toolbar {
+          .primary {
             width: 100%;
           }
         }

@@ -40,7 +40,7 @@ class Delete extends Action
     {
         $id = $this->getRequest()->getParam('id');
         $careersModel = $this->careersFactory->create();
-        $vacancy = $this->careersResource->load($careersModel, $id);
+        $vacancy = $careersModel->load($id);
         if (!($vacancy)) {
             $this->messageManager->addErrorMessage(__('Unable to proceed. Please, try again.'));
             $resultRedirect = $this->resultRedirectFactory->create();
