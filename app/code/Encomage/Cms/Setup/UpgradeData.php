@@ -72,6 +72,14 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.0.9', '<')) {
             $this->modify404pageRemoveUnusedPages();
         }
+
+        if (version_compare($context->getVersion(), '0.1.0', '<')) {
+            $this->updateLeftLinksSidebarBlock010();
+        }
+
+        if (version_compare($context->getVersion(), '0.1.1', '<')) {
+            $this->updateContactUs();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -133,6 +141,33 @@ class UpgradeData implements UpgradeDataInterface
 <a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/facebook.png}}" alt="facebook-icon" /> </a> 
 <a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/instagram.png}}" alt="instagram-icon" /> </a> 
 <a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/youtube.png}}" alt="youtube-icon" /> </a> 
+<a class="social-acc-pic" style="padding-top: 0;"> <img src="{{view url=images/empty-link.png}}" alt="youtube-icon" /></a>
+</div>
+<div>
+<p>#nuBangkok</p>
+</div>
+<div><a href='{{store url="policies"}}'>POLICIES</a></div>
+EOD;
+
+        $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+    }
+
+    private function updateLeftLinksSidebarBlock010()
+    {
+        $content = <<<EOD
+        <div style="margin-bottom: 1rem;"><a class="violet-link" style="margin-bottom: 1rem;" href='{{store url="why-nu"}}'>WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div style="margin-bottom: 1rem;"><a href="#">INSPIRATION</a></div>
+<div style="margin-bottom: 1rem;"><a href="#">nu STORIES (yours and ours)</a></div>
+<div style="margin-bottom: 1rem;"><a href='{{store url="customer-care"}}'>CUSTOMER CARE</a></div>
+<div style="margin-bottom: 1rem;"><a href='{{store url="product-care"}}'>PRODUCT CARE</a></div>
+<div style="margin-bottom: 1rem;"><a href='{{store url="contact-us"}}'>CONTACT US</a></div>
+<div><a href="#">CAREER</a></div>
+<div class="social-links" style="margin-bottom: 1rem;">
+<a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/icons/homePage/Facebook.svg}}" alt="facebook-icon" /> </a> 
+<a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/icons/homePage/Instagram.svg}}" alt="instagram-icon" /> </a> 
+<a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/icons/homePage/youtube.svg}}" alt="youtube-icon" /> </a> 
 <a class="social-acc-pic" style="padding-top: 0;"> <img src="{{view url=images/empty-link.png}}" alt="youtube-icon" /></a>
 </div>
 <div>
@@ -556,6 +591,125 @@ EOD;
 
         $this->pageRepository->deleteById('enable-cookies');
         $this->pageRepository->deleteById('privacy-policy-cookie-restriction-mode');
+        return $this;
+    }
+
+    private function updateContactUs()
+    {
+        $contactUs = $this->pageRepository->getById('contact-us');
+        $content = <<<EOD
+<div class="cms-contact-us">
+<h3 class="cms-subheading">Need help?</h3>
+<p>Check our <a style="text-decoration: underline;" href="{{store url='faq'}}">Frequently Asked Questions</a> section for help in finding an immediate answer to our most commonly asked questions.</p>
+<p></p>
+<p></p>
+<p></p>
+<h3 class="cms-subheading">Find shop?</h3>
+<div style="overflow-x: auto;">
+<table style="width: 600px;" border="0">
+<tbody>
+<tr>
+<td style="padding-left: 0; width: 25%;" rowspan="6">OUTLET SHOPS</td>
+<td>Ari (outside gate 3/4)</td>
+<td>062-006-9553</td>
+</tr>
+<tr>
+<td>Siam (inside exit 5)</td>
+<td>094-547-9771</td>
+</tr>
+<tr>
+<td>Ching Nonsi</td>
+<td>099-454-8646</td>
+</tr>
+<tr>
+<td>Chit Lom</td>
+<td>094-547-9778</td>
+</tr>
+<tr>
+<td>Nana</td>
+<td>099-192-0019</td>
+</tr>
+<tr>
+<td>Asok</td>
+<td>094-454-9776</td>
+</tr>
+<tr>
+<td rowspan="5"></td>
+<td>Thong Lo</td>
+<td>094-547-9775</td>
+</tr>
+<tr>
+<td>Ekkamai</td>
+<td>094-697-5160</td>
+</tr>
+<tr>
+<td>Phra Khanong</td>
+<td>099-391-7884</td>
+</tr>
+<tr>
+<td>Udomsuk</td>
+<td>092-050-0577</td>
+</tr>
+<tr>
+<td>Bearing</td>
+<td>094-649-9006</td>
+</tr>
+<tr>
+<td colspan="3"><img src="{{media url="wysiwyg/cms/central-plaz.svg"}}" width="150" /><img style="padding-left: 20px;" src="{{media url="wysiwyg/cms/central-central.svg"}}" width="150" /></td>
+</tr>
+<tr>
+<td rowspan="4"></td>
+<td>Ubon Ratchathani</td>
+<td>095-046-0492</td>
+</tr>
+<tr>
+<td>Hat Yai</td>
+<td>062-053-3811</td>
+</tr>
+<tr>
+<td>Phitsanulok</td>
+<td>061-995-8864</td>
+</tr>
+<tr>
+<td>Chiang Rai</td>
+<td>094-605-0530</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p></p>
+<h3 class="cms-subheading">Customer Service</h3>
+<div style="overflow-x: auto;">
+<table border="0">
+<tbody>
+<tr>
+<td style="text-align: right;"><img src="{{media url="wysiwyg/cms/phone-icon.png"}}" alt="" width="18" /></td>
+<td>
+<p>+66(0)83-455-1000</p>
+<p>Monday - Saturday</p>
+<p>9:00am - 6:00pm Bangkok Time</p>
+</td>
+</tr>
+<tr>
+<td style="text-align: right;"><img src="{{media url="wysiwyg/cms/line-icon.png"}}" alt="" width="18" /></td>
+<td>nuBangkok</td>
+</tr>
+<tr>
+<td style="text-align: right;"><img src="{{media url="wysiwyg/cms/locate-icon.png"}}" alt="" width="13" /></td>
+<td>
+<p>nuBangkok Head Office</p>
+<p>199/74 Sukhumvit 8 Road, Khlong Toey,</p>
+<p>Khlong Toey, Bangkok,</p>
+<p>Thailand 10110</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+EOD;
+        $contactUs->setContent($content);
+        $this->pageRepository->save($contactUs);
         return $this;
     }
 }
