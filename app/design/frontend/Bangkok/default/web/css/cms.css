@@ -121,7 +121,7 @@
     border-radius: 50%;
     background-color: #55463e;
     position: absolute;
-    left: 0px;
+    left: 0;
     top: 21px;
 }
 .cms-where-to-buy-page .cms-button {
@@ -177,19 +177,28 @@
 }
 
 .accordion-container .accordion img {
-    transform: rotate(180deg);
+    transform: rotate(0deg);
     padding-right: 10px;
 }
 
 .accordion-container .accordion.active img {
-    transform: none;
-    padding-right: 0;
+    transform: rotate(182deg);
     padding-left: 10px;
 }
-
+.cms-product-care .accordion-container .accordion img{
+    transform: rotate(182deg);
+    padding-right: 10px;
+}
+.cms-product-care .accordion-container .accordion.active img{
+    transform: rotate(0deg);
+    padding-left: 10px;
+}
 .cms-customer-care > .accordion img {
     transform: none;
-    padding-right: 10px;
+    vertical-align: middle;
+    height: 14px;
+    width: 20px;
+    padding-left: 5px !important;
 }
 
 .active:hover, .accordion:hover {

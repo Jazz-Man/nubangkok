@@ -106,31 +106,29 @@
         //
         // bag handle
         //
-        .cart_bg_handle{
-            position: absolute;
-            overflow: hidden;
-            top: 2px;
-            left: 15px;
-            margin-left: -6px;
-        }
+        //.cart_bg_handle{
+        //    position: absolute;
+        //    overflow: hidden;
+        //    top: 2px;
+        //    left: 15px;
+        //    margin-left: -6px;
+        //}
         //
         // count-bag
         //
         .count-bag{
             color:@color-red9;
             position: absolute;
-            left: 11px;
+            left: 12px;
             top: 12px;
         }
         .lib-dropdown(
         @_toggle-selector: ~'.action.showcart',
         @_options-selector: ~'.block-minicart',
-        @_dropdown-toggle-icon-content: @icon-cart,
-        @_dropdown-toggle-active-icon-content: @icon-cart,
         @_dropdown-list-item-padding: false,
         @_dropdown-list-item-hover: false,
         @_icon-font-position: before,
-        @_icon-font-size: 35px,
+        @_icon-font-size: 0,
         @_icon-font-line-height: 33px,
         @_icon-font-color: @minicart-icons-color,
         @_icon-font-color-hover: @minicart-icons-color-hover,
@@ -222,6 +220,14 @@
 
                 .counter-label {
                     &:extend(.abs-visually-hidden all);
+                }
+                &:before {
+                    background: url(../images/icons/homePage/shopping-bag.svg) no-repeat;
+                    display: inline-block;
+                    background-size: cover;
+                    width: 32px;
+                    height: 27px;
+                    margin-top: 6px;
                 }
             }
         }
@@ -410,6 +416,12 @@
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
     .minicart-wrapper{
+        .action.showcart:before{
+            margin-top: 5px;
+        }
+        .count-bag{
+            top: 11px;
+        }
         .block-minicart {
             width: 290px;
         }
