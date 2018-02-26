@@ -3,6 +3,7 @@
     <preference for="Magento\Customer\Controller\Account\CreatePost" type="Encomage\Customer\Controller\Account\CreatePost" />
     <preference for="Magento\Customer\Model\Data\Customer" type="Encomage\Customer\Model\Data\Customer" />
     <preference for="Magento\Customer\Model\Customer" type="Encomage\Customer\Model\Customer" />
+    <preference for="Magento\Customer\Block\Form\Register" type="Encomage\Customer\Block\Form\Register" />
 
     <type name="Magento\Customer\CustomerData\Customer">
         <plugin name="encomage_customer" type="Encomage\Customer\Plugin\CustomerData\Customer" sortOrder="1" />
