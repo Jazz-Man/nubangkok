@@ -1,0 +1,23 @@
+<?php
+/**
+ * @var $block Encomage\Careers\Block\Listing;
+ */
+$_collection = $block->getCareersCollection();
+?>
+<div class="careers-listing-content">
+    <?= $block->getChildHtml('before_careers_list'); ?>
+    <?php if ($_collection->getSize()) : ?>
+        <p class="careers-listing-title"><?= /** @escapeNotVerified */__('Available positions'); ?>:</p>
+        <?php foreach ($_collection as $item) : ?>
+            <div class="short-description-container">
+                <p class="short-description-title"><?= /** @escapeNotVerified */__($item->getTitle()); ?></p>
+                <p class="short-description"><?= $block->escapeHtml($block->getCutLength($item->getShortDescription())); ?>
+                    <a class="morelink" href="<?= $block->escapeUrl($block->getUrlView($item->getId())); ?>"><?= /** @escapeNotVerified */__('more'); ?></a>
+                    <br/>
+                </p>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p><?= /** @escapeNotVerified */__("Sorry, we have no available positions."); ?></p>
+    <?php endif; ?>
+</div>

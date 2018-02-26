@@ -129,7 +129,7 @@
         .product-name-wsl {
           margin-top: 18px;
           display: inline-block;
-          width: 50%;
+          width: 55%;
         }
         &-info {
 
@@ -190,9 +190,9 @@
           a {
             .share-btn {
               .arrow-up {
-                content: url(../images/arrow-up.png);
-                height: 33px;
-                width: 22px;
+                content: @icon-arrow-up;
+                height: 30px;
+                width: 30px;
                 background-size: cover;
 
               }
@@ -204,7 +204,7 @@
           a:first-of-type {
             //display: block;
             //margin-top: 105px;
-            content: url(../images/basket.png);
+            content: @icon-basket-remove;
             height: 27px;
             background-size: cover;
           }
@@ -310,7 +310,7 @@
     margin-right: -@indent__s;
     .product {
       &-item {
-        padding: @indent__base @indent__s @indent__base @indent__base;
+        //padding: @indent__base @indent__s @indent__base @indent__base;
         position: relative;
         &-photo {
           float: left;
@@ -424,6 +424,7 @@
           width: 100%;
           background-color: @color-brown;
           border: none;
+          border-radius: 0;
           &:hover {
             background-color: @color-brown - 20%;
           }
@@ -462,19 +463,32 @@
     }
     .actions-toolbar{
       .primary{
-        .btn-bottom-whl {
-          a {
-            padding: 7px 20px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            text-decoration: none;
-            background-color: @color-brown;
-            border: 2px solid @color-brown;
-            color: @color-white;
-            &:hover {
-              background-color: @color-brown - 20%;
-            }
+        a:first-of-type{
+          padding: 7px 9%;
+          width: 30%;
+          border-radius: 4px;
+          text-transform: uppercase;
+          text-decoration: none;
+          background-color: @color-brown;
+          border: 2px solid @color-brown;
+          color: @color-white;
+          min-width: 100px;
+          display: inline-block;
+          &:hover {
+            background-color: @color-brown - 20%;
           }
+        }
+        a:last-of-type{
+          width: 30%;
+          border: 2px solid #aeaeae;
+          text-transform: uppercase;
+          border-radius: 3px;
+          padding: 7px 9%;
+          text-align: center;
+          background: transparent;
+          min-width: 100px;
+          display: inline-block;
+          //float: right;
         }
       }
       .secondary{
@@ -572,35 +586,53 @@
     }
 
     .main {
-      .form-wishlist-items {
-        .actions-toolbar {
-          //&:extend(.abs-reset-left-margin-desktop all);
-          .primary {
-            float: right;
-            .btn-bottom-whl {
-              a {
-                padding: 7px 85px;
-                border-radius: 4px;
-                text-transform: uppercase;
-                text-decoration: none;
-                background-color: @color-brown;
-                border: 2px solid @color-brown;
-                color: @color-white;
-                margin-right: 15px;
-                &:hover {
-                  background-color: @color-brown - 20%;
-                }
-              }
+
+    }
+  }
+  .form-wishlist-items {
+    .actions-toolbar {
+      //&:extend(.abs-reset-left-margin-desktop all);
+      width: 100%;
+      .primary {
+        width: 100%;
+        //.btn-bottom-whl {
+        //  width: 100%;
+        //  background-color: aliceblue;
+        //  float: right;
+          a:first-of-type{
+            padding: 7px 9%;
+            border-radius: 4px;
+            text-transform: uppercase;
+            text-decoration: none;
+            background-color: @color-brown;
+            border: 2px solid @color-brown;
+            color: @color-white;
+            margin-left: 20%;
+            min-width: 100px;
+            display: inline-block;
+            &:hover {
+              background-color: @color-brown - 20%;
             }
           }
-          .secondary {
-            display: none;
+          a:last-of-type{
+            border: 2px solid #aeaeae;
+            text-transform: uppercase;
+            border-radius: 3px;
+            padding: 7px 9%;
+            text-align: center;
+            background: transparent;
+            min-width: 100px;
+            display: inline-block;
+            float: right;
           }
         }
       }
+      .secondary {
+        display: none;
+      }
     }
   }
-}
+//}
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__l){
   .products-grid.wishlist .product-item .product-item-actions {
@@ -632,6 +664,7 @@
           width: 100%;
           background-color: @color-brown;
           border: none;
+          border-radius: 0;
           &:hover {
             background-color: @color-brown - 20%;
           }

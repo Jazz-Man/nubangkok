@@ -1,0 +1,95 @@
+<?php
+/**
+ * @var $block Encomage\Careers\Block\View\Form;
+ */
+$_career = $block->getCareer();
+
+?>
+<div class="form-content">
+    <form class="form career-cv" action="<?= /* @escapeNotVerified */ $block->escapeUrl($block->getFormAction()); ?>"
+          id="career-cv-form" method="post" enctype="multipart/form-data"
+          data-hasrequired="* Required Fields">
+        <fieldset class="fieldset">
+            <div class="field email">
+                <label class="label" for="email"><span><?= /* @escapeNotVerified */__('To'); ?>:</span></label>
+                <div class="control">
+                    <input name="recipient[email]" title="To" value="<?= /* @escapeNotVerified */
+                    $_career->getRecipientEmail(); ?>"
+                           class="input-text" type="email" disabled/>
+                    <input name="recipient[email]" id="email" value="<?= /* @escapeNotVerified */
+                    $_career->getRecipientEmail(); ?>" hidden/>
+                </div>
+            </div>
+            <div class="field personal-data required">
+                <label class="label" for="firstName lastName email"><span><?= /* @escapeNotVerified */__('Personal Information'); ?>*</span></label>
+                <div class="name-container">
+                    <input required="true" name="customer[firstName]" id="firstName" title="First Name" value=""
+                           class="input-text customer-first-name" type="text" placeholder="<?= /* @escapeNotVerified */__('First Name'); ?>"/>
+
+                    <input required="true" name="customer[lastName]" id="lastName" title="Last Name" value=""
+                           class="input-text customer-last-name" type="text" placeholder="<?= /* @escapeNotVerified */__('Last Name'); ?>"/>
+                </div>
+                <input required="true" name="customer[email]" id="email" title="Email" value=""
+                       class="input-text customer-email" type="email" placeholder="<?= /* @escapeNotVerified */__('Email'); ?>"/>
+            </div>
+            <div class="field files required">
+                <label class="label" for="field3"><span><?= /* @escapeNotVerified */ __('Attach File'); ?>:</span></label>
+                <div class="files-container">
+                    <label class="file-upload" for="customer-cv">
+                        <span><span><?= /* @escapeNotVerified */ __('Choose file');?></span></span>
+                        <input required="true" name="customer_cv" title="cv"
+                               class="js-input-cv input-text attach-file"
+                               type="file" placeholder="<?= /* @escapeNotVerified */ __('Choose file'); ?>"/>
+                    </label>
+                    <label class="file-upload" for="customer-photo">
+
+                        <span><span><?= /* @escapeNotVerified */ __('Choose photo'); ?></span></span>
+                        <input required="true" name="customer_photo" title="photo"
+                               class="js-input-photo input-text attach-photo"
+                               type="file" placeholder="<?= /* @escapeNotVerified */ __('Choose photo'); ?>"/>
+                    </label>
+                </div>
+            </div>
+            <div class="files-info">
+                <div class="file-field-title js-file-field-title">
+                    <p class="file-name-title"><?= /* @escapeNotVerified */ __('Name'); ?></p>
+                    <p class="file-size-title"><?= /* @escapeNotVerified */ __('Size'); ?></p>
+                </div>
+                <div class="file-field js-cv-file-info">
+                    <p class="cv-file-name js-cv-file-name"></p>
+                    <p class="cv-file-size js-cv-file-size"></p>
+                    <a class="file-unset js-cv-file-unset" alt="#"></a>
+                </div>
+                <div class="file-field js-photo-file-info">
+                    <p class="photo-file-name js-photo-file-name"></p>
+                    <p class="photo-file-size js-photo-file-size" id="photo-file-size"></p>
+                    <a class="file-unset js-photo-file-unset" alt="#"></a>
+                </div>
+            </div>
+            <p class="message-heading"><?= /* @escapeNotVerified */ __('Message'); ?>:</p>
+            <div class="field message required">
+                <textarea required="true" name="customer[message]" id="message" title="message"
+                          class="input-text"
+                          type="text" rows="10"
+                          placeholder="<?= /* @escapeNotVerified */ __('Tell us about yourself'); ?>"></textarea>
+            </div>
+        </fieldset>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <input type="hidden" name="hideit" id="hideit" value=""/>
+                <button type="submit" title="Submit" class="action submit ">
+                    <span><?= /* @escapeNotVerified */ __('Apply now'); ?></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/x-magento-init">
+        {
+            ".files": {
+                "Encomage_Careers/js/form/input_file": {}
+            }
+        }
+
+</script>

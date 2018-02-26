@@ -2,8 +2,8 @@
 /** @var \Encomage\Wishlist\Block\Customer\Wishlist\Button **/
 ?>
 <?php if($block->getItemCount()):?>
-<div class="btn-bottom-whl">
+
 <a href="<?= $block->escapeUrl($block->getLastItemUrl())?>"><?=__('Continue Shopping') ?></a>
 <a href="<?= $block->escapeUrl($block->getUrl('checkout/cart')) ?>"><?=__('Go to shopping bag') ?></a>
-</div>
+
 <?php endif;?>
