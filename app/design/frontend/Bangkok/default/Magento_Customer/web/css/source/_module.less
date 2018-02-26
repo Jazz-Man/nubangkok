@@ -156,10 +156,11 @@
         border: none;
         text-align: left;
         outline: none;
-        &:after {
+        span {
           content: @icon-arrow-right;
           padding-left: 5px;
           vertical-align: middle;
+          height: 14px;
         }
       }
       .open-account-details {
@@ -169,13 +170,16 @@
         border: none;
         text-align: left;
         outline: none;
-        &:after {
+        span {
           content: @icon-select-arrow-up;
-          padding-left: 5px;
+          padding-right: 5px;
           vertical-align: middle;
+          transform: rotate(182deg);
         }
-        &.active:after {
-          content: @icon-select-arrow-down;
+        &.active span {
+          content:  @icon-select-arrow-up;
+          transform: rotate(0deg);
+          margin-left: 5px;
         }
       }
       h2 {
@@ -669,11 +673,6 @@
         outline: none;
         width: 15%;
         min-width: 150px;
-        &:after {
-          content: @icon-arrow-right;
-          padding-left: 5px;
-          vertical-align: middle;
-        }
       }
       .open-account-details {
         text-transform: uppercase;
@@ -682,13 +681,18 @@
         border: none;
         text-align: left;
         outline: none;
-        &:after {
+
+        span {
           content: @icon-select-arrow-down;
-          padding-left: 5px;
           vertical-align: middle;
+          height: 11px;
+          transform: rotate(0deg);
+          padding-left: 5px;
         }
-        &.active:after {
-          content: @icon-select-arrow-up;
+        &.active span {
+          content: @icon-select-arrow-down;
+          transform: rotate(182deg);
+          padding-right: 5px;
         }
       }
     }
