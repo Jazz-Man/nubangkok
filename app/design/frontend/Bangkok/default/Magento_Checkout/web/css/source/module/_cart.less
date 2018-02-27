@@ -217,12 +217,25 @@
     .product-item-name + .item-options {
       margin-top: @indent__s;
       line-height: 30px;
+      .color-value {
+        display: inline-block;
+      }
       .label {
         //width: 50px;
         float: left;
         &:after {
           content: ':';
         }
+      }
+      .options-value .rgb {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        float: none;
+        margin-top: 2px;
+        margin-bottom: -2px;
+        border: 2px solid @color-active-bgk;
       }
       div:nth-child(2):after {
         //content: url(../images/select-arrow-down.png);
