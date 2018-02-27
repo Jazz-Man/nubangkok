@@ -3,7 +3,7 @@
 
 $_item = $block->getItem();
 $product = $_item->getProduct();
-$_options = $block->colorOption();
+$_options = ($_item->getProductType() == 'simple') ? $_options = $block->getOptionList() : $_options = $block->colorOption();
 $isVisibleProduct = $product->isVisibleInSiteVisibility();
 /** @var \Magento\Msrp\Helper\Data $helper */
 $helper = $this->helper('Magento\Msrp\Helper\Data');
