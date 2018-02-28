@@ -80,6 +80,10 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.1.1', '<')) {
             $this->updateContactUs();
         }
+
+        if (version_compare($context->getVersion(), '0.1.2', '<')) {
+            $this->upgradeCmsPagesContactCustomerCareFaqPoliciesProductCare();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -710,6 +714,90 @@ EOD;
 EOD;
         $contactUs->setContent($content);
         $this->pageRepository->save($contactUs);
+        return $this;
+    }
+
+    private function upgradeCmsPagesContactCustomerCareFaqPoliciesProductCare()
+    {
+        $pages = [
+            'customer-care' => [
+                'title' => 'Customer Care',
+                'identifier' => 'customer-care',
+                'active' => true,
+                'page_layout' => '2columns-left',
+                'stores' => [0],
+                'content' => <<<EOM
+<div class="cms-customer-care">
+<h1 class="cms-heading">Customer Care</h1>
+<hr class="cms-heading-line" />
+<div class="accordion-container">
+<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url="wysiwyg/cms/arrow-right.svg"}}" width="9" height="11" /></a></p>
+</div>
+EOM
+            ],
+            'product-care' => [
+                'title' => 'Product Care',
+                'identifier' => 'product-care',
+                'active' => true,
+                'page_layout' => '2columns-left',
+                'stores' => [0],
+                'content' => <<<EOM
+<div class="cms-product-care">
+<h1 class="cms-heading">Product Care</h1>
+<hr class="cms-heading-line" />
+<div class="accordion-container">
+<p class="accordion js-accordion">Shoes <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Bags<img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+</div>
+EOM
+            ]
+        ];
+        foreach ($pages as $pageData) {
+            $pageObject = $this->pageFactory->create();
+            $pageObject->addData($pageData);
+            $this->pageRepository->save($pageObject);
+        }
         return $this;
     }
 }
