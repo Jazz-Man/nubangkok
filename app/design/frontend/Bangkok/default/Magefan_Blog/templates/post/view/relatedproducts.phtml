@@ -36,7 +36,7 @@ if ($exist = $block->getItems()->getSize() && $this->displayProducts()) {
 
 <?php if ($exist):?>
 <strong>
-    <h2><?= $block->getPost()->getTitle(); ?></h2>
+    <h2 class="post-title"><?= $block->getPost()->getTitle(); ?></h2>
 </strong>
     <?php if ($type == 'related' || $type == 'upsell'): ?>
         <?php if ($type == 'related'): ?>
