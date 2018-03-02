@@ -3,7 +3,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <referenceBlock name="blog.post.bottom">
-        <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Shared" name="blog.post.shared"
-               template="Magento_Catalog::product/view/shared.phtml"/>
+        <block class="Encomage\Blog\Block\Post\View\Share" name="blog.post.shared"
+               template="Magento_Theme::html/page/share.phtml"/>
     </referenceBlock>
 </page>
