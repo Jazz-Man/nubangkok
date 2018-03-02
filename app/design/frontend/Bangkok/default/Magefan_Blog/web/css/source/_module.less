@@ -1,0 +1,73 @@
+//
+// Grid with posts
+//______________________________________________
+.post-list-wrapper {
+  .post-list {
+    list-style-type: none;
+    padding-left: 0;
+    .post-holder {
+      width: 22%;
+      display: inline-block;
+      list-style-type: none;
+      margin-left: 2%;
+      margin-top: 30px;
+      .post-footer {
+        .post-title {
+          margin-top: 5px;
+          a {
+            text-decoration: none;
+            text-transform: uppercase;
+            color: @color-brown;
+            font-size: @font-size-bgk;
+          }
+        }
+      }
+    }
+  }
+}
+
+//
+// Blog Post
+//_______________________________________________
+.post-view {
+  .post-content {
+    .owl-dots {
+      bottom: -25px;
+    }
+  }
+  .post-bottom {
+    margin-top: 50px;
+    strong h2 {
+      text-transform: uppercase;
+      color: @color-brown;
+      font-size: @font-size-bgk;
+    }
+    .block.related {
+      .block-title {
+        strong {
+          font-weight: 300;
+          font-size: @font-size-bgk;
+        }
+      }
+      .products {
+        margin-top: 20px;
+        width: 94%;
+        margin: 0 auto;
+        .product-item {
+          padding-left: 0;
+          border: 2px solid @custom-gray-bg;
+          margin-left: 4%;
+          .product-item-info {
+            .product-image-photo{
+              padding-top: 4px;
+            }
+            .product-item-details {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
