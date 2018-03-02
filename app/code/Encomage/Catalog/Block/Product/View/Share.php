@@ -3,8 +3,9 @@
 namespace Encomage\Catalog\Block\Product\View;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Encomage\Theme\Block\Html\Page\FacebookShareLinkInterface;
 
-class Shared extends \Magento\Catalog\Block\Product\View
+class Share extends \Magento\Catalog\Block\Product\View implements FacebookShareLinkInterface
 {
     private $helper;
 
@@ -19,7 +20,7 @@ class Shared extends \Magento\Catalog\Block\Product\View
         \Magento\Customer\Model\Session $customerSession,
         ProductRepositoryInterface $productRepository,
         \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
-        \Encomage\Catalog\Helper\Data $helper,
+        \Encomage\Theme\Helper\Data $helper,
         array $data = []
     )
     {
@@ -42,16 +43,28 @@ class Shared extends \Magento\Catalog\Block\Product\View
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('Magento_Catalog::product/view/shared.phtml');
+        $this->setTemplate('Magento_Theme::html/page/share.phtml');
     }
 
     public function getLink()
     {
-        return $this->helper->getFacebookSharedLink($this->getProduct());
+        return $this->helper->getFacebookShareLink($this->getProduct()->getProductUrl());
     }
 
     protected function _prepareLayout()
     {
+        return $this;
+    }
+
+    public function getCssClass()
+    {
+        return $this->getData('css_class');
+    }
+
+
+    public function setCssClass(string $cssClass)
+    {
+        $this->setData('css_class', $cssClass);
         return $this;
     }
 }
