@@ -1,0 +1,13 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Encomage\Stories\Block\Stories" name="stories.content.block"
+                   template="Encomage_Stories::stories.phtml">
+                <block class="Encomage\Stories\Block\Stories\YourStories" name="your.stories.block"
+                       template="Encomage_Stories::stories/your-stories.phtml"/>
+                <block class="Encomage\Stories\Block\Stories\OurStory" name="our.story.block"
+                       template="Encomage_Stories::stories/our-story.phtml"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
