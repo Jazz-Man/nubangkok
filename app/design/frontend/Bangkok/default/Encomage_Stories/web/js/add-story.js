@@ -11,17 +11,20 @@ define([
             innerScroll: true,
             title: $.mage.__('Add new story'),
             buttons: [{
-                text: $.mage.__('Continue'),
+                text: $.mage.__('Close'),
                 class: '',
                 click: function () {
+                    $('#save-story-form').submit();
                     this.closeModal();
                 }
             }]
         };
 
-        var popup = modal(options, $('#form-modal'));
-        $("#add-form-modal").on('click',function(){
-            $('#form-modal').modal("openModal");
+        var popup = modal(options, $('.save-message-modal'));
+        $(".save-button").on('click',function(){
+            if ($('#content').val()) {
+                $('.save-message-modal').modal("openModal");
+            }
         });
     }
 });

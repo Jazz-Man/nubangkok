@@ -1,13 +1,12 @@
 <?php /** @var Encomage\Stories\Block\Stories\YourStories $block */
 $_collection = $block->storiesCollection();
+$items = $_collection->getItems();
+$_collectionSize = $_collection->getTotalCount();
 ?>
 <div class="your-stories-container">
-    <?php if ($block->isCustomerLogged()) : ?>
-        <a class="btn-foursquare" href="<?= $block->getUrl('stories/yourstories/add'); ?>">Add note</a>
-    <?php endif; ?>
-    <?php if ($_collection->getSize()) : ?>
+    <?php if ($_collectionSize) : ?>
         <div class="your-stories-content">
-            <?php foreach ($_collection as $story) : ?>
+            <?php foreach ($items as $story) : ?>
                 <?= $story->getContent(); ?>
             <?php endforeach; ?>
         </div>

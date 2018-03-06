@@ -8,6 +8,7 @@ use Encomage\Stories\Api\Data\StoriesInterfaceFactory;
 use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Customer\Model\Session;
 
 /**
  * Class Save
@@ -36,12 +37,17 @@ class Save extends Action
      * @var DateTime
      */
     private $date;
+    /**
+     * @var Session
+     */
+    protected $customerSession;
 
     /**
      * Save constructor.
      * @param Context $context
      * @param StoriesRepositoryInterface $storiesRepository
      * @param Filesystem $filesystem
+     * @param Session $customerSession
      * @param DateTime $date
      * @param StoriesInterfaceFactory $storiesFactory
      * @param UploaderFactory $uploaderFactory
@@ -50,6 +56,7 @@ class Save extends Action
         Context $context,
         StoriesRepositoryInterface $storiesRepository,
         Filesystem $filesystem,
+        Session $customerSession,
         DateTime $date,
         StoriesInterfaceFactory $storiesFactory,
         UploaderFactory $uploaderFactory
@@ -57,6 +64,7 @@ class Save extends Action
     {
         $this->mediaDirectory = $filesystem->getDirectoryWrite(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
         $this->storiesRepository = $storiesRepository;
+        $this->customerSession = $customerSession;
         $this->uploaderFactory = $uploaderFactory;
         $this->storiesFactory = $storiesFactory;
         $this->date = $date;
@@ -68,21 +76,28 @@ class Save extends Action
      */
     public function execute()
     {
+        if (!$this->_isCustomerLogged()) {
+            $this->messageManager->addErrorMessage(__('You are not authorized.'));
+            $this->_redirect('stories');
+        }
         $uploader = null;
         if (!empty($_FILES['story_image']['tmp_name'])) {
+            /** @var \Magento\MediaStorage\Model\File\Uploader $uploader */
             $uploader = $this->uploaderFactory->create(['fileId' => 'story_image']);
         }
         $params = $this->getRequest()->getParams();
         if (!empty($params)) {
+            /** @var \Encomage\Stories\Model\Stories $modelStory */
+            $modelStory = $this->storiesFactory->create();
+            $modelStory->setCustomerId($params['customer_id']);
+            $modelStory->setContent($params['content']);
+            $modelStory->setCreatedAt($this->date->gmtDate());
             if ($uploader) {
                 $target = $this->mediaDirectory->getAbsolutePath(self::MEDIA_PATH_STORIES_IMAGE);
                 $uploader->setAllowRenameFiles(true);
                 $result = $uploader->save($target);
-                $params['image_path'] = self::MEDIA_PATH_STORIES_IMAGE . $result['file'];
+                $modelStory->setImagePath(self::MEDIA_PATH_STORIES_IMAGE . $result['file']);
             }
-            $params['created_at'] = $this->date->gmtDate();
-            $modelStory = $this->storiesFactory->create();
-            $modelStory->setStory($params);
             $this->storiesRepository->save($modelStory);
             $this->messageManager->addSuccessMessage(__('Your story hes been sent'));
         } else {
@@ -90,5 +105,13 @@ class Save extends Action
         }
         $this->_redirect('stories');
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function _isCustomerLogged()
+    {
+        return $this->customerSession->isLoggedIn();
     }
 }

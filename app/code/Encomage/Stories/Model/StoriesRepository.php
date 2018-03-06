@@ -1,10 +1,12 @@
 <?php
 namespace Encomage\Stories\Model;
 
+use Encomage\Stories\Model\ResourceModel\Stories\CollectionFactory as StoriesCollectionFactory;
 use Encomage\Stories\Model\ResourceModel\Stories as ResourceStories;
 use Encomage\Stories\Model\StoriesFactory;
 use Encomage\Stories\Api\StoriesRepositoryInterface;
 use Encomage\Stories\Api\Data\StoriesInterface;
+use Encomage\Stories\Api\Data\StoriesSearchResultsInterfaceFactory;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\CouldNotDeleteException;
@@ -29,22 +31,55 @@ class StoriesRepository implements StoriesRepositoryInterface
      * @var CollectionProcessorInterface
      */
     private $collectionProcessor;
+    /**
+     * @var StoriesCollectionFactory
+     */
+    private $storiesCollectionFactory;
+    /**
+     * @var StoriesSearchResultsInterfaceFactory
+     */
+    private $searchResultsFactory;
 
+    /**
+     * StoriesRepository constructor.
+     * @param ResourceStories $resourceStories
+     * @param CollectionProcessorInterface $collectionProcessor
+     * @param StoriesSearchResultsInterfaceFactory $searchResultsFactory
+     * @param StoriesCollectionFactory $storiesCollectionFactory
+     * @param \Encomage\Stories\Model\StoriesFactory $storiesFactory
+     */
     public function __construct(
         ResourceStories $resourceStories,
         CollectionProcessorInterface $collectionProcessor,
+        StoriesSearchResultsInterfaceFactory $searchResultsFactory,
+        StoriesCollectionFactory $storiesCollectionFactory,
         StoriesFactory $storiesFactory
     )
     {
-
-        $this->resource = $resourceStories;
-        $this->storiesFactory = $storiesFactory;
+        $this->storiesCollectionFactory = $storiesCollectionFactory;
+        $this->searchResultsFactory = $searchResultsFactory;
         $this->collectionProcessor = $collectionProcessor;
+        $this->storiesFactory = $storiesFactory;
+        $this->resource = $resourceStories;
     }
 
+    /**
+     * @param SearchCriteriaInterface $searchCriteria
+     * @return \Encomage\Stories\Api\Data\StoriesSearchResultsInterface
+     */
     public function getList(SearchCriteriaInterface $searchCriteria)
     {
-        // TODO: Implement getList() method.
+        /** @var \Encomage\Stories\Model\ResourceModel\Stories\Collection $collection */
+        $collection = $this->storiesCollectionFactory->create();
+        
+        $this->collectionProcessor->process($searchCriteria, $collection);
+        
+        /** @var \Encomage\Stories\Api\Data\StoriesSearchResultsInterface $searchResults */
+        $searchResults = $this->searchResultsFactory->create();
+        $searchResults->setSearchCriteria($searchCriteria);
+        $searchResults->setItems($collection->getItems());
+        $searchResults->setTotalCount($collection->getSize());
+        return $searchResults;
     }
     
     public function save(StoriesInterface $stories)

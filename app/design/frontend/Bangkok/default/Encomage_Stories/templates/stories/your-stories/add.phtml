@@ -1,30 +1,20 @@
 <?php /** @var $block Encomage\Stories\Block\Stories\YourStories\Add */ ?>
-<div id="custom-model-popup">
-    <dl>
-        <dt><?= /* @escapeNotVerified */ __('This window adds history.'); ?></dt>
-        <dd><?= /* @escapeNotVerified */ __('You can write your story here. Our administration will publish it shortly.'); ?></dd>
-        <dd><?= /* @escapeNotVerified */ __('After it has been read and approved, it will appear on the general page.'); ?></dd>
-    </dl>
-    <form enctype="multipart/form-data" action="<?= $block->escapeUrl($block->getUrl('stories/yourstories/save')); ?>" method="post" data-hasrequired="* Required Fields">
+<div class="add-story-content" data-mage-init='{"Encomage_Stories/js/add-story":{}}'>
+    <form id="save-story-form" enctype="multipart/form-data" action="<?= $block->escapeUrl($block->getUrl('stories/yourstories/save')); ?>" method="post" data-hasrequired="* Required Fields">
         <fieldset class="fieldset">
             <input required="true" type="text" id="customer_id" name="customer_id" value="<?= $block->getCustomerId() ?>" hidden>
-            <div class="field story-content required">
-                <label for="content"><?= __('Story'); ?>:</label>
-                <textarea required="true" id="content" name="content"></textarea>
-            </div>
             <div class="field story-image" data-ratio="1:1" data-size="250,250" data-service="async.php">
                 <label for="story_image"><?= __('Attach Image'); ?>:</label>
                 <input class="attach-file" type="file" id="story_image" name="story_image">
             </div>
-            <button type="submit"><?= /* @escapeNotVerified */ __('Publish'); ?></button>
+            <div class="field story-content required">
+                <label for="content"><?= __('Story'); ?>:</label>
+                <textarea required="true" id="content" name="content"></textarea>
+            </div>
+            <button class="save-button" type="submit"><?= /* @escapeNotVerified */ __('Publish'); ?></button>
         </fieldset>
     </form>
+    <div class="save-message-modal">
+        <p><?= /* @escapeNotVerified */ __('Your story will be approved in the near future.'); ?></p>
+    </div>
 </div>
-
-<script type="text/x-magento-init">
-    {
-    ".your-stories-container": {
-            "Encomage_Stories/js/add-form-modal": {}
-        }
-    }
-</script>
