@@ -49,11 +49,70 @@ class Stories extends AbstractModel implements StoriesInterface
     }
 
     /**
-     * @param $story
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->_getData(self::CONTENT);
+    }
+
+    /**
+     * @param $content
      * @return $this
      */
-    public function setStory($story)
+    public function setContent($content)
     {
-        return $this->setData($story);
+        return $this->setData(self::CONTENT, $content);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsApprove()
+    {
+        return $this->_getData(self::IS_APPROVE);
+    }
+
+    /**
+     * @param $status
+     * @return $this
+     */
+    public function setIsApprove($status)
+    {
+        return $this->setData(self::IS_APPROVE, $status);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->_getData(self::CREATED_AT);
+    }
+
+    /**
+     * @param $date
+     * @return $this
+     */
+    public function setCreatedAt($date)
+    {
+        return $this->setData(self::CREATED_AT, $date);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImagePath()
+    {
+        return $this->_getData(self::IMAGE_PATH);
+    }
+
+    /**
+     * @param $path
+     * @return $this
+     */
+    public function setImagePath($path)
+    {
+        return $this->setData(self::IMAGE_PATH, $path);
     }
 }

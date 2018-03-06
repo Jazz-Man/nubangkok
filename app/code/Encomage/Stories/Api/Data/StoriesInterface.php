@@ -8,8 +8,12 @@ namespace Encomage\Stories\Api\Data;
  */
 interface StoriesInterface
 {
-    const ITEM_ID = 'entity_id';
-    const CUSTOMER_ID = 'customer_id';
+    const ITEM_ID = 'entity_id',
+        CUSTOMER_ID = 'customer_id',
+        IS_APPROVE = 'is_approved',
+        CONTENT = 'content',
+        CREATED_AT = 'created_at',
+        IMAGE_PATH = 'image_path';
 
     /**
      * @return int
@@ -34,8 +38,46 @@ interface StoriesInterface
     public function setCustomerId($customerId);
 
     /**
-     * @param $story
      * @return mixed
      */
-    public function setStory($story);
+    public function getIsApprove();
+
+    /**
+     * @param $status
+     * @return mixed
+     */
+    public function setIsApprove($status);
+
+    /**
+     * @return mixed
+     */
+    public function getContent();
+
+    /**
+     * @param $content
+     * @return mixed
+     */
+    public function setContent($content);
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt();
+
+    /**
+     * @param $date
+     * @return mixed
+     */
+    public function setCreatedAt($date);
+
+    /**
+     * @return mixed
+     */
+    public function getImagePath();
+
+    /**
+     * @param $path
+     * @return mixed
+     */
+    public function setImagePath($path);
 }
