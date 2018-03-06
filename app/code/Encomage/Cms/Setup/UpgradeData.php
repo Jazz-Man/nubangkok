@@ -80,6 +80,10 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.1.1', '<')) {
             $this->updateContactUs();
         }
+        
+        if (version_compare($context->getVersion(), '0.1.2', '<')) {
+            $this->updateLeftLinksSidebarBlock012();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -711,5 +715,32 @@ EOD;
         $contactUs->setContent($content);
         $this->pageRepository->save($contactUs);
         return $this;
+    }
+
+    private function updateLeftLinksSidebarBlock012()
+    {
+        $content = <<<EOD
+        <div style="margin-bottom: 1rem;"><a class="violet-link" style="margin-bottom: 1rem;" href='{{store url="why-nu"}}'>WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div style="margin-bottom: 1rem;"><a href='{{store url="blog"}}'>INSPIRATION</a></div>
+<div style="margin-bottom: 1rem;"><a href='{{store url="stories"}}'>nu STORIES (yours and ours)</a></div>
+<div style="margin-bottom: 1rem;"><a href='{{store url="customer-care"}}'>CUSTOMER CARE</a></div>
+<div style="margin-bottom: 1rem;"><a href='{{store url="product-care"}}'>PRODUCT CARE</a></div>
+<div style="margin-bottom: 1rem;"><a href='{{store url="contact-us"}}'>CONTACT US</a></div>
+<div><a href='{{store url="careers/listing/index"}}'>CAREER</a></div>
+<div class="social-links" style="margin-bottom: 1rem;">
+<a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/icons/homePage/Facebook.svg}}" alt="facebook-icon" /> </a> 
+<a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/icons/homePage/Instagram.svg}}" alt="instagram-icon" /> </a> 
+<a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/icons/homePage/youtube.svg}}" alt="youtube-icon" /> </a> 
+<a class="social-acc-pic" style="padding-top: 0;"> <img src="{{view url=images/empty-link.png}}" alt="youtube-icon" /></a>
+</div>
+<div>
+<p>#nuBangkok</p>
+</div>
+<div><a href='{{store url="policies"}}'>POLICIES</a></div>
+EOD;
+
+        $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
     }
 }
