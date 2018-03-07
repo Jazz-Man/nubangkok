@@ -10,7 +10,7 @@ $_collection = $block->getCareersCollection();
         <p class="careers-listing-title"><?= /** @escapeNotVerified */__('Available positions'); ?>:</p>
         <?php foreach ($_collection as $item) : ?>
             <div class="short-description-container">
-                <p class="short-description-title"><?= /** @escapeNotVerified */__($item->getTitle()); ?></p>
+                <a href="<?= $block->escapeUrl($block->getUrlView($item->getId())); ?>" class="short-description-title"><?= /** @escapeNotVerified */__($item->getTitle()); ?></a>
                 <p class="short-description"><?= $block->escapeHtml($block->getCutLength($item->getShortDescription())); ?>
                     <a class="morelink" href="<?= $block->escapeUrl($block->getUrlView($item->getId())); ?>"><?= /** @escapeNotVerified */__('more'); ?></a>
                     <br/>
