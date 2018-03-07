@@ -315,9 +315,17 @@
     .lib-form-element-textarea-resize();
   }
 
-  input[type="checkbox"] {
-    .lib-form-element-choice(@_type: input-checkbox);
+  .checkbox-block label.label span:first-of-type{
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    left: -4px;
+    top: -1px;
+    background: @icon-choose-box no-repeat;
   }
+  //input[type="checkbox"] {
+  //  .lib-form-element-choice(@_type: input-checkbox);
+  //}
 
   input[type="radio"] {
     .lib-form-element-choice(@_type: input-radio);
