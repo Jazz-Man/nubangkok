@@ -98,6 +98,7 @@
               color: @color-text-input;
               display: block;
               float: right;
+              font-size: @font-size__s;
             }
           }
         }
@@ -228,9 +229,10 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
   form.form.create.account.form-create-account {
     .actions-toolbar {
-      width: 93%;
-      margin: 0 auto;
+      //width: 93%;
+      //margin: 0 auto;
       .primary {
+        min-width: 220px;
         button {
           background-color: @color-brown;
           border: none;
