@@ -35,8 +35,8 @@ class Address extends \Magento\Customer\Block\Account\Dashboard\Address
     public function getAddressEditBillingFormHtml()
     {
         return $this->_getAddressEditFormHtml(
-            ($block->getPrimaryBillingAddress())
-                ? $block->getPrimaryBillingAddress()->getId() : null,
+            ($this->getPrimaryBillingAddress())
+                ? $this->getPrimaryBillingAddress()->getId() : null,
             self::ADDRESS_TYPE_BILLING
         );
     }
@@ -44,8 +44,8 @@ class Address extends \Magento\Customer\Block\Account\Dashboard\Address
     public function getAddressEditShippingFormHtml()
     {
         return $this->_getAddressEditFormHtml(
-            ($block->getPrimaryBillingAddress())
-                ? $block->getPrimaryShippingAddress()->getId() : null,
+            ($this->getPrimaryShippingAddress())
+                ? $this->getPrimaryShippingAddress()->getId() : null,
             self::ADDRESS_TYPE_SHIPPING
         );
     }

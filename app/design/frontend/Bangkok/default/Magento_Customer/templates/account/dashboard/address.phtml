@@ -17,7 +17,7 @@
             </div>
             <div data-mage-init='{"customerAddressEdit":{}}'>
                 <div data-role="content">
-                    <?= $block->getAddressEditFormHtml(($block->getPrimaryBillingAddress()) ? $block->getPrimaryBillingAddress()->getId() : null); ?>
+                    <?= $block->getAddressEditBillingFormHtml(); ?>
                 </div>
                 <div class="box-actions">
                     <a class="action edit js-edit" data-role="collapsible" href="#"
@@ -39,7 +39,7 @@
 
             <div data-mage-init='{"customerAddressEdit":{}}'>
                 <div data-role="content">
-                    <?= $block->getAddressEditFormHtml(($block->getPrimaryShippingAddress()) ? $block->getPrimaryShippingAddress()->getId() : null); ?>
+                    <?= $block->getAddressEditShippingFormHtml(); ?>
                 </div>
                 <div class="box-actions">
                     <a class="action edit js-edit" data-role="collapsible" href="#"
