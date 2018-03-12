@@ -352,6 +352,9 @@
       margin-top: @indent__xs;
     }
   }
+  div.customer-account-dashboard {
+    display: none
+  }
   .block.block-dashboard-info, .block.block-dashboard-addresses {
     .box-title span {
       text-transform: uppercase;
@@ -626,6 +629,11 @@
     &:extend(.abs-add-clearfix-desktop all);
 
     .block {
+      .block-content{
+        h2{
+          margin-top: 95px;
+        }
+      }
       &:extend(.abs-blocks-2columns all);
       &.login {
         .actions-toolbar {
