@@ -15,9 +15,14 @@
            value="1">
 
     <?php if($block->isShippingTypeRender() && !$block->getAddress()->getId()):?>
-        <input type="checkbox" id="use_default_address" name="use_default_address" value="1" class="checkbox">
-        <span></span><span><?= $block->escapeHtml(__('Same as default address')) ?></span>
-
+        <div class="checkbox-block">
+            <div class="field choice">
+                <label for="use_default_address" class="label">
+                    <input type="checkbox" id="use_default_address" name="use_default_address" value="1" class="checkbox">
+                    <span></span><span><?= $block->escapeHtml(__('Same as default address')) ?></span>
+                </label>
+            </div>
+        </div>
         <div class="or">
             <span><?= __('or'); ?></span>
         </div>
