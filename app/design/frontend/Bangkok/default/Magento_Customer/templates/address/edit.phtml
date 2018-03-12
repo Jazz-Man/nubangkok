@@ -1,7 +1,6 @@
 <?php
 /** @var \Encomage\Customer\Block\Address\Edit $block */
 ?>
-<?php $_telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Telephone') ?>
 <form class="form-address-edit"
       action="<?= $block->escapeUrl($block->getSaveUrl()) ?>"
       method="post"
@@ -11,44 +10,28 @@
       data-mage-init='{"addressValidation": {}}'>
 
 
-    <?php if ($block->isDefaultBilling()): ?>
-        <div class="message info">
-            <span><?= $block->escapeHtml(__("It's a default billing address.")) ?></span>
-        </div>
-    <?php elseif ($block->canSetAsDefaultBilling()): ?>
-        <div class="checkbox-block">
-            <div class="field choice set billing">
-                <label class="label" for="primary_billing">
-                    <input type="checkbox" id="primary_billing" name="default_billing" value="1" class="checkbox">
+    <input type="hidden"
+           name="<?= ($block->isShippingTypeRender()) ? 'default_shipping' : 'default_billing' ?>"
+           value="1">
 
-                    <span></span><span><?= $block->escapeHtml(__('Use as my default billing address')) ?></span>
-                </label>
-            </div>
+    <?php if($block->isShippingTypeRender() && !$block->getAddress()->getId()):?>
+        <input type="checkbox" id="use_default_address" name="use_default_address" value="1" class="checkbox">
+        <span></span><span><?= $block->escapeHtml(__('Same as default address')) ?></span>
+
+        <div class="or">
+            <span><?= __('or'); ?></span>
         </div>
-    <?php else: ?>
-        <input type="hidden" name="default_billing" value="1"/>
+
     <?php endif; ?>
 
-    <?php if ($block->canSetAsDefaultShipping()): ?>
-        <div class="checkbox-block">
-            <div class="field choice set shipping">
-                <label class="label" for="primary_shipping">
-                    <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" class="checkbox">
 
-                    <span></span><span><?= $block->escapeHtml(__('Use as my default shipping address')) ?></span>
-                </label>
-            </div>
+    <?php if (!$block->getAddress()->getId()): ?>
+        <div class="legend legend-contact-info">
+            <span><?= $block->escapeHtml(__('Add another shipping information')) ?></span>
         </div>
-    <?php else: ?>
-        <input type="hidden" name="default_shipping" value="1">
     <?php endif; ?>
-
 
     <fieldset class="fieldset">
-        <?php if ($block->getAddress()->getId()): ?>
-            <legend class="legend legend-contact-info"><span><?= $block->escapeHtml(__('Contact Information')) ?></span>
-            </legend>
-        <?php endif; ?>
         <?= $block->getBlockHtml('formkey') ?>
         <input type="hidden" name="success_url" value="<?= $block->escapeUrl($block->getSuccessUrl()) ?>">
         <input type="hidden" name="error_url" value="<?= $block->escapeUrl($block->getErrorUrl()) ?>">
@@ -71,7 +54,7 @@
                        name="street[]"
                        value="<?= $block->escapeHtmlAttr($block->getStreetLine(1)) ?>"
                        title="<?= $block->escapeHtmlAttr(__('Street Address')) ?>"
-                       id="street_1"
+                       id="street_1-<?= $block->getAddressType();?>"
                        class="input-text <?= $block->escapeHtmlAttr($_streetValidationClass) ?>"
                        placeholder="<?= __('Street Address'); ?>"/>
                 <div class="nested">
@@ -87,7 +70,7 @@
                                        value="<?= $block->escapeHtmlAttr($block->getStreetLine($_i + 1)) ?>"
                                        title="<?= $block->escapeHtmlAttr(__('Street Address %1', $_i + 1)) ?>"
                                        id="street_<?= /* @noEscape */
-                                       $_i + 1 ?>"
+                                       $_i + 1 . '-' . $block->getAddressType() ?>"
                                        class="input-text <?= $block->escapeHtmlAttr($_streetValidationClass) ?>"
                                        placeholder="<?= __('Street Address 2'); ?>">
                             </div>
@@ -104,7 +87,7 @@
                        value="<?= $block->escapeHtmlAttr($block->getAddress()->getCity()) ?>"
                        title="<?= $block->escapeHtmlAttr(__('City')) ?>"
                        class="input-text <?= $block->escapeHtmlAttr($this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('city')) ?>"
-                       id="city" placeholder="<?= __('City'); ?>">
+                       id="city-<?= $block->getAddressType();?>" placeholder="<?= __('City'); ?>">
             </div>
         </div>
         <div class="field zip required">
@@ -113,7 +96,7 @@
                        name="postcode"
                        value="<?= $block->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>"
                        title="<?= $block->escapeHtmlAttr(__('Zip/Postal Code')) ?>"
-                       id="zip" placeholder="<?= __('Zip/Postal Code'); ?>"
+                       id="zip-<?= $block->getAddressType();?>" placeholder="<?= __('Zip/Postal Code'); ?>"
                        class="input-text validate-zip-international <?= $block->escapeHtmlAttr($this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('postcode')) ?>">
             </div>
         </div>
@@ -137,8 +120,5 @@
             }
         }
     }
-
-
-
 
 </script>

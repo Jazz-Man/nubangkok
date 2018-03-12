@@ -2,11 +2,14 @@
 /**
  * @method setAddressId(int $id);
  * @method int getAddressId();
+ * @method setAddressType(string $type);
+ * @method string getAddressType();
  */
 
 namespace Encomage\Customer\Block\Address;
 
 use Magento\Framework\Exception\NoSuchEntityException;
+use Encomage\Customer\Block\Account\Dashboard\Address;
 
 class Edit extends \Magento\Customer\Block\Address\Edit
 {
@@ -73,5 +76,16 @@ class Edit extends \Magento\Customer\Block\Address\Edit
     public function getErrorUrl()
     {
         return $this->getUrl('customer/account');
+    }
+
+    public function isShippingTypeRender()
+    {
+        return $this->getAddressType() === Address::ADDRESS_TYPE_SHIPPING;
+    }
+
+    public function getCountryHtmlSelect($defValue = null, $name = 'country_id', $id = 'country', $title = 'Country')
+    {
+        $id .= '-' . $this->getAddressType();
+        return parent::getCountryHtmlSelect($defValue, $name, $id, $title);
     }
 }
