@@ -54,6 +54,7 @@ class Address extends \Magento\Customer\Block\Account\Dashboard\Address
     {
         return $this->getLayout()->createBlock('Encomage\Customer\Block\Address\Edit')
             ->setAddressId($addressId)
+            ->setAddressType($type)
             ->toHtml();
     }
 }
