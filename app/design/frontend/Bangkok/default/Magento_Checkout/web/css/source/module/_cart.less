@@ -801,6 +801,20 @@
   .cart.table-wrapper .product-item-details{
     width: 24%;
   }
+  .cart.table-wrapper .product-item-photo .product-image-container .product-image-wrapper .image-block{
+    .product-note-info{
+      top: 2px;
+      font-size: 12px;
+    }
+    .popular-products{
+      bottom: 10px;
+      right: 5px;
+      font-size: 12px;
+    }
+    .product-note-status{
+      font-size: 12px;
+    }
+  }
 }
 
 //
@@ -943,12 +957,35 @@
                   position: initial;
                   width: 200px;
                   margin: -34px 0 0 0px;
+                  position: relative;
+                  max-height: 218px;
+                }
+                .product-note-info{
+                  position: absolute;
+                  top: 10px;
+                  left: 5px;
+                  color: red;
+                }
+                .product-note-status{
+                  position: absolute;
+                  bottom: 12px;
+                  transform: rotate(-45deg);
+                  right: 5px;
+                }
+                .popular-products{
+                  position: absolute;
+                  bottom: 25px;
+                  padding: 5px 5px;
+                  background-color: gainsboro;
+                  border-radius: 3px;
+                  opacity: 0.7;
+                  text-transform: uppercase;
+                  right: 10px;
                 }
               }
             }
           }
         }
-
         &-item-details {
           display: inline-block;
           width: 33%;
