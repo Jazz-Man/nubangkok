@@ -103,11 +103,24 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.0.5', '<')) {
             $this->removeDuplicateAtt();
         }
+        
+        if (version_compare($context->getVersion(), '0.0.7', '<')) {
+            $setup->startSetup();
+            $this->removeSizeOptionValueForEnStore($setup);
+            $setup->endSetup();
+        }
     }
 
     private function removeDuplicateAtt()
     {
         $eavSetup = $this->eavSetupFactory->create();
         $eavSetup->removeAttribute(\Magento\Catalog\Model\Product::ENTITY, 'worn_these_shoes_before');
+    }
+    
+    private function removeSizeOptionValueForEnStore($setup)
+    {
+        $table = $setup->getTable('eav_attribute_option_value');
+        $where = ['store_id = ?' => 1];
+        $setup->getConnection()->delete($table, $where);
     }
 }

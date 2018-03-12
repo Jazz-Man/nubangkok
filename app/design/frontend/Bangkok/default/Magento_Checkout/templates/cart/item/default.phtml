@@ -1,8 +1,9 @@
 <?php
-/** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
+/** @var Encomage\Checkout\Block\Cart\Item\Renderer $block */
 
 $_item = $block->getItem();
 $product = $_item->getProduct();
+$_options = ($_item->getProductType() == 'simple') ? $_options = $block->getOptionList() : $_options = $block->colorOption();
 $isVisibleProduct = $product->isVisibleInSiteVisibility();
 /** @var \Magento\Msrp\Helper\Data $helper */
 $helper = $this->helper('Magento\Msrp\Helper\Data');
@@ -33,17 +34,22 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <?= $block->escapeHtml($block->getProductName()) ?>
                 <?php endif; ?>
             </strong>
-            <?php if ($_options = $block->getOptionList()):?>
+            <?php if (isset($_options)):?>
                 <div class="item-options">
                     <?php foreach ($_options as $_option) : ?>
                         <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
                         <div class="label"><?= $block->escapeHtml($_option['label']) ?></div>
                         <div class="options-value">
-                            <?php if (isset($_formatedOptionValue['full_view'])): ?>
-                                <?= /* @escapeNotVerified */ $_formatedOptionValue['full_view'] ?>
-                            <?php else: ?>
-                                <?= /* @escapeNotVerified */ $_formatedOptionValue['value'] ?>
-                            <?php endif; ?>
+                            <div class="color-value">
+                                <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                    <?= /* @escapeNotVerified */ $_formatedOptionValue['full_view'] ?>
+                                <?php else: ?>
+                                    <?= /* @escapeNotVerified */ $_formatedOptionValue['value'] ?>
+                                <?php endif; ?>
+                            </div>
+                            <?php if(!empty($_option['rgb_code'])) : ?>
+                                <div class="rgb" style="background:<?=$_option['rgb_code']?>;"></div>
+                            <?php endif;?>
                         </div>
                     <?php endforeach; ?>
                 </div>
