@@ -29,11 +29,7 @@
         <input type="hidden" name="default_billing" value="1"/>
     <?php endif; ?>
 
-    <?php if ($block->isDefaultShipping()): ?>
-        <div class="message info">
-            <span><?= $block->escapeHtml(__("It's a default shipping address.")) ?></span>
-        </div>
-    <?php elseif ($block->canSetAsDefaultShipping()): ?>
+    <?php if ($block->canSetAsDefaultShipping()): ?>
         <div class="checkbox-block">
             <div class="field choice set shipping">
                 <label class="label" for="primary_shipping">
