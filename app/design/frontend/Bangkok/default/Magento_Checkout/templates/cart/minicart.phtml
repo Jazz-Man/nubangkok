@@ -8,7 +8,7 @@
         </span>
         <span class="count-bag"
               data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
-            <span class="counter-number"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
+            <span class="counter-number" data-bind="css:miniBagCssClass"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
             <span class="counter-label">
             <!-- ko if: getCartParam('summary_count') -->
                 <!-- ko text: getCartParam('summary_count') --><!-- /ko -->

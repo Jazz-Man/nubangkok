@@ -11,9 +11,9 @@
 "active": false,
 "multipleCollapsible": true}}'>
     <span href="#" data-role="collapsible" class="open-account-details">
-        <?php echo __('My account details (EDIT)') ?>
+        <?= __('My account details (EDIT)'); ?>
     </span>
-    <div data-role="content">
+    <div class="customer-account-dashboard" data-role="content">
         <?= $block->getChildHtml('customer_account_dashboard_information') ?>
         <?= $block->getChildHtml('customer_account_dashboard_addresses') ?>
     </div>
