@@ -283,7 +283,7 @@
   .product-info-main .product-info-price {
     .price-box {
       margin-top: 0;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
     .product-info-stock-sku {
       display: none;
@@ -291,14 +291,13 @@
   }
   .product-info-main,
   .product-options-bottom {
-    margin-top: 25px;
+    //margin-top: 25px;
     .message {
       p {
         float: left;
         font-size: @font-size-bgk;
         //width: 100%;
       }
-
     }
     .radio-box {
       display: inline-block;
@@ -320,7 +319,8 @@
       }
 
       .price-wrapper .price {
-        .lib-font-size(18);
+        //.lib-font-size(18);
+        .lib-font-size(15);
       }
 
       .price {
@@ -354,7 +354,7 @@
     }
 
     .box-tocart {
-      margin: @indent__base 0;
+      //margin: @indent__base 0;
 
       .field.qty {
         padding-right: .75 * @indent__base;
@@ -385,6 +385,25 @@
     .action.tocompare {
       &:extend(.abs-action-addto-product all);
       vertical-align: top;
+    }
+  }
+  .product-options-bottom{
+    .message{
+      margin-top: 30px;
+    }
+    .box-tocart{
+      margin: 0;
+      .fieldset .arrow-up{
+        margin-top: 73px;
+      }
+    }
+  }
+  .product-info-main{
+    //margin-top: 27px;
+    .page-title-wrapper{
+      .product-name{
+        font-size: 22px;
+      }
     }
   }
 
@@ -675,7 +694,7 @@
 
       .actions {
         display: table-cell;
-        padding-top: 40px;
+        padding-top: 30px;
         text-align: center;
         vertical-align: bottom;
         width: 70%;
@@ -696,7 +715,7 @@
   .product-info-main {
     .page-title-wrapper {
       .page-title {
-        margin-top: -13px;
+        margin-top: -26px;
       }
     }
   }
@@ -779,11 +798,16 @@
   .page-layout-2columns-right,
   .page-layout-3columns {
     .product-info-main {
-      width: 48%;
+      //width: 48%;
+      width: 45%;
+      .product-options-bottom{
+
+      }
     }
 
     .product.media {
-      width: 50%;
+      //width: 50%;
+      width: 45%;
     }
   }
 }
@@ -955,11 +979,13 @@
 .product-info-main {
   .product-add-form {
     .field.qty {
-      margin-top: 50px;
+      //margin-top: 50px;
+      line-height: 18px;
+
       .control {
         .input-text.qty {
           width: 32%;
-          height: 45px;
+          height: 42px;
           border-left: none;
           border-right: none;
           border-top: 2px solid @color-gray91;
