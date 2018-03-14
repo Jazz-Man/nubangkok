@@ -1,12 +1,23 @@
 <?php
-/** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
+/** @var Encomage\Checkout\Block\Cart\Item\Renderer $block */
 
 $_item = $block->getItem();
 $product = $_item->getProduct();
+$_options = ($_item->getProductType() == 'simple') ? $_options = $block->getOptionList() : $_options = $block->colorOption();
 $isVisibleProduct = $product->isVisibleInSiteVisibility();
 /** @var \Magento\Msrp\Helper\Data $helper */
 $helper = $this->helper('Magento\Msrp\Helper\Data');
 $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
+
+$qtyHtml = $block->getLayout()
+    ->createBlock('\Magento\Framework\View\Element\Template')
+    ->setTemplate('Magento_Checkout::cart/item/renderer/qty.phtml')
+    ->setItem($_item)
+    ->setRendererBlock($block)
+    ->toHtml();
+
+$_options = $block->getOptionList();
+
 ?>
 <div class="cart item">
 <div class="item-info">
@@ -33,21 +44,16 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <?= $block->escapeHtml($block->getProductName()) ?>
                 <?php endif; ?>
             </strong>
-            <?php if ($_options = $block->getOptionList()):?>
-                <div class="item-options">
-                    <?php foreach ($_options as $_option) : ?>
-                        <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
-                        <div class="label"><?= $block->escapeHtml($_option['label']) ?></div>
-                        <div class="options-value">
-                            <?php if (isset($_formatedOptionValue['full_view'])): ?>
-                                <?= /* @escapeNotVerified */ $_formatedOptionValue['full_view'] ?>
-                            <?php else: ?>
-                                <?= /* @escapeNotVerified */ $_formatedOptionValue['value'] ?>
-                            <?php endif; ?>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif;?>
+            <?php if ($_options):?>
+            <?= $block->getLayout()
+                    ->createBlock('Encomage\Checkout\Block\Cart\Item\Renderer\Options')
+                    ->setQtyHtml($qtyHtml)
+                    ->setOptions($_options)
+                    ->setRendererBlock($block)
+                    ->toHtml(); ?>
+            <?php else: ?>
+                <?= $qtyHtml; ?>
+            <?php endif; ?>
             <?php if ($messages = $block->getMessages()): ?>
                 <?php foreach ($messages as $message): ?>
                     <div class="cart item message <?= /* @escapeNotVerified */ $message['type'] ?>"><div><?= $block->escapeHtml($message['text']) ?></div></div>
@@ -58,27 +64,6 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                 <?= $addInfoBlock->setItem($_item)->toHtml() ?>
             <?php endif;?>
         </div>
-    <div class="col qty" data-th="<?= $block->escapeHtml(__('Qty')) ?>">
-        <div class="field qty">
-            <label class="label" for="cart-<?= /* @escapeNotVerified */ $_item->getId() ?>-qty">
-                <span><?= /* @escapeNotVerified */ __('Qty') ?></span>
-            </label>
-            <div class="control qty">
-                <span class="qty-reduce"><span>-</span></span>
-                <input id="cart-<?= /* @escapeNotVerified */ $_item->getId() ?>-qty"
-                       name="cart[<?= /* @escapeNotVerified */ $_item->getId() ?>][qty]"
-                       data-cart-item-id="<?= /* @escapeNotVerified */ $_item->getSku() ?>"
-                       value="<?= /* @escapeNotVerified */ $block->getQty() ?>"
-                       type="number"
-                       size="4"
-                       title="<?= $block->escapeHtml(__('Qty')) ?>"
-                       class="input-text qty"
-                       data-validate="{required:true,'validate-greater-than-zero':true}"
-                       data-role="cart-item-qty"/>
-                <span class="qty-enhance "><span>+</span></span>
-            </div>
-        </div>
-    </div>
     </div>
 
     <?php if ($canApplyMsrp): ?>
