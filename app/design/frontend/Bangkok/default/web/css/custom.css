@@ -226,19 +226,19 @@ input:-webkit-autofill {
 }
 
 ::-webkit-input-placeholder {
-    color: #C0C0C0;
+    color: #55463e;
 }
 
 ::-moz-placeholder {
-    color: #C0C0C0;
+    color: #55463e;
 }
 
 :-ms-input-placeholder {
-    color: #C0C0C0;
+    color: #55463e;
 }
 
 :-moz-placeholder {
-    color: #C0C0C0;
+    color: #55463e;
 }
 
 /* Sign in page */

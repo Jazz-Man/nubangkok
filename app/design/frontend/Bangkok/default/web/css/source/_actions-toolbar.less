@@ -218,6 +218,7 @@
           background-color: @color-brown;
           border: none;
           padding: 12px;
+          border-radius: 3px;
           &:hover {
             background-color: @color-brown/2;
           }
@@ -231,6 +232,9 @@
 // Mobile
 //
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .columns .column.main{
+    padding-top: 5px;
+  }
   .checkbox-block-desktop {
     display: none;
   }
@@ -239,7 +243,8 @@
     width: 145px;
     float: right;
     min-width: 145px;
-    margin-bottom: 20px;
+    margin-top: 15px;
+    margin-bottom: 10px;
   }
   form.form.create.account.form-create-account {
     .actions-toolbar {
@@ -251,6 +256,7 @@
           background-color: @color-brown;
           border: none;
           padding: 12px;
+          border-radius: 3px;
         }
       }
     }
@@ -258,8 +264,8 @@
   .actions-toolbar {
     > .primary {
       text-align: center;
-      width: 60%;
-      margin: 0 auto;
+      //width: 60%;
+      //margin: 0 auto;
       button.action.primary.add {
         background-color: @color-brown;
         border: 1px solid @color-brown;
@@ -276,16 +282,42 @@
     .block.block-customer-login {
       margin-bottom: 0;
       .block-content {
+        h2 {
+          font-size: 1.6rem;
+          margin-top: 0;
+          margin-bottom: 10px;
+        }
         .account-social-login {
           .block-content .social-btn {
             width: 100%;
             margin: 0;
-            .btn-social span{
-              font-size: 1em;
+            .btn-social span {
+              top: 5px;
+              font-size: 1.2em;
+              width: 30px;
             }
-            .fa-google:after{
-              font-size: 12px;
-              right: -5px;
+            .btn-facebook {
+              padding-top: 13px;
+              padding-bottom: 5px;
+              padding-left: 30px;
+              span {
+                top: 7px;
+                font-size: 1.1em;
+                left: 0;
+              }
+            }
+            .btn-google {
+              padding-top: 11px;
+              padding-bottom: 7px;
+              padding-left: 45px;
+              .fa-google {
+                top: 1px;
+                &:after {
+                  right: -5px;
+                  font-size: 10px;
+                  top: -1px;
+                }
+              }
             }
           }
         }
@@ -299,6 +331,9 @@
             }
             .customer-show-password {
               top: 39px;
+              span {
+                font-size: 14px;
+              }
             }
           }
           .actions-toolbar {
@@ -311,12 +346,20 @@
               margin-top: 20px;
               margin-bottom: 0;
               span {
-                font-size: 14px;
+                font-size: 13px;
                 float: right;
-                border-bottom: 2px solid @color-gray-light3;
+                border-bottom: 1px solid @color-brown-primary;
               }
             }
           }
+        }
+      }
+      .checkbox-block label.label {
+        span:first-of-type {
+          top: 1px;
+        }
+        span:last-of-type {
+          font-size: 13px;
         }
       }
     }
