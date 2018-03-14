@@ -1,6 +1,7 @@
 define([
     'jquery',
-    'Magento_Ui/js/modal/modal'
+    'Magento_Ui/js/modal/modal',
+    'simpleCropper'
 ], function ($, modal) {
     "use strict";
 
@@ -14,12 +15,15 @@ define([
                 text: $.mage.__('Close'),
                 class: '',
                 click: function () {
-                    $('#save-story-form').submit();
+                    // $('#save-story-form').submit();
                     this.closeModal();
                 }
             }]
         };
-
+$('.js-cropper').simpleCropper();
+        $('.js-attach-file').on('change', function () {
+            $('.js-attach-file');
+        })
         var popup = modal(options, $('.save-message-modal'));
         $(".save-button").on('click',function(){
             if ($('#content').val()) {

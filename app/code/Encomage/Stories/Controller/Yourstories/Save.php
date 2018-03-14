@@ -98,8 +98,16 @@ class Save extends Action
                 $result = $uploader->save($target);
                 $modelStory->setImagePath(self::MEDIA_PATH_STORIES_IMAGE . $result['file']);
             }
-            $this->storiesRepository->save($modelStory);
-            $this->messageManager->addSuccessMessage(__('Your story hes been sent'));
+            try {
+                $this->storiesRepository->save($modelStory);
+                $this->messageManager->addSuccessMessage(__('Your story hes been sent'));
+            }catch (\Exception $e) {
+                if (!empty($result['file'])) {
+                    @unlink($result['path'] . $result['file']);
+                }
+                $this->messageManager->addErrorMessage(__('Has not saved'));
+            }
+
         } else {
             $this->messageManager->addErrorMessage(__('No data'));
         }

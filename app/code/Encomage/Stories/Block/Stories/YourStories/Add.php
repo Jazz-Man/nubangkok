@@ -34,4 +34,10 @@ class Add extends Template
     {
         return $this->customerSession->getCustomerId();
     }
+
+    public function getCustomerName()
+    {
+        $customer = $this->customerSession->getCustomer();
+        return $customer->getName();
+    }
 }

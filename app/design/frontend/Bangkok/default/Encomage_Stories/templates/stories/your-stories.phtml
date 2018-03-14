@@ -3,12 +3,31 @@ $_collection = $block->storiesCollection();
 $items = $_collection->getItems();
 $_collectionSize = $_collection->getTotalCount();
 ?>
-<div class="your-stories-container">
-    <?php if ($_collectionSize) : ?>
-        <div class="your-stories-content">
+
+<?php if ($_collectionSize) : ?>
+        <div class="your-stories-container">
             <?php foreach ($items as $story) : ?>
-                <?= $story->getContent(); ?>
+                <div class="story-item">
+                    <div class="story-content js-story-content">
+                        <h3 class="story-title"><strong><?= $block->getCustomerNameById($story->getCustomerId()); ?></strong></h3>
+                        <h3 class="story-create-at"><?= $block->newDate($story->getCreatedAt()); ?></h3>
+                        <div class="js-story-content">
+                            <p class="js-short-content-<?= $story->getId(); ?> short-content"><?= $block->getResponsibleContent($story->getContent()); ?>
+                                <span data-story-id="<?= $story->getId(); ?>" class="js-show-more show-more">...<?= __('more'); ?></span>
+                            </p>
+                            <p class="js-full-content-<?= $story->getId(); ?> full-content"><?= $story->getContent(); ?></p>
+                        </div>
+                    </div>
+                    <img class="js-story-image-<?= $story->getId(); ?>" src="<?= $block->getImage($story->getImagePath()); ?>"/>
+                </div>
             <?php endforeach; ?>
         </div>
-    <?php endif; ?>
-</div>
+    <script type="text/x-magento-init">
+    {
+        ".js-story-content": {
+            "Encomage_Stories/js/content-toggle": {}
+        }
+    }
+    </script>
+<?php endif; ?>
+
