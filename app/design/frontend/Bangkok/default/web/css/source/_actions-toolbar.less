@@ -87,6 +87,7 @@
             padding-top: 22px;
             border-radius: 4px;
             margin-top: 12px;
+            border: 2px solid @color-gray-light3;
           }
           .customer-show-password {
             width: 52%;
@@ -152,10 +153,10 @@
             font-size: @font-size-bgk;
             text-transform: uppercase;
             border-radius: 3px;
-            padding: 10px 0;
+            padding: 8px 0;
             background-color: white;
             color: black;
-            border: 2px solid @color-active-bgk;
+            border: 2px solid @color-gray-light3;
             &:hover {
               background-color: @color-gray91;
             }
@@ -174,7 +175,7 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-  .checkbox-block-mobile{
+  .checkbox-block-mobile {
     display: none;
   }
   .actions-toolbar {
@@ -230,14 +231,15 @@
 // Mobile
 //
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-  .checkbox-block-desktop{
+  .checkbox-block-desktop {
     display: none;
   }
-  .checkbox-block-mobile{
+  .checkbox-block-mobile {
     display: block;
     width: 145px;
     float: right;
     min-width: 145px;
+    margin-bottom: 20px;
   }
   form.form.create.account.form-create-account {
     .actions-toolbar {
@@ -258,7 +260,7 @@
       text-align: center;
       width: 60%;
       margin: 0 auto;
-      button.action.primary.add{
+      button.action.primary.add {
         background-color: @color-brown;
         border: 1px solid @color-brown;
       }
@@ -278,6 +280,13 @@
           .block-content .social-btn {
             width: 100%;
             margin: 0;
+            .btn-social span{
+              font-size: 1em;
+            }
+            .fa-google:after{
+              font-size: 12px;
+              right: -5px;
+            }
           }
         }
         fieldset {
@@ -285,6 +294,7 @@
             width: 100%;
             input {
               width: 100%;
+              border: 2px solid @color-gray-light3;
 
             }
             .customer-show-password {
@@ -303,6 +313,7 @@
               span {
                 font-size: 14px;
                 float: right;
+                border-bottom: 2px solid @color-gray-light3;
               }
             }
           }
@@ -312,7 +323,7 @@
   }
   .block.block-new-customer {
     margin-top: 0;
-    .register-form-right-image{
+    .register-form-right-image {
       display: none;
     }
     .block-content {

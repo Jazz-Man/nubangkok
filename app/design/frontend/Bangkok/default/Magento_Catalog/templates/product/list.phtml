@@ -20,15 +20,15 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
     <?= $block->getAdditionalHtml() ?>
     <?php
     if ($block->getMode() == 'grid') {
-        $viewMode = 'grid';
-        $image = 'category_page_grid';
-        $showDescription = false;
-        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
-    } else {
         $viewMode = 'list';
         $image = 'category_page_list';
-        $showDescription = true;
+        $showDescription = false;
         $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+    } else {
+        $viewMode = 'grid';
+        $image = 'category_page_grid';
+        $showDescription = true;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
     }
     /**
      * Position for actions regarding image size changing in vde if needed
