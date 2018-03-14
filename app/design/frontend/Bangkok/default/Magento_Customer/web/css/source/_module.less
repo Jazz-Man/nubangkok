@@ -170,12 +170,12 @@
         text-align: left;
         outline: none;
         &:after {
-          content: @icon-select-arrow-up;
+          content: @icon-select-arrow-down;
           padding-left: 5px;
           vertical-align: middle;
         }
         &.active:after {
-          content: @icon-select-arrow-down;
+          content: @icon-select-arrow-up;
         }
       }
       h2 {
@@ -216,6 +216,12 @@
               }
             }
           }
+        }
+      }
+      .form-edit-account{
+        .nice-select{
+          padding-left: 65px;
+          padding-top: 2px;
         }
       }
     }
@@ -346,6 +352,9 @@
       margin-top: @indent__xs;
     }
   }
+  div.customer-account-dashboard {
+    display: none
+  }
   .block.block-dashboard-info, .block.block-dashboard-addresses {
     .box-title span {
       text-transform: uppercase;
@@ -377,12 +386,39 @@
     address {
       width: 50%;
       display: inline-block;
+      color: #858585;
+      a{
+        color: #858585;
+      }
+    }
+    .legend-contact-info{
+      span{
+        text-transform: uppercase;
+      }
+    }
+    .form-address-edit .field.country.required{
+      position: relative;
+      .label{
+        position: absolute;
+        font-size: 14px;
+        padding-left: 8px;
+      }
+      .control{
+        .nice-select{
+          padding-left: 68px;
+          margin-bottom: 0;
+        }
+      }
     }
   }
 
   .or {
     overflow: hidden;
     text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    width: 94%;
+    margin: 0 auto;
     span {
       display: inline-block;
       vertical-align: middle;
@@ -486,6 +522,11 @@
       vertical-align: middle;
     }
   }
+  .box-shipping-address{
+    .form-address-edit{
+      margin-top: 30px;
+    }
+  }
 }
 
 //
@@ -565,6 +606,18 @@
       }
     }
   }
+  .form-edit-account{
+    .nice-select{
+      span{
+        position: absolute;
+        top: -3px;
+      }
+    }
+  }
+  .block.block-dashboard-addresses .form-address-edit .field.country.required .label{
+    top: 12px;
+
+  }
 }
 
 //
@@ -576,6 +629,11 @@
     &:extend(.abs-add-clearfix-desktop all);
 
     .block {
+      .block-content{
+        h2{
+          margin-top: 95px;
+        }
+      }
       &:extend(.abs-blocks-2columns all);
       &.login {
         .actions-toolbar {

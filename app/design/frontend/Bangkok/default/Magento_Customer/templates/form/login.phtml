@@ -39,6 +39,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="checkbox-block checkbox-block-mobile">
+                    <div class="field choice">
+                        <label for="keep_signed_in_mob" class="label">
+                            <input type="checkbox" name="keep_signed_in_mob" title="<?= __("Keep me signed in");?>" id="keep_signed_in_mob" checked="checked" class="checkbox">
+                            <span></span><span><?= __("Keep me signed in");?></span>
+                        </label>
+                    </div>
+                </div>
                 <?= $block->getChildHtml('form_additional_info') ?>
                 <div class="actions-toolbar">
                     <div class="primary"><button type="submit" class="action login primary" name="send" id="send2"><span><?= $block->escapeHtml(__('Sign In')) ?></span></button></div>
@@ -46,6 +54,14 @@
                         <a class="action remind" href="<?= $block->escapeUrl($block->getForgotPasswordUrl()) ?>">
                             <span><?= $block->escapeHtml(__('Forgot Password?')) ?></span>
                         </a>
+                        <div class="checkbox-block checkbox-block-desktop">
+                            <div class="field choice">
+                                <label for="keep_signed_in" class="label">
+                                    <input type="checkbox" name="keep_signed_in" title="<?= __("Keep me signed in");?>" id="keep_signed_in" checked="checked" class="checkbox">
+                                    <span></span><span><?= __("Keep me signed in");?></span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </fieldset>

@@ -33,6 +33,8 @@
   height: 32px;
   line-height: 32px;
   margin-top: 5px;
+  text-transform: uppercase;
+  padding-top: 1px;
 }
 .fieldset.create.info .nice-select:after{
   top: 7px;
@@ -138,7 +140,9 @@
     padding-right: 29px;
     text-align: left;
     -webkit-transition: all 0.2s;
-    transition: all 0.2s; }
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
     .nice-select .option:hover, .nice-select .option.focus, .nice-select .option.selected.focus {
       background-color: #f6f6f6; }
     .nice-select .option.selected {
