@@ -183,7 +183,7 @@
 }
 
 .nice-select .option:hover, .nice-select .option.focus, .nice-select .option.selected.focus {
-    background-color: #f6f6f6;
+    background-color: #d9d2cb;
 }
 
 .nice-select .option.selected {

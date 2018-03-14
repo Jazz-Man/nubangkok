@@ -159,8 +159,6 @@
 
   .product.info.detailed {
     clear: both;
-    margin-bottom: 30px;
-
     .additional-attributes {
       width: auto;
       .lib-table-resize(
@@ -298,14 +296,13 @@
     .message {
       p {
         float: left;
-        font-size: @font-size-bgk;
-        //width: 100%;
+        font-size: 15px;
       }
     }
     .radio-box {
       display: inline-block;
       width: 20%;
-      margin-left: 8%;
+      margin-left: 10%;
       max-width: 100px;
     }
     .price-box {
@@ -392,12 +389,13 @@
   }
   .product-options-bottom {
     .message {
-      margin-top: 30px;
+      margin-top: 20px;
     }
     .box-tocart {
       margin: 0;
       .fieldset .arrow-up {
-        margin-top: 73px;
+        margin-top: 70px;
+        width: 50px;
       }
     }
   }
@@ -608,9 +606,12 @@
     }
   }
   .product-info-main {
+    .page-title-wrapper .page-title{
+      padding-top: 0;
+    }
     .product-add-form {
       .product-options-wrapper {
-        border-top: 2px solid @color-gray-light3;
+        border-top: 1px solid @color-brown-border;
         div.fieldset {
           margin-top: 10px;
         }
@@ -619,7 +620,7 @@
           float: right;
         }
         .field.qty {
-          margin-top: 10px;
+          margin-top: 13px;
           width: 20%;
           .control input.input-text.qty {
             width: 100%;
@@ -636,6 +637,7 @@
     }
   }
   .block.related {
+    margin-bottom: 0;
     .action.select {
       display: block;
       margin: @indent__xs 0;
@@ -665,6 +667,9 @@
     div.product.data.items > .item.content {
       padding-top: 0 !important;
       padding-bottom: 10px !important;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: justify;
     }
   }
 }
@@ -734,7 +739,7 @@
 
       .actions {
         display: table-cell;
-        padding-top: 30px;
+        padding-top: 33px;
         text-align: center;
         vertical-align: bottom;
         width: 70%;
@@ -822,7 +827,7 @@
 
   .product.media {
     float: left;
-    margin-bottom: @indent__m;
+    margin-bottom: 10px;
   }
 
   .page-layout-1column {
@@ -1018,12 +1023,13 @@
   //
   // PDP select
   //
-  .product-add-form{
-    .fieldset{
-      .swatch-select.size{
-        border-top: 2px solid @color-gray-light3;
-        border-bottom: 2px solid @color-gray-light3;
-        .option.selected.focus{
+  .product-add-form {
+    .fieldset {
+      .swatch-select.size {
+        border-top: 1px solid @color-brown-border;
+        border-bottom: 1px solid @color-brown-border;
+        margin-top: 3px;
+        .option.selected.focus {
           background-color: @color-active-bgk;
         }
       }
@@ -1035,7 +1041,7 @@
   .product-add-form {
     .field.qty {
       //margin-top: 50px;
-      line-height: 18px;
+      line-height: 14px;
 
       .control {
         .input-text.qty {
@@ -1043,9 +1049,9 @@
           height: 42px;
           border-left: none;
           border-right: none;
-          border-top: 2px solid @color-gray-light3;
-          border-bottom: 2px solid @color-gray-light3;
-          padding: 0;
+          border-top: 1px solid @color-brown-border;
+          border-bottom: 1px solid @color-brown-border;
+          padding-left: 20px;
           &:focus {
             box-shadow: none;
           }
