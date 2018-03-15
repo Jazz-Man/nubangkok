@@ -623,6 +623,13 @@ input:-webkit-autofill {
         font-size: 11px;
         width: 24px;
     }
+    .cart.table-wrapper .product-item-name + .item-options .option-color .label{
+        min-width: 35px;
+    }
+    .cart.table-wrapper .product-item-name + .item-options .option-size > div:last-of-type{
+        margin-right: 0;
+    }
+
 
     .cart.table-wrapper .item-options .options-value {
         font-size: 11px;
