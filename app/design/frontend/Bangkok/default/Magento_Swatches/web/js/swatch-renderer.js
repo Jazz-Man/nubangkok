@@ -568,7 +568,7 @@ define([
                 '<option value="0" option-id="0">' + chooseText + '</option>';
 
             $.each(config.options, function () {
-                var label = this.label,
+                var label = config.label + ' ' + this.label,
                     attr = ' value="' + this.id + '" option-id="' + this.id + '"';
 
                 if (!this.hasOwnProperty('products') || this.products.length <= 0) {
@@ -1338,7 +1338,7 @@ define([
          * @private
          */
         _getStockStatus: function ($this) {
-            var chooseText = this.options.jsonConfig.chooseText
+            var chooseText = this.options.jsonConfig.chooseText;
             var stockStatuses = this.options.jsonConfig.stockStatus;
             var statusAttr = this.options.jsonConfig.attributes;
             var attrOptionId = $this.attr('option-id');
@@ -1371,7 +1371,7 @@ define([
             $.each(this.options.jsonConfig.attributes, function (key, item) {
                 if (item.code == "size") {
                     $.each(item.options, function (i, value) {
-                        sizeLabels[value.id] = value.label;
+                        sizeLabels[value.id] = 'Size ' + value.label;
                     })
                 }
             });
