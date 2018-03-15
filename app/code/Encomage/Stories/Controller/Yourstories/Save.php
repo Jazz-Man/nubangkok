@@ -5,7 +5,6 @@ use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Encomage\Stories\Api\StoriesRepositoryInterface;
 use Encomage\Stories\Api\Data\StoriesInterfaceFactory;
-use Magento\MediaStorage\Model\File\UploaderFactory;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Customer\Model\Session;
@@ -25,10 +24,6 @@ class Save extends Action
      * @var
      */
     private $storiesFactory;
-    /**
-     * @var UploaderFactory
-     */
-    private $uploaderFactory;
     /**
      * @var \Magento\Framework\Filesystem\Directory\WriteInterface
      */
@@ -50,7 +45,6 @@ class Save extends Action
      * @param Session $customerSession
      * @param DateTime $date
      * @param StoriesInterfaceFactory $storiesFactory
-     * @param UploaderFactory $uploaderFactory
      */
     public function __construct(
         Context $context,
@@ -58,14 +52,12 @@ class Save extends Action
         Filesystem $filesystem,
         Session $customerSession,
         DateTime $date,
-        StoriesInterfaceFactory $storiesFactory,
-        UploaderFactory $uploaderFactory
+        StoriesInterfaceFactory $storiesFactory
     )
     {
         $this->mediaDirectory = $filesystem->getDirectoryWrite(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
         $this->storiesRepository = $storiesRepository;
         $this->customerSession = $customerSession;
-        $this->uploaderFactory = $uploaderFactory;
         $this->storiesFactory = $storiesFactory;
         $this->date = $date;
         parent::__construct($context);
@@ -80,11 +72,6 @@ class Save extends Action
             $this->messageManager->addErrorMessage(__('You are not authorized.'));
             $this->_redirect('stories');
         }
-        $uploader = null;
-        if (!empty($_FILES['story_image']['tmp_name'])) {
-            /** @var \Magento\MediaStorage\Model\File\Uploader $uploader */
-            $uploader = $this->uploaderFactory->create(['fileId' => 'story_image']);
-        }
         $params = $this->getRequest()->getParams();
         if (!empty($params)) {
             /** @var \Encomage\Stories\Model\Stories $modelStory */
@@ -92,18 +79,15 @@ class Save extends Action
             $modelStory->setCustomerId($params['customer_id']);
             $modelStory->setContent($params['content']);
             $modelStory->setCreatedAt($this->date->gmtDate());
-            if ($uploader) {
-                $target = $this->mediaDirectory->getAbsolutePath(self::MEDIA_PATH_STORIES_IMAGE);
-                $uploader->setAllowRenameFiles(true);
-                $result = $uploader->save($target);
-                $modelStory->setImagePath(self::MEDIA_PATH_STORIES_IMAGE . $result['file']);
-            }
+            $dirPath = $this->mediaDirectory->getAbsolutePath(self::MEDIA_PATH_STORIES_IMAGE);
             try {
+                $imageName = $this->saveImage($params['story_image'], $dirPath);
+                $modelStory->setImagePath(self::MEDIA_PATH_STORIES_IMAGE . $imageName);
                 $this->storiesRepository->save($modelStory);
                 $this->messageManager->addSuccessMessage(__('Your story hes been sent'));
-            }catch (\Exception $e) {
-                if (!empty($result['file'])) {
-                    @unlink($result['path'] . $result['file']);
+            } catch (\Exception $e) {
+                if (!empty($imageName)) {
+                    @unlink($dirPath . $imageName);
                 }
                 $this->messageManager->addErrorMessage(__('Has not saved'));
             }
@@ -121,5 +105,26 @@ class Save extends Action
     protected function _isCustomerLogged()
     {
         return $this->customerSession->isLoggedIn();
+    }
+
+    protected function saveImage($imageDataJson, $dirPath)
+    {
+        $data = explode(';', $imageDataJson);
+        $imageInfo = str_replace('data:', '', $data[0]);
+        $imageInfo = explode('/', $imageInfo);
+        $imageDataJson = str_replace('base64,', '', $data[1]);
+        $imageDataJson = base64_decode(str_replace(' ', '+', $imageDataJson));
+
+        $imageName = $this->_getImageName($imageInfo);
+        $dirPath .= $imageName;
+        file_put_contents($dirPath, $imageDataJson);
+        return $imageName;
+    }
+
+    protected function _getImageName($imageInfo)
+    {
+        $newDate = new \DateTime();
+        $imageName = $newDate->format('m_d_Y H_i_s') . '.' . $imageInfo[1];
+        return $imageName;
     }
 }

@@ -13,6 +13,7 @@ class YourStories extends Template
 {
     const IMAGE_MEDIA_PATH = 'pub/media/';
     const STRING_COUNT_CHARACTERS = 360;
+    
     /**
      * @var StoriesRepositoryFactory
      */
@@ -29,9 +30,13 @@ class YourStories extends Template
      * @var StoriesRepositoryInterface
      */
     private $storiesRepository;
-
+    /**
+     * @var CustomerFactory
+     */
     private $customerFactory;
-
+    /**
+     * @var CustomerResource
+     */
     private $customerResource;
 
     /**
@@ -120,7 +125,7 @@ class YourStories extends Template
     public function newDate($date = null)
     {
         $newDate = new \DateTime($date);
-        return $newDate->format('m-d-Y');
+        return $newDate->format('m/d/Y');
     }
 
     /**

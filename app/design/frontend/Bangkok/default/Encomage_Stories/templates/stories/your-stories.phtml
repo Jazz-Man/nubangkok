@@ -15,7 +15,7 @@ $_collectionSize = $_collection->getTotalCount();
                             <p class="js-short-content-<?= $story->getId(); ?> short-content"><?= $block->getResponsibleContent($story->getContent()); ?>
                                 <span data-story-id="<?= $story->getId(); ?>" class="js-show-more show-more">...<?= __('more'); ?></span>
                             </p>
-                            <p class="js-full-content-<?= $story->getId(); ?> full-content"><?= $story->getContent(); ?></p>
+                            <pre class="js-full-content-<?= $story->getId(); ?> full-content"><?= $story->getContent(); ?></pre>
                         </div>
                     </div>
                     <img class="js-story-image-<?= $story->getId(); ?>" src="<?= $block->getImage($story->getImagePath()); ?>"/>

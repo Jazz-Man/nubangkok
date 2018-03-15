@@ -45,6 +45,7 @@
       .story-item {
         display: inline-flex;
         border-bottom: 1px solid;
+        width: 100%;
         .story-content {
           h3.story-title {
             text-transform: capitalize;
@@ -60,8 +61,17 @@
               cursor: pointer;
             }
           }
-          p.full-content {
+          pre.full-content {
+            white-space: pre-line;
             display: none;
+            border: white;
+            background: white;
+            color: #55463e;
+            font-family: 'Arial_Rounded_MT', Arial_Rounded_MT;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.42857143;
+            font-size: 1.4rem;
           }
         }
         img {
@@ -77,17 +87,46 @@
 }
 
 .add-story-content {
-  .story-image {
-    input.attach-file {
-
+  .story-fieldset {
+    display: block;
+    .story-image-uploader {
+      display: block;
+      text-align: center;
+      div.attach-file {
+        width: 250px;
+        height: 250px;
+        margin: 0 auto;
+        float: inherit;
+      }
+      .image-upload-button {
+        border: 1px solid #55463e;
+        background-color: #55463e;
+        color: white;
+        border-radius: 3px;
+        padding: 8px 55px;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+    }
+    .story-content {
+      textarea.story-textarea {
+        height: 300px;
+      }
+    }
+    span.save-button {
+      float: right;
+      border: 1px solid #55463e;
+      background-color: #55463e;
+      color: white;
+      border-radius: 3px;
+      padding: 8px 55px;
+      font-weight: 600;
+      text-transform: uppercase;
+      cursor: pointer;
     }
   }
-  .story-content {
-    textarea.story-textarea {
-      height: 300px;
-    }
-  }
-  button.save-button {
-
+  .save-message-modal {
+    display: none;
   }
 }
