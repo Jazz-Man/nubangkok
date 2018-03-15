@@ -35,9 +35,21 @@ class Add extends Template
         return $this->customerSession->getCustomerId();
     }
 
+    /**
+     * @return string
+     */
     public function getCustomerName()
     {
         $customer = $this->customerSession->getCustomer();
         return $customer->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDate()
+    {
+        $newDate = new \DateTime();
+        return $newDate->format('m/d/Y');
     }
 }

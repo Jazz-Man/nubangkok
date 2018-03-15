@@ -1,25 +1,25 @@
 <?php /** @var $block Encomage\Stories\Block\Stories\YourStories\Add */ ?>
 <div class="add-story-content" data-mage-init='{"Encomage_Stories/js/add-story":{}}'>
     <form id="save-story-form" enctype="multipart/form-data" action="<?= $block->escapeUrl($block->getUrl('stories/yourstories/save')); ?>" method="post" data-hasrequired="* Required Fields">
-        <fieldset class="fieldset">
+        <fieldset class="fieldset story-fieldset">
             <input required="true" type="text" id="customer_id" name="customer_id" value="<?= $block->getCustomerId() ?>" hidden>
-            <div class="field story-image required">
-                <label for="story_image"><?= __('Attach Image'); ?>:</label>
-                <div style="width: 100px; height: 100px;" class="js-cropper"></div>
-                <input class="js-attach-file attach-file" type="file" id="story_image" name="story_image">
+            <div class="field story-image-uploader required">
+                <div class="js-cropper attach-file"></div>
+                <input hidden required="true" class="js-attach-file" type="text" id="story_image" name="story_image">
+                <span class="js-image-upload-button image-upload-button"><?= __('Upload image') ?></span>
             </div>
             <div>
                 <p><?= $block->getCustomerName(); ?></p>
+                <p><?= $block->getDate(); ?></p>
             </div>
             <div class="field story-content required">
-                <label for="content"><?= __('Story'); ?>:</label>
                 <textarea required="true"
                           class="story-textarea"
                           id="content"
                           name="content"
                           placeholder="<?= __('Start writing your story'); ?>..."></textarea>
             </div>
-            <button class="save-button" type="submit"><?= /* @escapeNotVerified */ __('Publish'); ?></button>
+            <span class="save-button"><?= /* @escapeNotVerified */ __('Publish'); ?></span>
         </fieldset>
     </form>
     <div class="save-message-modal">
