@@ -208,4 +208,8 @@
     .nice-select {
         width: 100%;
     }
+    .nice-select:after{
+        height: 5px;
+        width: 6px;
+    }
 }

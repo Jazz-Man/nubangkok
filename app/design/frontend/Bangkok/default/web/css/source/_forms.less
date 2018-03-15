@@ -203,7 +203,7 @@
       span:last-of-type {
         padding-left: 3%;
         font-size: 14px;
-        a{
+        a {
           border-bottom: 1px solid;
         }
       }
@@ -275,7 +275,7 @@
     .field.date.field-dob {
       .customer-dob {
         margin-top: 5px;
-        input{
+        input {
           padding-left: 5px;
           padding-top: 8px;
         }
@@ -701,9 +701,36 @@
     margin-top: 30px;
   }
   .form.create.account.form-create-account {
-    .create.info h2 {
-      font-size: 1.7rem;
-      margin: 0;
+    .fieldset.create.info .nice-select:after{
+      top: 15px;
+    }
+    .create.info {
+      h2 {
+        font-size: 1.7rem;
+        margin: 0;
+      }
+      input{
+        font-size: 13px;
+      }
+      .dob-block {
+        width: 52%;
+      }
+      label[for=gender] span{
+        padding-top: 16px;
+        font-size: 13px;
+      }
+      .field label[for=country] span{
+        padding-top: 16px;
+        font-size: 13px;
+      }
+      .field.gender .control .nice-select{
+        font-size: 13px;
+        padding-top: 5px;
+      }
+      .field.country .control .nice-select{
+        font-size: 13px;
+        padding-top: 6px;
+      }
     }
     .legend {
       display: none;
@@ -712,11 +739,12 @@
       width: 100%;
       padding-top: 10px;
       padding-left: 5px;
+      font-size: 13px;
       //border: none;
       //border-bottom: 2px solid;
     }
     .create.info .field label[for=country] span {
-      padding-top: 11px;
+      padding-top: 17px;
       display: inline-block;
     }
   }
