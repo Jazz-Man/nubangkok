@@ -49,11 +49,11 @@
   height: 28px;
   line-height: 0px;
   font-size: 0px;
-  background-image: url('../../../../../../../frontend/Bangkok/default/default/Encomage_Theme/images/plugins/cropper/Ok.png');
+  background-image: url('../../../images/plugins/cropper/Ok.png');
   background-repeat: no-repeat;
 }
 #preview .buttons .ok:hover{
-  background-image: url('../../../../../../../frontend/Bangkok/default/default/Encomage_Theme/images/plugins/cropper/OkGreen.png');
+  background-image: url('../../../images/plugins/cropper/OkGreen.png');
 }
 
 #preview .buttons .cancel{
@@ -64,10 +64,10 @@
   height: 28px;
   line-height: 0px;
   font-size: 0px;
-  background-image: url('../../../../../../../frontend/Bangkok/default/default/Encomage_Theme/images/plugins/cropper/Cancel.png');
+  background-image: url('../../../images/plugins/cropper/Cancel.png');
   background-repeat: no-repeat;
 }
 
 #preview .buttons .cancel:hover{
-  background-image: url('../../../../../../../frontend/Bangkok/default/default/Encomage_Theme/images/plugins/cropper/CancelRed.png');
+  background-image: url('../../../images/plugins/cropper/CancelRed.png');
 }

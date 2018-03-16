@@ -15,7 +15,7 @@
 /* Selection Border */
 .jcrop-vline,
 .jcrop-hline {
-  background: #ffffff url("../../../../../../../frontend/Bangkok/default/default/Encomage_Theme/images/plugins/cropper/Jcrop.gif");
+  background: #ffffff url("../../../images/plugins/cropper/Jcrop.gif");
   font-size: 0;
   position: absolute;
 }

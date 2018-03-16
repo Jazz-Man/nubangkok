@@ -19,6 +19,7 @@ $_collectionSize = $_collection->getTotalCount();
                         </div>
                     </div>
                     <img class="js-story-image-<?= $story->getId(); ?>" src="<?= $block->getImage($story->getImagePath()); ?>"/>
+                    <div class="js-share-story-<?= $story->getId(); ?> share-story"><?= $block->getChildHtml('your.stories.share'); ?></div>
                 </div>
             <?php endforeach; ?>
         </div>
