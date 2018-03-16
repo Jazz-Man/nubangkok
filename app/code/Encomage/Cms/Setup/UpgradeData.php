@@ -88,6 +88,10 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.1.2', '<')) {
             $this->upgradeCmsPagesContactCustomerCareFaqPoliciesProductCare();
         }
+
+        if (version_compare($context->getVersion(), '0.1.3', '<')) {
+            $this->addCmsBlockOurStories();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -832,5 +836,49 @@ EOM
         }
         return $this;
 
+    }
+
+    private function addCmsBlockOurStories()
+    {
+        $content = <<<EOD
+        <style xml="space"><!--
+@media only screen and (max-width: 772px) {
+.cms-img-container {
+width: 100%;
+}
+.cms-img-container p {
+width: 100%;
+display: block;
+}
+
+img {
+width: 100%;
+}
+--></style>
+<p>VISION</p>
+<p style="padding-bottom: 10px;">A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+<p></p>
+<p></p>
+<p style="text-align: center; padding-bottom: 20px;"><img src="{{media url="wysiwyg/_MG_0573.jpg"}}" width="80%" /></p>
+<p></p>
+<p style="font-size: 16px; padding-bottom: 10px;">What we do. (History)</p>
+<p></p>
+<p style="text-align: center;"><img src="{{media url="wysiwyg/_MG_0578.jpg"}}" width="80%" /></p>
+<div class="cms-img-container" style="width: 80%; margin: 0 auto; padding-bottom: 20px;">
+<p style="width: 49%; display: inline-block;"><img src="{{media url="wysiwyg/cms/career2.JPG"}}" /></p>
+<p style="width: 49%; display: inline-block; float: right;"><img src="{{media url="wysiwyg/cms/career3.JPG"}}" /></p>
+</div>
+<p>A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+EOD;
+        $ourStoriesBlock = [
+            'title' => 'Our stories',
+            'identifier' => 'our_stories',
+            'stores' => ['0'],
+            'is_active' => 1,
+            'content' => $content
+        ];
+
+        $block = $this->blockFactory->create(['data' => $ourStoriesBlock]);
+        $this->blockRepository->save($block);
     }
 }

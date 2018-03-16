@@ -6,11 +6,11 @@
             <div class="field story-image-uploader required">
                 <div class="js-cropper attach-file"></div>
                 <input hidden required="true" class="js-attach-file" type="text" id="story_image" name="story_image">
-                <span class="js-image-upload-button image-upload-button"><?= __('Upload image') ?></span>
+                <span class="js-image-upload-button image-upload-button"><?= __('Select picture') ?></span>
             </div>
-            <div>
-                <p><?= $block->getCustomerName(); ?></p>
-                <p><?= $block->getDate(); ?></p>
+            <div class="story-info">
+                <p class="story-customer-name"><?= $block->getCustomerName(); ?></p>
+                <p class="story-date-create"><?= $block->getDate(); ?></p>
             </div>
             <div class="field story-content required">
                 <textarea required="true"
