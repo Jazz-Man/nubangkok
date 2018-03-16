@@ -1,0 +1,131 @@
+
+// Common
+
+//
+// Grid with posts
+//______________________________________________
+.post-list-wrapper {
+  .post-list {
+    list-style-type: none;
+    padding-left: 0;
+    .post-holder {
+      width: 22%;
+      display: inline-block;
+      list-style-type: none;
+      margin-left: 2%;
+      margin-top: 30px;
+      background-color: transparent;
+      padding-bottom: 0;
+      margin-bottom: 0;
+      padding: 0;
+      .post-content{
+        .post-description{
+          .post-ftimg-hld{
+            width: 100%;
+            margin: 0;
+            float: none;
+          }
+        }
+      }
+      .post-footer {
+        .post-title {
+          margin-top: 5px;
+          a {
+            text-decoration: none;
+            text-transform: uppercase;
+            color: @color-brown;
+            font-size: @font-size-bgk;
+          }
+        }
+      }
+      &:hover{
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+//
+// Blog Post
+//_______________________________________________
+.post-view {
+  .post-holder{
+    box-shadow: none;
+    background-color: transparent;
+  }
+  .post-content {
+    .owl-dots {
+      bottom: -25px;
+    }
+    .post-description img{
+      margin: 0;
+    }
+  }
+  .post-bottom {
+    margin-top: 50px;
+    strong h2 {
+      text-transform: uppercase;
+      color: @color-brown;
+      font-size: @font-size-bgk;
+    }
+    .block.related {
+      .block-title {
+        strong {
+          font-weight: 300;
+          font-size: @font-size-bgk;
+        }
+      }
+      .products {
+        margin-top: 20px;
+        width: 94%;
+        margin: 0 auto;
+        .product-item {
+          padding-left: 0;
+          border: 2px solid @custom-gray-bg;
+          margin-left: 4%;
+          .product-item-info {
+            .product-image-photo{
+              padding-top: 4px;
+              margin: 0 auto;
+              display: block;
+              padding-bottom: 4px;
+            }
+            .product-item-details {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+    .default-shared-link{
+      width: 10%;
+      margin: 0 auto;
+      height: 100px;
+      .share-btn{
+        position: relative;
+        margin: 0 auto;
+        width: 60px;
+        span{
+          width: 60px;
+          height: 60px;
+          position: absolute;
+        }
+      }
+    }
+  }
+}
+
+//
+// Desktop
+//_________________________________________________________________________________
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m){
+  .post-view {
+    .post-bottom {
+      .block.related {
+        .products-grid .product-item{
+          width: 20%;
+        }
+      }
+    }
+  }
+}
