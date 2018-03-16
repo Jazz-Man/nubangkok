@@ -1,0 +1,44 @@
+<?php
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ *
+ * Glory to Ukraine! Glory to the heroes!
+ */
+?>
+<?php
+/**
+ * Blog post list item template
+ *
+ * @var $block \Magefan\Blog\Block\Post\AbstractPost
+ */
+?>
+<?php
+    $_post = $this->getPost();
+    $_postUrl = $_post->getPostUrl();
+    $_postName = $block->escapeHtml($_post->getTitle(), null, true);
+?>
+<li class="post-holder post-holder-<?php echo $_post->getId() ?>">
+
+
+    <div class="post-content">
+        <div class="post-description clearfix">
+            <?php if ($featuredImage = $_post->getFeaturedImage()) : ?>
+            <div class="post-ftimg-hld">
+                <a href="<?= $_postUrl ?>" title="<?= $_postName ?>">
+                    <img src="<?= $featuredImage ?>" alt="<?= $_postName ?>" />
+                </a>
+            </div>
+            <?php endif; ?>
+
+        </div>
+    </div>
+    <div class="post-footer">
+        <h2 class="post-title">
+            <a class="post-item-link"
+               href="<?= $_postUrl ?>">
+                <?= $_postName; ?>
+            </a>
+        </h2>
+    </div>
+</li>
