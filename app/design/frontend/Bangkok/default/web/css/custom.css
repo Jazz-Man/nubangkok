@@ -226,19 +226,19 @@ input:-webkit-autofill {
 }
 
 ::-webkit-input-placeholder {
-    color: #C0C0C0;
+    color: #55463e;
 }
 
 ::-moz-placeholder {
-    color: #C0C0C0;
+    color: #55463e;
 }
 
 :-ms-input-placeholder {
-    color: #C0C0C0;
+    color: #55463e;
 }
 
 :-moz-placeholder {
-    color: #C0C0C0;
+    color: #55463e;
 }
 
 /* Sign in page */
@@ -623,6 +623,13 @@ input:-webkit-autofill {
         font-size: 11px;
         width: 24px;
     }
+    .cart.table-wrapper .product-item-name + .item-options .option-color .label{
+        min-width: 35px;
+    }
+    .cart.table-wrapper .product-item-name + .item-options .option-size > div:last-of-type{
+        margin-right: 0;
+    }
+
 
     .cart.table-wrapper .item-options .options-value {
         font-size: 11px;
@@ -686,7 +693,7 @@ input:-webkit-autofill {
     padding: 4px 9px !important;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
     .mode-list {
         content: url(../images/mobile/list.svg);
         width: 22px !important;
@@ -695,5 +702,37 @@ input:-webkit-autofill {
 
     .mode-grid {
         content: url(../images/mobile/grid.svg);
+    }
+    /*Create my account page*/
+    .form.create.account.form-create-account .create.info h2{
+        font-size: 20px;
+    }
+    .form.create.account.form-create-account .create.info .field.country .control .nice-select,
+    .form.create.account.form-create-account .create.info .field.gender .control .nice-select{
+        padding-left: 25px;
+    }
+}
+@media screen and (max-width: 380px){
+    .products-related .product-item .popular-products{
+        bottom: 10px;
+        font-size: 12px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+/*mobile navigation*/
+@media screen and (max-width: 350px){
+    .nav-sections-item-content .sidebar-menu .main-categories .font-less {
+        font-size: 14px;
+    }
+    .nav-sections-item-content .sidebar-menu .main-categories{
+        padding: 5px 15px;
+    }
+    /*Create my account page*/
+    .form.create.account.form-create-account .create.info .field label[for=country]{
+        width: 20%;
+    }
+    .form.create.account.form-create-account .create.info .field.country .control{
+        width: 80%;
     }
 }
