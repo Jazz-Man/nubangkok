@@ -238,6 +238,9 @@
         left: 0;
         top: 17px;
     }
+    .cms-heading{
+        font-size: 18px;
+    }
 }
 
 /** 404 no route page  */

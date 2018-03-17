@@ -211,5 +211,6 @@
     .nice-select:after{
         height: 5px;
         width: 6px;
+        top: 16px;
     }
 }
