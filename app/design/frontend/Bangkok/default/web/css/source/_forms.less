@@ -107,9 +107,14 @@
 
   .field-error,
   div.mage-error[generated] {
-    margin-top: 7px;
+    //margin-top: 7px;
     line-height: 10px;
   }
+  //.field.required {
+  //  div.mage-error {
+  //    margin-top: 0;
+  //  }
+  //}
 
   .field-error {
     .lib-form-validation-note();
@@ -234,6 +239,7 @@
     }
     .legend {
       margin-left: 0;
+      margin-bottom: 10px;
       font-size: @font-size__s;
       font-style: italic;
     }
@@ -248,27 +254,23 @@
         display: inline-block;
         float: left;
         border-bottom: 2px solid @color-gray-light3;
-        height: 35px;
-        width: 13%;
+        height: 21px;
+        width: 15%;
         color: @color-text-input;
+        padding-top: 14px;
         span {
           padding-left: 5px;
         }
       }
-      //.control {
-      //  .nice-select {
-      //    border-top: none;
-      //    padding-left: 9px;
-      //  }
-      //}
     }
     .field.country .control {
       float: left;
-      width: 87%;
+      width: 85%;
       .nice-select {
         width: 100%;
         border-top: none;
         padding-left: 9px;
+        padding-top: 4px;
         color: @color-text-input;
       }
     }
@@ -290,7 +292,7 @@
       color: @color-text-input;
       span {
         padding-left: 5px;
-        padding-top: 11px;
+        padding-top: 15px;
         display: block;
       }
     }
@@ -300,19 +302,19 @@
       .nice-select {
         width: 100%;
         border-top: none;
-        padding-left: 9px;
+        padding-left: 17px;
+        padding-top: 4px;
         color: @color-text-input;
+        &:after{
+          top: 11px;
+        }
       }
     }
-    //.birthday-gender {
-    //  input[name=birth] {
-    //    width: 35%;
-    //  }
-    //  input[name=gender] {
-    //    width: 45%;
-    //    float: right;
-    //  }
-    //}
+    .field.country .control{
+      .nice-select:after{
+        top: 11px;
+      }
+    }
     .dob-block {
       width: 45%;
       display: inline-block;
@@ -322,52 +324,7 @@
       width: 45%;
       display: inline-block;
       float: right;
-
     }
-
-    //.checkbox-block {
-    //  width: 100%;
-    //  display: inline-block;
-    //  margin-top: 30px;
-    //  position: relative;
-    //  label[for=specials_offers] {
-    //    position: relative;
-    //    span:last-of-type {
-    //      padding-left: 3%;
-    //    }
-    //    span:first-of-type {
-    //      position: absolute;
-    //      width: 21px;
-    //      height: 21px;
-    //      left: -4px;
-    //      top: -1px;
-    //      background: @icon-choose-box no-repeat;
-    //    }
-    //  }
-    //  label[for=tos] {
-    //    position: relative;
-    //    span:last-of-type {
-    //      padding-left: 3%;
-    //    }
-    //    span:first-of-type {
-    //      position: absolute;
-    //      width: 21px;
-    //      height: 21px;
-    //      left: -4px;
-    //      top: -1px;
-    //      background: @icon-choose-box no-repeat;
-    //    }
-    //  }
-    //  input[type='checkbox'] {
-    //    opacity: 0;
-    //    &:checked + span:first-of-type {
-    //      background: @icon-choose-chd no-repeat;
-    //    }
-    //  }
-    //  .field.choice.tos {
-    //    margin-top: 25px;
-    //  }
-    //}
   }
   .account-right-block {
     width: 45%;
@@ -387,10 +344,6 @@
         padding: 8px;
         display: block;
         margin-top: 10px;
-        //width: 86%;
-        //margin: 0 auto;
-        //width: 60%;
-        //margin: 0 auto;
       }
       a:last-of-type {
         margin-top: 30px;
@@ -398,8 +351,7 @@
       }
     }
     .register-form-right-image {
-      //width: 45%;
-      //float: right;
+
     }
 
   }
@@ -422,16 +374,6 @@
   }
 }
 
-//.arrow-open-close {
-//  background: @icon-select-arrow-down;
-//  background-position: 96%;
-//  background-repeat: no-repeat;
-//  &:active, &:focus {
-//    background: @icon-select-arrow-up;
-//    background-position: 96%;
-//    background-repeat: no-repeat;
-//  }
-//}
 
 .product-options-wrapper {
   .field .control .input-text {
@@ -474,40 +416,6 @@
   //  }
   //}
 }
-
-//select option[value="176"]:hover {
-//  background-color: violet;
-//}
-//select option:checked {
-//  background-color: grey;
-//}
-//input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
-//  background-color: chartreuse;
-//}
-//._keyfocus *:focus, input:not([disabled]):focus, textarea:not([disabled]):focus, select:not([disabled]):focus{
-//  background-color: grey;
-//}
-//
-//.selectmenu-item-action {
-//  -webkit-appearance: none;
-//  -moz-appearance: none;
-//  -ms-appearance: none;
-//  appearance: none;
-//  background: transparent;
-//  border: 0;
-//  color: #41362f;
-//  display: block;
-//  font-size: 1.4rem;
-//  font-weight: 400;
-//  min-width: 100%;
-//  padding: 1rem 6rem 1rem 1.5rem;
-//  text-align: left;
-//  transition: background .2s linear;
-//  width: 5rem;
-//}
-//.selectmenu-item-action:hover, .selectmenu-item-action:focus {
-//   background: purple;
-//}
 
 ._keyfocus *:focus, input:not([disabled]):focus, textarea:not([disabled]):focus, select:not([disabled]):focus {
   box-shadow: none;
@@ -577,7 +485,7 @@
     .create.info {
       .field {
         label[for=country] {
-          width: 23%;
+          width: 14%;
         }
         label[for=gender] {
           width: 38%;
@@ -585,17 +493,19 @@
       }
       .field.country .control {
         float: left;
-        width: 77%;
-        .nice-select {
+        width: 86%;
+        div.nice-select {
           font-size: 12px;
           line-height: 29px;
+          padding-left: 10px;
         }
       }
       .field.gender .control {
         width: 62%;
-        .nice-select {
+        div.nice-select {
           font-size: 12px;
           line-height: 29px;
+          padding-left: 10px;
         }
       }
     }
@@ -639,7 +549,7 @@
     > .field {
       /*.lib-form-field-type-revert();
       margin: 0 0 @form-field__vertical-indent__desktop;*/
-      line-height: 43px;
+      //line-height: 43px;
     }
     .form-address-edit .country {
       margin-top: 30px;
@@ -740,11 +650,10 @@
       padding-top: 10px;
       padding-left: 5px;
       font-size: 13px;
-      //border: none;
-      //border-bottom: 2px solid;
+      margin-top: 5px;
     }
     .create.info .field label[for=country] span {
-      padding-top: 17px;
+      padding-top: 1px;
       display: inline-block;
     }
   }
@@ -757,23 +666,12 @@
     .sign-in-block {
       margin-top: 0;
       a.action.login {
-        //width: 57%;
-        //margin: 0 auto;
         min-width: 200px;
         position: relative;
       }
       p {
         margin-top: 1rem;
       }
-      //&:after{
-      //  content: '';
-      //  background: url(../images/mobile/icon-question.png) no-repeat;
-      //  position: absolute;
-      //  width: 16px;
-      //  height: 16px;
-      //  right: 0;
-      //  bottom: 98px;
-      //}
     }
   }
   .form-address-edit {

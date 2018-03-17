@@ -693,7 +693,7 @@ input:-webkit-autofill {
     padding: 4px 9px !important;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
     .mode-list {
         content: url(../images/mobile/list.svg);
         width: 22px !important;
@@ -703,6 +703,14 @@ input:-webkit-autofill {
     .mode-grid {
         content: url(../images/mobile/grid.svg);
     }
+    /*Create my account page*/
+    .form.create.account.form-create-account .create.info h2{
+        font-size: 20px;
+    }
+    .form.create.account.form-create-account .create.info .field.country .control .nice-select,
+    .form.create.account.form-create-account .create.info .field.gender .control .nice-select{
+        padding-left: 25px;
+    }
 }
 /*mobile navigation*/
 @media screen and (max-width: 350px){
@@ -711,5 +719,12 @@ input:-webkit-autofill {
     }
     .nav-sections-item-content .sidebar-menu .main-categories{
         padding: 5px 15px;
+    }
+    /*Create my account page*/
+    .form.create.account.form-create-account .create.info .field label[for=country]{
+        width: 20%;
+    }
+    .form.create.account.form-create-account .create.info .field.country .control{
+        width: 80%;
     }
 }
