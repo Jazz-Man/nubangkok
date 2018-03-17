@@ -87,6 +87,7 @@
             padding-top: 22px;
             border-radius: 4px;
             margin-top: 12px;
+            border: 2px solid @color-gray-light3;
           }
           .customer-show-password {
             width: 52%;
@@ -99,6 +100,7 @@
               display: block;
               float: right;
               font-size: @font-size__s;
+              padding-top: 14px;
             }
           }
         }
@@ -152,10 +154,10 @@
             font-size: @font-size-bgk;
             text-transform: uppercase;
             border-radius: 3px;
-            padding: 10px 0;
+            padding: 8px 0;
             background-color: white;
             color: black;
-            border: 2px solid @color-active-bgk;
+            border: 2px solid @color-gray-light3;
             &:hover {
               background-color: @color-gray91;
             }
@@ -174,7 +176,7 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-  .checkbox-block-mobile{
+  .checkbox-block-mobile {
     display: none;
   }
   .actions-toolbar {
@@ -217,6 +219,7 @@
           background-color: @color-brown;
           border: none;
           padding: 12px;
+          border-radius: 3px;
           &:hover {
             background-color: @color-brown/2;
           }
@@ -230,14 +233,19 @@
 // Mobile
 //
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-  .checkbox-block-desktop{
+  .columns .column.main{
+    padding-top: 5px;
+  }
+  .checkbox-block-desktop {
     display: none;
   }
-  .checkbox-block-mobile{
+  .checkbox-block-mobile {
     display: block;
     width: 145px;
     float: right;
     min-width: 145px;
+    margin-top: 15px;
+    margin-bottom: 10px;
   }
   form.form.create.account.form-create-account {
     .actions-toolbar {
@@ -249,6 +257,7 @@
           background-color: @color-brown;
           border: none;
           padding: 12px;
+          border-radius: 3px;
         }
       }
     }
@@ -256,9 +265,9 @@
   .actions-toolbar {
     > .primary {
       text-align: center;
-      width: 60%;
-      margin: 0 auto;
-      button.action.primary.add{
+      //width: 60%;
+      //margin: 0 auto;
+      button.action.primary.add {
         background-color: @color-brown;
         border: 1px solid @color-brown;
       }
@@ -274,10 +283,43 @@
     .block.block-customer-login {
       margin-bottom: 0;
       .block-content {
+        h2 {
+          font-size: 1.6rem;
+          margin-top: 0;
+          margin-bottom: 10px;
+        }
         .account-social-login {
           .block-content .social-btn {
             width: 100%;
             margin: 0;
+            .btn-social span {
+              top: 5px;
+              font-size: 1.2em;
+              width: 30px;
+            }
+            .btn-facebook {
+              padding-top: 13px;
+              padding-bottom: 5px;
+              padding-left: 30px;
+              span {
+                top: 7px;
+                font-size: 1.1em;
+                left: 0;
+              }
+            }
+            .btn-google {
+              padding-top: 11px;
+              padding-bottom: 7px;
+              padding-left: 45px;
+              .fa-google {
+                top: 1px;
+                &:after {
+                  right: -5px;
+                  font-size: 10px;
+                  top: -1px;
+                }
+              }
+            }
           }
         }
         fieldset {
@@ -285,10 +327,15 @@
             width: 100%;
             input {
               width: 100%;
+              border: 2px solid @color-gray-light3;
 
             }
             .customer-show-password {
               top: 39px;
+              span {
+                font-size: 14px;
+                padding-top: 0;
+              }
             }
           }
           .actions-toolbar {
@@ -301,18 +348,27 @@
               margin-top: 20px;
               margin-bottom: 0;
               span {
-                font-size: 14px;
+                font-size: 13px;
                 float: right;
+                border-bottom: 1px solid @color-brown-primary;
               }
             }
           }
+        }
+      }
+      .checkbox-block label.label {
+        span:first-of-type {
+          top: 1px;
+        }
+        span:last-of-type {
+          font-size: 13px;
         }
       }
     }
   }
   .block.block-new-customer {
     margin-top: 0;
-    .register-form-right-image{
+    .register-form-right-image {
       display: none;
     }
     .block-content {

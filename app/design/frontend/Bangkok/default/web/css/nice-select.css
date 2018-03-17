@@ -3,7 +3,7 @@
     -webkit-tap-highlight-color: transparent;
     /*background-color: #fff;*/
     background-color: transparent;
-    border: solid 2px #e8e8e8;
+    border: solid 2px #aeaeae;
     border-left: none;
     border-right: none;
     box-sizing: border-box;
@@ -207,5 +207,10 @@
 @media screen and (max-width: 767px) {
     .nice-select {
         width: 100%;
+    }
+    .nice-select:after{
+        height: 5px;
+        width: 6px;
+        top: 16px;
     }
 }
