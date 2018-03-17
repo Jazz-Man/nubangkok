@@ -712,6 +712,14 @@ input:-webkit-autofill {
         padding-left: 25px;
     }
 }
+@media screen and (max-width: 380px){
+    .products-related .product-item .popular-products{
+        bottom: 10px;
+        font-size: 12px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
 /*mobile navigation*/
 @media screen and (max-width: 350px){
     .nav-sections-item-content .sidebar-menu .main-categories .font-less {
