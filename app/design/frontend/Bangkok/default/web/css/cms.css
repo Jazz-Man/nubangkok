@@ -295,6 +295,102 @@
     }
 }
 
+/* Contact us*/
+.cms-contact-us .cms-title {
+    display: none;
+}
+.cms-contact-us span{
+    display: none;
+}
+
+/* Why nu */
+.cms-why-nu-page .violet-link{
+    display: none;
+}
+
+@media only screen and (max-width: 768px) {
+    .cms-contact-us .cms-title {
+        display: block;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 1.6rem;
+        border-bottom: 1px solid;
+        padding-bottom: 10px;
+        text-align: center;
+    }
+    .cms-contact-us span{
+        display: block;
+    }
+    .cms-contact-us h3:nth-child(2), .cms-contact-us p:first-of-type {
+        display: none;
+    }
+
+    .cms-contact-us .cms-subheading {
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        margin-top: 3rem;
+    }
+
+    .cms-contact-us table {
+        width: 100% !important;
+    }
+
+    .cms-contact-us .cms-top-contact table tbody tr:first-of-type td:first-of-type {
+        display: none;
+    }
+
+    .cms-contact-us .cms-top-contact {
+        margin-top: 5px;
+    }
+
+    .cms-contact-us .cms-top-contact table tbody tr td {
+        padding: 0;
+    }
+    .cms-contact-us .cms-top-contact table tbody tr td img{
+        width: 30%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .cms-contact-us table tbody tr:nth-child(7) td:first-of-type {
+        display: none;
+    }
+
+    .cms-contact-us table tbody tr:nth-child(13) td:first-of-type {
+        display: none;
+    }
+
+    .cms-contact-us table tbody tr td {
+        padding-left: 0;
+    }
+
+    .cms-bottom-contact p:first-of-type {
+        display: block;
+    }
+
+    /* Why nu */
+    .cms-why-nu-page .violet-link{
+        display: block;
+        text-align: center;
+        font-size: 18px;
+    }
+    .cms-why-nu-page .violet-link strong{
+        text-transform: uppercase;
+    }
+    .cms-why-nu-page .page-title{
+        padding-left: 10px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .cms-why-nu-page p img{
+        width: 100%;
+    }
+    .cms-why-nu-page .description {
+        padding-left: 20px;
+        padding-right: 20px;
+        text-align: justify;
+    }
+}
+
 /** 404 no route page  */
 /** ------------------------------ */
 

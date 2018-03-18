@@ -127,7 +127,7 @@
           background-size: cover;
         }
         &:hover, &:focus, &:active {
-          .top-link-myaccount{
+          .top-link-myaccount {
             background: @icon-customer-account-active;
             background-size: cover;
           }
@@ -145,7 +145,7 @@
         height: 25px;
         display: block;
         background-size: cover;
-        &:hover, &:focus, &:active{
+        &:hover, &:focus, &:active {
           background: @icon-locate-active;
           background-size: cover;
         }
@@ -522,8 +522,12 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
   //icon menu list
   .mobile-account-top-links {
+    .header.content {
+      display: none;
+    }
     .columns .column.main {
-      position: relative;
+      //position: relative;
+      display: none;
     }
     .page-wrapper {
       position: relative;
@@ -538,7 +542,7 @@
                 background-color: #ffffff;
                 height: 100%;
                 li {
-                  width: 70%;
+                  width: 80%;
                   display: inline-block;
                   float: right;
                   border-bottom: 2px solid #6d6d6d;
@@ -576,13 +580,14 @@
               }
             }
             .close-account-links-js {
-              width: 50px;
-              height: 30px;
+              width: 115px;
+              height: 36px;
               position: absolute;
               top: 4px;
               cursor: pointer;
-              right: 10px;
+              right: 0px;
               z-index: 10;
+              padding-right: 10px;
               span {
                 content: @icon-close-element-mob-vers;
                 width: 22px;
