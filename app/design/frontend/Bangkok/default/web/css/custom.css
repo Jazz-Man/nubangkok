@@ -416,9 +416,9 @@ input:-webkit-autofill {
         right: 0;
     }
 
-    .form-wishlist-items .products-grid.wishlist .product-item .box-tocart .wrapper.size .label {
-        display: none;
-    }
+    /*.form-wishlist-items .products-grid.wishlist .product-item .box-tocart .wrapper.size .label {*/
+        /*display: none;*/
+    /*}*/
 
     .form-wishlist-items .products-grid.wishlist .product-item .box-tocart .message-count-in-stock {
         margin-top: 18px;
@@ -582,6 +582,15 @@ input:-webkit-autofill {
     }
 }
 
+@media screen and (max-width: 400px){
+    .cart.table-wrapper .product-item-details .col.qty{
+        width: 120px;
+    }
+    .cart.table-wrapper .product-item-name + .item-options .field.qty{
+        min-width: 84px;
+    }
+}
+
 @media screen and (max-width: 320px) {
     .form-wishlist-items .products-grid.wishlist .product-item .box-tocart .fieldset .field.qty .label {
         margin-right: 2px;
@@ -643,6 +652,23 @@ input:-webkit-autofill {
     .cart.table-wrapper .product-item-details {
         /*line-height: 10px;*/
     }
+    .cart.table-wrapper .product-item-details .col.qty{
+        width: 100px;
+    }
+    .cart.table-wrapper .product-item-details .col.qty span{
+        font-size: 11px;
+    }
+    .cart.table-wrapper .product-item-name + .item-options .field.qty{
+        float: left;
+        min-width: 66px;
+        display: inline-block;
+    }
+    .cart.table-wrapper .product-item-details .col.qty .label{
+        width: 24px;
+    }
+    .cart.table-wrapper .col.qty .field.qty .control.qty .qty{
+        width: 24px;
+    }
 
     .cart.table-wrapper .col.subtotal span {
         font-size: 11px;
@@ -668,6 +694,12 @@ input:-webkit-autofill {
         width: 70%;
         margin-left: 30%;
     }
+
+    /*mobile logo*/
+    .panel.header .sidebar-menu.logo-item {
+        width: 50px !important;
+    }
+
 }
 
 /*shopping cart cuppon btn*/
