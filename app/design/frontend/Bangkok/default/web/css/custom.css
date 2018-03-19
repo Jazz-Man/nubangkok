@@ -645,8 +645,10 @@ input:-webkit-autofill {
     }
 
     .cart.table-wrapper .product-item-photo .product-image-container .product-image-wrapper .image-block {
-        width: 85px;
-        height: 82px;
+        /*width: 85px;*/
+        /*height: 82px;*/
+        width: 99px;
+        height: 99px;
     }
 
     .cart.table-wrapper .product-item-details {
