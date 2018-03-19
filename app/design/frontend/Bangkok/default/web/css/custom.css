@@ -703,3 +703,24 @@ input:-webkit-autofill {
         content: url(../images/mobile/grid.svg);
     }
 }
+/* our stories */
+@media screen and (max-width: 950px) {
+    .stories-content .buttons-container .add-story-button {
+        top: 40px !important;
+    }
+    .stories-content .buttons-container {
+        margin-bottom: 60px !important;
+    }
+}
+
+@media screen and (max-width: 515px) {
+    .stories-content .buttons-container .story-button {
+        padding: 8px 0;
+        margin: 0 0 20px;
+        width: 48%;
+        display: inline-block;
+    }
+    .add-story-content .story-fieldset .story-image-uploader div.attach-file {
+        padding: 0;
+    }
+}
