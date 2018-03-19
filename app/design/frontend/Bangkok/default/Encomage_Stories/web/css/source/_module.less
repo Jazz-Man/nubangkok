@@ -2,6 +2,7 @@
   .buttons-container {
     margin-bottom: 30px;
     text-align: center;
+    position: relative;
     .story-button {
       border: 1px solid #aeaeae;
       background: transparent;
@@ -22,12 +23,11 @@
     }
     .add-story-button {
       text-decoration: none;
-      float: right;
       border: 1px solid #aeaeae;
       padding: 2px 5px 2px 20px;
-      position: relative;
-      margin-left: -100px;
-      margin-right: 1.1%;
+      position: absolute;
+      right: 10px;
+      top: 0;
       &:after {
         content: '+';
         font-size: 22px;
@@ -36,7 +36,7 @@
         position: absolute;
         right: 67px;
         float: left;
-        top: -5px;
+        top: -4px;
       }
     }
   }
@@ -133,12 +133,13 @@
       }
     }
     .story-info {
-      .story-customer-name {
+      font-size: 2rem;
+      p.story-customer-name {
         display: inline-block;
         font-weight: 700;
         margin-left: 15px;
       }
-      .story-date-create {
+      p.story-date-create {
         display: inline-block;
         margin-left: 10%;
       }
@@ -163,5 +164,30 @@
   }
   .save-message-modal {
     display: none;
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .our-story-block {
+    .cms-img-container {
+      width: 100% !important;
+    }
+  }
+  .add-story-content {
+    .story-fieldset {
+      text-align: center;
+      .story-info {
+
+        .story-date-create {
+          margin-left: 20%;
+        }
+      }
+      .story-image-uploader {
+        div.attach-file {
+          padding-left: 13%;
+          padding-right: 13%;
+        }
+      }
+    }
   }
 }
