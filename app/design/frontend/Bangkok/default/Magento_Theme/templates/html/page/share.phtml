@@ -1,9 +1,9 @@
 <?php
-/** @var  \Encomage\Catalog\Block\Product\View\Shared $block */
+/** @var  \Encomage\Theme\Block\Html\Page\FacebookShareLinkInterface $block */
 
 $css = $block->getCssClass() ? $block->getCssClass() : '';
 ?>
-<div class="product-shared-link <?= $css; ?>">
+<div class="default-shared-link <?= $css; ?>">
     <a target="_blank" title="<?php echo __('Share on Facebook'); ?>"
        href="<?php echo $block->getLink(); ?>">
         <div class="share-btn">

@@ -1,0 +1,34 @@
+<?php /** @var Encomage\Stories\Block\Stories\YourStories $block */
+$_collection = $block->storiesCollection();
+$items = $_collection->getItems();
+$_collectionSize = $_collection->getTotalCount();
+?>
+
+<?php if ($_collectionSize) : ?>
+        <div class="your-stories-container">
+            <?php foreach ($items as $story) : ?>
+                <div class="story-item">
+                    <div class="story-content js-story-content">
+                        <h3 class="story-title"><strong><?= $block->getCustomerNameById($story->getCustomerId()); ?></strong></h3>
+                        <h3 class="story-create-at"><?= $block->newDate($story->getCreatedAt()); ?></h3>
+                        <div class="js-story-content">
+                            <p class="js-short-content-<?= $story->getId(); ?> short-content"><?= $block->getResponsibleContent($story->getContent()); ?>
+                                <span data-story-id="<?= $story->getId(); ?>" class="js-show-more show-more">...<?= __('more'); ?></span>
+                            </p>
+                            <pre class="js-full-content-<?= $story->getId(); ?> full-content"><?= $story->getContent(); ?></pre>
+                        </div>
+                    </div>
+                    <img class="js-story-image-<?= $story->getId(); ?>" src="<?= $block->getImage($story->getImagePath()); ?>"/>
+                    <div class="js-share-story-<?= $story->getId(); ?> share-story"><?= $block->getChildHtml('your.stories.share'); ?></div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <script type="text/x-magento-init">
+    {
+        ".js-story-content": {
+            "Encomage_Stories/js/content-toggle": {}
+        }
+    }
+    </script>
+<?php endif; ?>
+
