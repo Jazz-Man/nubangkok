@@ -84,6 +84,11 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.1.2', '<')) {
             $this->upgradeCmsPagesContactCustomerCareFaqPoliciesProductCare();
         }
+
+        if (version_compare($context->getVersion(), '0.1.3', '<')) {
+            $this->upgradeCmsPages();
+            $this->upgradeLeftSidebarCmsBlock();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -798,6 +803,180 @@ EOM
             $pageObject->addData($pageData);
             $this->pageRepository->save($pageObject);
         }
+        return $this;
+    }
+
+    private function upgradeCmsPages()
+    {
+        $pages = [
+            'home' => <<<EOD
+<p><img src="{{media url="wysiwyg/01Homepage_1.jpg"}}" width="1200" height="auto" /></p>
+<p><img src="{{media url="wysiwyg/02image-Ads1.jpg"}}" width="1200" height="auto" /></p>
+<p><img src="{{media url="wysiwyg/03image-Ads2.jpg"}}" width="1200" height="auto" /></p>
+<p><img src="{{media url="wysiwyg/04image-Ads3_1.jpg"}}" width="1200" height="auto" /></p>
+EOD
+            ,
+            'why-nu' => <<<EOD
+<div class="cms-why-nu-page"><a class="violet-link" href="http://bangkok.loc/why-nu/">WHY <strong>nu</strong>?</a>
+<p class="page-title">OUR SHOES</p>
+<table style="margin-bottom: 40px;" border="0">
+<tbody>
+<tr>
+<td style="display: inline-block; padding-right: 25px;"><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL2dyaXAtaWNvbi5wbmcifX0,/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="35" /></td>
+<td style="display: inline-block; padding-right: 50px; padding-top: 15px;">Grip</td>
+<td style="display: inline-block;"></td>
+<td style="display: inline-block; padding-right: 25px;"><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL2dyaXAtaWNvbi5wbmcifX0,/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="35" /></td>
+<td style="display: inline-block; padding-top: 15px;">Grip</td>
+</tr>
+<tr>
+<td style="display: inline-block; padding-right: 25px;"><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL2dyaXAtaWNvbi5wbmcifX0,/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="35" /></td>
+<td style="display: inline-block; padding-right: 50px; padding-top: 15px;">Grip</td>
+<td style="display: inline-block;"></td>
+<td style="display: inline-block; padding-right: 25px;"><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL2dyaXAtaWNvbi5wbmcifX0,/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="35" /></td>
+<td style="display: inline-block; padding-top: 15px;">Grip</td>
+</tr>
+<tr>
+<td style="display: inline-block; padding-right: 25px;"><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL2dyaXAtaWNvbi5wbmcifX0,/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="35" /></td>
+<td style="display: inline-block; padding-right: 50px; padding-top: 15px;">Grip</td>
+<td style="display: inline-block;"></td>
+<td style="display: inline-block; padding-right: 25px;"><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL2dyaXAtaWNvbi5wbmcifX0,/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="35" /></td>
+<td style="display: inline-block; padding-top: 15px;">Grip</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL3doeS1udTEuanBnIn19/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="1500" height="999" /></p>
+<p class="description">In the interests of hygiene we do not accept returns of, or refunds on earrings unless it is defective or a wrong item sent.</p>
+<p><img style="margin-top: 40px;" src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL3doeS1udTIuanBnIn19/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="1500" height="999" /></p>
+<p class="description">In the interests of hygiene we do not accept returns of, or refunds on earrings unless it is defective or a wrong item sent.</p>
+<p></p>
+<p style="margin: 20px 0;">WE GUARANTEE</p>
+<p></p>
+<div style="margin-bottom: 10px;">
+<div class="numberCircle" style="display: inline-block;">1</div>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">In the interests of hygiene we do not accept returns of.</p>
+</div>
+<div style="margin-bottom: 10px;">
+<div class="numberCircle" style="display: inline-block;">2</div>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
+</div>
+<div style="margin-bottom: 10px;">
+<div class="numberCircle" style="display: inline-block;">3</div>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
+</div>
+</div>
+
+
+EOD
+            ,
+            'where-to-buy' => <<<EOD
+<div class="cms-where-to-buy-page">
+<div class="desktop-change-position-left">
+<h1 class="cms-heading" style="margin-bottom: 30px;">WHERE TO BUY</h1>
+<div class="accordion-container" style="border-top: 1px solid #55463e;">
+<div class="accordion active js-revert-image-on-click" data-gmp-btn="false" data-target="#myImage" data-src="{{media url="wysiwyg/cms/outlet-mini-shops.jpg"}}">Outlet mini shops</div>
+</div>
+<div class="accordion-container">
+<div class="accordion js-revert-image-on-click" data-gmp-btn="true" data-target="#myImage" data-src="{{media url="wysiwyg/cms/bangkok-map.png"}}">Thailand Malls</div>
+</div>
+<div class="accordion-container">
+<div class="accordion js-revert-image-on-click" data-gmp-btn="false" data-target="#myImage" data-src="{{media url="wysiwyg/cms/nu-roadshow3.jpg"}}">Roadshows &amp; Events</div>
+</div>
+</div>
+<div class="desktop-change-position-right"><img id="myImage" src="{{media url="wysiwyg/cms/outlet-mini-shops.jpg"}}" alt="" />
+<p class="js-show-gm-btn" style="text-align: center; display: none;"><a class="cms-button" href="https://goo.gl/gk4eqW" target="_blank">Open with google map</a></p>
+</div>
+</div>
+EOD
+            ,
+            'product-care' => <<<EOD
+<div class="cms-product-care">
+<h1 class="cms-heading">Product Care</h1>
+<hr class="cms-heading-line" />
+<div class="accordion-container">
+<p class="accordion js-accordion">Shoes <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Bags<img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+</div>
+EOD
+            ,
+            'customer-care' => <<<EOD
+<div class="cms-customer-care">
+<h1 class="cms-heading">Customer Care</h1>
+<hr class="cms-heading-line" />
+<div class="accordion-container">
+<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url="wysiwyg/cms/arrow-right.svg"}}" width="9" height="11" /></a></p>
+</div>
+EOD
+        ];
+
+        foreach ($pages as $pageId => $content) {
+            $page = $this->pageRepository->getById($pageId);
+            $page->setContent($content);
+            $this->pageRepository->save($page);
+        }
+        return $this;
+    }
+
+    private function upgradeLeftSidebarCmsBlock()
+    {
+        $content = <<<EOD
+<div style="margin-bottom: 1rem;"><a class="violet-link" style="margin-bottom: 1rem;" href="{{store url="why-nu"}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div style="margin-bottom: 1rem;"><a href="#">INSPIRATION</a></div>
+<div style="margin-bottom: 1rem;"><a href="#">nu STORIES (yours and ours)</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='customer-care'}}">CUSTOMER CARE</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='product-care'}}">PRODUCT CARE</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='contact-us'}}">CONTACT US</a></div>
+<div><a href="{{store url='careers/listing/index'}}">CAREER</a></div>
+<div class="social-links" style="margin-bottom: 1rem;"><a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/facebook.png}}" alt="facebook-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/instagram.png}}" alt="instagram-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/youtube.png}}" alt="youtube-icon" /> </a></div>
+<div>
+<p>#nuBangkok</p>
+</div>
+<div><a href="{{store url='policies'}}">POLICIES</a></div>
+EOD;
+
+        $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
         return $this;
     }
 }
