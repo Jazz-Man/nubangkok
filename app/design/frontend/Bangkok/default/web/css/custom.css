@@ -914,7 +914,7 @@ input:-webkit-autofill {
 
     .cart-summary .fieldset.coupon .actions-toolbar {
         width: 30%;
-        margin-left: 14px;
+        /*margin-left: 14px;*/
     }
 
     .fieldset.coupon.applied .actions-toolbar .primary .action.cancel.primary {
