@@ -66,17 +66,18 @@ define([
         } else {
             var img = $('.cms-index-index.cms-home #maincontent .columns p img, .cms-coming-soon-category p img');
             $.each(img, function (index, item) {
-                var $src = $(item).attr('src');
+                item = $(item);
+                var $src = item.attr('src');
                 $("<img/>", {
                     load: function () {
-                        $(item).hide();
+                        item.hide();
                         var h = this.height, px = -320;
                         if (!$('body').hasClass('cms-home')) {
                             px = 0;
                         } else {
                             $('#maincontent').css({padding: 0})
                         }
-                        $(item).parent().append($('<div class="image-mobile-crop" ' +
+                        item.after($('<div class="image-mobile-crop" ' +
                             'style="' +
                             'background-image: url(' + $src + ');' +
                             'width: 100%;' +
