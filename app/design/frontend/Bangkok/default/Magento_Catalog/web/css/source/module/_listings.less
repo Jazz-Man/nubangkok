@@ -400,6 +400,10 @@
 //  Mobile
 //  _____________________________________________
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .catalog-category-view .page-wrapper .page-main .breadcrumbs {
+    margin-top: 2px !important;
+  }
+
   .mob-share-btn .arrow-up {
     display: block;
   }
@@ -594,6 +598,11 @@
 //
 //  Desktop
 //  _____________________________________________
+
+.catalog-category-view .page-wrapper .page-main .breadcrumbs {
+  padding-top: 9px;
+  padding-bottom: 0;
+}
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
   .page-products {
