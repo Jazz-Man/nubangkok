@@ -73,6 +73,8 @@ define([
                         var h = this.height, px = -320;
                         if (!$('body').hasClass('cms-home')) {
                             px = 0;
+                        } else {
+                            $('#maincontent').css({padding: 0})
                         }
                         $(item).parent().append($('<div class="image-mobile-crop" ' +
                             'style="' +
@@ -92,6 +94,7 @@ define([
 
     function desktopImageCrop() {
         $('.cms-index-index.cms-home #maincontent .columns img').show();
+        $('#maincontent').css({'padding-right': '20px', 'padding-left': '20px'});
         $('.image-mobile-crop').hide();
     }
 
