@@ -155,7 +155,7 @@
         }
         &-photo {
           width: 135px;
-          margin-bottom: @indent__s;
+          margin-bottom: 0;
           display: inline-block;
           float: left;
           margin-right: 20px;
@@ -233,6 +233,7 @@
               .label {
                 float: left;
                 margin-right: 10px;
+                margin-top: 6px;
               }
               .control {
                 .qty-enhance {
@@ -246,7 +247,7 @@
                   cursor: pointer;
                   span {
                     position: absolute;
-                    top: -14px;
+                    top: -2px;
                     left: 5px;
                   }
                 }
@@ -261,7 +262,7 @@
                   cursor: pointer;
                   span {
                     position: absolute;
-                    top: -14px;
+                    top: -4px;
                     left: 7px;
                   }
                 }
@@ -280,6 +281,9 @@
         }
       }
     }
+    .product-item-info{
+
+    }
   }
   .form-wishlist-items {
     .title {
@@ -292,10 +296,14 @@
       .product-items {
         li:first-of-type {
           border-top: 1px solid @color-active-bgk;
-          padding-top: 15px;
+          padding-top: 0;
         }
       }
     }
+  }
+  .form-wishlist-items .products-grid.wishlist .product-items li{
+    margin-left: 0;
+    margin-bottom: 0;
   }
 }
 
@@ -306,6 +314,7 @@
   .products-grid.wishlist {
     span.product-note-info {
       font-size: 12px;
+      top: 15px;
     }
     span.popular-products {
       font-size: 12px;
@@ -428,6 +437,8 @@
         width: 100%;
         &-info {
           width: auto;
+          padding-top: 5px;
+          padding-bottom: 5px;
         }
       }
     }
@@ -576,7 +587,8 @@
           .wrapper.size {
             width: 45%;
             float: right;
-            margin-top: 14px;
+            //margin-top: 14px;
+            margin-top: 8px;
             .label {
               width: 30%;
               float: left;
@@ -610,7 +622,8 @@
           }
           .price-box {
             float: right;
-            margin-top: 15px;
+            //margin-top: 15px;
+            margin-top: 11px;
           }
 
         }

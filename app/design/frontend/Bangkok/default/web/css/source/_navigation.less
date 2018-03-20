@@ -66,6 +66,7 @@
     .social-links {
       height: 25px;
       margin-top: 15px;
+      margin-bottom: 10px;
       .social-acc-pic {
         display: inline-block;
         width: 18.5%;
@@ -127,7 +128,7 @@
           }
           &.active {
             > a {
-              font-weight: 700;
+              font-weight: 500;
               position: relative;
               &:before {
                 content: '';
@@ -144,7 +145,7 @@
             //list-style-type: disc;
           }
           &:first-of-type a {
-            text-transform: none;
+            //text-transform: none;
           }
         }
         ul {
@@ -424,7 +425,6 @@
       background: transparent;
       border-bottom: 0;
     }
-
     .nav-sections-item-switch {
       &:hover {
         text-decoration: none;
@@ -455,7 +455,7 @@
         min-height: 46px;
         padding-top: 10px;
         padding-bottom: 0;
-        border-bottom: 5px solid @color-white;
+        border-bottom: 3px solid @color-white;
         a {
           padding: 0;
           font-size: 20px;
@@ -510,7 +510,7 @@
     }
     .navigation .block-search {
       position: relative;
-      margin-bottom: 5px;
+      margin-bottom: 3px;
       .block-content {
         margin-bottom: 0;
         height: 68px;
@@ -598,6 +598,13 @@
   //
   // Navigation Left Bar
   //  ---------------------------------------------
+  .nav-open {
+    .nav-sections {
+      .navigation {
+
+      }
+    }
+  }
   .navigation {
     .mobile-nav-switch {
       background-color: @mobile-nav-items-background-color;
@@ -752,7 +759,7 @@
 
     .social-links {
       height: 25px;
-      margin-top: 5px;
+      margin-top: 3px;
       .social-acc-pic {
         display: inline-block;
         width: 14.5%;
@@ -771,13 +778,29 @@
       }
     }
     .general-subcategories {
-      div {
-        background-color: @mobile-nav-items-background-color;
-        margin-bottom: 5px;
+      .violet-link{
         font-weight: 700;
       }
+      div {
+        background-color: @mobile-nav-items-background-color;
+        margin-bottom: 3px;
+        //font-weight: 700;
+
+        a {
+          margin-bottom: 0;
+          //font-weight: 600;
+        }
+      }
       .social-links {
-        padding: 7px 15px;
+        //padding: 7px 15px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        margin-bottom: 0;
+      }
+      div:nth-child(9) p {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 15px;
       }
     }
     .left-menu-big-margin {
@@ -843,7 +866,7 @@
     ul {
       padding-left: 0 !important;
       li a {
-        font-weight: 700;
+        //font-weight: 700;
         margin-bottom: 0 !important;
         border-bottom: 2px solid #eae4dc;
       }

@@ -51,6 +51,7 @@
     font-size: 18px;
     border-radius: 4px;
     text-decoration: none;
+    text-align: center;
   }
 
   //  Product Lists
@@ -276,7 +277,7 @@
       .clearance-att {
         color: red;
         text-transform: uppercase;
-        padding-left: 20px;
+        padding-left: 5px;
       }
     }
   }
@@ -409,7 +410,7 @@
       .products-related {
         margin: 25px 0;
        .products.list{
-         margin-top: 25px;
+         margin-top: 10px;
        }
         .product-item {
           .product-note-info {
@@ -470,7 +471,8 @@
     }
   }
   .related .product-items .product-item {
-    width: 100%/3;
+    //width: 100%/3;
+    width: 32.333333%;
   }
   .products-related {
     .product-note-info {
@@ -492,6 +494,11 @@
 }
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__s) {
+  .products.wrapper.grid.products-grid.products-related{
+    .product-item{
+      width: 24.333333%;
+    }
+  }
   .product {
     &-item {
       .products-grid & {
