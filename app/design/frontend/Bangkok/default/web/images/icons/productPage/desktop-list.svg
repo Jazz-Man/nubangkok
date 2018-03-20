@@ -5,10 +5,18 @@
 	 width="14.813px" height="15.25px" viewBox="0 0 14.813 15.25" enable-background="new 0 0 14.813 15.25" xml:space="preserve">
 <g id="Layer_1">
 	<g>
-		
-			<rect x="3.156" y="3.373" fill="none" stroke="#A79C94" stroke-width="0.5669" stroke-miterlimit="10" width="3.468" height="8.504"/>
-		
-			<rect x="8.082" y="3.373" fill="none" stroke="#A79C94" stroke-width="0.5669" stroke-miterlimit="10" width="3.574" height="8.504"/>
+		<g>
+			
+				<rect x="3.154" y="3.077" fill="none" stroke="#A79C94" stroke-width="0.5669" stroke-miterlimit="10" width="3.596" height="3.618"/>
+			
+				<rect x="3.154" y="7.962" fill="none" stroke="#A79C94" stroke-width="0.5669" stroke-miterlimit="10" width="3.596" height="3.619"/>
+		</g>
+		<g>
+			
+				<rect x="8.063" y="3.077" fill="none" stroke="#A79C94" stroke-width="0.5669" stroke-miterlimit="10" width="3.596" height="3.618"/>
+			
+				<rect x="8.063" y="7.962" fill="none" stroke="#A79C94" stroke-width="0.5669" stroke-miterlimit="10" width="3.596" height="3.619"/>
+		</g>
 	</g>
 </g>
 <g id="Layer_2">
