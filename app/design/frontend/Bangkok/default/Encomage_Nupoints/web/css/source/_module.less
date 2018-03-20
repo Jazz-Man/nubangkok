@@ -3,15 +3,23 @@
   h2 {
     text-align: center;
     font-weight: 500;
+    line-height: 0.5;
+    font-size: 2rem;
   }
-
+  p.points-balance-title, p.points-balance {
+    margin-left: 40px;
+    font-size: 18px;
+  }
+  p.points-balance-title {
+    margin-bottom: 0;
+  }
   .points-balance {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     span {
       display: inline-block;
       margin: 0 40px;
       text-align: center;
-      font-size: 18px;
+      font-size: 21px;
     }
   }
 
@@ -41,6 +49,7 @@
       .left-points-part {
         padding: 5%;
         > p {
+          padding-bottom: 16px;
           font-size: 13px;
           text-align: left;
           span {
@@ -107,6 +116,7 @@
         > p {
           font-size: 13px;
           text-align: left;
+          padding-bottom: 16px;
           span {
             display: block;
           }
@@ -143,6 +153,8 @@
   .bottom-points-block {
     width: 100%;
     display: inline-block;
+    font-size: 15px;
+    margin-bottom: 2px;
     span {
       color: red;
     }
@@ -204,8 +216,15 @@
     float: right;
   }
 }
-
+//
+// Mobile
+//___________________________
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m){
+  .nupoints-index-index {
+    .page-main {
+      padding-top: 15px;
+    }
+  }
   .points-container {
     h2{
       display: none;
@@ -229,10 +248,14 @@
         .float-left-content, .float-right-content {
           width: 246px;
         }
+        .left-points-part, .right-points-part > p {
+          margin-top: 20px;
+          padding-bottom: 0;
+        }
       }
     }
     .bottom-points-block {
-      margin-top: 20px;
+      margin-top: 0;
     }
   }
   .totals.redeem.excl {
