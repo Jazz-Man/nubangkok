@@ -817,36 +817,36 @@ EOM
 EOD
             ,
             'why-nu' => <<<EOD
-<div class="cms-why-nu-page"><a class="violet-link" href="http://bangkok.loc/why-nu/">WHY <strong>nu</strong>?</a>
+<div class="cms-why-nu-page">
 <p class="page-title">OUR SHOES</p>
 <table style="margin-bottom: 40px;" border="0">
 <tbody>
 <tr>
-<td style="display: inline-block; padding-right: 25px;"><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL2dyaXAtaWNvbi5wbmcifX0,/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="35" /></td>
+<td style="display: inline-block; padding-right: 25px;"><img src="{{media url='wysiwyg/cms/grip-icon.png'}}" width="35" /></td>
 <td style="display: inline-block; padding-right: 50px; padding-top: 15px;">Grip</td>
 <td style="display: inline-block;"></td>
-<td style="display: inline-block; padding-right: 25px;"><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL2dyaXAtaWNvbi5wbmcifX0,/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="35" /></td>
+<td style="display: inline-block; padding-right: 25px;"><img src="{{media url='wysiwyg/cms/grip-icon.png'}}" width="35" /></td>
 <td style="display: inline-block; padding-top: 15px;">Grip</td>
 </tr>
 <tr>
-<td style="display: inline-block; padding-right: 25px;"><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL2dyaXAtaWNvbi5wbmcifX0,/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="35" /></td>
+<td style="display: inline-block; padding-right: 25px;"><img src="{{media url='wysiwyg/cms/grip-icon.png'}}" width="35" /></td>
 <td style="display: inline-block; padding-right: 50px; padding-top: 15px;">Grip</td>
 <td style="display: inline-block;"></td>
-<td style="display: inline-block; padding-right: 25px;"><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL2dyaXAtaWNvbi5wbmcifX0,/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="35" /></td>
+<td style="display: inline-block; padding-right: 25px;"><img src="{{media url='wysiwyg/cms/grip-icon.png'}}" width="35" /></td>
 <td style="display: inline-block; padding-top: 15px;">Grip</td>
 </tr>
 <tr>
-<td style="display: inline-block; padding-right: 25px;"><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL2dyaXAtaWNvbi5wbmcifX0,/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="35" /></td>
+<td style="display: inline-block; padding-right: 25px;"><img src="{{media url='wysiwyg/cms/grip-icon.png'}}" width="35" /></td>
 <td style="display: inline-block; padding-right: 50px; padding-top: 15px;">Grip</td>
 <td style="display: inline-block;"></td>
-<td style="display: inline-block; padding-right: 25px;"><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL2dyaXAtaWNvbi5wbmcifX0,/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="35" /></td>
+<td style="display: inline-block; padding-right: 25px;"><img src="{{media url='wysiwyg/cms/grip-icon.png'}}" width="35" /></td>
 <td style="display: inline-block; padding-top: 15px;">Grip</td>
 </tr>
 </tbody>
 </table>
-<p><img src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL3doeS1udTEuanBnIn19/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="1500" height="999" /></p>
+<p><img src="{{media url='wysiwyg/cms/why-nu1.jpg'}}" width="1500" height="999" /></p>
 <p class="description">In the interests of hygiene we do not accept returns of, or refunds on earrings unless it is defective or a wrong item sent.</p>
-<p><img style="margin-top: 40px;" src="http://bangkok.loc/admin/cms/wysiwyg/directive/___directive/e3ttZWRpYSB1cmw9Ind5c2l3eWcvY21zL3doeS1udTIuanBnIn19/key/4465f8a90c97e33e7cbecfbdda391c73f4a5e08093b4ce1a492dda5fba55f862/" width="1500" height="999" /></p>
+<p><img style="margin-top: 40px;" src="{{media url='wysiwyg/cms/why-nu2.jpg'}}" width="1500" height="999" /></p>
 <p class="description">In the interests of hygiene we do not accept returns of, or refunds on earrings unless it is defective or a wrong item sent.</p>
 <p></p>
 <p style="margin: 20px 0;">WE GUARANTEE</p>
@@ -915,36 +915,36 @@ EOD
 <h1 class="cms-heading">Customer Care</h1>
 <hr class="cms-heading-line" />
 <div class="accordion-container">
-<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
-<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url="wysiwyg/cms/arrow-right.svg"}}" width="9" height="11" /></a></p>
+<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url='wysiwyg/cms/arrow-right.png'}}" width="9" height="11" /></a></p>
 </div>
 EOD
         ];
