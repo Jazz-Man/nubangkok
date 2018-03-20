@@ -82,7 +82,7 @@ class UpgradeData implements UpgradeDataInterface
         }
 
         if (version_compare($context->getVersion(), '0.1.2', '<')) {
-            $this->upgradeCmsPagesContactCustomerCareFaqPoliciesProductCare();
+            //$this->upgradeCmsPagesContactCustomerCareFaqPoliciesProductCare();
         }
 
         if (version_compare($context->getVersion(), '0.1.3', '<')) {
