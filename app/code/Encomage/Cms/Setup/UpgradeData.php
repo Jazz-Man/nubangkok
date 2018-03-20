@@ -89,6 +89,11 @@ class UpgradeData implements UpgradeDataInterface
             $this->upgradeCmsPages();
             $this->upgradeLeftSidebarCmsBlock();
         }
+
+        if (version_compare($context->getVersion(), '0.1.4', '<')) {
+            $this->upgradeComingSoon014();
+            $this->upgradeLeftMenu014();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -974,6 +979,44 @@ EOD
 <div><a href="{{store url='policies'}}">POLICIES</a></div>
 EOD;
 
+        $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+        return $this;
+    }
+
+    private function upgradeComingSoon014()
+    {
+        $content = <<<EOD
+<div class="cms-coming-soon-category">
+<p><strong><span style="margin-bottom: 2rem;"><img src="{{media url="wysiwyg/05Women-clothes.jpg"}}" width="1000" height="288" />OUR WOMEN CLOTHING IS COMING LATER!</span></strong></p>
+<p></p>
+<p style="margin-bottom: 2rem;">Stay tuned!</p>
+<p style="margin-bottom: 2rem;">If you would like to be notified when it launches please enter your email below!</p>
+</div>
+EOD;
+        $block = $this->blockRepository->getById('coming_coon_category_women_clothing');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+        return $this;
+    }
+
+    private function upgradeLeftMenu014()
+    {
+        $content = <<<EOD
+<div class="nav-left-links"><a class="violet-link" href="{{store url="why-nu"}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div class="nav-left-links"><a href="#">INSPIRATION</a></div>
+<div class="nav-left-links"><a href="#">nu STORIES (yours and ours)</a></div>
+<div class="nav-left-links"><a href="{{store url='customer-care'}}">CUSTOMER CARE</a></div>
+<div class="nav-left-links"><a href="{{store url='product-care'}}">PRODUCT CARE</a></div>
+<div class="nav-left-links"><a href="{{store url='contact-us'}}">CONTACT US</a></div>
+<div class="nav-left-links"><a href="{{store url='careers/listing/index'}}">CAREER</a></div>
+<div class="social-links"><a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/facebook.png}}" alt="facebook-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/instagram.png}}" alt="instagram-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/youtube.png}}" alt="youtube-icon" /> </a></div>
+<div class="nav-left-links">
+<p style="margin-top: 3px; margin-bottom: 0;">#nuBangkok</p>
+</div>
+<div class="nav-left-links" style="margin-bottom: 0;"><a href="{{store url='policies'}}">POLICIES</a></div>
+EOD;
         $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
         $block->setContent($content);
         $this->blockRepository->save($block);
