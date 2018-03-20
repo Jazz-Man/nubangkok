@@ -742,6 +742,9 @@ input:-webkit-autofill {
 }
 
 @media screen and (max-width: 768px) {
+    .columns .column.main .breadcrumbs {
+        margin-top: 20px;
+    }
     .mode-list {
         content: url(../images/mobile/list.svg);
         width: 41px !important;
