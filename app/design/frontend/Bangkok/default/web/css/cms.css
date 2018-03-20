@@ -47,7 +47,7 @@
 
 .cms-button-small:hover,
 .cms-button-small:active,
-.cms-button-small:focus{
+.cms-button-small:focus {
     border: 1px solid #372820;;
     background-color: #372820;
     color: white;
@@ -68,7 +68,7 @@
 /** Coming soon category */
 /** ------------------------------ */
 
-.cms-coming-soon-category form input{
+.cms-coming-soon-category form input {
     width: 300px;
 }
 
@@ -85,7 +85,6 @@
     vertical-align: top;
 }
 
-
 /** Where to buy */
 /** ------------------------------ */
 
@@ -94,6 +93,7 @@
     padding: 10px;
     border-bottom: 1px solid #55463e;
 }
+
 .cms-where-to-buy-page .accordion {
     cursor: pointer;
     padding: 5px;
@@ -105,15 +105,18 @@
     text-transform: none;
     margin-bottom: 0;
 }
+
 .cms-where-to-buy-page .active:hover, .cms-where-to-buy-page .accordion:hover {
     color: #8f8278;
     text-decoration: underline;
 }
+
 .cms-where-to-buy-page .accordion.active {
     font-weight: bold;
     color: #55463e;
     text-decoration: none;
 }
+
 .cms-where-to-buy-page .accordion.active:before {
     content: '';
     width: 7px;
@@ -121,11 +124,11 @@
     border-radius: 50%;
     background-color: #55463e;
     position: absolute;
-    left: 0px;
+    left: 0;
     top: 21px;
 }
+
 .cms-where-to-buy-page .cms-button {
-    border-radius: 0;
     border: none;
     background-color: #55463e;
     color: white;
@@ -133,6 +136,8 @@
     padding: 10px 60px;
     margin-top: 20px;
     font-weight: 600;
+    display: inline-block;
+    border-radius: 4px;
 }
 
 .cms-where-to-buy-page .cms-button:hover, .cms-where-to-buy-page .cms-button:active, .cms-where-to-buy-page .focus {
@@ -142,11 +147,12 @@
     text-decoration: none;
 }
 
-@media only screen and (min-width:768px) {
+@media only screen and (min-width: 768px) {
     .cms-where-to-buy-page .desktop-change-position-left {
         display: inline-block;
         width: 34%;
     }
+
     .cms-where-to-buy-page .desktop-change-position-right {
         display: inline-block;
         width: 64%;
@@ -154,7 +160,7 @@
     }
 }
 
-@media only screen and (max-width:768px) {
+@media only screen and (max-width: 768px) {
     .cms-where-to-buy-page img {
         margin-top: 50px;
     }
@@ -166,6 +172,7 @@
 .accordion-container {
     position: relative;
 }
+
 .accordion {
     margin-bottom: 20px;
     text-transform: uppercase;
@@ -215,28 +222,172 @@
 
 .accordion-container .panel {
     padding-right: 150px;
-    padding-left:  61px;
+    padding-left: 61px;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
 }
 
-@media only screen and (max-width:768px) {
+@media only screen and (max-width: 768px) {
     .accordion-container .panel {
         padding-right: 15px;
         padding-left: 15px;
-        padding-top: 15px;
     }
+
+    .cms-customer-care > p.accordion {
+        margin-left: 30px;
+    }
+
     .accordion {
-        padding-left: 15px;
-        border-bottom: 1px solid #a3a3a3;
-        padding-bottom: 10px;
         margin-bottom: 0;
-        padding-top: 10px;
+        padding: 7px 0;
     }
+
     .accordion.active:before {
-        left: 0;
-        top: 17px;
+
+        left: -15px;
+        top: 11px;
+    }
+
+    .accordion.active {
+        border: none;
+    }
+
+    .accordion.active .panel {
+        border-bottom: 1px solid #a3a3a3;
+    }
+
+    .accordion-container .accordion img {
+        display: none;
+    }
+
+    .accordion-container:first-of-type {
+        border-top: 1px solid #a3a3a3;
+        margin-top: 20px;
+    }
+
+    .accordion-container {
+        margin-left: 30px;
+        border-bottom: 1px solid #a3a3a3;
+    }
+
+    .cms-heading {
+        font-size: 18px;
+    }
+
+    .cms-heading-line {
+        display: none;
+    }
+
+    .cms-where-to-buy-page .cms-heading {
+        margin-bottom: 10px !important;
+    }
+
+    .cms-where-to-buy-page .accordion-container {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 20px;
+    }
+
+    .cms-where-to-buy-page .accordion.active:before {
+        left: 10px;
+        top: 16px;
+    }
+}
+
+/* Contact us*/
+.cms-contact-us .cms-title {
+    display: none;
+}
+.cms-contact-us span{
+    display: none;
+}
+
+/* Why nu */
+.cms-why-nu-page .violet-link{
+    display: none;
+}
+
+@media only screen and (max-width: 768px) {
+    .cms-contact-us .cms-title {
+        display: block;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 1.6rem;
+        border-bottom: 1px solid;
+        padding-bottom: 10px;
+        text-align: center;
+    }
+    .cms-contact-us span{
+        display: block;
+    }
+    .cms-contact-us h3:nth-child(2), .cms-contact-us p:first-of-type {
+        display: none;
+    }
+
+    .cms-contact-us .cms-subheading {
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        margin-top: 3rem;
+    }
+
+    .cms-contact-us table {
+        width: 100% !important;
+    }
+
+    .cms-contact-us .cms-top-contact table tbody tr:first-of-type td:first-of-type {
+        display: none;
+    }
+
+    .cms-contact-us .cms-top-contact {
+        margin-top: 5px;
+    }
+
+    .cms-contact-us .cms-top-contact table tbody tr td {
+        padding: 0;
+    }
+    .cms-contact-us .cms-top-contact table tbody tr td img{
+        width: 30%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .cms-contact-us table tbody tr:nth-child(7) td:first-of-type {
+        display: none;
+    }
+
+    .cms-contact-us table tbody tr:nth-child(13) td:first-of-type {
+        display: none;
+    }
+
+    .cms-contact-us table tbody tr td {
+        padding-left: 0;
+    }
+
+    .cms-bottom-contact p:first-of-type {
+        display: block;
+    }
+
+    /* Why nu */
+    .cms-why-nu-page .violet-link{
+        display: block;
+        text-align: center;
+        font-size: 18px;
+    }
+    .cms-why-nu-page .violet-link strong{
+        text-transform: uppercase;
+    }
+    .cms-why-nu-page .page-title{
+        padding-left: 10px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .cms-why-nu-page p img{
+        width: 100%;
+    }
+    .cms-why-nu-page .description {
+        padding-left: 20px;
+        padding-right: 20px;
+        text-align: justify;
     }
 }
 
@@ -246,6 +397,7 @@
 .cms-404 .violet-link {
     color: #6e2f91;;
 }
+
 .cms-404 .violet-link:hover, .cms-404 .violet-link:active, .cms-404 .violet-link:focus {
     color: #582574;
 }
