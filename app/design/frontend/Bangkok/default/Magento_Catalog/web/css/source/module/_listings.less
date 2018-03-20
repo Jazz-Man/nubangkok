@@ -428,6 +428,19 @@
       }
     }
   }
+  .products-grid {
+    .product-item {
+      width: 100%;
+      .price-box {
+        margin: 0 0 @indent__m;
+      }
+    }
+  }
+  .products-list {
+    .product-item {
+      width: 46%;
+    }
+  }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
@@ -436,7 +449,7 @@
       table-layout: fixed;
 
       &-photo {
-        padding: 0 @indent__s @indent__s 0;
+        //padding: 0 @indent__s @indent__s 0;
         width: 30%;
         .product-note-info {
           top: 20px;
