@@ -1,24 +1,25 @@
 <div class="mobile-footer">
     <div class="social-links">
+        <span>Follow us</span>
         <div class="links-container">
         <a class="social-acc-pic" href="https://www.facebook.com" target="_blank"> <img
-                src="http://bangkok.loc/pub/static/version1521454206/frontend/Bangkok/default/en_US/images/facebook.png"
-                alt="facebook-icon"> </a>
+                src="<?php echo $block->getViewFileUrl("images/icons/homePage/Facebook.svg"); ?>"
+                alt="facebook"> </a>
         <a class="social-acc-pic" href="https://www.instagram.com" target="_blank"> <img
-                src="http://bangkok.loc/pub/static/version1521454206/frontend/Bangkok/default/en_US/images/instagram.png"
-                alt="instagram-icon"> </a>
+                src="<?php echo $block->getViewFileUrl("images/icons/homePage/Instagram.svg"); ?>"
+                alt="instagram"> </a>
         <a class="social-acc-pic" href="https://www.youtube.com" target="_blank"> <img
-                src="http://bangkok.loc/pub/static/version1521454206/frontend/Bangkok/default/en_US/images/youtube.png"
-                alt="youtube-icon"> </a>
+                src="<?php echo $block->getViewFileUrl("images/icons/homePage/youtube.svg"); ?>"
+                alt="youtube"> </a>
         <a class="social-acc-pic"> <img
-                src="http://bangkok.loc/pub/static/version1521454206/frontend/Bangkok/default/en_US/images/empty-link.png"
-                alt="youtube-icon"></a>
+                src="<?php echo $block->getViewFileUrl("images/empty-link.png"); ?>"
+                alt="add-link"></a>
         </div>
     </div>
     <div class="general-subcategories">
-        <div style="margin-bottom: 1rem;"><a href="#">WHERE TO BUY</a></div>
-        <div style="margin-bottom: 1rem;"><a href="http://bangkok.loc/customer-care/">CUSTOMER CARE</a></div>
-        <div style="margin-bottom: 1rem;"><a href="http://bangkok.loc/contact-us/">CONTACT US</a></div>
-        <div><a href="http://bangkok.loc/policies/">POLICIES</a></div>
+        <div><a href="<?= $block->getUrl('where-to-buy'); ?>"><?= __('WHERE TO BUY')?></a></div>
+        <div><a href="<?= $block->getUrl('customer-care'); ?>"><?= __('CUSTOMER CARE')?></a></div>
+        <div><a href="<?= $block->getUrl('contact-us'); ?>"><?= __('CONTACT US')?></a></div>
+        <div><a href="<?= $block->getUrl('policies'); ?>"><?= __('POLICIES')?></a></div>
     </div>
 </div>
