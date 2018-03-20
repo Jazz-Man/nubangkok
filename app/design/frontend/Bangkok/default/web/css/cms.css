@@ -3,6 +3,11 @@
 /** Heading */
 /** ------------------------------ */
 
+/*left nav menu*/
+.nav-left-links {
+    margin-bottom: 10px;
+}
+
 .cms-heading {
     font-size: 30px;
     text-transform: uppercase;
@@ -158,11 +163,35 @@
         width: 64%;
         float: right;
     }
+
+}
+
+.cms-coming-soon-category strong span{
+    font-size: 22px;
 }
 
 @media only screen and (max-width: 768px) {
     .cms-where-to-buy-page img {
         margin-top: 50px;
+    }
+
+    .cms-coming-soon-category form input {
+        border: 1px solid #aeaeae;
+        border-radius: 4px;
+        width: 100%;
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-top: 10px;
+        padding-left: 5px;
+        height: 35px;
+        font-size: 12px;
+    }
+    .cms-coming-soon-category .cms-button-small{
+        width: 100%;
+        margin-left: 0;
+    }
+    .cms-coming-soon-category strong span{
+        font-size: 16px;
     }
 }
 
@@ -287,6 +316,7 @@
         padding-top: 5px;
         padding-bottom: 5px;
         padding-left: 20px;
+        margin-left: 0;
     }
 
     .cms-where-to-buy-page .accordion.active:before {
@@ -299,9 +329,9 @@
 .cms-contact-us .cms-title {
     display: none;
 }
-.cms-contact-us span{
-    display: none;
-}
+/*.cms-contact-us span:nth-child(1){*/
+    /*display: none;*/
+/*}*/
 
 /* Why nu */
 .cms-why-nu-page .violet-link{
