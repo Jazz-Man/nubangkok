@@ -723,19 +723,41 @@ input:-webkit-autofill {
 /*new icons*/
 .mode-list {
     content: url(../images/icons/productPage/desktop-list.svg);
-    width: 28px !important;
+    width: 31px !important;
     padding: 4px 9px !important;
+}
+.mode-list.active {
+    content: url(../images/icons/productPage/desktop-list-active.png);
+}
+
+.mode-grid {
+    content: url(../images/icons/productPage/desktop-grid.svg);
+    width: 30px;
+}
+
+.mode-grid.active {
+    content: url(../images/icons/productPage/desktop-grid-active.png);
+    padding: 4px 0;
+    width: 31px;
 }
 
 @media screen and (max-width: 768px) {
     .mode-list {
         content: url(../images/mobile/list.svg);
-        width: 22px !important;
-        padding: 7px 9px !important;
+        width: 41px !important;
+        padding: 0 7px !important;
+    }
+    .mode-list.active {
+        content: url(../images/mobile/mobile-list-active.png);
     }
 
     .mode-grid {
         content: url(../images/mobile/grid.svg);
+        width: 31px;
+    }
+    .mode-grid.active {
+        content: url(../images/mobile/mobile-grid-active.png);
+        padding: 8px 0;
     }
     /*Create my account page*/
     .form.create.account.form-create-account .create.info h2{
