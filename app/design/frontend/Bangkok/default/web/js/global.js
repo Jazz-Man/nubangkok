@@ -1,14 +1,16 @@
 define([
     'jquery',
+    'matchMedia',
     'domReady!',
     'niceselect',
     'sticky'
-], function ($) {
+], function ($, mediaCheck) {
     "use strict";
 
     //variables
     //---------------------------------------------
-    var $pageHeader = $('header.page-header'), $sidebarAdditionalEl = $('.sidebar.sidebar-additional');
+    var $pageHeader = $('header.page-header'), $sidebarAdditionalEl = $('.sidebar.sidebar-additional'),
+        $mediaBreakpoint = '(max-width: 768px)';
 
     //init selections
     //---------------------------------------------
@@ -52,5 +54,65 @@ define([
         } else {
             target.css('max-height', target.prop('scrollHeight') + 'px');
         }
+    });
+
+
+    /* start: trash with images */
+
+    function mobileImageCrop() {
+        var e = $('.image-mobile-crop');
+        if (e.length) {
+            e.show();
+        } else {
+            var img = $('.cms-index-index.cms-home #maincontent .columns p img, .cms-coming-soon-category p img');
+            $.each(img, function (index, item) {
+                var $src = $(item).attr('src');
+                $("<img/>", {
+                    load: function () {
+                        $(item).hide();
+                        var h = this.height, px = -320;
+                        if (!$('body').hasClass('cms-home')) {
+                            px = 0;
+                        }
+                        $(item).parent().append($('<div class="image-mobile-crop" ' +
+                            'style="' +
+                            'background-image: url(' + $src + ');' +
+                            'width: 100%;' +
+                            'min-height: ' + h + 'px;' +
+                            'background-position-x: ' + px + 'px;' +
+                            'background-size: 1000px;' +
+                            'background-repeat: no-repeat;"></div>'));
+                    },
+                    src: $src
+                });
+
+            });
+        }
+    }
+
+    function desktopImageCrop() {
+        $('.cms-index-index.cms-home #maincontent .columns img').show();
+        $('.image-mobile-crop').hide();
+    }
+
+    /* end: trash with images */
+
+    /* Responsive  */
+
+    mediaCheck({
+        media: $mediaBreakpoint,
+        entry: $.proxy(function () {
+
+            // mobile
+            // ----------------------------------------------------------------
+
+            mobileImageCrop();
+        }, this),
+        exit: $.proxy(function () {
+
+            // desktop
+            // ----------------------------------------------------------------
+            desktopImageCrop();
+        }, this)
     });
 });
