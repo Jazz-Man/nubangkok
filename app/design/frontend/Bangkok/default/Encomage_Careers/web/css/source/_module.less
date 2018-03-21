@@ -54,9 +54,10 @@
       form {
         fieldset {
           margin: 0 0 10px;
-          input, textarea {
+          input {
             border: 1px solid #8a837f;
             color: #8f8278;
+            border-radius: 2px;
             ::placeholder {
               color: #8f8278;
             }
@@ -66,44 +67,54 @@
               display: inline-block;
               width: 46%;
               .input-text {
-                background-color: #e6e6e6;
+                opacity: 0.6;
                 font-size: 13px;
                 font-family: Arial, sans-serif;
+                margin-bottom: 10px;
                 margin-left: 10px;
+                border-radius: 2px;
               }
             }
           }
           .field.personal-data {
             width: 50%;
+            margin-bottom: 15px;
             label {
-              line-height: 20px;
+              line-height: 25px;
             }
             .name-container {
-              margin-bottom: 35px;
+              margin-bottom: 50px;
+              opacity: 0.5;
               .customer-first-name {
-                width: 48%;
+                width: 46%;
                 float: left;
               }
               .customer-last-name {
-                width: 50%;
+                width: 46%;
                 float: right;
               }
+            }
+            .input-text.customer-email {
+              opacity: 0.5;
             }
           }
           .field.files {
             width: 50%;
+            line-height: 25px;
             label {
               display: block;
             }
             .files-container {
+              opacity: 0.5;
               .file-upload {
                 height: 2em;
                 line-height: 2em;
                 position: relative;
                 overflow: hidden;
-                width: 49%;
+                width: 46.5%;
                 display: inline-block;
                 border: 1px solid #8a837f;
+                border-radius: 2px;
                 input[type=file] {
                   position: absolute;
                   left: 0;
@@ -119,14 +130,14 @@
                 }
                 span {
                   position: relative;
+                  font-size: 15px;
                   span {
                     padding-left: 20px;
                     color: #8f8278;
-                    opacity: 0.5;
                     &:before {
                       content: url('../Encomage_Careers/images/icon-attach.png');
                       position: absolute;
-                      top: -2px;
+                      top: -5px;
                       left: 5px;
                     }
                   }
@@ -137,8 +148,9 @@
                 background: transparent;
                 height: 2em;
                 line-height: 2em;
-                font-size: 12px;
+                font-size: 14px;
                 position: relative;
+
               }
             }
           }
@@ -204,12 +216,13 @@
             }
           }
           .message-heading {
-            margin: 50px 0 10px 0;
+            margin: 35px 0 10px 0;
             text-transform: uppercase;
             font-size: 16px;
           }
           textarea {
             resize: none;
+            border-radius: 2px;
           }
         }
         .actions-toolbar {
@@ -232,7 +245,9 @@
       }
     }
   }
-
+//
+// Mobile
+//______________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
   .careers-view-content {
@@ -249,9 +264,15 @@
           }
           .field.personal-data {
             width: 100%;
+            .name-container {
+              margin-bottom: 37px;
+            }
           }
           .field.files {
             width: 100%;
+          }
+          .message-heading {
+            margin: 25px 0 5px 0;
           }
         }
         .actions-toolbar {

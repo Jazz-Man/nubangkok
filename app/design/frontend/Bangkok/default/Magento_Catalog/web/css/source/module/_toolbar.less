@@ -39,6 +39,7 @@
         padding: 0 @indent__s;
         text-align: center;
         float: right;
+        margin-right: 50px;
         &:extend(.abs-add-clearfix all);
 
         .pages {
@@ -108,10 +109,10 @@
 
 .modes-mode {
     .lib-css(color, @text__color__muted);
-    float: right;
+    float: inherit;
     font-weight: @font-weight__regular;
     line-height: 1;
-    padding: 7px 10px;
+    padding: 4px 0;
     text-align: center;
 
     &:not(.active) {
@@ -185,5 +186,18 @@
         .products.wrapper ~ .toolbar & {
             display: block;
         }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .modes-mode {
+        padding: 6px 0;
+    }
+    .toolbar-products {
+        margin-right: 0;
     }
 }
