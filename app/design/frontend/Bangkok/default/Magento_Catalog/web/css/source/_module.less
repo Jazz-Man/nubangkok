@@ -38,10 +38,10 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-  .products.wrapper{
+  .products.wrapper {
     display: inline-block;
   }
-  .products.wrapper.grid.products-grid.products-related{
+  .products.wrapper.grid.products-grid.products-related {
     display: unset;
   }
   //
@@ -290,8 +290,8 @@
     .price-box {
       margin-top: 0;
       margin-bottom: 15px;
-      .special-price{
-        
+      .special-price {
+
       }
     }
     .product-info-stock-sku {
@@ -595,7 +595,7 @@
   }
 
   .product-info-main .box-tocart {
-    .action.towishlist{
+    .action.towishlist {
       padding: 10px 0;
       font-size: 16px;
       margin-bottom: 0;
@@ -619,7 +619,7 @@
   }
   .product-info-main {
     margin-top: 10px;
-    .page-title-wrapper .page-title{
+    .page-title-wrapper .page-title {
       padding-top: 0;
       margin-top: 15px;
       font-size: 16px;
@@ -653,7 +653,7 @@
   }
   .block.related {
     margin-bottom: 0;
-    .block-title.title{
+    .block-title.title {
       margin-bottom: 20px;
     }
     .action.select {
@@ -710,6 +710,23 @@
             right: -2px;
           }
         }
+      }
+    }
+  }
+  //
+  // Category page
+  //
+  .products-list .product-item {
+    .product-item-info {
+      div.product-item-details {
+        max-width: 166px;
+      }
+    }
+  }
+  .products-grid .product-item {
+    .product-item-info {
+      .product-item-details {
+        max-width: 335px;
       }
     }
   }
@@ -880,7 +897,30 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
+  //
+  // Category page
+  //
+  .products-list .product-item {
+    .product-item-info {
+      .product-item-details {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 380px;
+      }
+    }
+  }
+  .products-grid .product-item {
+    .product-item-info {
+      .product-item-details {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 455px;
 
+      }
+    }
+  }
   //
   //  Compare Products Page
   //  ---------------------------------------------

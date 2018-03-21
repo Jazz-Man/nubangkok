@@ -56,8 +56,7 @@
 
   //  Product Lists
   .products {
-    //margin: @indent__l 0;
-    //margin: 50px 0;
+
   }
   .mob-share-btn .arrow-up {
     display: none;
@@ -88,7 +87,6 @@
         -moz-hyphens: auto;
         -ms-hyphens: auto;
         -webkit-hyphens: auto;
-        //display: block;
         hyphens: auto;
         margin: @indent__xs 0;
         word-wrap: break-word;
@@ -96,42 +94,11 @@
 
       &-info {
         max-width: 100%;
-        //width: 152px;
         position: relative;
 
         .page-products & {
-          //width: 240px;
+
         }
-        //.product-note-info {
-        //  position: absolute;
-        //  font-size: 22px;
-        //  color: red;
-        //  text-transform: uppercase;
-        //  top: 69px;
-        //  left: 4%;
-        //}
-        //.product-note-status {
-        //  position: absolute;
-        //  color: #0A0A0A;
-        //  bottom: 82px;
-        //  right: 2%;
-        //  transform: rotate(-44deg);
-        //  text-transform: uppercase;
-        //  font-size: 22px;
-        //  font-weight: 700;
-        //}
-        //.popular-products {
-        //  position: absolute;
-        //  bottom: 100px;
-        //  right: 4%;
-        //  padding: 5px 20px;
-        //  background-color: gainsboro;
-        //  opacity: 0.5;
-        //  text-transform: uppercase;
-        //  font-size: 18px;
-        //  border-radius: 4px;
-        //  text-decoration: none;
-        //}
       }
 
       &-actions {
@@ -334,42 +301,30 @@
   .products-list {
     .product {
       &-item {
-        //display: table;
-        //width: 100%;
-        width: 22%;
+        width: 100% / 4;
         display: inline-block;
         float: left;
-        margin-left: 3%;
 
         &-info {
-          //display: table-row;
+
         }
 
         &-photo {
-          //display: table-cell;
-          //padding: 0 @indent__l @indent__l 0;
           vertical-align: top;
           width: 50%;
           position: relative;
           .product-note-info {
             top: 10px;
-            //left: 4%;
           }
           .product-note-status {
             bottom: 25px;
-            //right: 4%;
           }
           .popular-products {
             bottom: 40px;
-            //right: 3%;
-            //opacity: 0.5;
           }
         }
 
         &-details {
-          //display: table-cell;
-          //vertical-align: top;
-          //margin-top: 50px;
         }
       }
     }
@@ -443,7 +398,8 @@
   }
   .products-list {
     .product-item {
-      width: 46%;
+      //width: 46%;
+      width: 100% / 2;
     }
   }
 }
