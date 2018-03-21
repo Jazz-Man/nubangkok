@@ -227,7 +227,7 @@
     }
 
     .sidebar-additional {
-      margin-top: 40px;
+      //margin-top: 40px;
     }
 
     .table-wrapper {
@@ -400,6 +400,7 @@
         position: absolute;
         font-size: 14px;
         padding-left: 8px;
+        top: 11px;
       }
       .control {
         .nice-select {
@@ -547,6 +548,9 @@
     }
   }
 }
+//
+// Mobile
+//__________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
 
@@ -570,12 +574,16 @@
   .account {
     .column.main {
       margin: 0;
+      padding-bottom: 25px;
+      h2 {
+        font-size: 1.7rem;
+      }
       > a {
-        border-top: 2px solid @color-gray68;
-        //border-bottom: 2px solid @color-gray68;
+        border-top: 1px solid @color-gray68;
         margin-bottom: 0;
+        padding: 7px 0;
         &:last-of-type {
-          border-bottom: 2px solid @color-gray68;
+          border-bottom: 1px solid @color-gray68;
         }
       }
       .open-account-details{
@@ -584,10 +592,11 @@
       }
       .block-content .box-information .box-content table {
         width: 100%;
+        margin-top: 10px !important;
       }
     }
     .page.messages {
-      margin-bottom: @indent__xl;
+      //margin-bottom: @indent__xl;
     }
 
     .toolbar {
