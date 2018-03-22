@@ -59,19 +59,6 @@
     </listingToolbar>
 
     <columns name="spinner_columns">
-        <settings>
-            <childDefaults>
-                <param name="fieldAction" xsi:type="array">
-                    <item name="provider" xsi:type="string">stories_listing.stories_listing.spinner_columns.actions</item>
-                    <item name="target" xsi:type="string">applyAction</item>
-                    <item name="params" xsi:type="array">
-                        <item name="0" xsi:type="string">edit</item>
-                        <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
-                    </item>
-                </param>
-            </childDefaults>
-        </settings>
-
         <selectionsColumn name="ids">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -88,23 +75,70 @@
                     <item name="filter" xsi:type="string">textRange</item>
                     <item name="sorting" xsi:type="string">asc</item>
                     <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
                 </item>
             </argument>
         </column>
 
-        <column name="content">
+        <column name="image_path" class="Encomage\Stories\Ui\Component\Listing\Column\Thumbnail">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/thumbnail</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="altField" xsi:type="string">image_path</item>
+                    <item name="has_preview" xsi:type="string">1</item>
+                    <item name="label" xsi:type="string" translate="true">Image</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="customer_id" class="Encomage\Stories\Ui\Component\Listing\Column\Customer">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="editor" xsi:type="array">
                         <item name="editorType" xsi:type="string">text</item>
-                        <item name="validation" xsi:type="array">
-                            <item name="required-entry" xsi:type="boolean">true</item>
-                        </item>
                     </item>
-                    <item name="label" xsi:type="string" translate="true">Title</item>
+                    <item name="label" xsi:type="string" translate="true">Customer</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
                 </item>
             </argument>
         </column>
+
+        <column name="is_approved">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Encomage\Careers\Model\Careers\Source\Status</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Is approved</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Created Date</item>
+                </item>
+            </argument>
+        </column>
+
+        <actionsColumn name="actions" class="Encomage\Stories\Ui\Component\Listing\Column\StoryActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                    <item name="sortOrder" xsi:type="number">40</item>
+                </item>
+            </argument>
+        </actionsColumn>
     </columns>
 </listing>
