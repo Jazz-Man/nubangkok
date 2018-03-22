@@ -21,16 +21,13 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
     <?php if ($_modes && count($_modes) > 1): ?>
     <?php foreach ($block->getModes() as $_code => $_label): ?>
         <?php if ($block->isModeActive($_code)): ?>
-                <strong title="<?= /* @escapeNotVerified */ $_label ?>"
-                        class="modes-mode active mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>"
+                <strong class="modes-mode active mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>"
                         data-value="<?= /* @escapeNotVerified */ strtolower($_code) ?>">
                     <span><?= /* @escapeNotVerified */ $_label ?></span>
 <!--                    <span><img src="--><?php //echo $this->getViewFileUrl('images/grid-icon-mobile.png'); ?><!--" alt=''></span>-->
                 </strong>
         <?php else: ?>
-                <a class="modes-mode mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>"
-                   title="<?= /* @escapeNotVerified */ $_label ?>"
-                   href="#"
+                <a class="modes-mode mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>" href="#"
                    data-role="mode-switcher"
                    data-value="<?= /* @escapeNotVerified */ strtolower($_code) ?>"
                    id="mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>"
