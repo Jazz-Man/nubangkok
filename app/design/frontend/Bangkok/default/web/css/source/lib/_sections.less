@@ -26,7 +26,7 @@
 
     > .item.content {
         .lib-clearfix();
-        .lib-css(margin-top, @_tab-control-height__base);
+        //.lib-css(margin-top, @_tab-control-height__base);
         box-sizing: border-box;
         float: right;
         margin-left: -100%;
@@ -132,8 +132,10 @@
 
     > .item.content {
         .lib-css(background, @_tab-content-background-color);
-        margin-top: @_tab-content-margin-top;
-        padding: @_tab-content-padding-top @_tab-content-padding-right @_tab-content-padding-bottom @_tab-content-padding-left;
+        //margin-top: @_tab-content-margin-top;
+        //padding: @_tab-content-padding-top @_tab-content-padding-right @_tab-content-padding-bottom @_tab-content-padding-left;
+        margin-top: 10px;
+        padding-left: 0;
 
         //._lib-tab-content-border(
         //    @_tab-content-border-top-status: @_tab-content-border-top-status,
@@ -276,7 +278,7 @@
         &.active > .switch:hover {
             .lib-css(background, @_accordion-control-background-color-active);
             .lib-css(padding-bottom, @_accordion-control-padding-bottom);
-            margin-top: 30px;
+            //margin-top: 30px;
             text-transform: uppercase;
         }
     }
@@ -285,6 +287,7 @@
         .lib-css(background, @_accordion-content-background-color);
         //.lib-css(border, @_accordion-content-border);
         .lib-css(margin, @_accordion-content-margin);
-        .lib-css(padding, @_accordion-content-padding);
+        //.lib-css(padding, @_accordion-content-padding);
+        padding: 20px 20px 0 20px;
     }
 }
