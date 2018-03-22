@@ -1,7 +1,7 @@
 <?php
 /** @var $block \Magento\Framework\View\Element\Template */
 ?>
-<h2 class="mobile-my-account-title">My account</h2>
+<h2 class="mobile-my-account-title"><?= __('My account');?></h2>
 <a href="<?= $block->escapeUrl($block->getUrl('sales/order/history', ['_secure' => true])); ?>"><?php echo __('My orders') ?></a>
 <a href="<?= $block->escapeUrl($block->getUrl('nupoints', ['_secure' => true])); ?>"><?php echo __('My UPPoints') ?></a>
 <a href="<?= $block->escapeUrl($block->getUrl('wishlist', ['_secure' => true])); ?>"><?php echo __('My wishlist') ?></a>
@@ -11,9 +11,9 @@
 "active": false,
 "multipleCollapsible": true}}'>
     <span href="#" data-role="collapsible" class="open-account-details">
-        <?php echo __('My account details (EDIT)') ?>
+        <?= __('My account details (EDIT)'); ?>
     </span>
-    <div data-role="content">
+    <div class="customer-account-dashboard" data-role="content">
         <?= $block->getChildHtml('customer_account_dashboard_information') ?>
         <?= $block->getChildHtml('customer_account_dashboard_addresses') ?>
     </div>

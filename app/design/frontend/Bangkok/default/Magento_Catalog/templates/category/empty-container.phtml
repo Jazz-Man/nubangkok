@@ -12,7 +12,7 @@ $categoryViewBlock = $block->getLayout()->getBlock('category.products');
             <form action="<?= $helper->getNotifyMeEmptyCategoryUrl($categoryViewBlock->getCurrentCategory()); ?>"
                   method="post">
                 <input class="input-notify-email"
-                       name="notify-email" type="email" placeholder="<?= __('Email'); ?>"/>
+                       name="notify-email" type="email" required="required" placeholder="<?= __('Email'); ?>"/>
                 <button type="submit" class="cms-button-small" type="button"><?= __('Please notify me'); ?></button>
             </form>
         </div>
