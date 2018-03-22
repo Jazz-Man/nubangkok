@@ -788,11 +788,35 @@ input:-webkit-autofill {
     .products-grid .product-item .product-item-info .product-item-details {
         max-width: 290px;
     }
+
 }
 
 /*shopping cart cuppon btn*/
 .fieldset.coupon.applied .action.cancel.primary {
     margin-left: 20px;
+    background-color: transparent;
+}
+@media screen and (max-width: 375px){
+    .cart-summary .cart-totals .data.table.totals .totals.redeem.excl div.amount{
+        width: 59px;
+
+    }
+}
+@media screen and (max-width: 320px){
+   .cart-container .totals.redeem.excl .input {
+       width: 70px;
+   }
+    .cart-container .totals.redeem.excl .btn button{
+        font-size: 12px !important;
+        padding: 2px 0;
+    }
+    .cart-summary .fieldset.coupon .actions-toolbar .primary button span{
+        font-size: 12px;
+    }
+    .cart-summary .cart-totals .data.table.totals .totals.redeem.excl div.amount{
+        width: 50px;
+        overflow: hidden;
+    }
 }
 
 /*wishlist red btn*/

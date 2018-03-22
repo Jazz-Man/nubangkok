@@ -875,6 +875,10 @@
         font-size: 14px;
         div.amount {
           padding-top: 7px;
+          overflow: hidden;
+          width: 58px;
+          padding-right: 0;
+          display: inline-grid;
         }
         .btn {
           button {
@@ -908,6 +912,11 @@
   .cart-container .action.update {
     padding: 5px 8px;
     font-size: 13px;
+  }
+  .totals.redeem.excl{
+    .input{
+      width: 28%;
+    }
   }
 }
 
@@ -995,8 +1004,11 @@
   }
   .totals.redeem.excl {
     .btn {
-      width: 70px;
+      //width: 70px;
+      //margin-left: 0;
+      width: 65px;
       margin-left: 0;
+      margin-right: 5px;
       button {
         padding: 10px 0;
       }
