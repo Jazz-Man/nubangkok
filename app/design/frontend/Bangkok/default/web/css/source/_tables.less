@@ -9,7 +9,7 @@
 
 & when (@media-common = true) {
   .table-wrapper {
-    h2{
+    h2 {
       text-align: center;
       text-transform: uppercase;
       font-size: 16px;
@@ -49,11 +49,11 @@
     }
   }
 
- .orders-history {
+  .orders-history {
     .table-order-items.history {
       tbody {
         tr:nth-child(odd) {
-          background-color: @color-active-bgk;
+          background-color: @order-background-grey;
         }
       }
     }
@@ -77,11 +77,15 @@
 
             tbody > tr {
               > td:first-child {
-                padding-top: @indent__base;
+                //padding-top: @indent__base;
               }
 
               > td:last-child {
-                padding-bottom: @indent__base;
+                //padding-bottom: @indent__base;
+              }
+              > td:before {
+                color: inherit !important;
+                font-weight: inherit !important;
               }
             }
 
@@ -162,36 +166,48 @@
     }
   }
 
-  .orders-history{
-    h2{
+  .orders-history {
+    h2 {
       display: none;
     }
-    .table{
-      tbody{
-        tr{
+    .table.table-order-items.history {
+      tbody {
+        tr {
           position: relative;
-          td{
+          background-color: @order-background-grey;
+          margin-bottom: 80px;
+          &:last-of-type {
+            margin-bottom: 0;
+          }
+          td {
             width: 45%;
             margin-left: 15px;
             &::before {
               display: none !important;
             }
           }
-          td:nth-child(3){
+          td.col.id {
+            color: @order-text-color;
+          }
+          td.col.points {
+            color: @order-text-color;
+          }
+
+          td:nth-child(3) {
             position: absolute;
             right: 0;
-            top: 14px;
-            &::before{
+            top: -1px;
+            &::before {
               display: block !important;
               width: auto;
               float: left;
             }
           }
-          td:nth-child(4){
+          td:nth-child(4) {
             position: absolute;
             right: 0;
-            top: 44px;
-            &:before{
+            top: 29px;
+            &:before {
               display: block !important;
               width: auto;
               float: left;

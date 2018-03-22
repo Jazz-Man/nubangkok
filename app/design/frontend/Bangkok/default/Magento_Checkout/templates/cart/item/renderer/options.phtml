@@ -1,0 +1,34 @@
+<?php
+/** @var \Encomage\Checkout\Block\Cart\Item\Renderer\Options $block */
+
+$rendererBlock = $block->getRendererBlock();
+$options = $block->getOptions();
+$qtyHtml = $block->getQtyHtml();
+?>
+
+<div class="item-options">
+    <?php foreach ($options as $_option) : ?>
+        <?php $attributeCode = $_option['att_code']; ?>
+        <div class="option-<?= $attributeCode ?>">
+            <?php if ($attributeCode == 'size'): ?>
+                <div class="qty-block"><?= $qtyHtml; ?></div>
+            <?php endif; ?>
+            <div>
+                <?php $_formatedOptionValue = $rendererBlock->getFormatedOptionValue($_option); ?>
+                <div class="label"><?= $block->escapeHtml($_option['label']) ?></div>
+                <div class="options-value">
+                    <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                        <?= /* @escapeNotVerified */
+                        $_formatedOptionValue['full_view'] ?>
+                    <?php else: ?>
+                        <?= /* @escapeNotVerified */
+                        $_formatedOptionValue['value'] ?>
+                    <?php endif; ?>
+                    <?php if ($attributeCode == 'color'): ?>
+                        <div class="rgb" style="background:<?= $block->getColorRgbCode($_option['option_value'])?>;"></div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>

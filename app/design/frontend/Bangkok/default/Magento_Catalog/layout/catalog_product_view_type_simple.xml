@@ -4,5 +4,6 @@
     <body>
         <move element="view.addto.wishlist" destination="product.info.addtocart" after="-"/>
         <move element="message.box" destination="product.info.form.content" before="-"/>
+        <move element="catalog_product_qty" destination="product.info.form.content" before="-"/>
     </body>
 </page>
