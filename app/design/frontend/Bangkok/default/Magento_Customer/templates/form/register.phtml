@@ -43,28 +43,20 @@
             </div>
         </div>
 
+        <?= $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Name')
+            ->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
+
+        <?php $_telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Telephone') ?>
+        <?php if ($_telephone->isEnabled()): ?>
+            <?= $_telephone->setTelephone($block->getFormData()->getTelephone())->toHtml() ?>
+        <?php endif ?>
+
         <div class="field line-id">
             <div class="control">
                 <input type="text" name="line_id" title="" id="line_id"
                        class="input-text" placeholder="<?= __('Line id:'); ?>">
             </div>
         </div>
-
-        <?= $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Name')
-            ->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
-
-        <div class="field country required">
-            <label for="country" class="label"><span>
-            <?= __('Country') ?></span></label>
-            <div class="control">
-                <?= $block->getCountryHtmlSelect() ?>
-            </div>
-        </div>
-
-        <?php $_telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Telephone') ?>
-        <?php if ($_telephone->isEnabled()): ?>
-            <?= $_telephone->setTelephone($block->getFormData()->getTelephone())->toHtml() ?>
-        <?php endif ?>
 
         <div class="dob-block">
             <?php $_dob = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Dob') ?>
@@ -78,6 +70,15 @@
                 <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
             <?php endif ?>
         </div>
+
+        <div class="field country required">
+            <label for="country" class="label"><span>
+            <?= __('Country') ?></span></label>
+            <div class="control">
+                <?= $block->getCountryHtmlSelect() ?>
+            </div>
+        </div>
+
         <div class="checkbox-block">
             <div class="field choice specials_offers">
                 <label for="specials_offers" class="label">
