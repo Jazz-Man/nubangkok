@@ -17,16 +17,16 @@
                 <height>300</height>
             </image>
             <image id="cart_page_product_thumbnail" type="small_image">
-                <width>110</width>
+                <width>150</width>
                 <height>160</height>
             </image>
             <image id="category_page_grid" type="image">
                 <width>450</width>
-                <height>560</height>
+                <height>450</height>
             </image>
             <image id="category_page_list" type="image">
                 <width>450</width>
-                <height>560</height>
+                <height>450</height>
             </image>
             <image id="customer_account_my_tags_tag_view" type="small_image">
                 <width>100</width>

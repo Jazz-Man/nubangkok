@@ -170,12 +170,12 @@
         text-align: left;
         outline: none;
         &:after {
-          content: @icon-select-arrow-up;
+          content: @icon-select-arrow-down;
           padding-left: 5px;
           vertical-align: middle;
         }
         &.active:after {
-          content: @icon-select-arrow-down;
+          content: @icon-select-arrow-up;
         }
       }
       h2 {
@@ -205,7 +205,7 @@
               margin-top: 20px !important;
               width: 50%;
               th {
-                width: 30%;
+                width: 50%;
                 padding: 0;
                 font-weight: 500;
               }
@@ -218,10 +218,16 @@
           }
         }
       }
+      .form-edit-account {
+        .nice-select {
+          padding-left: 65px;
+          padding-top: 2px;
+        }
+      }
     }
 
     .sidebar-additional {
-      margin-top: 40px;
+      //margin-top: 40px;
     }
 
     .table-wrapper {
@@ -346,6 +352,9 @@
       margin-top: @indent__xs;
     }
   }
+  div.customer-account-dashboard {
+    display: none
+  }
   .block.block-dashboard-info, .block.block-dashboard-addresses {
     .box-title span {
       text-transform: uppercase;
@@ -371,18 +380,44 @@
   .block.block-dashboard-addresses {
     .adress {
       width: 15%;
-      float: left;
       min-width: 100px;
     }
     address {
       width: 50%;
-      display: inline-block;
+      color: @color-brown-primary;
+      //a {
+      //  color: @color-brown-primary;
+      //}
+    }
+    .legend-contact-info {
+      span {
+        text-transform: uppercase;
+      }
+    }
+    .form-address-edit .field.country.required {
+      position: relative;
+      .label {
+        position: absolute;
+        font-size: 14px;
+        padding-left: 8px;
+        top: 11px;
+      }
+      .control {
+        .nice-select {
+          padding-left: 68px;
+          margin-bottom: 0;
+        }
+      }
     }
   }
 
   .or {
     overflow: hidden;
     text-align: center;
+    padding-top: 15px;
+    padding-bottom: 30px;
+    width: 94%;
+    margin: 0 auto;
     span {
       display: inline-block;
       vertical-align: middle;
@@ -393,7 +428,7 @@
       display: inline-block;
       vertical-align: middle;
       width: 100%;
-      height: 3px;
+      height: 2px;
       background-color: @color-gray68;
       position: relative;
     }
@@ -486,6 +521,13 @@
       vertical-align: middle;
     }
   }
+  .box-shipping-address {
+    .form-address-edit {
+      .checkbox-block{
+        margin-top: 20px;
+      }
+    }
+  }
 }
 
 //
@@ -506,6 +548,9 @@
     }
   }
 }
+//
+// Mobile
+//__________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
 
@@ -519,23 +564,39 @@
   .block.block-dashboard-info, .block.block-dashboard-addresses {
     .box-actions {
       .action.edit {
-        width: 40%;
+        //width: 40%;
+      }
+      a.save{
+        width: 100%;
       }
     }
   }
   .account {
     .column.main {
       margin: 0;
+      padding-bottom: 25px;
+      h2 {
+        font-size: 1.7rem;
+      }
       > a {
-        border-top: 2px solid @color-gray68;
-        border-bottom: 2px solid @color-gray68;
+        border-top: 1px solid @color-gray68;
+        margin-bottom: 0;
+        padding: 7px 0;
+        &:last-of-type {
+          border-bottom: 1px solid @color-gray68;
+        }
+      }
+      .open-account-details{
+        display: block;
+        margin-top: 5px;
       }
       .block-content .box-information .box-content table {
         width: 100%;
+        margin-top: 10px !important;
       }
     }
     .page.messages {
-      margin-bottom: @indent__xl;
+      //margin-bottom: @indent__xl;
     }
 
     .toolbar {
@@ -565,6 +626,18 @@
       }
     }
   }
+  .form-edit-account {
+    .nice-select {
+      span {
+        position: absolute;
+        top: -3px;
+      }
+    }
+  }
+  .block.block-dashboard-addresses .form-address-edit .field.country.required .label {
+    top: 12px;
+
+  }
 }
 
 //
@@ -576,6 +649,11 @@
     &:extend(.abs-add-clearfix-desktop all);
 
     .block {
+      .block-content {
+        h2 {
+          margin-top: 95px;
+        }
+      }
       &:extend(.abs-blocks-2columns all);
       &.login {
         .actions-toolbar {
@@ -639,7 +717,7 @@
         .action {
           background-color: @color-brown;
           border: none;
-          &:hover{
+          &:hover {
             background-color: @color-brown - 20%;
           }
         }
