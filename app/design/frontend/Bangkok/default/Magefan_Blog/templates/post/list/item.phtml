@@ -1,13 +1,5 @@
 <?php
 /**
- * Copyright © Magefan (support@magefan.com). All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
- *
- * Glory to Ukraine! Glory to the heroes!
- */
-?>
-<?php
-/**
  * Blog post list item template
  *
  * @var $block \Magefan\Blog\Block\Post\AbstractPost
@@ -20,8 +12,7 @@
 ?>
 <li class="post-holder post-holder-<?php echo $_post->getId() ?>">
 
-
-    <div class="post-content">
+    <div class="post-content desktop">
         <div class="post-description clearfix">
             <?php if ($featuredImage = $_post->getFeaturedImage()) : ?>
             <div class="post-ftimg-hld">
@@ -33,12 +24,24 @@
 
         </div>
     </div>
-    <div class="post-footer">
+    <div class="post-footer desktop">
         <h2 class="post-title">
             <a class="post-item-link"
                href="<?= $_postUrl ?>">
                 <?= $_postName; ?>
             </a>
         </h2>
+    </div>
+
+    <div class="post-content mobile">
+        <h2 class="post-title">
+            <?= $_postName; ?>
+        </h2>
+        <div class="post-description clearfix">
+            <div class="post-text-hld">
+                <?php echo $block->getContent() ?>
+            </div>
+            <?= $block->getChildBlock('blog.post.product.items')->setPost($_post)->toHtml(); ?>
+        </div>
     </div>
 </li>
