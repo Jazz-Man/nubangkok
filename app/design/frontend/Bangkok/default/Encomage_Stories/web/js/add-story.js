@@ -30,10 +30,9 @@ define([
                     }]
         },
             popup = modal(options, $('.save-message-modal')),
-            cropper = $('.js-cropper'),
-            customer = customerData.get('customer')();
+            cropper = $('.js-cropper');
 
-        $('.js-customer-name').text(customer.fullname);
+        $('.js-customer-name').text(customerData.get('customer')().fullname);
         
         cropper.simpleCropper();
 
