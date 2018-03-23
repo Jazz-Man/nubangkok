@@ -81,7 +81,12 @@ class StoriesRepository implements StoriesRepositoryInterface
         $searchResults->setTotalCount($collection->getSize());
         return $searchResults;
     }
-    
+
+    /**
+     * @param StoriesInterface $stories
+     * @return StoriesInterface
+     * @throws CouldNotSaveException
+     */
     public function save(StoriesInterface $stories)
     {
         try {
@@ -92,6 +97,11 @@ class StoriesRepository implements StoriesRepositoryInterface
         return $stories;
     }
 
+    /**
+     * @param $itemId
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
     public function getById($itemId)
     {
         $stories = $this->storiesFactory->create();
@@ -102,6 +112,11 @@ class StoriesRepository implements StoriesRepositoryInterface
         return $stories;
     }
 
+    /**
+     * @param StoriesInterface $stories
+     * @return bool
+     * @throws CouldNotDeleteException
+     */
     public function delete(StoriesInterface $stories)
     {
         try {
@@ -112,11 +127,21 @@ class StoriesRepository implements StoriesRepositoryInterface
         return true;
     }
 
+    /**
+     * @param $itemId
+     * @return bool
+     * @throws CouldNotDeleteException
+     * @throws NoSuchEntityException
+     */
     public function deleteById($itemId)
     {
         return $this->delete($this->getById($itemId));
     }
 
+    /**
+     * @param $customerId
+     * @return mixed
+     */
     public function getByCustomerId($customerId)
     {
         $stories = $this->storiesFactory->create();
@@ -127,6 +152,11 @@ class StoriesRepository implements StoriesRepositoryInterface
         return $stories;
     }
 
+    /**
+     * @param $customerId
+     * @return bool
+     * @throws CouldNotDeleteException
+     */
     public function deleteByCustomerId($customerId)
     {
         return $this->delete($this->getByCustomerId($customerId));

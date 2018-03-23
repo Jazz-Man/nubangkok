@@ -1,10 +1,14 @@
 <?php
 
-namespace Encomage\Stories\Block\Adminhtml\Stories;;
+namespace Encomage\Stories\Block\Adminhtml\Stories;
 
 use Magento\Ui\DataProvider\AbstractDataProvider;
 use Encomage\Stories\Model\ResourceModel\Stories\CollectionFactory;
 
+/**
+ * Class DataProvider
+ * @package Encomage\Stories\Block\Adminhtml\Stories
+ */
 class DataProvider extends AbstractDataProvider
 {
     /**

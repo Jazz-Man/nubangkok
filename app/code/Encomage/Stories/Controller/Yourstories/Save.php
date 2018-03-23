@@ -5,6 +5,7 @@ use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Encomage\Stories\Api\StoriesRepositoryInterface;
 use Encomage\Stories\Api\Data\StoriesInterfaceFactory;
+use Encomage\Stories\Model\Stories;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Customer\Model\Session;
@@ -15,7 +16,6 @@ use Magento\Customer\Model\Session;
  */
 class Save extends Action
 {
-    const MEDIA_PATH_STORIES_IMAGE = 'stories/';
     /**
      * @var StoriesRepositoryInterface
      */
@@ -79,10 +79,10 @@ class Save extends Action
             $modelStory->setCustomerId($params['customer_id']);
             $modelStory->setContent($params['content']);
             $modelStory->setCreatedAt($this->date->gmtDate());
-            $dirPath = $this->mediaDirectory->getAbsolutePath(self::MEDIA_PATH_STORIES_IMAGE);
+            $dirPath = $this->mediaDirectory->getAbsolutePath(Stories::MEDIA_PATH_STORIES_IMAGE);
             try {
-                $imageName = $this->saveImage($params['story_image'], $dirPath);
-                $modelStory->setImagePath(self::MEDIA_PATH_STORIES_IMAGE . $imageName);
+                $imageName = $this->_saveImage($params['story_image'], $dirPath);
+                $modelStory->setImagePath(Stories::MEDIA_PATH_STORIES_IMAGE . $imageName);
                 $this->storiesRepository->save($modelStory);
                 $this->messageManager->addSuccessMessage(__('Your story hes been sent'));
             } catch (\Exception $e) {
@@ -107,7 +107,12 @@ class Save extends Action
         return $this->customerSession->isLoggedIn();
     }
 
-    protected function saveImage($imageDataJson, $dirPath)
+    /**
+     * @param $imageDataJson
+     * @param $dirPath
+     * @return string
+     */
+    protected function _saveImage($imageDataJson, $dirPath)
     {
         $data = explode(';', $imageDataJson);
         $imageInfo = str_replace('data:', '', $data[0]);
@@ -121,6 +126,10 @@ class Save extends Action
         return $imageName;
     }
 
+    /**
+     * @param $imageInfo
+     * @return string
+     */
     protected function _getImageName($imageInfo)
     {
         $newDate = new \DateTime();

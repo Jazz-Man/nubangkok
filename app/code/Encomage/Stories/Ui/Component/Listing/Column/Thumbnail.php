@@ -1,16 +1,22 @@
 <?php
 namespace Encomage\Stories\Ui\Component\Listing\Column;
 
+use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\UrlInterface;
+use Magento\Framework\ObjectManagerInterface;
 
-class Thumbnail extends \Magento\Ui\Component\Listing\Columns\Column
+class Thumbnail extends Column
 {
     const ALT_FIELD = 'name';
-
+    /**
+     * @var ObjectManagerInterface|null
+     */
     private $_objectManager = null;
-
+    /**
+     * @var UrlInterface
+     */
     private $urlBuilder;
 
     /**
@@ -25,14 +31,13 @@ class Thumbnail extends \Magento\Ui\Component\Listing\Columns\Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        \Magento\Framework\UrlInterface $urlBuilder,
-        \Magento\Framework\ObjectManagerInterface $objectManager,
+        UrlInterface $urlBuilder,
+        ObjectManagerInterface $objectManager,
         array $components = [],
         array $data = []
     )
     {
         parent::__construct($context, $uiComponentFactory, $components, $data);
-
         $this->urlBuilder = $urlBuilder;
         $this->_objectManager = $objectManager;
     }
@@ -60,7 +65,6 @@ class Thumbnail extends \Magento\Ui\Component\Listing\Columns\Column
                 }
             }
         }
-
         return $dataSource;
     }
 

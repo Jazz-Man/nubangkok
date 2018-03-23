@@ -28,7 +28,7 @@
             </item>
         </argument>
         <settings>
-            <submitUrl path="stories/index/save"/>
+            <submitUrl path="stories/grid/save"/>
         </settings>
         <dataProvider class="Encomage\Stories\Block\Adminhtml\Stories\DataProvider" name="stories_edit_data_source">
             <settings>
