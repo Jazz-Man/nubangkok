@@ -2,8 +2,9 @@ define([
     'jquery',
     'Magento_Ui/js/modal/modal',
     'Magento_Ui/js/modal/alert',
+    'Magento_Customer/js/customer-data',
     'simpleCropper'
-], function ($, modal, alert) {
+], function ($, modal, alert, customerData) {
     "use strict";
 
     return function (config, element) {
@@ -29,7 +30,10 @@ define([
                     }]
         },
             popup = modal(options, $('.save-message-modal')),
-            cropper = $('.js-cropper');
+            cropper = $('.js-cropper'),
+            customer = customerData.get('customer')();
+
+        $('.js-customer-name').text(customer.fullname);
         
         cropper.simpleCropper();
 

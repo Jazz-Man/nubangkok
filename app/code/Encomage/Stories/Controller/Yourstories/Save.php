@@ -74,9 +74,12 @@ class Save extends Action
         }
         $params = $this->getRequest()->getParams();
         if (!empty($params)) {
+            $customer = $this->customerSession->getCustomerData();
+            $customerName = $customer->getFirstname() . ' ' . $customer->getLastname();
             /** @var \Encomage\Stories\Model\Stories $modelStory */
             $modelStory = $this->storiesFactory->create();
-            $modelStory->setCustomerId($params['customer_id']);
+            $modelStory->setCustomerId($this->customerSession->getCustomerId());
+            $modelStory->setCustomerName($customerName);
             $modelStory->setContent($params['content']);
             $modelStory->setCreatedAt($this->date->gmtDate());
             $dirPath = $this->mediaDirectory->getAbsolutePath(self::MEDIA_PATH_STORIES_IMAGE);
