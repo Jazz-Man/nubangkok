@@ -3,19 +3,25 @@
 //
 // Grid with posts
 //______________________________________________
+//.blog-index-index .column.main {
+//  padding: 0 10px;
+//}
+
 .post-list-wrapper {
   .post-list {
     list-style-type: none;
     padding-left: 0;
+    li:nth-child(1), li:nth-child(5), li:nth-child(9) {
+      margin-left: 0;
+    }
     .post-holder {
-      width: 22%;
+      width: 23%;
+      margin-left: 1.999%;
       display: inline-block;
       list-style-type: none;
-      margin-left: 2%;
-      margin-top: 30px;
       background-color: transparent;
-      padding-bottom: 0;
       margin-bottom: 0;
+      //margin-right: 2.777%;
       padding: 0;
       .post-content {
         .post-description {
@@ -28,12 +34,13 @@
       }
       .post-footer {
         .post-title {
-          margin-top: 5px;
+          margin-top: 0;
+          line-height: 15px;
           a {
             text-decoration: none;
             text-transform: uppercase;
             color: @color-brown;
-            font-size: @font-size-bgk;
+            font-size: 14px;
           }
         }
       }
@@ -51,6 +58,7 @@
   .post-holder {
     box-shadow: none;
     background-color: transparent;
+    padding-top: 0;
   }
   .post-content {
     .owl-dots {
@@ -75,12 +83,12 @@
         }
       }
       .products {
-        margin-top: 20px;
         width: 94%;
         margin: 0 auto;
+        padding-top: 10px;
         .product-item {
           padding-left: 0;
-          border: 2px solid @custom-gray-bg;
+          border: 1px solid #aeaeae;
           margin-left: 4%;
           .product-item-info {
             .product-image-photo {
@@ -103,10 +111,11 @@
       .share-btn {
         position: relative;
         margin: 0 auto;
-        width: 60px;
+        width: 40px;
+        height: 40px;
         span {
-          width: 60px;
-          height: 60px;
+          width: 40px;
+          height: 40px;
           position: absolute;
         }
       }
@@ -134,6 +143,7 @@
       .block.related {
         .products-grid .product-item {
           width: 20%;
+          margin-bottom: 15px;
         }
       }
     }
@@ -144,7 +154,6 @@
 // Mobile
 //_________________________________________________________________________________
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m){
-
   // Toggle from desktom to mobile
   .post-content.mobile {
     display: block;
@@ -205,3 +214,5 @@
     }
   }
 }
+
+
