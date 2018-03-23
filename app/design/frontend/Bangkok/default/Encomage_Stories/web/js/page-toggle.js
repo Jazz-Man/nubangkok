@@ -1,10 +1,13 @@
 define([
     'jquery',
+    'Magento_Customer/js/customer-data',
     'domReady!'
-], function ($) {
+], function ($, customerData) {
     "use strict";
+
     return function (config, element) {
-        var ourButton = $('.js-our-story-button'),
+        var customer = customerData.get('customer')(),
+            ourButton = $('.js-our-story-button'),
             yorButton = $('.js-your-stories-button'),
             addButton = $('.js-add-story-button'),
             ourContent = $('.js-our-story-block'),
@@ -29,7 +32,9 @@ define([
                 ourContent.hide();
                 yorButton.addClass('active');
                 yourContent.show();
-                addButton.show();
+                if (customer.websiteId) {
+                    addButton.show();
+                }
             }
         });
     }

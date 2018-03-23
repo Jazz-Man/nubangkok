@@ -103,6 +103,10 @@ class UpgradeData implements UpgradeDataInterface
             $this->addCmsBlockOurStories();
             $this->upgradeLeftSidebar();
         }
+
+        if (version_compare($context->getVersion(), '0.1.6', '<')) {
+            $this->upgradeCmsBlockOurStories();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -1122,6 +1126,54 @@ EOD;
 <div class="nav-left-links" style="margin-bottom: 0;"><a href="{{store url='policies'}}">POLICIES</a></div>
 EOD;
         $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+        return $this;
+    }
+
+    private function upgradeCmsBlockOurStories()
+    {
+        $content = <<<EOD
+<style xml="space"><!--
+.cms-img-container {
+width: 80%; margin: 0 auto; padding-bottom: 20px;
+}
+.cms-img-container p {
+width: 49%; 
+display: inline-block;
+}
+
+@media only screen and (max-width: 772px) {
+.cms-img-container {
+width: 100%;
+}
+.cms-img-container p {
+width: 100%;
+display: block;
+float: none;
+}
+
+img {
+width: 100%;
+}
+}
+--></style>
+<p>VISION</p>
+<p style="padding-bottom: 10px;">A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+<p></p>
+<p></p>
+<p style="text-align: center; padding-bottom: 10px;"><img src="{{media url="wysiwyg/_MG_0573.jpg"}}" width="80%" /></p>
+<p></p>
+<p style="padding-bottom: 10px;">What we do. (History)</p>
+<p></p>
+<p style="text-align: center;"><img src="{{media url="wysiwyg/_MG_0578.jpg"}}" width="80%" /></p>
+<div class="cms-img-container">
+<p><img src="{{media url="wysiwyg/cms/career2.JPG"}}" /></p>
+<p style="float: right;"><img src="{{media url="wysiwyg/cms/career3.JPG"}}" /></p>
+</div>
+<p style="padding-bottom: 10px;">A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+EOD;
+        $block = $this->blockRepository->getById('our_stories');
         $block->setContent($content);
         $this->blockRepository->save($block);
         return $this;
