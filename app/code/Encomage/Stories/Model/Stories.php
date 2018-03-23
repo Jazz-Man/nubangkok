@@ -4,8 +4,13 @@ namespace Encomage\Stories\Model;
 use Encomage\Stories\Api\Data\StoriesInterface;
 use Magento\Framework\Model\AbstractModel;
 
+/**
+ * Class Stories
+ * @package Encomage\Stories\Model
+ */
 class Stories extends AbstractModel implements StoriesInterface
 {
+    const MEDIA_PATH_STORIES_IMAGE = 'stories/';
     /**
      * class construct
      */
