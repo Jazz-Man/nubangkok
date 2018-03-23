@@ -966,7 +966,6 @@ input:-webkit-autofill {
         width: 60px;
     }
     .totals.redeem.excl .btn button{
-        /*font-size: 13px;*/
         padding: 6px 0;
     }
     .cart-summary .fieldset.coupon .actions-toolbar .primary .action.apply.primary {
@@ -985,4 +984,9 @@ input:-webkit-autofill {
     .fieldset.coupon.applied .actions-toolbar .primary .action.cancel.primary span {
         font-size: 12px;
     }
+}
+
+/* google icon on button on my account page */
+.customer-account-login .btn-google .fa-google{
+    background: none;
 }
