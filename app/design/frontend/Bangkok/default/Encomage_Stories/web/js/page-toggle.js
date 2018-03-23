@@ -6,8 +6,7 @@ define([
     "use strict";
 
     return function (config, element) {
-        var customer = customerData.get('customer')(),
-            ourButton = $('.js-our-story-button'),
+        var ourButton = $('.js-our-story-button'),
             yorButton = $('.js-your-stories-button'),
             addButton = $('.js-add-story-button'),
             ourContent = $('.js-our-story-block'),
@@ -32,7 +31,7 @@ define([
                 ourContent.hide();
                 yorButton.addClass('active');
                 yourContent.show();
-                if (customer.websiteId) {
+                if (customerData.get('customer')().websiteId) {
                     addButton.show();
                 }
             }
