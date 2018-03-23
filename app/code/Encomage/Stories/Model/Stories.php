@@ -40,6 +40,23 @@ class Stories extends AbstractModel implements StoriesInterface
     }
 
     /**
+     * @return mixed
+     */
+    public function getCustomerName()
+    {
+        return $this->_getData(self::CUSTOMER_NAME);
+    }
+
+    /**
+     * @param $customerName
+     * @return $this
+     */
+    public function setCustomerName($customerName)
+    {
+        return $this->setData(self::CUSTOMER_NAME, $customerName);
+    }
+
+    /**
      * @param $id
      * @return $this
      */

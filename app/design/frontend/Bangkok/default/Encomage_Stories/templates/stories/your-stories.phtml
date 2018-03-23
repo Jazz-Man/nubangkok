@@ -8,7 +8,7 @@ $_collectionSize = $_collection->getTotalCount();
         <div class="your-stories-container">
             <?php foreach ($items as $story) : ?>
                 <div class="story-item">
-                    <div class="story-content js-story-content">
+                    <div class="story-content">
                         <h3 class="story-title"><strong><?= $block->getCustomerNameById($story->getCustomerId()); ?></strong></h3>
                         <h3 class="story-create-at"><?= $block->newDate($story->getCreatedAt()); ?></h3>
                         <div class="js-story-content">
