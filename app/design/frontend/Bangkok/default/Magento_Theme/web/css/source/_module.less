@@ -127,7 +127,7 @@
           background-size: cover;
         }
         &:hover, &:focus, &:active {
-          .top-link-myaccount{
+          .top-link-myaccount {
             background: @icon-customer-account-active;
             background-size: cover;
           }
@@ -145,7 +145,7 @@
         height: 25px;
         display: block;
         background-size: cover;
-        &:hover, &:focus, &:active{
+        &:hover, &:focus, &:active {
           background: @icon-locate-active;
           background-size: cover;
         }
@@ -260,6 +260,9 @@
   .page-footer {
     .lib-css(background-color, @footer__background-color);
     margin-top: auto;
+    .mobile-footer {
+      display: none;
+    }
   }
 
   .footer {
@@ -316,7 +319,7 @@
           a {
             display: block;
             padding: 8px;
-
+            text-transform: uppercase;
             &:hover {
               text-decoration: none;
             }
@@ -522,8 +525,12 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
   //icon menu list
   .mobile-account-top-links {
+    .header.content {
+      display: none;
+    }
     .columns .column.main {
-      position: relative;
+      //position: relative;
+      display: none;
     }
     .page-wrapper {
       position: relative;
@@ -538,7 +545,7 @@
                 background-color: #ffffff;
                 height: 100%;
                 li {
-                  width: 70%;
+                  width: 80%;
                   display: inline-block;
                   float: right;
                   border-bottom: 2px solid #6d6d6d;
@@ -576,13 +583,14 @@
               }
             }
             .close-account-links-js {
-              width: 50px;
-              height: 30px;
+              width: 115px;
+              height: 36px;
               position: absolute;
               top: 4px;
               cursor: pointer;
-              right: 10px;
+              right: 0px;
               z-index: 10;
+              padding-right: 10px;
               span {
                 content: @icon-close-element-mob-vers;
                 width: 22px;
@@ -595,6 +603,60 @@
             }
           }
         }
+      }
+    }
+  }
+  //
+  // Footer mobile
+  //
+  .page-footer {
+    .footer.content {
+      padding-left: 0;
+      padding-right: 0;
+      padding-top: 5px;
+      .mobile-footer {
+        display: block;
+        .social-links {
+          width: 100%;
+          display: inline-block;
+          border-bottom: 2px solid #d1d1d1;
+          margin-bottom: 5px;
+          span{
+            padding-left: 15px;
+            display: inline-block;
+            margin-top: 3px;
+            text-transform: uppercase;
+          }
+          .links-container {
+            width: 170px;
+            float: right;
+            a.social-acc-pic {
+              margin-right: 15px;
+              height: 22px;
+              width: 22px;
+              display: inline-block;
+              img{
+                width: 100%;
+              }
+            }
+            a.social-acc-pic:last-of-type {
+              margin-right: 0;
+            }
+          }
+        }
+        .general-subcategories {
+          div {
+            border-bottom: 2px solid #d1d1d1;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            a {
+              padding-left: 15px;
+            }
+          }
+        }
+      }
+      .copyright{
+        padding-top: 7px;
       }
     }
   }
