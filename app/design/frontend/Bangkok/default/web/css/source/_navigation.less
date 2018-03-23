@@ -690,12 +690,6 @@
       width: 51px;
     }
   }
-  //.sections.nav-sections .nav-toggle-close{
-  //  position: absolute;
-  //  right: 5%;
-  //  top: 129px;
-  //  z-index: 100;
-  //}
 
   .block-search input {
     position: inherit;
@@ -778,8 +772,12 @@
       }
     }
     .general-subcategories {
-      .violet-link{
+      a.violet-link {
         font-weight: 700;
+        color: @color-violet !important;
+        strong {
+          color: @color-violet !important;
+        }
       }
       div {
         background-color: @mobile-nav-items-background-color;
@@ -834,30 +832,6 @@
         }
       }
     }
-
-    //.main-subcategories {
-    //  //margin-top: 2px;
-    //  //border-top: 2px solid #eae4dc;
-    //  ul {
-    //    padding-left: 0 !important;
-    //    li {
-    //      a {
-    //        font-weight: 700;
-    //        margin-bottom: 0;
-    //        border-bottom: 2px solid #eae4dc;
-    //      }
-    //    }
-    //    ul {
-    //      padding-left: 0;
-    //      li {
-    //        a {
-    //          //color: black;
-    //          padding-left: 30px;
-    //        }
-    //      }
-    //    }
-    //  }
-    //}
   }
 
   .main-subcategories {
