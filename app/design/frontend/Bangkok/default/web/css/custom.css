@@ -787,6 +787,10 @@ input:-webkit-autofill {
         font-size: 11px;
         padding-left: 0;
     }
+    /*inspiration*/
+    .post-list-wrapper .post-list .post-holder .post-content.mobile .post-description .related-products .product-show-button {
+        font-size: 1.4rem;
+    }
 }
 
 /*shopping cart cuppon btn*/
