@@ -1,7 +1,20 @@
 <?xml version="1.0"?>
-
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Encomage\Stories\Api\Data\StoriesInterface" type="Encomage\Stories\Model\Stories"/>
     <preference for="Encomage\Stories\Api\StoriesRepositoryInterface" type="Encomage\Stories\Model\StoriesRepository"/>
     <preference for="Encomage\Stories\Api\Data\StoriesSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="encomage_stories_listing_data_source" xsi:type="string">EncomageStoriesGridCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="EncomageStoriesGridCollection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">encomage_stories</argument>
+            <argument name="resourceModel" xsi:type="string">Encomage\Stories\Model\ResourceModel\Stories</argument>
+        </arguments>
+    </virtualType>
 </config>
