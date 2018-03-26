@@ -7,7 +7,7 @@ use Encomage\Stories\Model\ResourceModel\Stories\CollectionFactory;
 use Encomage\Stories\Model\ResourceModel\Stories as StoriesResource;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Filesystem;
+use Encomage\Stories\Helper\Image;
 
 /**
  * Class MassDelete
@@ -28,27 +28,27 @@ class MassDelete extends Action
      */
     private $storiesResource;
     /**
-     * @var Filesystem\Directory\WriteInterface
+     * @var Image
      */
-    private $mediaDirectory;
+    private $imageHelper;
 
     /**
      * MassDelete constructor.
      * @param Action\Context $context
      * @param Filter $filter
      * @param CollectionFactory $collectionFactory
-     * @param Filesystem $filesystem
+     * @param Image $imageHelper
      * @param StoriesResource $storiesResource
      */
     public function __construct(
         Action\Context $context,
         Filter $filter,
         CollectionFactory $collectionFactory,
-        Filesystem $filesystem,
+        Image $imageHelper,
         StoriesResource $storiesResource
     )
     {
-        $this->mediaDirectory = $filesystem->getDirectoryWrite(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
+        $this->imageHelper = $imageHelper;
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
         $this->storiesResource = $storiesResource;
@@ -63,15 +63,13 @@ class MassDelete extends Action
     {
         $collection = $this->filter->getCollection($this->collectionFactory->create());
         $collectionSize = $collection->getSize();
-        $mediaPath = $this->mediaDirectory->getAbsolutePath();
         try {
             $itemsForDelete = $collection->getItems();
             $result = $this->storiesResource->massDeleteById($collection->getAllIds());
             if ($result && $result > 0) {
                 foreach ($itemsForDelete as $item) {
                     if ($item->getImagePath()) {
-                        $imagePath = $mediaPath . $item->getImagePath();
-                        @unlink($imagePath);
+                        $this->imageHelper->deleteStoryImage($item->getImagePath());
                     }
                 }
             }
