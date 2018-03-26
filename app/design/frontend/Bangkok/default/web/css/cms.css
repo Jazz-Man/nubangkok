@@ -67,7 +67,7 @@
 }
 
 .violet-link:hover, .violet-link:active, .violet-link:focus, .violet-link:visited {
-    color: #582574;
+    color: #6e2f91;
 }
 
 /** Coming soon category */
@@ -214,6 +214,7 @@
     border: none;
     text-align: left;
     outline: none;
+    width: max-content;
 }
 
 .accordion-container .accordion img {
@@ -274,10 +275,10 @@
     .accordion {
         margin-bottom: 0;
         padding: 7px 0;
+        width: auto;
     }
 
     .accordion.active:before {
-
         left: -15px;
         top: 11px;
     }
@@ -333,9 +334,6 @@
 .cms-contact-us .cms-title {
     display: none;
 }
-/*.cms-contact-us span:nth-child(1){*/
-    /*display: none;*/
-/*}*/
 
 /* Why nu */
 .cms-why-nu-page .violet-link{

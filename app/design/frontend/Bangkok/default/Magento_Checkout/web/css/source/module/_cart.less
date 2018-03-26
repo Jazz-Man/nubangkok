@@ -12,7 +12,37 @@
   //
   //  Shopping cart
   //  ---------------------------------------------
-
+  .totals.redeem.excl {
+    text-transform: uppercase;
+    margin-top: 20px;
+    width: 125%;
+    .mark {
+      width: 30%;
+      display: inline-block;
+    }
+    .input {
+      display: inline-block;
+      width: 30%;
+      border-bottom: 2px solid #e8e8e8;
+      padding-bottom: 6px;
+    }
+    .btn {
+      width: 90px;
+      display: inline-block;
+      margin-left: 15px;
+      button {
+        width: 100%;
+        border: 1px solid #aeaeae;
+        text-transform: uppercase;
+        background-color: transparent;
+        padding: 10px;
+      }
+    }
+    .amount {
+      display: inline-block;
+      float: right;
+    }
+  }
   // Page Heading
   .page-heading {
     font-size: 27px;
@@ -488,19 +518,19 @@
     .action.update {
 
     }
-    .page-heading{
+    .page-heading {
       font-size: 18px;
     }
-    .cart-summary{
+    .cart-summary {
       margin-bottom: 15px;
     }
 
-    .checkout-methods-items .action.primary.checkout{
+    .checkout-methods-items .action.primary.checkout {
       width: 100%;
       max-width: none;
     }
-    .cart .action.continue{
-      width: 100%;
+    .cart .action.continue {
+      //width: 99%;
       max-width: none;
     }
   }
@@ -547,10 +577,14 @@
         }
       }
       .actions-toolbar {
-
+        margin-top: 0;
         .primary {
           .action.apply.primary {
-            font-size: 11px;
+            font-size: 14px;
+            //height: 32px;
+            //margin-top: 0;
+            padding: 10px;
+            margin-left: 21px;
           }
         }
       }
@@ -837,17 +871,29 @@
           }
         }
       }
-      .totals.redeem.excl{
+      .totals.redeem.excl {
         font-size: 14px;
-        div.amount{
+        div.amount {
           padding-top: 7px;
+          overflow: hidden;
+          width: 58px;
+          padding-right: 0;
+          display: inline-grid;
+        }
+        .btn {
+          button {
+            font-size: 14px;
+          }
+        }
+        .input span{
+          padding-left: 7px;
         }
       }
     }
   }
-  .block.discount{
-    .applied{
-      span{
+  .block.discount {
+    .applied {
+      span {
         font-size: 14px;
       }
     }
@@ -866,6 +912,11 @@
   .cart-container .action.update {
     padding: 5px 8px;
     font-size: 13px;
+  }
+  .totals.redeem.excl{
+    .input{
+      width: 28%;
+    }
   }
 }
 
@@ -951,16 +1002,30 @@
       }
     }
   }
-    .totals.redeem.excl {
-      .btn {
-        width: 50px;
-        margin-left: 10px;
-        button {
-          padding: 7px 0;
-          font-size: 11px;
-        }
+  .totals.redeem.excl {
+    .btn {
+      //width: 70px;
+      //margin-left: 0;
+      width: 65px;
+      margin-left: 0;
+      margin-right: 5px;
+      button {
+        padding: 10px 0;
       }
     }
+  }
+  //.totals.redeem.excl {
+  //  .btn {
+  //    //width: 50px;
+  //    button {
+  //      padding: 7px 0;
+  //      font-size: 11px;
+  //    }
+  //  }
+  //}
+  .cart-summary .fieldset.coupon .actions-toolbar .primary .action.apply.primary{
+    margin-left: 5px !important;
+  }
 }
 
 //
