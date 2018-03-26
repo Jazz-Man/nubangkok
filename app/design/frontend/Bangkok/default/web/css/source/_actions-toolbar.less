@@ -67,8 +67,7 @@
                 background-color: #993434 - 40%;
               }
               span:after {
-                content: '\f067';
-                font-size: 14px;
+                content: '\f0d5';
                 position: absolute;
                 right: -11px;
               }
@@ -233,7 +232,7 @@
 // Mobile
 //
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-  .columns .column.main{
+  .columns .column.main {
     padding-top: 15px;
   }
   .checkbox-block-desktop {
@@ -249,8 +248,6 @@
   }
   form.form.create.account.form-create-account {
     .actions-toolbar {
-      //width: 93%;
-      //margin: 0 auto;
       .primary {
         min-width: 220px;
         button {
@@ -265,8 +262,6 @@
   .actions-toolbar {
     > .primary {
       text-align: center;
-      //width: 60%;
-      //margin: 0 auto;
       button.action.primary.add {
         background-color: @color-brown;
         border: 1px solid @color-brown;
@@ -293,8 +288,7 @@
             width: 100%;
             margin: 0;
             .btn-social span {
-              top: 5px;
-              font-size: 1.2em;
+              font-size: 1em;
               width: 30px;
             }
             .btn-facebook {
@@ -310,14 +304,10 @@
             .btn-google {
               padding-top: 11px;
               padding-bottom: 7px;
-              padding-left: 45px;
-              .fa-google {
-                top: 1px;
-                &:after {
-                  right: -5px;
-                  font-size: 10px;
-                  top: -1px;
-                }
+              padding-left: 41px;
+              span:after {
+                right: 2px;
+                top: -2px;
               }
             }
           }
