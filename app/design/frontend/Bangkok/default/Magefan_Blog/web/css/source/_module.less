@@ -14,10 +14,18 @@
       display: inline-block;
       list-style-type: none;
       background-color: transparent;
-      margin-bottom: 0;
+      margin-bottom: 50px;
       padding: 0;
       .post-content {
         .post-description {
+          .owl-carousel {
+            .owl-dots {
+              max-width: max-content;
+              .owl-dot {
+                margin-right: 10px;
+              }
+            }
+          }
           .post-ftimg-hld {
             width: 100%;
             margin: 0;
@@ -33,7 +41,7 @@
             text-decoration: none;
             text-transform: uppercase;
             color: @color-brown;
-            font-size: 14px;
+            font-size: 13px;
           }
         }
       }
@@ -41,6 +49,9 @@
         box-shadow: none;
       }
     }
+  }
+  .mobile-post-title {
+    display: none;
   }
 }
 
@@ -52,10 +63,26 @@
     box-shadow: none;
     background-color: transparent;
     padding-top: 0;
+    &:hover {
+      box-shadow: none;
+    }
+  }
+  .post-text-hld {
+    p:nth-child(4) {
+      margin-top: 30px;
+    }
   }
   .post-content {
     .owl-dots {
       bottom: -25px;
+      max-width: max-content;
+      .owl-dot {
+        margin-right: 10px;
+        border: 2px solid #858585;
+        &.active {
+          background-color: #858585;
+        }
+      }
     }
     .post-description img {
       margin: 0;
@@ -69,6 +96,7 @@
       font-size: @font-size-bgk;
     }
     .block.related {
+      margin-bottom: 15px;
       .block-title {
         strong {
           font-weight: 300;
@@ -85,10 +113,7 @@
           margin-left: 4%;
           .product-item-info {
             .product-image-photo {
-              padding-top: 4px;
-              margin: 0 auto;
               display: block;
-              padding-bottom: 4px;
             }
             .product-item-details {
               display: none;
@@ -116,11 +141,7 @@
   }
 }
 
-//
-// Desktop
-//_________________________________________________________________________________
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m){
-
   // Toggle from mobile to desktop
   .post-content.mobile {
     display: none;
@@ -137,6 +158,19 @@
         .products-grid .product-item {
           width: 20%;
           margin-bottom: 15px;
+          .image-block {
+            .product-note-info {
+              top: 0;
+            }
+            .product-note-status {
+              bottom: 15px;
+              right: 5px;
+            }
+            .popular-products {
+              bottom: 20px;
+              padding: 5px 15px;
+            }
+          }
         }
       }
     }
@@ -171,20 +205,20 @@
         display: block;
         width: 100%;
         margin-left: 0;
+        margin-bottom: 15px;
         .post-content.mobile {
           h2.post-title {
             text-decoration: none;
             text-transform: uppercase;
             color: @color-brown;
-            //font-size: @font-size-bgk;
             margin-bottom: 1rem;
             margin-top: 5px;
-            font-size: 20px;
+            font-size: 17px;
           }
           .post-description {
             .post-text-hld {
               .owl-carousel.owl-drag {
-                .owl-item{
+                .owl-item {
                   overflow: hidden;
                 }
                 .owl-dots {
@@ -208,7 +242,7 @@
                 cursor: pointer;
                 margin-bottom: 20px;
                 display: block;
-                font-size: 1.8rem;
+                font-size: 16px;
               }
               .items {
                 width: 80%;
@@ -232,10 +266,16 @@
         }
       }
     }
+    .mobile-post-title {
+      display: block;
+      text-align: center;
+      font-size: 15px;
+      text-transform: uppercase;
+    }
   }
-  .post-view{
-    .post-holder{
-      .post-bottom{
+  .post-view {
+    .post-holder {
+      .post-bottom {
         .related .product-items .product-item {
           width: 43.333333%;
           margin-bottom: 15px;
@@ -244,6 +284,5 @@
     }
   }
 }
-
 
 
