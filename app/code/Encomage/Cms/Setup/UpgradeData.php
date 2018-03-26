@@ -94,6 +94,10 @@ class UpgradeData implements UpgradeDataInterface
             $this->upgradeComingSoon014();
             $this->upgradeLeftMenu014();
         }
+        
+        if (version_compare($context->getVersion(), '0.1.5', '<')) {
+            $this->addCmsBlockDesktopFooter();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -1019,6 +1023,86 @@ EOD;
 EOD;
         $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
         $block->setContent($content);
+        $this->blockRepository->save($block);
+        return $this;
+    }
+
+    private function addCmsBlockDesktopFooter()
+    {
+        $block = $this->blockFactory->create();
+        $block->addData(
+            [
+                'title' => 'Desktop Footer',
+                'identifier' => 'desktop_footer',
+                'stores' => [0],
+                'is_active' => 1,
+                'content' => <<<EOD
+<style xml="space"><!--
+.desktop-footer > div:first-of-type{
+    width: 40%;
+}
+.desktop-footer > div:nth-child(4){
+    width: 40%;
+}
+.desktop-footer{
+margin-top: 30px;
+}
+.desktop-footer span.copyright{
+    display: inline-block;
+    margin-left: 40%;
+    font-size: 12px;
+    text-transform: capitalize;
+    margin-top: 20px;
+}
+.desktop-footer > div{
+    width: 30%;
+    display: inline-block;
+    float: left;
+    height: 36px;
+}
+.desktop-footer > div > a{
+    vertical-align: top;
+}
+.desktop-footer .social-links{
+    width: 50%;
+    display: inline-block;
+    margin-left: 5%;
+}
+.desktop-footer .social-links .social-acc-pic{
+    margin-left: 7%;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+}
+@media only screen and (max-width: 922px){
+    .desktop-footer .social-links .social-acc-pic{
+        margin-left: 0;
+    }
+    .desktop-footer > div:nth-child(2){
+        width: 35%;
+    }
+    .desktop-footer > div:nth-child(3){
+        width: 25%;
+    }
+}
+@media only screen and (max-width: 767px){
+    .desktop-footer{
+        display: none;
+    }
+}
+--></style>
+<div class="desktop-footer">
+<div><a href="{{store url='customer-care'}}">FOLLOW US</a>
+<div class="social-links"><a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/facebook.png}}" alt="facebook-icon" /></a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/instagram.png}}" alt="instagram-icon" /></a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/youtube.png}}" alt="youtube-icon" /></a> <a class="social-acc-pic" style="padding-top: 0;" href="#" target="_blank"><img src="{{view url=images/empty-link.png}}" alt="empty-icon" /></a></div>
+</div>
+<div><a href="{{store url='customer-care'}}">CUSTOMER CARE &amp; FAQ</a></div>
+<div><a href="{{store url='policies'}}">POLICIES</a></div>
+<div><a href="{{store url='where-to-buy'}}">WHERE TO BUY</a></div>
+<div><a href="{{store url='contact-us'}}">CONTACT US</a></div>
+<span class="copyright">©2017 NUI Co. Ltd. All Rights Reserved</span></div>
+EOD
+            ]
+        );
         $this->blockRepository->save($block);
         return $this;
     }
