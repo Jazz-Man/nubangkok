@@ -17,7 +17,7 @@
     margin-bottom: 30px;
     span {
       display: inline-block;
-      margin: 0 40px;
+      margin: 0 6%;
       text-align: center;
       font-size: 21px;
     }
@@ -177,45 +177,6 @@
 .float-right-content.active {
   display: block;
 }
-
-.totals.redeem.excl {
-  text-transform: uppercase;
-  margin-top: 20px;
-  width: 125%;
-  .mark {
-    //width: 10%;
-    width: 30%;
-    display: inline-block;
-  }
-  .input {
-    display: inline-block;
-    width: 30%;
-    border-bottom: 2px solid #e8e8e8;
-    padding-bottom: 6px;
-    //button {
-    //  margin-left: 20px;
-    //  width: 90px;
-    //  border: 1px solid #aeaeae;
-    //  text-transform: uppercase;
-    //  background-color: transparent;
-    //}
-  }
-  .btn {
-    width: 90px;
-    display: inline-block;
-    margin-left: 15px;
-    button {
-      width: 100%;
-      border: 1px solid #aeaeae;
-      text-transform: uppercase;
-      background-color: transparent;
-    }
-  }
-  .amount {
-    display: inline-block;
-    float: right;
-  }
-}
 //
 // Mobile
 //___________________________
@@ -248,6 +209,7 @@
       .content {
         min-height: 469px;
         max-height: 469px;
+        overflow-y: scroll;
         .float-left-content, .float-right-content {
           width: 246px;
         }
@@ -259,32 +221,6 @@
     }
     .bottom-points-block {
       margin-top: 0;
-    }
-  }
-  .totals.redeem.excl {
-    .btn {
-      button {
-        font-size: 11px;
-      }
-    }
-  }
-}
-
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs){
-  .totals.redeem.excl {
-    .btn {
-      width: 50px;
-      button {
-        padding: 7px 0;
-        font-size: 11px;
-      }
-    }
-  }
-  .points-container {
-    .right-block, .left-block {
-      .content {
-        overflow-y: scroll;
-      }
     }
   }
 }
