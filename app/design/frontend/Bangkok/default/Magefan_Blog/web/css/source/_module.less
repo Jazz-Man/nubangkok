@@ -1,26 +1,24 @@
-
 // Common
-
-//
 // Grid with posts
 //______________________________________________
 .post-list-wrapper {
   .post-list {
     list-style-type: none;
     padding-left: 0;
+    li:nth-child(1), li:nth-child(5), li:nth-child(9) {
+      margin-left: 0;
+    }
     .post-holder {
-      width: 22%;
+      width: 23%;
+      margin-left: 1.9%;
       display: inline-block;
       list-style-type: none;
-      margin-left: 2%;
-      margin-top: 30px;
       background-color: transparent;
-      padding-bottom: 0;
       margin-bottom: 0;
       padding: 0;
-      .post-content{
-        .post-description{
-          .post-ftimg-hld{
+      .post-content {
+        .post-description {
+          .post-ftimg-hld {
             width: 100%;
             margin: 0;
             float: none;
@@ -29,16 +27,17 @@
       }
       .post-footer {
         .post-title {
-          margin-top: 5px;
+          margin-top: 0;
+          line-height: 15px;
           a {
             text-decoration: none;
             text-transform: uppercase;
             color: @color-brown;
-            font-size: @font-size-bgk;
+            font-size: 14px;
           }
         }
       }
-      &:hover{
+      &:hover {
         box-shadow: none;
       }
     }
@@ -49,15 +48,16 @@
 // Blog Post
 //_______________________________________________
 .post-view {
-  .post-holder{
+  .post-holder {
     box-shadow: none;
     background-color: transparent;
+    padding-top: 0;
   }
   .post-content {
     .owl-dots {
       bottom: -25px;
     }
-    .post-description img{
+    .post-description img {
       margin: 0;
     }
   }
@@ -76,15 +76,15 @@
         }
       }
       .products {
-        margin-top: 20px;
         width: 94%;
         margin: 0 auto;
+        padding-top: 10px;
         .product-item {
           padding-left: 0;
-          border: 2px solid @custom-gray-bg;
+          border: 1px solid #aeaeae;
           margin-left: 4%;
           .product-item-info {
-            .product-image-photo{
+            .product-image-photo {
               padding-top: 4px;
               margin: 0 auto;
               display: block;
@@ -97,17 +97,18 @@
         }
       }
     }
-    .default-shared-link{
-      width: 10%;
-      margin: 0 auto;
+    .default-shared-link {
+      //width: 10%;
+      //margin: 0 auto;
       height: 100px;
-      .share-btn{
+      .share-btn {
         position: relative;
         margin: 0 auto;
-        width: 60px;
-        span{
-          width: 60px;
-          height: 60px;
+        width: 40px;
+        height: 40px;
+        span {
+          width: 40px;
+          height: 40px;
           position: absolute;
         }
       }
@@ -119,13 +120,130 @@
 // Desktop
 //_________________________________________________________________________________
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m){
+
+  // Toggle from mobile to desktop
+  .post-content.mobile {
+    display: none;
+  }
+  .post-content.desktop {
+    display: block;
+  }
+  .post-footer.desktop {
+    display: block;
+  }
   .post-view {
     .post-bottom {
       .block.related {
-        .products-grid .product-item{
+        .products-grid .product-item {
           width: 20%;
+          margin-bottom: 15px;
         }
       }
     }
   }
 }
+
+//
+// Mobile
+//_________________________________________________________________________________
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m){
+  // Toggle from desktop to mobile
+  .post-content.mobile {
+    display: block;
+  }
+  .post-content.desktop {
+    display: none;
+  }
+  .post-footer.desktop {
+    display: none;
+  }
+  // Mobile Settings for post items
+  .owl-carousel .owl-item img {
+    margin-left: 1px !important;
+  }
+
+  .owl-carousel .owl-item img {
+    width: 100% !important;
+  }
+  .post-list-wrapper {
+    .post-list {
+      .post-holder {
+        display: block;
+        width: 100%;
+        margin-left: 0;
+        .post-content.mobile {
+          h2.post-title {
+            text-decoration: none;
+            text-transform: uppercase;
+            color: @color-brown;
+            //font-size: @font-size-bgk;
+            margin-bottom: 1rem;
+            margin-top: 5px;
+            font-size: 20px;
+          }
+          .post-description {
+            .post-text-hld {
+              .owl-carousel.owl-drag {
+                .owl-item{
+                  overflow: hidden;
+                }
+                .owl-dots {
+                  bottom: -22px;
+                  .owl-dot {
+                    border: 2px solid #858585;
+                    &.active {
+                      background-color: #858585;
+                    }
+                  }
+                }
+              }
+              p:last-of-type {
+                display: none;
+              }
+            }
+            .related-products {
+              margin-top: 40px;
+              margin-bottom: 20px;
+              .product-show-button {
+                cursor: pointer;
+                margin-bottom: 20px;
+                display: block;
+                font-size: 1.8rem;
+              }
+              .items {
+                width: 80%;
+                margin: 0 auto;
+                .item {
+                  margin-bottom: 20px;
+                  max-width: 45%;
+                  display: inline-block;
+                  img.product-image-photo {
+                    border: 1px solid @custom-gray-bg;
+                    margin-right: 0;
+                    margin-left: 0;
+                  }
+                }
+                .item:nth-child(even) {
+                  margin-left: 8%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .post-view{
+    .post-holder{
+      .post-bottom{
+        .related .product-items .product-item {
+          width: 43.333333%;
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+}
+
+
+
