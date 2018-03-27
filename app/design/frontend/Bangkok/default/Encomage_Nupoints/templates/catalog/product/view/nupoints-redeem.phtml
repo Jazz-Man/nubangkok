@@ -1,0 +1,29 @@
+<?php
+/** @var $block \Encomage\Nupoints\Block\Catalog\Product\View\NupointsRedeem */
+?>
+<div class="catalog-product-view-nupoints-redeem"
+     data-mage-init='{"Encomage_Nupoints/js/catalog/product/view/nupoints-redeem":{}}'>
+    <div>
+        <span><?= __('Your balance is'); ?></span>
+        <span class="js-customer-nupoints-balance"></span>
+        <span><?= __('nuPoints'); ?></span>
+    </div>
+    <div>
+        <span><?= __('I want to redeem'); ?></span>
+        <span>
+            <select>
+                <?php foreach ($block->getAvailableRedeemList() as $item): ?>
+                    <?php $product = $item['product']; ?>
+                    <option value="<?= $item['money']; ?>">
+                    <div>
+                        <img src=""/>
+                        <div><?= __('%1 nuPoints for %2 off', $item['nupoints'], $item['money']); ?></div>
+                        <div><?= __('Free %1', $product) ?></div>
+                    </div>
+                </option>
+                <?php endforeach; ?>
+            </select>
+        </span>
+        <span><button class="js-customer-nuponts-redeem"><span><?= __('Redeem'); ?></span></button></span>
+    </div>
+</div>

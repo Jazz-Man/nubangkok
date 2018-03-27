@@ -39,9 +39,12 @@ class Nupoints extends AbstractModel implements NupointsInterface
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
-    ) {
+    )
+    {
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
         $this->checkoutSession = $checkoutSession;
+        $this->_eventPrefix = 'nupoints';
+        $this->_eventObject = 'nupoints';
     }
 
     /**
@@ -57,7 +60,8 @@ class Nupoints extends AbstractModel implements NupointsInterface
         $this->_init(\Encomage\Nupoints\Model\ResourceModel\Nupoints::class);
         $this->_nuPointsToMoneyRates[50] = ['from' => 3000, 'to' => 3999];
         $this->_nuPointsToMoneyRates[100] = ['from' => 4000, 'to' => 4999];
-        $this->_nuPointsToMoneyRates[150] = ['from' => 5000];
+        $this->_nuPointsToMoneyRates[150] = ['from' => 5000, 'to' => 11999];
+        $this->_nuPointsToMoneyRates[500] = ['from' => 1200];
     }
 
     /**
@@ -67,6 +71,23 @@ class Nupoints extends AbstractModel implements NupointsInterface
     public function getConvertedMoneyToNupoints($baht)
     {
         return (floor($baht / 100)) * 100;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCanCustomerRedeem()
+    {
+        return (bool)!$this->checkoutSession->getUseCustomerNuPoints()
+            && $this->getNupoints() >= $this->getMinNuPointsCountForRedeem();
+    }
+
+    /**
+     * @return array
+     */
+    public function getNupointsToMoneyRates()
+    {
+        return $this->_nuPointsToMoneyRates;
     }
 
     /**
@@ -117,6 +138,10 @@ class Nupoints extends AbstractModel implements NupointsInterface
     public function redeemNupointsAfterOrderPlaced()
     {
         if ($this->checkoutSession->getUseCustomerNuPoints()) {
+            $this->_eventManager->dispatch(
+                $this->_eventPrefix . '_redeem_nupoints_after_order_place_before',
+                [$this->_eventObject => $this]
+            );
             $convertedToMoney = $this->getConvertedNupointsToMoney();
             $redeemed = $this->_nuPointsToMoneyRates[$convertedToMoney]['from'];
             if ($this->getNupoints() < $redeemed) {
@@ -124,6 +149,10 @@ class Nupoints extends AbstractModel implements NupointsInterface
             }
             $this->setNupoints((int)$this->getNupoints() - (int)$redeemed);
             $this->clearSession();
+            $this->_eventManager->dispatch(
+                $this->_eventPrefix . '_redeem_nupoints_after_order_place_after',
+                [$this->_eventObject => $this]
+            );
         }
         return $this;
     }
@@ -133,8 +162,10 @@ class Nupoints extends AbstractModel implements NupointsInterface
      */
     public function clearSession()
     {
+        $this->_eventManager->dispatch($this->_eventPrefix . '_clear_session_before', [$this->_eventObject => $this]);
         $this->checkoutSession->setNupointsRedeemedMoney(false);
         $this->checkoutSession->setUseCustomerNuPoints(false);
+        $this->_eventManager->dispatch($this->_eventPrefix . '_clear_session_after', [$this->_eventObject => $this]);
         return $this;
     }
 
@@ -145,10 +176,14 @@ class Nupoints extends AbstractModel implements NupointsInterface
      */
     public function addNupoints($value, $isConvert = false)
     {
-        if ($isConvert) {
-            $value = $this->getConvertedMoneyToNupoints($value);
+        $this->setData('value', $value);
+        $this->setData('is_convert', $isConvert);
+        if ($this->getData('is_convert')) {
+            $value = $this->getConvertedMoneyToNupoints($this->getData('value'));
         }
-        return $this->setNupoints((int)$this->getNupoints() + (int)$value);
+        $this->setNupoints((int)$this->getNupoints() + (int)$value);
+        $this->_eventManager->dispatch($this->_eventPrefix . '_add_nupoints_after', [$this->_eventObject => $this]);
+        return $this;
     }
 
     /**

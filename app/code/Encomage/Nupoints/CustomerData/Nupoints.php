@@ -70,10 +70,12 @@ class Nupoints implements SectionSourceInterface
         return 0;
     }
 
+    /**
+     * @return bool
+     */
     protected function _getIsEnoughNuPointsForRedeem()
     {
-        return (bool)!$this->checkoutSession->getUseCustomerNuPoints()
-            && $this->_getNupointItem()->getNupoints() >= $this->_getNupointItem()->getMinNuPointsCountForRedeem();
+        return $this->_getNupointItem()->isCanCustomerRedeem();
     }
 
     /**
