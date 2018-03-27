@@ -47,7 +47,7 @@ define([
                 $('.js-attach-file').val(image.currentSrc);
             }
             
-            if ($('#content').val() && image) {
+            if ($('#content').val() && image && $('#title').val()) {
                 $('.save-message-modal').modal("openModal");
             }
         });

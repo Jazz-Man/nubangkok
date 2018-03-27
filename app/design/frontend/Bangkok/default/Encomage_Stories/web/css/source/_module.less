@@ -49,8 +49,12 @@
         position: relative;
         .story-content {
           width: 100%;
+          h3.story-customer-info {
+            text-transform: capitalize;
+          }
           h3.story-title {
             text-transform: capitalize;
+            font-size: 1.4rem;
           }
           h3.story-create-at {
           }
@@ -75,7 +79,12 @@
             line-height: 1.42857143;
             font-size: 1.4rem;
             padding: 0;
-            width: 95%;
+            //width: 95%;
+            min-height: 80px;
+            .show-less {
+              color: rgb(187, 188, 183);
+              cursor: pointer;
+            }
           }
         }
         img {
@@ -108,6 +117,8 @@
 .add-story-content {
   .story-fieldset {
     display: block;
+    margin: 0 auto;
+    width: 95%;
     .story-image-uploader {
       margin: 20px;
       display: block;
@@ -115,7 +126,7 @@
       div.attach-file {
         width: 250px;
         height: 250px;
-        margin: 0 auto 20px;
+        margin: 0 auto 35px;
         float: inherit;
         background-color: #f4f7f7;
         padding-left: 100px;
@@ -125,15 +136,35 @@
         border: 1px solid #55463e;
         background-color: #55463e;
         color: white;
-        border-radius: 3px;
-        padding: 8px 55px;
+        padding: 10px 40px;
         font-weight: 700;
         text-transform: uppercase;
         cursor: pointer;
       }
     }
+    .story-title {
+      margin-bottom: 15px;
+      margin-top: 40px;
+      position: relative;
+      input {
+        height: 40px;
+        border: 1px solid #c1c1c1;
+        padding-top: 5px;
+          &::placeholder {
+            color: #c2c2c2;
+            font-size: 22px;
+            text-transform: uppercase;
+          }
+          &::-webkit-input-placeholder {
+            color: #c2c2c2;
+            font-size: 22px;
+            text-transform: uppercase;
+          }
+
+      }
+    }
     .story-info {
-      font-size: 2rem;
+      font-size: 16px;
       p.story-customer-name {
         display: inline-block;
         font-weight: 700;
@@ -145,6 +176,7 @@
       }
     }
     .story-content {
+      margin-bottom: 25px;
       textarea.story-textarea {
         height: 300px;
         resize: none;
@@ -155,7 +187,6 @@
       border: 1px solid #55463e;
       background-color: #55463e;
       color: white;
-      border-radius: 3px;
       padding: 8px 55px;
       font-weight: 700;
       text-transform: uppercase;
