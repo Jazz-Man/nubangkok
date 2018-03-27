@@ -1,6 +1,7 @@
 .stories-content {
   .buttons-container {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    margin-top: 20px;
     text-align: center;
     position: relative;
     .story-button {
@@ -8,10 +9,12 @@
       background: transparent;
       color: #55463e;
       border-radius: 3px;
-      padding: 8px 55px;
+      //padding: 8px 55px;
+      padding: 14px 5%;
       font-weight: 600;
       margin-top: -4px;
-      margin-left: 20px;
+      //margin-left: 20px;
+      margin-left: 5px;
       text-transform: uppercase;
       text-decoration: none;
     }
@@ -26,8 +29,8 @@
       border: 1px solid #aeaeae;
       padding: 2px 5px 2px 20px;
       position: absolute;
-      right: 10px;
-      top: 0;
+      right: 4%;
+      top: 7px;
       &:after {
         content: '+';
         font-size: 22px;
@@ -48,15 +51,18 @@
         width: 100%;
         position: relative;
         .story-content {
-          width: 100%;
+          width: 80%;
           h3.story-customer-info {
             text-transform: capitalize;
+            margin-top: 10px;
+            font-size: 1.6rem;
           }
           h3.story-title {
             text-transform: capitalize;
             font-size: 1.4rem;
           }
           h3.story-create-at {
+            font-size: 1.4rem;
           }
           p.short-content, p.full-content {
             display: inline-block;
@@ -90,14 +96,14 @@
         img {
           display: inline-block;
           float: right;
-          margin: 10px;
+          margin: 13px 10px 13px 10px;
           max-width: 140px;
           max-height: 140px;
         }
         .share-story {
           display: none;
           position: absolute;
-          bottom: 5px;
+          bottom: 0;
           right: 15px;
           .default-shared-link {
             a .share-btn {
@@ -146,39 +152,44 @@
       margin-bottom: 15px;
       margin-top: 40px;
       position: relative;
+      width: 90%;
       input {
         height: 40px;
         border: 1px solid #c1c1c1;
         padding-top: 5px;
-          &::placeholder {
-            color: #c2c2c2;
-            font-size: 22px;
-            text-transform: uppercase;
-          }
-          &::-webkit-input-placeholder {
-            color: #c2c2c2;
-            font-size: 22px;
-            text-transform: uppercase;
-          }
+        &::placeholder {
+          color: #c2c2c2;
+          font-size: 22px;
+          text-transform: uppercase;
+        }
+        &::-webkit-input-placeholder {
+          color: #c2c2c2;
+          font-size: 22px;
+          text-transform: uppercase;
+        }
 
       }
     }
     .story-info {
       font-size: 16px;
+      width: 90%;
       p.story-customer-name {
         display: inline-block;
         font-weight: 700;
         margin-left: 15px;
+        font-size: 15px;
       }
       p.story-date-create {
         display: inline-block;
         margin-left: 10%;
+        font-size: 15px;
       }
     }
     .story-content {
       margin-bottom: 25px;
+      width: 90%;
       textarea.story-textarea {
-        height: 300px;
+        height: 450px;
         resize: none;
       }
     }
@@ -191,6 +202,7 @@
       font-weight: 700;
       text-transform: uppercase;
       cursor: pointer;
+      margin-right: 10%;
     }
   }
   .save-message-modal {
@@ -199,18 +211,43 @@
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .fieldset.story-fieldset {
+
+  }
+  .stories-content .your-stories-block .your-stories-container .story-item {
+    width: 99%;
+    .story-content {
+      h3.story-customer-info {
+        margin-top: 15px;
+        font-size: 1.4rem;
+      }
+      h3.story-create-at {
+        font-size: 1.3rem;
+        margin-top: 5px;
+      }
+    }
+  }
   .our-story-block {
     .cms-img-container {
       width: 100% !important;
     }
   }
-  .add-story-content {
-    .story-fieldset {
-      text-align: center;
-      .story-info {
 
+  .add-story-content {
+    fieldset.story-fieldset {
+      text-align: center;
+      .story-title {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      .story-info {
+        width: 100%;
+        p.story-customer-name {
+          float: left;
+          margin-left: 0;
+        }
         .story-date-create {
-          margin-left: 20%;
+          float: right;
         }
       }
       .story-image-uploader {
@@ -218,6 +255,12 @@
           padding-left: 13%;
           padding-right: 13%;
         }
+      }
+      .story-content {
+        width: 100%;
+      }
+      span.save-button{
+        margin-right: 0;
       }
     }
   }
