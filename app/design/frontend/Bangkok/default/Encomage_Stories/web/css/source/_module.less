@@ -163,13 +163,16 @@
       position: relative;
       width: 90%;
       input {
-        height: 40px;
-        border: 1px solid #c1c1c1;
+        height: 50px;
+        border: 2px solid #d9d2cb - 50%;
         padding-top: 5px;
+        padding-left: 13px;
         &::placeholder {
-          color: #c2c2c2;
+          //color: #c2c2c2;
+          color: #d9d2cb;
           font-size: 22px;
           text-transform: uppercase;
+          font-weight: 700;
         }
         &::-webkit-input-placeholder {
           color: #c2c2c2;
@@ -197,12 +200,12 @@
         display: inline-block;
         font-weight: 700;
         margin-left: 15px;
-        font-size: 15px;
+        font-size: 16px;
       }
       p.story-date-create{
         display: inline-block;
         margin-left: 10%;
-        font-size: 15px;
+        font-size: 16px;
       }
     }
     .story-content {
@@ -211,6 +214,8 @@
       textarea.story-textarea {
         height: 450px;
         resize: none;
+        border: 2px solid #d9d2cb - 50%;
+        font-size: 17px;
       }
     }
     span.save-button {
@@ -245,6 +250,9 @@
         font-size: 1.3rem;
         margin-top: 5px;
       }
+      textarea.story-textarea {
+        font-size: 14px;
+      }
     }
   }
   .our-story-block {
@@ -261,11 +269,12 @@
         margin-bottom: 10px;
         input {
           padding-top: 2px;
+          height: 36px;
           &::placeholder {
-            font-size: 16px;
+            font-size: 14px;
           }
           &::-webkit-input-placeholder {
-            font-size: 16px;
+            font-size: 14px;
           }
 
         }
@@ -275,9 +284,11 @@
         p.story-customer-name {
           float: left;
           margin-left: 0;
+          font-size: 14px;
         }
         .story-date-create {
           float: right;
+          font-size: 14px;
         }
       }
       .story-image-uploader {
