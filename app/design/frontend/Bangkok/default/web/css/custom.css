@@ -796,24 +796,29 @@ input:-webkit-autofill {
     margin-left: 20px;
     background-color: transparent;
 }
-@media screen and (max-width: 375px){
-    .cart-summary .cart-totals .data.table.totals .totals.redeem.excl div.amount{
+
+@media screen and (max-width: 375px) {
+    .cart-summary .cart-totals .data.table.totals .totals.redeem.excl div.amount {
         width: 59px;
 
     }
 }
-@media screen and (max-width: 320px){
-   .cart-container .totals.redeem.excl .input {
-       width: 70px;
-   }
-    .cart-container .totals.redeem.excl .btn button{
+
+@media screen and (max-width: 320px) {
+    .cart-container .totals.redeem.excl .input {
+        width: 70px;
+    }
+
+    .cart-container .totals.redeem.excl .btn button {
         font-size: 12px !important;
         padding: 2px 0;
     }
-    .cart-summary .fieldset.coupon .actions-toolbar .primary button span{
+
+    .cart-summary .fieldset.coupon .actions-toolbar .primary button span {
         font-size: 12px;
     }
-    .cart-summary .cart-totals .data.table.totals .totals.redeem.excl div.amount{
+
+    .cart-summary .cart-totals .data.table.totals .totals.redeem.excl div.amount {
         width: 50px;
         overflow: hidden;
     }
@@ -962,12 +967,15 @@ input:-webkit-autofill {
     .cart-summary .fieldset.coupon .actions-toolbar .primary button span {
         font-size: 14px;
     }
-    .totals.redeem.excl .btn{
+
+    .totals.redeem.excl .btn {
         width: 60px;
     }
-    .totals.redeem.excl .btn button{
+
+    .totals.redeem.excl .btn button {
         padding: 6px 0;
     }
+
     .cart-summary .fieldset.coupon .actions-toolbar .primary .action.apply.primary {
         margin-left: 5px;
         padding: 5px;
@@ -987,6 +995,6 @@ input:-webkit-autofill {
 }
 
 /* google icon on button on my account page */
-.customer-account-login .btn-google .fa-google{
+.customer-account-login .btn-google .fa-google {
     background: none;
 }
