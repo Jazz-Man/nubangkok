@@ -51,30 +51,39 @@
         width: 100%;
         position: relative;
         .story-content {
-          width: 80%;
-          h3.story-customer-info {
+          width: 100%;
+          .stories-data{
+            display: inline-grid;
+            width: 80%;
+          }
+          span.story-customer-info {
             text-transform: capitalize;
             margin-top: 10px;
             font-size: 1.6rem;
           }
-          h3.story-title {
-            text-transform: capitalize;
+          span.story-title {
+            text-transform: uppercase;
             font-size: 1.4rem;
+            margin-top: 10px;
+            margin-bottom: 10px;
           }
-          h3.story-create-at {
+          span.story-create-at {
             font-size: 1.4rem;
+            margin-top: 10px;
+            color: silver;
           }
-          p.short-content, p.full-content {
+          div.short-content, div.full-content {
             display: inline-block;
           }
-          p.short-content {
+          div.short-content {
+            width: 100%;
             .show-more {
               color: rgb(187, 188, 183);
               cursor: pointer;
             }
           }
-          pre.full-content {
-            white-space: pre-line;
+          div.full-content {
+            //white-space: div-line;
             display: none;
             border: white;
             background: white;
@@ -173,13 +182,24 @@
     .story-info {
       font-size: 16px;
       width: 90%;
-      p.story-customer-name {
+      span.story-customer-name {
         display: inline-block;
         font-weight: 700;
         margin-left: 15px;
         font-size: 15px;
       }
-      p.story-date-create {
+      span.story-date-create {
+        display: inline-block;
+        margin-left: 10%;
+        font-size: 15px;
+      }
+      p.story-customer-name{
+        display: inline-block;
+        font-weight: 700;
+        margin-left: 15px;
+        font-size: 15px;
+      }
+      p.story-date-create{
         display: inline-block;
         margin-left: 10%;
         font-size: 15px;
@@ -217,11 +237,11 @@
   .stories-content .your-stories-block .your-stories-container .story-item {
     width: 99%;
     .story-content {
-      h3.story-customer-info {
+      span.story-customer-info {
         margin-top: 15px;
         font-size: 1.4rem;
       }
-      h3.story-create-at {
+      span.story-create-at {
         font-size: 1.3rem;
         margin-top: 5px;
       }
@@ -239,6 +259,16 @@
       .story-title {
         width: 100%;
         margin-bottom: 10px;
+        input {
+          padding-top: 2px;
+          &::placeholder {
+            font-size: 16px;
+          }
+          &::-webkit-input-placeholder {
+            font-size: 16px;
+          }
+
+        }
       }
       .story-info {
         width: 100%;
@@ -261,6 +291,13 @@
       }
       span.save-button{
         margin-right: 0;
+      }
+      .story-image-uploader{
+        margin: 0;
+        div.attach-file{
+          width: 74%;
+          height: 250px;
+        }
       }
     }
   }
