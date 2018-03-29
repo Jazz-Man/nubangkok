@@ -655,7 +655,7 @@ input:-webkit-autofill {
     }
 
     div.stories-content .your-stories-block .your-stories-container .story-item {
-        margin-top: 30px;
+        margin-top: 0;
     }
 }
 
@@ -740,14 +740,8 @@ input:-webkit-autofill {
     }
 
     .cart.table-wrapper .product-item-photo .product-image-container .product-image-wrapper .image-block {
-        /*width: 85px;*/
-        /*height: 82px;*/
         width: 99px;
         height: 99px;
-    }
-
-    .cart.table-wrapper .product-item-details {
-        /*line-height: 10px;*/
     }
 
     .cart.table-wrapper .product-item-details .col.qty {
@@ -776,9 +770,6 @@ input:-webkit-autofill {
         font-size: 11px;
     }
 
-    /*.cart.table-wrapper .col.qty {*/
-    /*margin-top: 25px;*/
-    /*}*/
     .cart.table-wrapper .cart-price {
         top: -46px;
     }
@@ -961,6 +952,8 @@ input:-webkit-autofill {
 
     .stories-content .your-stories-block .your-stories-container .story-item img {
         margin: 13px 0 13px 10px;
+        width: 120px;
+        height: 120px;
     }
 
     .stories-content .buttons-container a.add-story-button {
@@ -1007,7 +1000,6 @@ input:-webkit-autofill {
 
     .cart-summary .fieldset.coupon .actions-toolbar {
         width: 30%;
-        /*margin-left: 14px;*/
     }
 
     .fieldset.coupon.applied .actions-toolbar .primary .action.cancel.primary {
@@ -1050,33 +1042,6 @@ input:-webkit-autofill {
     }
 }
 
-/*your stories*/
-@media screen and (max-width: 1271px) {
-    .stories-content .your-stories-block .your-stories-container .story-item .story-content .stories-data {
-        width: 78%;
-    }
-}
-
-@media screen and (max-width: 1102px) {
-    .stories-content .your-stories-block .your-stories-container .story-item .story-content span.stories-data {
-        width: 78%;
-    }
-}
-@media screen and (max-width: 1014px) {
-    .stories-content .your-stories-block .your-stories-container .story-item .story-content span.stories-data {
-        width: 76%;
-    }
-}
-@media screen and (max-width: 941px){
-    .stories-content .your-stories-block .your-stories-container .story-item .story-content span.stories-data {
-        width: 73%;
-    }
-}
-@media screen and (max-width: 852px){
-    .stories-content .your-stories-block .your-stories-container .story-item .story-content span.stories-data {
-        width: 70%;
-    }
-}
 @media screen and (max-width: 551px){
     .stories-content .your-stories-block .your-stories-container .story-item .story-content span.stories-data {
         width: 50%;
@@ -1087,16 +1052,17 @@ input:-webkit-autofill {
         width: 50%;
     }
 }
-
+@media screen and (max-width: 320px) {
+    .stories-content .your-stories-block .your-stories-container .story-item img {
+        width: 100px;
+        height: 100px;
+    }
+}
 /* our stories */
 @media screen and (max-width: 950px) {
     .stories-content .buttons-container .add-story-button {
-        /*top: 40px !important;*/
+        top: 40px !important;
     }
-
-    /*.stories-content .buttons-container {*/
-    /*margin-bottom: 60px !important;*/
-    /*}*/
 }
 
 @media screen and (max-width: 515px) {
@@ -1160,6 +1126,9 @@ input:-webkit-autofill {
 }
 
 @media screen and (max-width: 767px) {
+    .your-stories-container{
+        margin-top: 30px;
+    }
     .stories-yourstories-add .modal-popup .modal-content p {
         font-size: 15px;
         text-align: inherit;
