@@ -998,3 +998,15 @@ input:-webkit-autofill {
 .customer-account-login .btn-google .fa-google {
     background: none;
 }
+
+/*mobile footer 5s*/
+@media screen and (max-width: 320px) {
+    .page-footer .footer.content .mobile-footer .social-links .links-container {
+        width: 200px;
+        margin-right: 0;
+    }
+
+    .page-footer .footer.content .mobile-footer .social-links .links-container a.social-acc-pic {
+        margin-right: 5px;
+    }
+}
