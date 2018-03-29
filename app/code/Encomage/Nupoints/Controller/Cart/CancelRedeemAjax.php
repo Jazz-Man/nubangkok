@@ -18,11 +18,6 @@ class CancelRedeemAjax extends \Magento\Framework\App\Action\Action
     private $resultJsonFactory;
 
     /**
-     * @var \Magento\Checkout\Model\Session
-     */
-    private $checkoutSession;
-
-    /**
      * @var \Magento\Customer\Model\Session
      */
     private $customerSession;
@@ -34,16 +29,14 @@ class CancelRedeemAjax extends \Magento\Framework\App\Action\Action
 
 
     /**
-     * RedeemAjax constructor.
+     * CancelRedeemAjax constructor.
      * @param Context $context
-     * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Encomage\Nupoints\Quote\ReCalculate $reCalculateQuote
      */
     public function __construct(
         Context $context,
-        \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
         \Magento\Customer\Model\Session $customerSession,
         \Encomage\Nupoints\Quote\ReCalculate $reCalculateQuote
@@ -52,7 +45,6 @@ class CancelRedeemAjax extends \Magento\Framework\App\Action\Action
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->reCalculateQuote = $reCalculateQuote;
-        $this->checkoutSession = $checkoutSession;
         $this->customerSession = $customerSession;
     }
 
@@ -70,7 +62,7 @@ class CancelRedeemAjax extends \Magento\Framework\App\Action\Action
             $resultRedirect->setUrl($this->_redirect->getRefererUrl());
             return $resultRedirect;
         }
-        $this->checkoutSession->setUseCustomerNuPoints(false);
+        $this->customerSession->getCustomer()->getNupointItem()->disableUseNupointsOnCheckout();
         $this->reCalculateQuote->reCalculate();
     }
 }

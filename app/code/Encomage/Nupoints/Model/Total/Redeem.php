@@ -42,7 +42,11 @@ class Redeem extends AbstractTotal
     {
         parent::collect($quote, $shippingAssignment, $total);
 
-        if (!$this->checkoutSession->getUseCustomerNuPoints()) {
+        /** @var \Encomage\Customer\Model\Customer $customer */
+        $customer = $this->customerSession->getCustomer();
+        $nupointItem = $customer->getNupointItem();
+        $nupointsCheckoutData = $nupointItem->getCustomerNupointsCheckoutData();
+        if ($nupointsCheckoutData && $nupointsCheckoutData instanceof \Magento\Framework\DataObject) {
             $total->setNupointsRedeemTotal(0);
             $total->setBaseNupointsRedeemTotal(0);
         } else {
@@ -50,9 +54,7 @@ class Redeem extends AbstractTotal
                 $total->setNupointsRedeemTotal(0);
                 $total->setBaseNupointsRedeemTotal(0);
             } else {
-                /** @var \Encomage\Customer\Model\Customer $customer */
-                $customer = $this->customerSession->getCustomer();
-                $redeem = (int)$customer->getNupointItem()->getConvertedNupointsToMoney();
+                $redeem = $nupointsCheckoutData->getMoneyToRedeem();
                 if ($redeem) {
                     $total->setNupointsRedeemTotal(-$redeem);
                     $total->setBaseNupointsRedeemTotal(-$redeem);
@@ -69,7 +71,6 @@ class Redeem extends AbstractTotal
                     $total->setTotalAmount('subtotal', $total->getSubtotal());
                     $total->setBaseTotalAmount('subtotal', $total->getSubtotal());
 
-                    $this->checkoutSession->setNupointsRedeemedMoney($redeem);
                 }
             }
         }

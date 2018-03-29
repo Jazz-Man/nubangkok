@@ -10,6 +10,7 @@ use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\DataObject;
 
 
 /**
@@ -65,6 +66,68 @@ class Nupoints extends AbstractModel implements NupointsInterface
     }
 
     /**
+     * @param int $nupoints
+     * @return $this
+     */
+    public function enableUseNupointsOnCheckout(int $nupoints)
+    {
+        $this->setNupointsCheckoutData(
+            new DataObject(
+                [
+                    'nupoints_to_redeem' => $nupoints,
+                    'money_to_redeem' => $this->getConvertedNupointsToMoney($nupoints)
+                ]
+            )
+        );
+        $this->_eventManager->dispatch(
+            $this->_eventPrefix . '_enable_use_nupoints_on_checkout_before',
+            [$this->_eventObject => $this]
+        );
+        $this->checkoutSession->setUseCustomerNuPoints($this->getNupointsCheckoutData());
+        $this->_eventManager->dispatch(
+            $this->_eventPrefix . '_enable_use_nupoints_on_checkout_after',
+            [$this->_eventObject => $this]
+        );
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function disableUseNupointsOnCheckout()
+    {
+        $this->_eventManager->dispatch(
+            $this->_eventPrefix . '_disable_use_nupoints_on_checkout_before',
+            [$this->_eventObject => $this]
+        );
+        $this->checkoutSession->setUseCustomerNuPoints(false);
+        $this->_eventManager->dispatch(
+            $this->_eventPrefix . '_disable_use_nupoints_on_checkout_after',
+            [$this->_eventObject => $this]
+        );
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerNupointsCheckoutData()
+    {
+        return $this->checkoutSession->getUseCustomerNuPoints();
+    }
+
+    /**
+     * @return int
+     */
+    public function getAvailableNupoints()
+    {
+        if (!$this->getCustomerNupointsCheckoutData()) {
+            return $this->getNupoints();
+        }
+        return $this->getNupoints() - $this->getCustomerNupointsCheckoutData()->getNupointsToRedeem();
+    }
+
+    /**
      * @param $baht
      * @return float|int
      */
@@ -78,7 +141,7 @@ class Nupoints extends AbstractModel implements NupointsInterface
      */
     public function isCanCustomerRedeem()
     {
-        return (bool)!$this->checkoutSession->getUseCustomerNuPoints()
+        return (bool)!$this->getCustomerNupointsCheckoutData()
             && $this->getNupoints() >= $this->getMinNuPointsCountForRedeem();
     }
 
@@ -148,24 +211,12 @@ class Nupoints extends AbstractModel implements NupointsInterface
                 throw new LocalizedException(__('Not enough nupoints for redeem'));
             }
             $this->setNupoints((int)$this->getNupoints() - (int)$redeemed);
-            $this->clearSession();
+            $this->disableUseNupointsOnCheckout();
             $this->_eventManager->dispatch(
                 $this->_eventPrefix . '_redeem_nupoints_after_order_place_after',
                 [$this->_eventObject => $this]
             );
         }
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function clearSession()
-    {
-        $this->_eventManager->dispatch($this->_eventPrefix . '_clear_session_before', [$this->_eventObject => $this]);
-        $this->checkoutSession->setNupointsRedeemedMoney(false);
-        $this->checkoutSession->setUseCustomerNuPoints(false);
-        $this->_eventManager->dispatch($this->_eventPrefix . '_clear_session_after', [$this->_eventObject => $this]);
         return $this;
     }
 
