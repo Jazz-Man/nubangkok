@@ -10,20 +10,31 @@
     </div>
     <div>
         <span><?= __('I want to redeem'); ?></span>
-        <span>
-            <select>
-                <?php foreach ($block->getAvailableRedeemList() as $item): ?>
-                    <?php $product = $item['product']; ?>
-                    <option value="<?= $item['money']; ?>">
+        <!-- <select>
+                <?php /*foreach ($block->getAvailableRedeemList() as $item): */ ?>
+                    <?php /*$product = $item['product']; */ ?>
+                    <option value="<? /*= $item['money']; */ ?>">
                     <div>
                         <img src=""/>
-                        <div><?= __('%1 nuPoints for %2 off', $item['nupoints'], $item['money']); ?></div>
-                        <div><?= __('Free %1', $product) ?></div>
+                        <div><? /*= __('%1 nuPoints for %2 off', $item['nupoints'], $item['money']); */ ?></div>
+                        <div><? /*= __('Free %1', $product) */ ?></div>
                     </div>
                 </option>
-                <?php endforeach; ?>
-            </select>
-        </span>
+                <?php /*endforeach; */ ?>
+            </select>-->
+
+        <div class="js-select js-nupoints-rates" data-mage-init='{"customSelect":{}}'>
+            <div class="js-list">
+                <div class="js-option" data-option-value="4000">
+                    <div>Test</div>
+                    <div>test</div>
+                </div>
+                <div class="js-option" data-option-value="3000">
+                    <div>Test1</div>
+                    <div>test1</div>
+                </div>
+            </div>
+        </div>
         <span><button class="js-customer-nuponts-redeem"><span><?= __('Redeem'); ?></span></button></span>
     </div>
 </div>

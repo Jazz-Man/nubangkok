@@ -5,7 +5,7 @@ var config = {
     map: {
         '*': {
             niceselect: 'js/plugins/jquery.nice-select',
-
+            customSelect: 'js/plugins/custom-select',
             sticky: 'js/plugins/jquery.sticky',
             owlcarousel: 'Mageplaza_BetterSlider/js/owl.carousel'
         }
@@ -15,7 +15,7 @@ var config = {
     },
     shim: {
         'js/plugins/jquery.nice-select': ['jquery'],
-        'js/plugins/jquery.sticky': ['jquery', ],
+        'js/plugins/jquery.sticky': ['jquery'],
         'Mageplaza_BetterSlider/js/owl.carousel': ['jquery'],
         'Mageplaza_BetterSlider/js/owl.navigation': ['owlcarousel'],
         'Mageplaza_BetterSlider/js/owl.video': ['owlcarousel'],
