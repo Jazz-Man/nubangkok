@@ -1,0 +1,32 @@
+<?php
+/** @var $block Encomage\Blog\Block\Post\Product\Items */
+
+//$_post = $block->getPost();
+$_relatedProducts = $block->getRelatedProducts();
+?>
+<?php if ($exist = $_relatedProducts->getSize()) : ?>
+    <?php
+    $_buttonText = __('Click to see products shown above');
+    $image = 'category_page_grid'; // From [Your_Theme]/etc/view.xml
+    ?>
+    <div class="related-products" data-mage-init='{"accordion":{
+    "openedState": "active",
+    "collapsible": true,
+    "active": false,
+    "multipleCollapsible": true}}'>
+        <span class="product-show-button" href="#" data-role="collapsible">
+            <?= $_buttonText->getText(); ?>
+        </span>
+        <ul class="items" data-role="content">
+            <?php foreach ($_relatedProducts as $_product) : ?>
+                <li class="item">
+                    <?php $productImage = $block->getImage($_product, $image); ?>
+                    <a href="<?= /* @escapeNotVerified */
+                    $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
+                        <?= $productImage->toHtml() ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>

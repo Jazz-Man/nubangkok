@@ -156,6 +156,11 @@
 
         <referenceContainer name="footer">
             <block class="Magento\Framework\View\Element\Template" name="footer.mobile" before="-" template="Magento_Theme::html/mobile/html/footer-mobile.phtml"/>
+            <block class="Magento\Cms\Block\Block" name="desktop_footer">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">desktop_footer</argument>
+                </arguments>
+            </block>
         </referenceContainer>
 
     </body>
