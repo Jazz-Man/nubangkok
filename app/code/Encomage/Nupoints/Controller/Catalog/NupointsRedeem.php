@@ -72,9 +72,9 @@ class NupointsRedeem extends \Magento\Framework\App\Action\Action
         if (!$nuPoints->isCanCustomerRedeem()) {
             $response['success'] = false;
         } else {
-            $nuPoints->enableUseNupointsOnCheckout();
-            $response['success'] = false;
-            $response['customer_nupoints'] = $nuPoints->getNupoints();
+            $nuPoints->enableUseNupointsOnCheckout($this->getRequest()->getParam('redeem_nupoints'));
+            $response['success'] = true;
+            $response['customer_nupoints'] = $nuPoints->getAvailableNupoints();
         }
         $resultJson = $this->resultJsonFactory->create();
         return $resultJson->setData($response);
