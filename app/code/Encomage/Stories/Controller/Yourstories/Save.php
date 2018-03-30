@@ -9,6 +9,7 @@ use Encomage\Stories\Model\Stories;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Customer\Model\Session;
+use Magento\Framework\Filesystem\Io\File;
 
 /**
  * Class Save
@@ -33,6 +34,10 @@ class Save extends Action
      */
     private $date;
     /**
+     * @var File
+     */
+    private $ioFile;
+    /**
      * @var Session
      */
     protected $customerSession;
@@ -45,6 +50,7 @@ class Save extends Action
      * @param Session $customerSession
      * @param DateTime $date
      * @param StoriesInterfaceFactory $storiesFactory
+     * @param File $ioFile
      */
     public function __construct(
         Context $context,
@@ -52,9 +58,11 @@ class Save extends Action
         Filesystem $filesystem,
         Session $customerSession,
         DateTime $date,
-        StoriesInterfaceFactory $storiesFactory
+        StoriesInterfaceFactory $storiesFactory,
+        File $ioFile
     )
     {
+        $this->ioFile = $ioFile;
         $this->mediaDirectory = $filesystem->getDirectoryWrite(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
         $this->storiesRepository = $storiesRepository;
         $this->customerSession = $customerSession;
@@ -84,6 +92,7 @@ class Save extends Action
             $modelStory->setCreatedAt($this->date->gmtDate());
             $modelStory->setTitle($params['title']);
             $dirPath = $this->mediaDirectory->getAbsolutePath(Stories::MEDIA_PATH_STORIES_IMAGE);
+            $this->ioFile->checkAndCreateFolder($dirPath);
             try {
                 $imageName = $this->_saveImage($params['story_image'], $dirPath);
                 $modelStory->setImagePath(Stories::MEDIA_PATH_STORIES_IMAGE . $imageName);
