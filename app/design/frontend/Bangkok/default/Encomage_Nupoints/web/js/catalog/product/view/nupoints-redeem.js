@@ -11,7 +11,6 @@ define([
             redeemButton = $element.find('.js-customer-nuponts-redeem');
         $element.find('.js-customer-nupoints-balance').html(customerNupointsValue);
         redeemButton.on('click', function () {
-            debugger;
             var v = select.find('.js-selected-option-container').data('selectValue');
         });
 

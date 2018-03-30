@@ -384,6 +384,67 @@
     }
   }
 
+  .view-nupoints-redeem {
+    > div:nth-child(2) {
+      margin-top: 50px;
+      > span:first-of-type {
+        display: inline-block;
+        float: left;
+        padding-top: 9px;
+        margin-right: 5%;
+      }
+      .mobile-to-redeem {
+        display: none;
+      }
+      .js-select-custom {
+        div.js-list {
+          position: relative;
+          width: 50%;
+          height: 38px;
+          float: left;
+          border-top: 1px solid;
+          border-bottom: 1px solid;
+          display: inline-block;
+          .placeholder {
+            padding-left: 20%;
+            padding-top: 9px;
+            display: block;
+          }
+          .js-option {
+            display: none;
+            .option-container {
+              height: 80px;
+              border-bottom: 1px solid;
+              background-color: #ffffff;
+            }
+          }
+        }
+        > span:first-of-type {
+          button {
+            background-color: #55463e;
+            color: white;
+            height: 38px;
+            text-transform: uppercase;
+            border: none;
+            margin-left: 5%;
+          }
+        }
+        .js-selected-option-container:after {
+          content: @icon-select-arrow-down;
+          position: absolute;
+          height: 15px;
+          width: 15px;
+          right: 0;
+          top: 9px;
+        }
+        &.active {
+          .js-selected-option-container:after {
+            content: @icon-select-arrow-up;
+          }
+        }
+      }
+    }
+  }
 }
 
 //
@@ -621,7 +682,7 @@
           display: inline-block;
           border-bottom: 2px solid #d1d1d1;
           margin-bottom: 5px;
-          span{
+          span {
             padding-left: 15px;
             display: inline-block;
             margin-top: 3px;
@@ -635,7 +696,7 @@
               height: 22px;
               width: 22px;
               display: inline-block;
-              img{
+              img {
                 width: 100%;
               }
             }
@@ -655,8 +716,27 @@
           }
         }
       }
-      .copyright{
+      .copyright {
         padding-top: 7px;
+      }
+    }
+  }
+
+  .view-nupoints-redeem {
+    margin-top: 30px;
+    > div:nth-child(2) {
+      margin-top: 20px;
+      > span:first-of-type {
+        display: none;
+      }
+      .js-select-custom div.js-list {
+        width: 62%;
+        .placeholder {
+          padding-left: 5%;
+        }
+        .js-option div {
+          height: max-content;
+        }
       }
     }
   }

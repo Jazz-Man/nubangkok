@@ -1,7 +1,7 @@
 <?php
 /** @var $block \Encomage\Nupoints\Block\Catalog\Product\View\NupointsRedeem */
 ?>
-<div class="catalog-product-view-nupoints-redeem"
+<div class="catalog-product-view-nupoints-redeem view-nupoints-redeem"
      data-mage-init='{"Encomage_Nupoints/js/catalog/product/view/nupoints-redeem":{}}'>
     <div>
         <span><?= __('Your balance is'); ?></span>
@@ -10,6 +10,7 @@
     </div>
     <div>
         <span><?= __('I want to redeem'); ?></span>
+        <p class="mobile-to-redeem"><?= __('I want to redeem'); ?></p>
         <!-- <select>
                 <?php /*foreach ($block->getAvailableRedeemList() as $item): */ ?>
                     <?php /*$product = $item['product']; */ ?>
@@ -23,18 +24,38 @@
                 <?php /*endforeach; */ ?>
             </select>-->
 
-        <div class="js-select js-nupoints-rates" data-mage-init='{"customSelect":{}}'>
+        <div class="js-select-custom js-nupoints-rates select-redeem"
+             data-mage-init='{"customSelect":{"placeholder":"<?= __('Choose your redeem'); ?>"}}'>
             <div class="js-list">
                 <div class="js-option" data-option-value="4000">
-                    <div>Test</div>
-                    <div>test</div>
+                    <div class="option-container">
+                        <div class="image-container">
+                            <img src="#" alt=""></div>
+                        <div class="text-container"><p>nuPoints for off</p>
+                            <p>Free a product name A</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="js-option" data-option-value="3000">
-                    <div>Test1</div>
-                    <div>test1</div>
+                    <div class="option-container">
+                        <div class="image-container">
+                            <img src="#" alt=""></div>
+                        <div class="text-container"><p>nuPoints for off</p>
+                            <p>Free a product name B</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="js-option" data-option-value="2000">
+                    <div class="option-container">
+                        <div class="image-container">
+                            <img src="#" alt=""></div>
+                        <div class="text-container"><p>nuPoints for off</p>
+                            <p>Free a product name C</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <span><button class="js-customer-nuponts-redeem"><span><?= __('Redeem'); ?></span></button></span>
         </div>
-        <span><button class="js-customer-nuponts-redeem"><span><?= __('Redeem'); ?></span></button></span>
     </div>
 </div>
