@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Encomage_Nupoints::nupoints" title="Nupoints" module="Encomage_Nupoints" sortOrder="51"
+             resource="Encomage_Nupoints::nupoints"/>
+    </menu>
+</config>

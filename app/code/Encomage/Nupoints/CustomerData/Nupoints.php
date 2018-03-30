@@ -41,7 +41,7 @@ class Nupoints implements SectionSourceInterface
     protected function _getRedeemValue()
     {
         if ($this->customerSession->isLoggedIn() && $this->_getNupointItem()->getCustomerNupointsCheckoutData()) {
-            return (int)$this->_getNupointItem()->getMoneyToRedeem();
+            return (int)$this->_getNupointItem()->getCustomerNupointsCheckoutData()->getMoneyToRedeem();
         }
         return 0;
     }

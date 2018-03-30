@@ -62,7 +62,7 @@ class Nupoints extends AbstractModel implements NupointsInterface
         $this->_nuPointsToMoneyRates[50] = ['from' => 3000, 'to' => 3999];
         $this->_nuPointsToMoneyRates[100] = ['from' => 4000, 'to' => 4999];
         $this->_nuPointsToMoneyRates[150] = ['from' => 5000, 'to' => 11999];
-        $this->_nuPointsToMoneyRates[500] = ['from' => 1200];
+        $this->_nuPointsToMoneyRates[500] = ['from' => 12000];
     }
 
     /**

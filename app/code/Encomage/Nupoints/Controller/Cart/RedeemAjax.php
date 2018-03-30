@@ -64,7 +64,7 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
             return $resultRedirect;
         }
         //TODO:: This var should be fixed;
-        $var = 3000;
+        $var = $this->getRequest()->getParam('redeem_nupoints');
         $this->customerSession->getCustomer()->getNupointItem()->enableUseNupointsOnCheckout($var);
         $this->reCalculateQuote->reCalculate();
     }

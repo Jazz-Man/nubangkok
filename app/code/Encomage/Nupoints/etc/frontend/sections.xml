@@ -13,4 +13,7 @@
     <action name="customer/account/loginPost">
         <section name="nupoints"/>
     </action>
+    <action name="nupoints/catalog/nupointsRedeem">
+        <section name="nupoints"/>
+    </action>
 </config>
