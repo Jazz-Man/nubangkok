@@ -106,7 +106,10 @@ class UpgradeData implements UpgradeDataInterface
 
         if (version_compare($context->getVersion(), '0.1.6', '<')) {
             $this->upgradeCmsBlockOurStories();
-            $this->upgradeLeftMenu015();
+        }
+        
+        if (version_compare($context->getVersion(), '0.1.7', '<')) {
+            $this->upgradeLeftMenu017();
         }
     }
 
@@ -1132,21 +1135,15 @@ EOD;
         return $this;
     }
     
-    private function upgradeLeftMenu015()
+    private function upgradeLeftMenu017()
     {
         $content = <<<EOD
-<div class="nav-left-links js-left-link" data-cms-page="why-nu"><a class="violet-link" href="{{store url="why-nu"}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
-<div class="nav-left-links js-left-link"><a href="#">INSPIRATION</a></div>
-<div class="nav-left-links js-left-link"><a href="#">nu STORIES (yours and ours)</a></div>
-<div class="nav-left-links js-left-link" data-page-class="cms-customer-care"><a href="{{store url='customer-care'}}">CUSTOMER CARE</a></div>
+<div class="nav-left-links js-left-link" data-page-class="why-nu"><a class="violet-link" href="{{store url="why-nu"}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div class="nav-left-links js-left-link" data-page-class="blog-index-index"><a href="{{store url='inspiration'}}">INSPIRATION</a></div>
+<div class="nav-left-links js-left-link" data-page-class="stories-index-index"><a href="{{store url='stories'}}">nu STORIES (yours and ours)</a></div>
 <div class="nav-left-links js-left-link" data-page-class="cms-product-care"><a href="{{store url='product-care'}}">PRODUCT CARE</a></div>
-<div class="nav-left-links js-left-link" data-page-class="cms-contact-us"><a href="{{store url='contact-us'}}">CONTACT US</a></div>
 <div class="nav-left-links js-left-link" data-page-class="careers-listing-index"><a href="{{store url='careers/listing/index'}}">CAREER</a></div>
-<div class="social-links"><a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/facebook.png}}" alt="facebook-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/instagram.png}}" alt="instagram-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/youtube.png}}" alt="youtube-icon" /> </a></div>
-<div class="nav-left-links js-left-links">
-<p style="margin-top: 3px; margin-bottom: 0;">#nuBangkok</p>
-</div>
-<div class="nav-left-links js-left-link" data-page-class="cms-policies" style="margin-bottom: 0;"><a href="{{store url='policies'}}">POLICIES</a></div>
+<div class="nav-left-links js-left-links"><a style="margin-top: 3px; margin-bottom: 0;">#nuBangkok</a></div>
 EOD;
         $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
         $block->setContent($content);
