@@ -10,6 +10,8 @@ use Magento\Framework\Filesystem;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Filesystem\Io\File;
+use Magento\Framework\App\Cache\StateInterface;
+use Magento\Framework\App\Cache\TypeListInterface;
 
 /**
  * Class Save
@@ -38,6 +40,14 @@ class Save extends Action
      */
     private $ioFile;
     /**
+     * @var StateInterface
+     */
+    private $cacheState;
+    /**
+     * @var TypeListInterface
+     */
+    private $typeList;
+    /**
      * @var Session
      */
     protected $customerSession;
@@ -51,6 +61,8 @@ class Save extends Action
      * @param DateTime $date
      * @param StoriesInterfaceFactory $storiesFactory
      * @param File $ioFile
+     * @param StateInterface $cacheState
+     * @param TypeListInterface $typeList
      */
     public function __construct(
         Context $context,
@@ -59,7 +71,10 @@ class Save extends Action
         Session $customerSession,
         DateTime $date,
         StoriesInterfaceFactory $storiesFactory,
-        File $ioFile
+        File $ioFile,
+        StateInterface $cacheState,
+        TypeListInterface $typeList
+
     )
     {
         $this->ioFile = $ioFile;
@@ -67,6 +82,8 @@ class Save extends Action
         $this->storiesRepository = $storiesRepository;
         $this->customerSession = $customerSession;
         $this->storiesFactory = $storiesFactory;
+        $this->cacheState = $cacheState;
+        $this->typeList = $typeList;
         $this->date = $date;
         parent::__construct($context);
     }
@@ -97,6 +114,7 @@ class Save extends Action
                 $imageName = $this->_saveImage($params['story_image'], $dirPath);
                 $modelStory->setImagePath(Stories::MEDIA_PATH_STORIES_IMAGE . $imageName);
                 $this->storiesRepository->save($modelStory);
+                $this->_invalidateCache();
                 $this->messageManager->addSuccessMessage(__('Your story hes been sent'));
             } catch (\Exception $e) {
                 if (!empty($imageName)) {
@@ -148,5 +166,19 @@ class Save extends Action
         $newDate = new \DateTime();
         $imageName = $newDate->format('m_d_Y H_i_s') . '.' . $imageInfo[1];
         return $imageName;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function _invalidateCache()
+    {
+        if ($this->cacheState->isEnabled(\Magento\PageCache\Model\Cache\Type::TYPE_IDENTIFIER)) {
+            $this->typeList->invalidate(['full_page']);
+        }
+        if ($this->cacheState->isEnabled(\Magento\Framework\App\Cache\Type\Block::TYPE_IDENTIFIER)) {
+            $this->typeList->invalidate(['block_html']);
+        }
+        return $this;
     }
 }
