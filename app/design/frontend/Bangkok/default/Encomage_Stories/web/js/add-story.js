@@ -14,7 +14,7 @@ define([
             innerScroll: true,
             title: $.mage.__('Add new story'),
                 buttons: [{
-                    text: $.mage.__('Publish'),
+                    text: $.mage.__('Okay, got it'),
                     class: '',
                     click: function () {
                         $('#save-story-form').submit();
@@ -47,7 +47,7 @@ define([
                 $('.js-attach-file').val(image.currentSrc);
             }
             
-            if ($('#content').val() && image) {
+            if ($('#content').val() && image && $('#title').val()) {
                 $('.save-message-modal').modal("openModal");
             }
         });

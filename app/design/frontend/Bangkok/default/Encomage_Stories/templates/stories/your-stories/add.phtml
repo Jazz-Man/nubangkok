@@ -7,6 +7,9 @@
                 <input hidden required="true" class="js-attach-file" type="text" id="story_image" name="story_image">
                 <span class="js-image-upload-button image-upload-button"><?= __('Select picture') ?></span>
             </div>
+            <div class="field story-title required">
+                <input required="true" id="title" type="text" name="title" placeholder="<?= __('Title'); ?>...">
+            </div>
             <div class="story-info">
                 <p class="story-customer-name js-customer-name"></p>
                 <p class="story-date-create"><?= $block->getDate(); ?></p>
@@ -22,6 +25,6 @@
         </fieldset>
     </form>
     <div class="save-message-modal">
-        <p><?= /* @escapeNotVerified */ __('Your story will be approved in the near future.'); ?></p>
+        <p><?= /* @escapeNotVerified */ __('Thank you very match for pubishing your story fo us. Story are usually be successful within the next 24 hours.'); ?></p>
     </div>
 </div>
