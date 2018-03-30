@@ -44,7 +44,7 @@ class Share extends AbstractPost implements FacebookShareLinkInterface
      */
     public function getLink()
     {
-        return $this->helper->getFacebookShareLink($this->getPost()->getUrl());
+        return $this->helper->getFacebookShareLink($this->getPost()->getPostUrl());
     }
 
     /**

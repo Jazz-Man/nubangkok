@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
-
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <referenceBlock name="blog.post.bottom">
-        <block class="Encomage\Blog\Block\Post\View\Share" name="blog.post.shared"
-               template="Magento_Theme::html/page/share.phtml"/>
-    </referenceBlock>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="breadcrumbs" remove="true"/>
+        <referenceBlock name="blog.post.bottom">
+            <block class="Encomage\Blog\Block\Post\View\Share" name="blog.post.shared"
+                   template="Magento_Theme::html/page/share.phtml"/>
+        </referenceBlock>
+    </body>
 </page>
