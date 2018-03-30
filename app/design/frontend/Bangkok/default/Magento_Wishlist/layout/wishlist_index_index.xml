@@ -2,8 +2,8 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="customer.wishlist.items">
-            <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Shared" name="wishlist.product.shared"
-                   template="Magento_Catalog::product/view/shared.phtml"/>
+            <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Share" name="wishlist.product.shared"
+                   template="Magento_Theme::html/page/share.phtml"/>
             <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Cart" name="customer.wishlist.item.cart" template="Magento_Wishlist::item/column/cart.phtml" cacheable="false">
 
                 <block class="Encomage\Wishlist\Block\Customer\Wishlist\Item\Option"
