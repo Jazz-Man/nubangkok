@@ -267,7 +267,6 @@
 
   .footer {
     &.content {
-      border-top: 1px solid @border-color__base;
       margin-top: 0;
       padding-bottom: 10px;
       padding-top: 10px;
@@ -285,7 +284,11 @@
       .switcher-store {
         margin: 0 0 30px;
       }
-
+      .desktop-footer {
+        width: 83.33333333%;
+        float: right;
+        margin-bottom: 20px;
+      }
     }
 
     .copyright,
@@ -613,29 +616,31 @@
     .footer.content {
       padding-left: 0;
       padding-right: 0;
-      padding-top: 5px;
+      padding-top: 0;
       .mobile-footer {
         display: block;
         .social-links {
           width: 100%;
           display: inline-block;
-          border-bottom: 2px solid #d1d1d1;
-          margin-bottom: 5px;
-          span{
-            padding-left: 15px;
+          border-bottom: 2px solid #d9d2cb - 50%;
+          //margin-bottom: 5px;
+          span {
+            padding-left: 10px;
             display: inline-block;
-            margin-top: 3px;
+            margin-top: 12px;
             text-transform: uppercase;
+            font-size: 1.6rem;
           }
           .links-container {
-            width: 170px;
+            width: 217px;
             float: right;
+            margin-right: 5%;
             a.social-acc-pic {
               margin-right: 15px;
-              height: 22px;
-              width: 22px;
+              height: 40px;
+              width: 40px;
               display: inline-block;
-              img{
+              img {
                 width: 100%;
               }
             }
@@ -646,17 +651,20 @@
         }
         .general-subcategories {
           div {
-            border-bottom: 2px solid #d1d1d1;
-            padding-bottom: 5px;
-            padding-top: 5px;
+            border-bottom: 2px solid #d9d2cb - 50%;
+            padding-bottom: 0;
+            padding-top: 8px;
+            height: 30px;
             a {
-              padding-left: 15px;
+              padding-left: 10px;
+              font-size: 1.6rem;
             }
           }
         }
       }
-      .copyright{
+      .copyright {
         padding-top: 7px;
+        font-size: 12px;
       }
     }
   }
