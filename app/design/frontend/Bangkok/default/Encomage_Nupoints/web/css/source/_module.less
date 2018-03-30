@@ -1,5 +1,4 @@
 .points-container {
-
   h2 {
     text-align: center;
     font-weight: 500;
@@ -177,6 +176,125 @@
 .float-right-content.active {
   display: block;
 }
+
+/*PDP points redeem*/
+.catalog-product-view-nupoints-redeem {
+  > div:first-of-type {
+    span:nth-child(2) {
+      padding-top: 9px;
+      width: max-content;
+      margin-left: 45px;
+      margin-right: 30px;
+      display: inline-block;
+    }
+  }
+  > div:nth-child(2) {
+    margin-top: 50px;
+    > span:first-of-type {
+      display: inline-block;
+      float: left;
+      padding-top: 9px;
+      margin-right: 5%;
+    }
+    .mobile-to-redeem {
+      display: none;
+    }
+    .js-select-custom {
+      div.js-list {
+        position: relative;
+        width: 50%;
+        height: 38px;
+        float: left;
+        border-top: 1px solid;
+        border-bottom: 1px solid;
+        display: inline-block;
+        .placeholder {
+          padding-left: 20%;
+          padding-top: 9px;
+          display: block;
+        }
+        div:first-of-type.js-option {
+          margin-top: 10px;
+        }
+        .js-option {
+          display: none;
+          .option-container {
+            height: 80px;
+            border-bottom: 1px solid;
+            background-color: #ffffff;
+            .image-container {
+              background-color: #ffffff;
+              width: 55px;
+              height: 55px;
+              border: 1px solid;
+              display: inline-block;
+              float: left;
+              margin-top: 10px;
+              margin-left: 10px;
+              margin-right: 20px;
+            }
+            p:first-of-type {
+              margin-top: 14px;
+              span {
+                display: block;
+                margin-top: 10px;
+              }
+            }
+            &:hover {
+              background-color: #d9d2cb;
+            }
+            .text-container {
+              display: inline-block;
+              background-color: transparent;
+            }
+          }
+        }
+        .active:hover, .accordion:hover {
+          color: unset;
+        }
+      }
+      > span:first-of-type {
+        button {
+          background-color: #55463e;
+          color: white;
+          height: 38px;
+          text-transform: uppercase;
+          border: none;
+          margin-left: 5%;
+        }
+      }
+        &:hover {
+          color: inherit;
+        }
+      .js-selected-option-container:after {
+        content: @icon-select-arrow-down;
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        right: 0;
+        top: 9px;
+      }
+      &.active {
+        .js-selected-option-container:after {
+          content: @icon-select-arrow-up;
+          position: absolute;
+          height: 15px;
+          width: 15px;
+          right: 0;
+          top: 9px;
+        }
+      }
+    }
+  }
+  /*IF SELECTED OPTION*/
+  .js-option-selected {
+    .image-container {
+      display: none;
+    }
+  }
+}
+
+
 //
 // Mobile
 //___________________________
@@ -221,6 +339,43 @@
     }
     .bottom-points-block {
       margin-top: 0;
+    }
+  }
+
+  /*PDP nupoints redeem*/
+  .catalog-product-view-nupoints-redeem {
+    margin-top: 30px;
+    > div:nth-child(2) {
+      margin-top: 20px;
+      > span:first-of-type {
+        display: none;
+      }
+      .js-select-custom div.js-list {
+        width: 62%;
+        .placeholder {
+          padding-left: 5%;
+        }
+        .js-option div {
+          height: max-content;
+        }
+        .js-option .option-container {
+          .image-container {
+            width: 30px;
+            height: 30px;
+            margin-top: 20px;
+            margin-right: 10px;
+          }
+          .text-container {
+            > p {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      p.mobile-to-redeem {
+        display: block;
+        text-align: center;
+      }
     }
   }
 }
