@@ -82,6 +82,7 @@ class Save extends Action
             $modelStory->setCustomerName($customerName);
             $modelStory->setContent($params['content']);
             $modelStory->setCreatedAt($this->date->gmtDate());
+            $modelStory->setTitle($params['title']);
             $dirPath = $this->mediaDirectory->getAbsolutePath(Stories::MEDIA_PATH_STORIES_IMAGE);
             try {
                 $imageName = $this->_saveImage($params['story_image'], $dirPath);

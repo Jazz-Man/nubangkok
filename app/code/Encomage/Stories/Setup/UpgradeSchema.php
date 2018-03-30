@@ -23,6 +23,9 @@ class UpgradeSchema implements UpgradeSchemaInterface
         if (version_compare($context->getVersion(), '0.0.2', '<')) {
             $this->addCustomerFullNameColumn($setup);
         }
+        if (version_compare($context->getVersion(), '0.0.3', '<')) {
+            $this->addTitleColumn($setup);
+        }
 
         $setup->endSetup();
     }
@@ -41,6 +44,24 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 'nullable' => false,
                 'comment' => 'Customer Name',
                 'after' => 'customer_id'
+            ]
+        );
+    }
+
+    /**
+     * @param SchemaSetupInterface $setup
+     */
+    private function addTitleColumn(SchemaSetupInterface $setup)
+    {
+        $setup->getConnection()->addColumn(
+            $setup->getTable('encomage_stories'),
+            'title',
+            [
+                'type' => Table::TYPE_TEXT,
+                'length' => 256,
+                'nullable' => false,
+                'comment' => 'Story Title',
+                'after' => 'entity_id'
             ]
         );
     }

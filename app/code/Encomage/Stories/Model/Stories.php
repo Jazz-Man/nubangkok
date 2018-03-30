@@ -137,4 +137,21 @@ class Stories extends AbstractModel implements StoriesInterface
     {
         return $this->setData(self::IMAGE_PATH, $path);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->_getData(self::TITLE);
+    }
+
+    /**
+     * @param $title
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        return $this->setData(self::TITLE, $title);
+    }
 }

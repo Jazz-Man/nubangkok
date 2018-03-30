@@ -14,7 +14,8 @@ interface StoriesInterface
         CONTENT = 'content',
         CREATED_AT = 'created_at',
         IMAGE_PATH = 'image_path',
-        CUSTOMER_NAME = 'customer_name';
+        CUSTOMER_NAME = 'customer_name',
+        TITLE = 'title';
 
     /**
      * @return int
@@ -92,4 +93,15 @@ interface StoriesInterface
      * @return mixed
      */
     public function setImagePath($path);
+
+    /**
+     * @return string
+     */
+    public function getTitle();
+
+    /**
+     * @param $title
+     * @return string
+     */
+    public function setTitle($title);
 }
