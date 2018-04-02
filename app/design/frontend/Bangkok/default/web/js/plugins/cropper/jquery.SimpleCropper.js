@@ -8,8 +8,8 @@
 
     $.fn.simpleCropper = function (onComplete) {
 
-        var image_dimension_x = $(document).width() - 100;
-        var image_dimension_y = $(document).width() - 100;
+        var image_dimension_x = ($(document).width() > 770) ? 600 : $(document).width() - 100;
+        var image_dimension_y = ($(document).width() > 770) ? 600 : $(document).width() - 100;
         var scaled_width = 0;
         var scaled_height = 0;
         var x1 = 0;
