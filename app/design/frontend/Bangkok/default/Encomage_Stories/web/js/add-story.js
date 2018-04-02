@@ -37,17 +37,46 @@ define([
         cropper.simpleCropper();
 
         $(".save-button").on('click', function(){
-            var image = $('.js-cropper').children('img')[0];
-            if (!image) {
-                alert({
-                    content: $.mage.__('Sorry, you forgot the image.')
-                });
-            }
+            var image = $('.js-cropper').children('img')[0],
+                content = $('#content').val(),
+                title = $('#title').val(),
+                alertMessage = $.mage.__('Sorry, you forgot the'),
+                alertFlag = false;
+
             if (image) {
                 $('.js-attach-file').val(image.currentSrc);
+            } 
+            
+            if (!content) {
+                alertMessage = alertMessage
+                    + ' '
+                    + $.mage.__('content');
+                alertFlag = (!alertFlag) ? true : alertFlag;
             }
             
-            if ($('#content').val() && image && $('#title').val()) {
+            if (!title) {
+                alertMessage = alertMessage
+                    + ((!content) ? ',' : '')
+                    + ' '
+                    + $.mage.__('title');
+                alertFlag = (!alertFlag) ? true : alertFlag;
+            }
+            
+            if (!image) {
+                alertMessage = alertMessage
+                    + ((!title || !content) ? ',' : '')
+                    + ' '
+                    + $.mage.__('image');
+                alertFlag = (!alertFlag) ? true : alertFlag;
+            }
+
+            if (alertFlag) {
+                alert({
+                    content: $.mage.__(alertMessage)
+                });
+            }
+            
+            if (content && image && title) {
                 $('.save-message-modal').modal("openModal");
             }
         });
