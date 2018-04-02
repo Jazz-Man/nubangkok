@@ -97,7 +97,6 @@ class Save extends Action
                 $imageName = $this->_saveImage($params['story_image'], $dirPath);
                 $modelStory->setImagePath(Stories::MEDIA_PATH_STORIES_IMAGE . $imageName);
                 $this->storiesRepository->save($modelStory);
-                $this->_invalidateCache();
                 $this->messageManager->addSuccessMessage(__('Your story hes been sent'));
             } catch (\Exception $e) {
                 if (!empty($imageName)) {
