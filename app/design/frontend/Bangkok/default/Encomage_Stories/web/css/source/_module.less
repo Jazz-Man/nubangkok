@@ -26,15 +26,16 @@
     }
     .add-story-button {
       text-decoration: none;
-      border: 1px solid #aeaeae;
+      border: 1px solid #d9d2cb - 50%;
       padding: 2px 5px 2px 20px;
       position: absolute;
-      right: 30px;
+      right: 40px;
       top: 7px;
+      border-radius: 2px;
       &:after {
         content: '+';
         font-size: 22px;
-        color: #bbbcb7;
+        color: #d9d2cb - 50%;
         font-weight: 700;
         position: absolute;
         right: 67px;
@@ -60,20 +61,20 @@
             text-transform: capitalize;
             margin-top: 10px;
             font-size: 1.6rem;
-            padding-left: 30px;
+            padding-left: 20px;
           }
           span.story-title {
             text-transform: uppercase;
             font-size: 1.4rem;
             margin-top: 10px;
             margin-bottom: 10px;
-            padding-left: 30px;
+            padding-left: 20px;
           }
           span.story-create-at {
             font-size: 1.6rem;
             margin-top: 10px;
             color: #a7a099;
-            padding-left: 30px;
+            padding-left: 20px;
           }
           div.short-content, div.full-content {
             display: inline-block;
@@ -81,7 +82,8 @@
           div.short-content {
             width: 100%;
             p {
-              padding-left: 30px;
+              padding-left: 20px;
+              margin-right: 8%;
             }
             .show-more {
               color: #a7a099;
@@ -99,9 +101,10 @@
             line-height: 1.42857143;
             font-size: 1.4rem;
             padding: 0;
-            min-height: 80px;
+            min-height: 190px;
             p {
-              padding-left: 30px;
+              padding-left: 20px;
+              margin-right: 10%;
             }
             .show-less {
               color: #a7a099;
@@ -112,7 +115,7 @@
         img {
           display: inline-block;
           float: right;
-          margin: 13px 30px 13px 10px;
+          margin: 13px 40px 13px 10px;
           max-width: 140px;
           max-height: 140px;
         }
@@ -120,7 +123,7 @@
           display: none;
           position: absolute;
           bottom: 0;
-          right: 15px;
+          right: 33px;
           .default-shared-link {
             a .share-btn {
               .arrow-up {
@@ -171,18 +174,21 @@
       width: 90%;
       input {
         height: 50px;
-        border: 2px solid #d9d2cb - 50%;
+        border: 1px solid #8f8379;
         padding-top: 5px;
         padding-left: 13px;
+        color: #55463e + 10%;
+        font-size: 22px;
+        padding-top: 0;
         &::placeholder {
           //color: #c2c2c2;
-          color: #d9d2cb;
+          color: #8f8379;
           font-size: 22px;
           text-transform: uppercase;
           font-weight: 700;
         }
         &::-webkit-input-placeholder {
-          color: #c2c2c2;
+          color: #a7a099;
           font-size: 22px;
           text-transform: uppercase;
         }
@@ -221,8 +227,13 @@
       textarea.story-textarea {
         height: 450px;
         resize: none;
-        border: 2px solid #d9d2cb - 50%;
-        font-size: 17px;
+        border: 1px solid #8f8379;
+        font-size: 15px;
+        color: #55463e + 10%;
+        &::placeholder{
+          font-size: 15px;
+          color: #8f8379;
+        }
       }
     }
     span.save-button {
@@ -246,38 +257,48 @@
   .fieldset.story-fieldset {
 
   }
-  .stories-content .your-stories-block .your-stories-container .story-item {
-    width: 99%;
-    .story-content {
-      span.story-customer-info {
-        margin-top: 15px;
-        font-size: 1.4rem;
-        padding-left: 0;
+  .stories-content .your-stories-block .your-stories-container{
+    .story-item {
+      width: 99%;
+      .story-content {
+        span.story-customer-info {
+          margin-top: 15px;
+          font-size: 1.4rem;
+          padding-left: 0;
+        }
+        span.story-create-at {
+          font-size: 1.3rem;
+          margin-top: 5px;
+          padding-left: 0;
+        }
+        span.story-title {
+          padding-left: 0;
+          margin-top: 5px;
+        }
+        div.short-content p{
+          padding-left: 0;
+        }
+        div.full-content p {
+          padding-left: 0;
+          margin-right: 6%;
+        }
+        textarea.story-textarea {
+          font-size: 14px;
+        }
       }
-      span.story-create-at {
-        font-size: 1.3rem;
-        margin-top: 5px;
-        padding-left: 0;
-      }
-      span.story-title {
-        padding-left: 0;
-        margin-top: 5px;
-      }
-      div.short-content p, div.full-content p {
-        padding-left: 0;
-      }
-      textarea.story-textarea {
-        font-size: 14px;
+      .share-story {
+        right: -6px;
       }
     }
-    .share-story {
-      right: -6px;
+    > div:last-of-type{
+      margin-bottom: 50px;
     }
   }
   .our-story-block {
     .cms-img-container {
       width: 100% !important;
     }
+
   }
 
   .add-story-content {
@@ -287,7 +308,7 @@
         width: 100%;
         margin-bottom: 10px;
         input {
-          padding-top: 2px;
+          padding-top: 0;
           height: 36px;
           &::placeholder {
             font-size: 14px;
@@ -318,6 +339,9 @@
       }
       .story-content {
         width: 100%;
+        textarea.story-textarea{
+          height: 250px;
+        }
       }
       span.save-button {
         margin-right: 0;
@@ -329,6 +353,7 @@
           height: 250px;
         }
       }
+      margin-bottom: 50px;
     }
   }
 }
