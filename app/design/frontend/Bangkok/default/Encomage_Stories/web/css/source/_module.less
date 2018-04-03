@@ -71,7 +71,6 @@
             padding-left: 20px;
           }
           span.story-create-at {
-            font-size: 1.6rem;
             margin-top: 10px;
             color: #a7a099;
             padding-left: 20px;
@@ -115,7 +114,7 @@
         img {
           display: inline-block;
           float: right;
-          margin: 13px 40px 13px 10px;
+          margin: 13px 35px 13px 10px;
           max-width: 140px;
           max-height: 140px;
         }
@@ -175,22 +174,22 @@
       input {
         height: 50px;
         border: 1px solid #8f8379;
-        padding-top: 5px;
         padding-left: 13px;
         color: #55463e + 10%;
         font-size: 22px;
-        padding-top: 0;
         &::placeholder {
           //color: #c2c2c2;
           color: #8f8379;
           font-size: 22px;
           text-transform: uppercase;
           font-weight: 700;
+          height: inherit;
         }
         &::-webkit-input-placeholder {
           color: #a7a099;
           font-size: 22px;
           text-transform: uppercase;
+          height: inherit;
         }
 
       }
@@ -267,7 +266,6 @@
           padding-left: 0;
         }
         span.story-create-at {
-          font-size: 1.3rem;
           margin-top: 5px;
           padding-left: 0;
         }
@@ -308,8 +306,9 @@
         width: 100%;
         margin-bottom: 10px;
         input {
-          padding-top: 0;
           height: 36px;
+          padding-bottom: 10px;
+          padding-top: 10px;
           &::placeholder {
             font-size: 14px;
           }
