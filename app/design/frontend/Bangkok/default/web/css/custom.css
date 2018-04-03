@@ -1155,6 +1155,7 @@ input:-webkit-autofill {
 }
 .stories-yourstories-add .modal-popup._show .modal-inner-wrap .modal-content{
     margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 .stories-yourstories-add .modal-popup._inner-scroll .modal-inner-wrap .modal-footer button:last-of-type {
