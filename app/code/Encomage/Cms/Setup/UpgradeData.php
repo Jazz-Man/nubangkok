@@ -105,7 +105,7 @@ class UpgradeData implements UpgradeDataInterface
         }
 
         if (version_compare($context->getVersion(), '0.1.6', '<')) {
-            $this->upgradeCmsBlockOurStories();
+//            $this->upgradeCmsBlockOurStories();
         }
         
         if (version_compare($context->getVersion(), '0.1.7', '<')) {
@@ -113,7 +113,7 @@ class UpgradeData implements UpgradeDataInterface
         }
         if (version_compare($context->getVersion(), '0.1.8', '<')) {
             $this->addNewCmsBlockOurStories();
-            $this->upgradeCmsBlockOurStories();
+//            $this->upgradeCmsBlockOurStories();
         }
     }
 
@@ -1243,11 +1243,10 @@ EOD;
             'is_active' => 1,
             'content' => $content
         ];
-        $oldBlock = $this->blockRepository->getById('our_stories');
-        if ($oldBlock->getId()) {
-            $this->blockRepository->delete($oldBlock);
+        $oldBlock = $this->blockFactory->create()->load('our_stories', 'identifier');
+        if (!$oldBlock->getId()) {
+            $block = $this->blockFactory->create(['data' => $ourStoriesBlock]);
+            $this->blockRepository->save($block);
         }
-        $block = $this->blockFactory->create(['data' => $ourStoriesBlock]);
-        $this->blockRepository->save($block);
     }
 }
