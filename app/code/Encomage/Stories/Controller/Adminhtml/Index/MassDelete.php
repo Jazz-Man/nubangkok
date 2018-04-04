@@ -8,6 +8,7 @@ use Encomage\Stories\Model\ResourceModel\Stories as StoriesResource;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Encomage\Stories\Helper\Image;
+use Encomage\Stories\Helper\Data as HelperData;
 
 /**
  * Class MassDelete
@@ -31,6 +32,10 @@ class MassDelete extends Action
      * @var Image
      */
     private $imageHelper;
+    /**
+     * @var HelperData
+     */
+    private $helperData;
 
     /**
      * MassDelete constructor.
@@ -39,15 +44,18 @@ class MassDelete extends Action
      * @param CollectionFactory $collectionFactory
      * @param Image $imageHelper
      * @param StoriesResource $storiesResource
+     * @param HelperData $helperData
      */
     public function __construct(
         Action\Context $context,
         Filter $filter,
         CollectionFactory $collectionFactory,
         Image $imageHelper,
-        StoriesResource $storiesResource
+        StoriesResource $storiesResource,
+        HelperData $helperData
     )
     {
+        $this->helperData = $helperData;
         $this->imageHelper = $imageHelper;
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
@@ -66,11 +74,18 @@ class MassDelete extends Action
         try {
             $itemsForDelete = $collection->getItems();
             $result = $this->storiesResource->massDeleteById($collection->getAllIds());
+            $isNeedFlushCache = false;
             if ($result && $result > 0) {
                 foreach ($itemsForDelete as $item) {
                     if ($item->getImagePath()) {
                         $this->imageHelper->deleteStoryImage($item->getImagePath());
                     }
+                    if ($item->getIsApprove()) {
+                        $isNeedFlushCache = true;
+                    }
+                }
+                if ($isNeedFlushCache) {
+                    $this->helperData->invalidateCache();
                 }
             }
 
