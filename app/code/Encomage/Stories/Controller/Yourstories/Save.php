@@ -1,0 +1,130 @@
+<?php
+namespace Encomage\Stories\Controller\Yourstories;
+
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
+use Encomage\Stories\Api\StoriesRepositoryInterface;
+use Encomage\Stories\Api\Data\StoriesInterfaceFactory;
+use Magento\Framework\Filesystem;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Customer\Model\Session;
+
+/**
+ * Class Save
+ * @package Encomage\Stories\Controller\Yourstories
+ */
+class Save extends Action
+{
+    const MEDIA_PATH_STORIES_IMAGE = 'stories/';
+    /**
+     * @var StoriesRepositoryInterface
+     */
+    private $storiesRepository;
+    /**
+     * @var
+     */
+    private $storiesFactory;
+    /**
+     * @var \Magento\Framework\Filesystem\Directory\WriteInterface
+     */
+    private $mediaDirectory;
+    /**
+     * @var DateTime
+     */
+    private $date;
+    /**
+     * @var Session
+     */
+    protected $customerSession;
+
+    /**
+     * Save constructor.
+     * @param Context $context
+     * @param StoriesRepositoryInterface $storiesRepository
+     * @param Filesystem $filesystem
+     * @param Session $customerSession
+     * @param DateTime $date
+     * @param StoriesInterfaceFactory $storiesFactory
+     */
+    public function __construct(
+        Context $context,
+        StoriesRepositoryInterface $storiesRepository,
+        Filesystem $filesystem,
+        Session $customerSession,
+        DateTime $date,
+        StoriesInterfaceFactory $storiesFactory
+    )
+    {
+        $this->mediaDirectory = $filesystem->getDirectoryWrite(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
+        $this->storiesRepository = $storiesRepository;
+        $this->customerSession = $customerSession;
+        $this->storiesFactory = $storiesFactory;
+        $this->date = $date;
+        parent::__construct($context);
+    }
+
+    /**
+     * @return $this
+     */
+    public function execute()
+    {
+        if (!$this->_isCustomerLogged()) {
+            $this->messageManager->addErrorMessage(__('You are not authorized.'));
+            $this->_redirect('stories');
+        }
+        $params = $this->getRequest()->getParams();
+        if (!empty($params)) {
+            /** @var \Encomage\Stories\Model\Stories $modelStory */
+            $modelStory = $this->storiesFactory->create();
+            $modelStory->setCustomerId($params['customer_id']);
+            $modelStory->setContent($params['content']);
+            $modelStory->setCreatedAt($this->date->gmtDate());
+            $dirPath = $this->mediaDirectory->getAbsolutePath(self::MEDIA_PATH_STORIES_IMAGE);
+            try {
+                $imageName = $this->saveImage($params['story_image'], $dirPath);
+                $modelStory->setImagePath(self::MEDIA_PATH_STORIES_IMAGE . $imageName);
+                $this->storiesRepository->save($modelStory);
+                $this->messageManager->addSuccessMessage(__('Your story hes been sent'));
+            } catch (\Exception $e) {
+                if (!empty($imageName)) {
+                    @unlink($dirPath . $imageName);
+                }
+                $this->messageManager->addErrorMessage(__('Has not saved'));
+            }
+
+        } else {
+            $this->messageManager->addErrorMessage(__('No data'));
+        }
+        $this->_redirect('stories');
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function _isCustomerLogged()
+    {
+        return $this->customerSession->isLoggedIn();
+    }
+
+    protected function saveImage($imageDataJson, $dirPath)
+    {
+        $data = explode(';', $imageDataJson);
+        $imageInfo = str_replace('data:', '', $data[0]);
+        $imageInfo = explode('/', $imageInfo);
+        $imageDataJson = str_replace('base64,', '', $data[1]);
+        $imageDataJson = base64_decode(str_replace(' ', '+', $imageDataJson));
+
+        $imageName = $this->_getImageName($imageInfo);
+        $dirPath .= $imageName;
+        file_put_contents($dirPath, $imageDataJson);
+        return $imageName;
+    }
+
+    protected function _getImageName($imageInfo)
+    {
+        $newDate = new \DateTime();
+        $imageName = $newDate->format('m_d_Y H_i_s') . '.' . $imageInfo[1];
+        return $imageName;
+    }
+}

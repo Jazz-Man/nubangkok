@@ -80,7 +80,11 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.1.1', '<')) {
             $this->updateContactUs();
         }
-
+        
+        if (version_compare($context->getVersion(), '0.1.2', '<')) {
+            $this->updateLeftLinksSidebarBlock012();
+        }
+        
         if (version_compare($context->getVersion(), '0.1.2', '<')) {
             //$this->upgradeCmsPagesContactCustomerCareFaqPoliciesProductCare();
         }
@@ -96,6 +100,10 @@ class UpgradeData implements UpgradeDataInterface
         }
 
         if (version_compare($context->getVersion(), '0.1.5', '<')) {
+            $this->addCmsBlockOurStories();
+        }
+        
+        if (version_compare($context->getVersion(), '0.1.6', '<')) {
             $this->upgradeLeftMenu015();
         }
     }
@@ -731,6 +739,34 @@ EOD;
         return $this;
     }
 
+
+    private function updateLeftLinksSidebarBlock012()
+    {
+        $content = <<<EOD
+        <div style="margin-bottom: 1rem;"><a class="violet-link" style="margin-bottom: 1rem;" href="{{store url='why-nu'}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='blog'}}">INSPIRATION</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='stories'}}">nu STORIES (yours and ours)</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='customer-care'}}">CUSTOMER CARE</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='product-care'}}">PRODUCT CARE</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='contact-us'}}">CONTACT US</a></div>
+<div><a href="{{store url='careers/listing/index'}}">CAREER</a></div>
+<div class="social-links" style="margin-bottom: 1rem;">
+<a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/icons/homePage/Facebook.svg}}" alt="facebook-icon" /> </a> 
+<a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/icons/homePage/Instagram.svg}}" alt="instagram-icon" /> </a> 
+<a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/icons/homePage/youtube.svg}}" alt="youtube-icon" /> </a> 
+<a class="social-acc-pic" style="padding-top: 0;"> <img src="{{view url=images/empty-link.png}}" alt="youtube-icon" /></a>
+</div>
+<div>
+<p>#nuBangkok</p>
+</div>
+<div><a href="{{store url='policies'}}">POLICIES</a></div>
+EOD;
+
+        $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+    }
+    
     private function upgradeCmsPagesContactCustomerCareFaqPoliciesProductCare()
     {
         $pages = [
@@ -813,6 +849,51 @@ EOM
             $this->pageRepository->save($pageObject);
         }
         return $this;
+
+    }
+
+    private function addCmsBlockOurStories()
+    {
+        $content = <<<EOD
+        <style xml="space"><!--
+@media only screen and (max-width: 772px) {
+.cms-img-container {
+width: 100%;
+}
+.cms-img-container p {
+width: 100%;
+display: block;
+}
+
+img {
+width: 100%;
+}
+--></style>
+<p>VISION</p>
+<p style="padding-bottom: 10px;">A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+<p></p>
+<p></p>
+<p style="text-align: center; padding-bottom: 20px;"><img src="{{media url="wysiwyg/_MG_0573.jpg"}}" width="80%" /></p>
+<p></p>
+<p style="font-size: 16px; padding-bottom: 10px;">What we do. (History)</p>
+<p></p>
+<p style="text-align: center;"><img src="{{media url="wysiwyg/_MG_0578.jpg"}}" width="80%" /></p>
+<div class="cms-img-container" style="width: 80%; margin: 0 auto; padding-bottom: 20px;">
+<p style="width: 49%; display: inline-block;"><img src="{{media url="wysiwyg/cms/career2.JPG"}}" /></p>
+<p style="width: 49%; display: inline-block; float: right;"><img src="{{media url="wysiwyg/cms/career3.JPG"}}" /></p>
+</div>
+<p>A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+EOD;
+        $ourStoriesBlock = [
+            'title' => 'Our stories',
+            'identifier' => 'our_stories',
+            'stores' => ['0'],
+            'is_active' => 1,
+            'content' => $content
+        ];
+
+        $block = $this->blockFactory->create(['data' => $ourStoriesBlock]);
+        $this->blockRepository->save($block);
     }
 
     private function upgradeCmsPages()
