@@ -2,8 +2,9 @@ define([
     'jquery',
     'Magento_Ui/js/modal/modal',
     'Magento_Ui/js/modal/alert',
+    'Magento_Customer/js/customer-data',
     'simpleCropper'
-], function ($, modal, alert) {
+], function ($, modal, alert, customerData) {
     "use strict";
 
     return function (config, element) {
@@ -13,7 +14,7 @@ define([
             innerScroll: true,
             title: $.mage.__('Add new story'),
                 buttons: [{
-                    text: $.mage.__('Publish'),
+                    text: $.mage.__('Okay, got it'),
                     class: '',
                     click: function () {
                         $('#save-story-form').submit();
@@ -30,6 +31,8 @@ define([
         },
             popup = modal(options, $('.save-message-modal')),
             cropper = $('.js-cropper');
+
+        $('.js-customer-name').text(customerData.get('customer')().fullname);
         
         cropper.simpleCropper();
 
@@ -44,7 +47,7 @@ define([
                 $('.js-attach-file').val(image.currentSrc);
             }
             
-            if ($('#content').val() && image) {
+            if ($('#content').val() && image && $('#title').val()) {
                 $('.save-message-modal').modal("openModal");
             }
         });

@@ -101,10 +101,15 @@ class UpgradeData implements UpgradeDataInterface
 
         if (version_compare($context->getVersion(), '0.1.5', '<')) {
             $this->addCmsBlockOurStories();
+            $this->upgradeLeftSidebar();
+        }
+
+        if (version_compare($context->getVersion(), '0.1.6', '<')) {
+            $this->upgradeCmsBlockOurStories();
         }
         
-        if (version_compare($context->getVersion(), '0.1.6', '<')) {
-            $this->upgradeLeftMenu015();
+        if (version_compare($context->getVersion(), '0.1.7', '<')) {
+            $this->upgradeLeftMenu017();
         }
     }
 
@@ -1108,23 +1113,87 @@ EOD;
         return $this;
     }
 
-    private function upgradeLeftMenu015()
+    private function upgradeLeftSidebar()
     {
         $content = <<<EOD
-<div class="nav-left-links js-left-link" data-cms-page="why-nu"><a class="violet-link" href="{{store url="why-nu"}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
-<div class="nav-left-links js-left-link"><a href="#">INSPIRATION</a></div>
-<div class="nav-left-links js-left-link"><a href="#">nu STORIES (yours and ours)</a></div>
-<div class="nav-left-links js-left-link" data-page-class="cms-customer-care"><a href="{{store url='customer-care'}}">CUSTOMER CARE</a></div>
-<div class="nav-left-links js-left-link" data-page-class="cms-product-care"><a href="{{store url='product-care'}}">PRODUCT CARE</a></div>
-<div class="nav-left-links js-left-link" data-page-class="cms-contact-us"><a href="{{store url='contact-us'}}">CONTACT US</a></div>
-<div class="nav-left-links js-left-link" data-page-class="careers-listing-index"><a href="{{store url='careers/listing/index'}}">CAREER</a></div>
+<div class="nav-left-links"><a class="violet-link" href="{{store url="why-nu"}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div class="nav-left-links"><a href="{{store url='inspiration'}}">INSPIRATION</a></div>
+<div class="nav-left-links"><a href="{{store url='stories'}}">nu STORIES (yours and ours)</a></div>
+<div class="nav-left-links"><a href="{{store url='customer-care'}}">CUSTOMER CARE</a></div>
+<div class="nav-left-links"><a href="{{store url='product-care'}}">PRODUCT CARE</a></div>
+<div class="nav-left-links"><a href="{{store url='contact-us'}}">CONTACT US</a></div>
+<div class="nav-left-links"><a href="{{store url='careers/listing/index'}}">CAREER</a></div>
 <div class="social-links"><a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/facebook.png}}" alt="facebook-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/instagram.png}}" alt="instagram-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/youtube.png}}" alt="youtube-icon" /> </a></div>
-<div class="nav-left-links js-left-links">
+<div class="nav-left-links">
 <p style="margin-top: 3px; margin-bottom: 0;">#nuBangkok</p>
 </div>
-<div class="nav-left-links js-left-link" data-page-class="cms-policies" style="margin-bottom: 0;"><a href="{{store url='policies'}}">POLICIES</a></div>
+<div class="nav-left-links" style="margin-bottom: 0;"><a href="{{store url='policies'}}">POLICIES</a></div>
 EOD;
         $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+        return $this;
+    }
+    
+    private function upgradeLeftMenu017()
+    {
+        $content = <<<EOD
+<div class="nav-left-links js-left-link" data-page-class="why-nu"><a class="violet-link" href="{{store url="why-nu"}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div class="nav-left-links js-left-link" data-page-class="blog-index-index"><a href="{{store url='inspiration'}}">INSPIRATION</a></div>
+<div class="nav-left-links js-left-link" data-page-class="stories-index-index"><a href="{{store url='stories'}}">nu STORIES (yours and ours)</a></div>
+<div class="nav-left-links js-left-link" data-page-class="cms-product-care"><a href="{{store url='product-care'}}">PRODUCT CARE</a></div>
+<div class="nav-left-links js-left-link" data-page-class="careers-listing-index"><a href="{{store url='careers/listing/index'}}">CAREER</a></div>
+<div class="nav-left-links js-left-links"><a style="margin-top: 3px; margin-bottom: 0;">#nuBangkok</a></div>
+EOD;
+        $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+        return $this;
+    }
+
+    private function upgradeCmsBlockOurStories()
+    {
+        $content = <<<EOD
+<style xml="space"><!--
+.cms-img-container {
+width: 80%; margin: 0 auto; padding-bottom: 20px;
+}
+.cms-img-container p {
+width: 49%; 
+display: inline-block;
+}
+
+@media only screen and (max-width: 772px) {
+.cms-img-container {
+width: 100%;
+}
+.cms-img-container p {
+width: 100%;
+display: block;
+float: none;
+}
+
+img {
+width: 100%;
+}
+}
+--></style>
+<p>VISION</p>
+<p style="padding-bottom: 10px;">A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+<p></p>
+<p></p>
+<p style="text-align: center; padding-bottom: 10px;"><img src="{{media url="wysiwyg/_MG_0573.jpg"}}" width="80%" /></p>
+<p></p>
+<p style="padding-bottom: 10px;">What we do. (History)</p>
+<p></p>
+<p style="text-align: center;"><img src="{{media url="wysiwyg/_MG_0578.jpg"}}" width="80%" /></p>
+<div class="cms-img-container">
+<p><img src="{{media url="wysiwyg/cms/career2.JPG"}}" /></p>
+<p style="float: right;"><img src="{{media url="wysiwyg/cms/career3.JPG"}}" /></p>
+</div>
+<p style="padding-bottom: 10px;">A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+EOD;
+        $block = $this->blockRepository->getById('our_stories');
         $block->setContent($content);
         $this->blockRepository->save($block);
         return $this;

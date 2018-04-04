@@ -4,8 +4,13 @@ namespace Encomage\Stories\Model;
 use Encomage\Stories\Api\Data\StoriesInterface;
 use Magento\Framework\Model\AbstractModel;
 
+/**
+ * Class Stories
+ * @package Encomage\Stories\Model
+ */
 class Stories extends AbstractModel implements StoriesInterface
 {
+    const MEDIA_PATH_STORIES_IMAGE = 'stories/';
     /**
      * class construct
      */
@@ -37,6 +42,23 @@ class Stories extends AbstractModel implements StoriesInterface
     public function setCustomerId($customerId)
     {
         return $this->setData(self::CUSTOMER_ID, $customerId);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerName()
+    {
+        return $this->_getData(self::CUSTOMER_NAME);
+    }
+
+    /**
+     * @param $customerName
+     * @return $this
+     */
+    public function setCustomerName($customerName)
+    {
+        return $this->setData(self::CUSTOMER_NAME, $customerName);
     }
 
     /**
@@ -114,5 +136,22 @@ class Stories extends AbstractModel implements StoriesInterface
     public function setImagePath($path)
     {
         return $this->setData(self::IMAGE_PATH, $path);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->_getData(self::TITLE);
+    }
+
+    /**
+     * @param $title
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        return $this->setData(self::TITLE, $title);
     }
 }
