@@ -5,24 +5,40 @@ $_collectionSize = $_collection->getTotalCount();
 ?>
 
 <?php if ($_collectionSize) : ?>
-        <div class="your-stories-container">
-            <?php foreach ($items as $story) : ?>
-                <div class="story-item">
-                    <div class="story-content js-story-content">
-                        <h3 class="story-title"><strong><?= $block->getCustomerNameById($story->getCustomerId()); ?></strong></h3>
-                        <h3 class="story-create-at"><?= $block->newDate($story->getCreatedAt()); ?></h3>
-                        <div class="js-story-content">
-                            <p class="js-short-content-<?= $story->getId(); ?> short-content"><?= $block->getResponsibleContent($story->getContent()); ?>
-                                <span data-story-id="<?= $story->getId(); ?>" class="js-show-more show-more">...<?= __('more'); ?></span>
-                            </p>
-                            <pre class="js-full-content-<?= $story->getId(); ?> full-content"><?= $story->getContent(); ?></pre>
+    <div class="your-stories-container">
+        <?php foreach ($items as $story) : ?>
+            <?php
+            $storyId = $story->getId();
+            $image = $block->getImage($story->getImagePath());
+            $title = $story->getTitle();
+            $content = $story->getContent();
+            $customerName = $block->getCustomerNameById($story->getCustomerId());
+            $date = $block->newDate($story->getCreatedAt());
+            ?>
+            <div class="story-item">
+                <div class="story-content">
+                    <div class="js-story-content">
+                        <div class="js-short-content-<?= $storyId; ?> short-content">
+                                 <span class="stories-data"><span class="story-customer-info"><strong><?= $customerName; ?></strong></span>
+                            <span class="story-create-at"><?= $date; ?></span>
+                            <span class="story-title"><?= $block->escapeHtml($title); ?></span></span>
+                            <img class="js-story-image-<?= $storyId; ?>" src="<?= $block->escapeUrl($image); ?>"/>
+                            <p><?= $block->escapeHtml($block->getResponsibleContent($content)); ?> <span data-story-id="<?= $storyId; ?>" class="js-show-more show-more">...<?= __('more'); ?></span></p>
+
+                        </div>
+                        <div class="js-full-content-<?= $storyId; ?> full-content">
+                                 <span class="stories-data"><span class="story-customer-info"><strong><?= $customerName; ?></strong></span>
+                            <span class="story-create-at"><?= $date; ?></span>
+                            <span class="story-title"><?= $block->escapeHtml($title); ?></span></span>
+                            <img class="js-story-image-<?= $storyId; ?>" src="<?= $block->escapeUrl($image); ?>"/>
+                            <p><?= $block->escapeHtml($content); ?><span data-story-id="<?= $storyId; ?>" class="js-show-less show-less"> <?= __('less'); ?></span></p>
                         </div>
                     </div>
-                    <img class="js-story-image-<?= $story->getId(); ?>" src="<?= $block->getImage($story->getImagePath()); ?>"/>
-                    <div class="js-share-story-<?= $story->getId(); ?> share-story"><?= $block->getChildHtml('your.stories.share'); ?></div>
                 </div>
-            <?php endforeach; ?>
-        </div>
+                <div class="js-share-story-<?= $storyId; ?> share-story"><?= $block->getChildHtml('your.stories.share'); ?></div>
+            </div>
+        <?php endforeach; ?>
+    </div>
     <script type="text/x-magento-init">
     {
         ".js-story-content": {
@@ -31,4 +47,3 @@ $_collectionSize = $_collection->getTotalCount();
     }
     </script>
 <?php endif; ?>
-

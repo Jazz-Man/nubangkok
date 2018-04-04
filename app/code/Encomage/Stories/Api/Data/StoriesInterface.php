@@ -13,7 +13,9 @@ interface StoriesInterface
         IS_APPROVE = 'is_approved',
         CONTENT = 'content',
         CREATED_AT = 'created_at',
-        IMAGE_PATH = 'image_path';
+        IMAGE_PATH = 'image_path',
+        CUSTOMER_NAME = 'customer_name',
+        TITLE = 'title';
 
     /**
      * @return int
@@ -26,6 +28,11 @@ interface StoriesInterface
     public function getCustomerId();
 
     /**
+     * @return mixed
+     */
+    public function getCustomerName();
+
+    /**
      * @param $id
      * @return mixed
      */
@@ -36,6 +43,12 @@ interface StoriesInterface
      * @return mixed
      */
     public function setCustomerId($customerId);
+
+    /**
+     * @param $customerName
+     * @return mixed
+     */
+    public function setCustomerName($customerName);
 
     /**
      * @return mixed
@@ -80,4 +93,15 @@ interface StoriesInterface
      * @return mixed
      */
     public function setImagePath($path);
+
+    /**
+     * @return string
+     */
+    public function getTitle();
+
+    /**
+     * @param $title
+     * @return string
+     */
+    public function setTitle($title);
 }
