@@ -14,7 +14,6 @@ define([
         selectedOption: false,
         selectedOptionContainer: false,
 
-
         /** @inheritdoc */
         _create: function () {
             this.list = this.element.find('.js-list');
@@ -38,8 +37,10 @@ define([
             this.optionsList.each(function (index, value) {
                 $(value).on('click', function () {
                     self.onOptionClick($(this));
-                    return;
                 });
+                if ($(value).attr('selected')) {
+                    self.onOptionClick($(value));
+                }
             })
         },
 

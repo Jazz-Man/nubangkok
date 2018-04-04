@@ -11,6 +11,8 @@ use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\DataObject;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 
 /**
@@ -19,16 +21,30 @@ use Magento\Framework\DataObject;
  */
 class Nupoints extends AbstractModel implements NupointsInterface
 {
+    const NUPOINT_SETTING_LIST = 'nupoints_settings/nupoints_rates/nupoints_list';
+    
     /**
      * @var CheckoutSession
      */
     private $checkoutSession;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    /**
+     * @var Json
+     */
+    private $json;
+
+    /**
      * Nupoints constructor.
      * @param Context $context
      * @param Registry $registry
      * @param CheckoutSession $checkoutSession
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Json $json
      * @param AbstractResource|null $resource
      * @param AbstractDb|null $resourceCollection
      * @param array $data
@@ -37,6 +53,8 @@ class Nupoints extends AbstractModel implements NupointsInterface
         Context $context,
         Registry $registry,
         CheckoutSession $checkoutSession,
+        ScopeConfigInterface $scopeConfig,
+        Json $json,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
@@ -44,8 +62,21 @@ class Nupoints extends AbstractModel implements NupointsInterface
     {
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
         $this->checkoutSession = $checkoutSession;
+        $this->scopeConfig = $scopeConfig;
+        $this->json = $json;
         $this->_eventPrefix = 'nupoints';
         $this->_eventObject = 'nupoints';
+        $nuPoints = $this->json->unserialize($this->scopeConfig->getValue(static::NUPOINT_SETTING_LIST));
+        foreach ($nuPoints as $rate) {
+            if (!empty($rate['money'])) {
+                $this->_nuPointsToMoneyRates[$rate['money']]['from'] = (!empty($rate['nupoints_from']))
+                    ? $rate['nupoints_from'] : null;
+                $this->_nuPointsToMoneyRates[$rate['money']]['to'] = (!empty($rate['nupoints_to']))
+                    ? $rate['nupoints_to'] : null;
+                $this->_nuPointsToMoneyRates[$rate['money']]['related_product'] = (!empty($rate['related_product']))
+                    ? $rate['related_product'] : null;
+            }
+        }
     }
 
     /**
@@ -59,10 +90,6 @@ class Nupoints extends AbstractModel implements NupointsInterface
     protected function _construct()
     {
         $this->_init(\Encomage\Nupoints\Model\ResourceModel\Nupoints::class);
-        $this->_nuPointsToMoneyRates[50] = ['from' => 3000, 'to' => 3999];
-        $this->_nuPointsToMoneyRates[100] = ['from' => 4000, 'to' => 4999];
-        $this->_nuPointsToMoneyRates[150] = ['from' => 5000, 'to' => 11999];
-        $this->_nuPointsToMoneyRates[500] = ['from' => 12000];
     }
 
     /**
@@ -71,11 +98,13 @@ class Nupoints extends AbstractModel implements NupointsInterface
      */
     public function enableUseNupointsOnCheckout(int $nupoints)
     {
+        $money = $this->getConvertedNupointsToMoney($nupoints);
         $this->setNupointsCheckoutData(
             new DataObject(
                 [
                     'nupoints_to_redeem' => $nupoints,
-                    'money_to_redeem' => $this->getConvertedNupointsToMoney($nupoints)
+                    'money_to_redeem' => $money,
+                    'product' => $this->_nuPointsToMoneyRates[$money]['related_product']
                 ]
             )
         );

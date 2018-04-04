@@ -11,49 +11,28 @@
     <div>
         <span><?= __('I want to redeem'); ?></span>
         <p class="mobile-to-redeem"><?= __('I want to redeem'); ?></p>
-        <!-- <select>
-                <?php /*foreach ($block->getAvailableRedeemList() as $item): */ ?>
-                    <?php /*$product = $item['product']; */ ?>
-                    <option value="<? /*= $item['money']; */ ?>">
-                    <div>
-                        <img src=""/>
-                        <div><? /*= __('%1 nuPoints for %2 off', $item['nupoints'], $item['money']); */ ?></div>
-                        <div><? /*= __('Free %1', $product) */ ?></div>
-                    </div>
-                </option>
-                <?php /*endforeach; */ ?>
-            </select>-->
-
         <div class="js-select-custom js-nupoints-rates select-redeem"
              data-mage-init='{"customSelect":{"placeholder":"<?= __('Choose your redeem'); ?>"}}'>
             <div class="js-list">
-                <div class="js-option" data-option-value="4000">
-                    <div class="option-container">
-                        <div class="image-container">
-                            <img src="#" alt=""></div>
-                        <div class="text-container"><p>nuPoints for off</p>
-                            <p>Free a product name A</p>
+                <?php foreach ($block->getAvailableRedeemList() as $item): ?>
+                    <?php $product = $item['product']; ?>
+                    <?php if ($product) : ?>
+                        <?php $image = $block->getImage($product, 'nupoint_related_product'); ?>
+                        <div
+                            class="js-option" <?= ($block->getSelectedOption() == $item['nupoints']) ? 'selected="true"' : ''; ?>
+                            data-option-value="<?= $item['nupoints'] ?>">
+                            <div class="option-container">
+                                <div class="image-container">
+                                    <?= $image->toHtml(); ?>
+                                </div>
+                                <div class="text-container">
+                                    <p><?= __('%1 nuPoints for %2 off', $item['nupoints'], $item['money']); ?></p>
+                                    <p><?= __('Free a product'); ?> <?= $product->getName(); ?></p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="js-option" data-option-value="3000">
-                    <div class="option-container">
-                        <div class="image-container">
-                            <img src="#" alt=""></div>
-                        <div class="text-container"><p>nuPoints for off</p>
-                            <p>Free a product name B</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="js-option" data-option-value="2000">
-                    <div class="option-container">
-                        <div class="image-container">
-                            <img src="#" alt=""></div>
-                        <div class="text-container"><p>nuPoints for off</p>
-                            <p>Free a product name C</p>
-                        </div>
-                    </div>
-                </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             </div>
             <span><button class="js-customer-nuponts-redeem"><span><?= __('Redeem'); ?></span></button></span>
         </div>
