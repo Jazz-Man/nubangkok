@@ -1,0 +1,22 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>nuStories</title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Encomage\Stories\Block\Stories" name="stories.content.block"
+                   template="Encomage_Stories::stories.phtml">
+                <block class="Encomage\Stories\Block\Stories\YourStories" name="your.stories.block"
+                       template="Encomage_Stories::stories/your-stories.phtml">
+                    <block class="Encomage\Stories\Block\Stories\YourStories\Share"
+                           name="your.stories.share"/>
+                </block>
+                <block class="Magento\Cms\Block\Block" name="our_stories">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">our_stories</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
