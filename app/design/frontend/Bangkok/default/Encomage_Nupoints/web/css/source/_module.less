@@ -213,6 +213,9 @@
           padding-top: 9px;
           display: block;
         }
+        .js-option-selected {
+          padding-left: 0;
+        }
         div:first-of-type.js-option {
           margin-top: 10px;
         }
@@ -289,7 +292,14 @@
   /*IF SELECTED OPTION*/
   .js-option-selected {
     .image-container {
-      display: none;
+      background-color: #ffffff;
+      width: 55px;
+      height: 55px;
+      border: 1px solid;
+      display: inline-block;
+      float: left;
+      margin-left: 10px;
+      margin-right: 20px;
     }
   }
 }

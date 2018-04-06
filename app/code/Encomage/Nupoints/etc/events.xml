@@ -4,8 +4,4 @@
         <observer name="encomage_nupoints_place_order_after"
                   instance="Encomage\Nupoints\Observer\Sales\PlaceOrderAfter"/>
     </event>
-    <event name="controller_action_predispatch_checkout_cart_add">
-        <observer name="encomage_controller_action_predispatch_checkout_cart_add"
-                  instance="Encomage\Nupoints\Observer\Predispatch\Checkout\CartAdd"/>
-    </event>
 </config>

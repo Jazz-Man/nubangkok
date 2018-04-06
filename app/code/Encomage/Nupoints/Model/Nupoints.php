@@ -22,7 +22,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 class Nupoints extends AbstractModel implements NupointsInterface
 {
     const NUPOINT_SETTING_LIST = 'nupoints_settings/nupoints_rates/nupoints_list';
-    
+
     /**
      * @var CheckoutSession
      */
@@ -66,17 +66,7 @@ class Nupoints extends AbstractModel implements NupointsInterface
         $this->json = $json;
         $this->_eventPrefix = 'nupoints';
         $this->_eventObject = 'nupoints';
-        $nuPoints = $this->json->unserialize($this->scopeConfig->getValue(static::NUPOINT_SETTING_LIST));
-        foreach ($nuPoints as $rate) {
-            if (!empty($rate['money'])) {
-                $this->_nuPointsToMoneyRates[$rate['money']]['from'] = (!empty($rate['nupoints_from']))
-                    ? $rate['nupoints_from'] : null;
-                $this->_nuPointsToMoneyRates[$rate['money']]['to'] = (!empty($rate['nupoints_to']))
-                    ? $rate['nupoints_to'] : null;
-                $this->_nuPointsToMoneyRates[$rate['money']]['related_product'] = (!empty($rate['related_product']))
-                    ? $rate['related_product'] : null;
-            }
-        }
+        $this->fillNupointsToMoneyRates();
     }
 
     /**
@@ -171,7 +161,7 @@ class Nupoints extends AbstractModel implements NupointsInterface
     public function isCanCustomerRedeem()
     {
         return (bool)!$this->getCustomerNupointsCheckoutData()
-            && $this->getNupoints() >= $this->getMinNuPointsCountForRedeem();
+        && $this->getNupoints() >= $this->getMinNuPointsCountForRedeem();
     }
 
     /**
@@ -264,6 +254,33 @@ class Nupoints extends AbstractModel implements NupointsInterface
         $this->setNupoints((int)$this->getNupoints() + (int)$value);
         $this->_eventManager->dispatch($this->_eventPrefix . '_add_nupoints_after', [$this->_eventObject => $this]);
         return $this;
+    }
+
+    public function fillNupointsToMoneyRates()
+    {
+        $nuPoints = $this->json->unserialize($this->scopeConfig->getValue(static::NUPOINT_SETTING_LIST));
+        foreach ($nuPoints as $rate) {
+            if (!empty($rate['money'])) {
+                $this->_nuPointsToMoneyRates[$rate['money']]['from'] = (!empty($rate['nupoints_from']))
+                    ? $rate['nupoints_from'] : null;
+                $this->_nuPointsToMoneyRates[$rate['money']]['to'] = (!empty($rate['nupoints_to']))
+                    ? $rate['nupoints_to'] : null;
+                $this->_nuPointsToMoneyRates[$rate['money']]['related_product'] = (!empty($rate['related_product']))
+                    ? $rate['related_product'] : null;
+            }
+        }
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMinNupointAmount()
+    {
+        $minAmount = false;
+        foreach ($this->getNupointsToMoneyRates() as $moneyRate) {
+            $minAmount = (!$minAmount || $minAmount > $moneyRate['from']) ? $moneyRate['from'] : $minAmount;
+        }
+        return $minAmount;
     }
 
     /**
