@@ -8,6 +8,8 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Catalog\Api\ProductRepositoryInterfaceFactory;
+use Magento\Quote\Api\CartRepositoryInterface as CartRepository;
 
 /**
  * Class NupointsRedeem
@@ -29,6 +31,16 @@ class NupointsRedeem extends \Magento\Framework\App\Action\Action
      * @var \Magento\Customer\Model\Session
      */
     private $customerSession;
+    
+    /**
+     * @var ProductRepositoryInterfaceFactory
+     */
+    private $productRepositoryFactory;
+
+    /**
+     * @var QuoteResource
+     */
+    private $cartRepository;
 
     /**
      * NupointsRedeem constructor.
@@ -36,18 +48,24 @@ class NupointsRedeem extends \Magento\Framework\App\Action\Action
      * @param CheckoutSession $checkoutSession
      * @param CustomerSession $customerSession
      * @param JsonFactory $resultJsonFactory
+     * @param ProductRepositoryInterfaceFactory $productRepositoryFactory
+     * @param CartRepository $cartRepository
      */
     public function __construct(
         Context $context,
         CheckoutSession $checkoutSession,
         CustomerSession $customerSession,
-        JsonFactory $resultJsonFactory
+        JsonFactory $resultJsonFactory,
+        ProductRepositoryInterfaceFactory $productRepositoryFactory,
+        CartRepository $cartRepository
     )
     {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->checkoutSession = $checkoutSession;
         $this->customerSession = $customerSession;
+        $this->productRepositoryFactory = $productRepositoryFactory;
+        $this->cartRepository = $cartRepository;
     }
 
     /**
@@ -67,16 +85,53 @@ class NupointsRedeem extends \Magento\Framework\App\Action\Action
         }
         $response = [];
         /** @var \Encomage\Nupoints\Model\Nupoints $nuPoints */
-        $nuPoints = $this->customerSession->getCustomer()->getNupointItem();
+        $nuPoints = $this->_getNupointsItem();
 
         if (!$nuPoints->isCanCustomerRedeem()) {
             $response['success'] = false;
         } else {
-            $nuPoints->enableUseNupointsOnCheckout($this->getRequest()->getParam('redeem_nupoints'));
+            $nuPointsToRedeem = $this->getRequest()->getParam('redeem_nupoints');
+            $nuPoints->enableUseNupointsOnCheckout($nuPointsToRedeem);
+            $this->_addProductToCart($nuPointsToRedeem);
             $response['success'] = true;
             $response['customer_nupoints'] = $nuPoints->getAvailableNupoints();
         }
         $resultJson = $this->resultJsonFactory->create();
         return $resultJson->setData($response);
+    }
+
+    /**
+     * @param $nuPoints
+     * @return $this
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    protected function _addProductToCart($nuPoints)
+    {
+        $nuPointsList = $this->_getNupointsItem()->getNupointsToMoneyRates();
+        $productSku = false;
+        foreach ($nuPointsList as $item) {
+            if ($nuPoints == $item['from']) {
+                $productSku = $item['related_product'];
+                break;
+            }
+        }
+        if ($productSku) {
+            $productRepository = $this->productRepositoryFactory->create();
+            $product = $productRepository->get($productSku);
+            if ($product->getId()) {
+                $quote = $this->checkoutSession->getQuote();
+                $quote->addItem($quote->addProduct($product));
+                $this->cartRepository->save($quote);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function _getNupointsItem()
+    {
+        return $this->customerSession->getCustomer()->getNupointItem();
     }
 }
