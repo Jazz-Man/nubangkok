@@ -219,12 +219,15 @@ class Nupoints extends AbstractModel implements NupointsInterface
      */
     public function redeemNupointsAfterOrderPlaced()
     {
-        if ($this->checkoutSession->getUseCustomerNuPoints()) {
+        if ($this->getCustomerNupointsCheckoutData()) {
             $this->_eventManager->dispatch(
                 $this->_eventPrefix . '_redeem_nupoints_after_order_place_before',
                 [$this->_eventObject => $this]
             );
-            $convertedToMoney = $this->getConvertedNupointsToMoney();
+
+            $convertedToMoney = $this->getConvertedNupointsToMoney(
+                $this->getCustomerNupointsCheckoutData()->getNupointsToRedeem()
+            );
             $redeemed = $this->_nuPointsToMoneyRates[$convertedToMoney]['from'];
             if ($this->getNupoints() < $redeemed) {
                 throw new LocalizedException(__('Not enough nupoints for redeem'));
