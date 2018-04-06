@@ -2,7 +2,7 @@
     <default>
         <nupoints_settings>
             <nupoints_rates>
-                <nupoints_list>{"_1522330474785_785":{"nupoints_from":"3000","nupoints_to":"3999","money":"50","related_product":"0001"},"_1522330515489_489":{"nupoints_from":"4000","nupoints_to":"4999","money":"100","related_product":"0010"},"_1522330549514_514":{"nupoints_from":"5000","nupoints_to":"11999","money":"150","related_product":"0011"},"_1522330563795_795":{"nupoints_from":"12000","nupoints_to":"9999999999","money":"500","related_product":"0101"}}</nupoints_list>
+                <nupoints_list>{"_1522330474785_785":{"nupoints_from":"3000","nupoints_to":"3999","money":"50"},"_1522330515489_489":{"nupoints_from":"4000","nupoints_to":"4999","money":"100"},"_1522330549514_514":{"nupoints_from":"5000","nupoints_to":"11999","money":"150"},"_1522330563795_795":{"nupoints_from":"12000","nupoints_to":"9999999999","money":"500"}}</nupoints_list>
             </nupoints_rates>
         </nupoints_settings>
     </default>

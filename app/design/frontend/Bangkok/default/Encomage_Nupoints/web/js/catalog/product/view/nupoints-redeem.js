@@ -5,15 +5,29 @@ define([
 ], function ($, customerData, urlBuilder) {
     'use strict';
     return function (config, element) {
+        function initUi(customerDataObject) {
+            var customerNupointsValue = (customerDataObject.value) ? customerDataObject.value : 0;
+            $element.find('.js-customer-nupoints-balance').html(customerNupointsValue);
+            if (!customerDataObject.is_can_redeem) {
+                $element.find('.js-customer-nuponts-redeem').attr('disabled', true);
+            }
+        }
         var $element = $(element),
             customerNupoints = customerData.get('nupoints')(),
-            customerNupointsValue = (customerNupoints.value) ? customerNupoints.value : 0,
             select = $element.find('.js-nupoints-rates'),
             redeemButton = $element.find('.js-customer-nuponts-redeem');
-        $element.find('.js-customer-nupoints-balance').html(customerNupointsValue);
-        if (!customerNupoints.is_can_redeem) {
-            $element.find('.js-customer-nuponts-redeem').attr('disabled', true);
+
+        customerData.get('nupoints').subscribe(function (updatedCart) {
+            initUi(updatedCart);
+        }, this);
+
+        if (!customerNupoints.data_id) {
+            customerData.reload(['nupoints'], false);
+        } else {
+            initUi(customerNupoints);
+
         }
+
         redeemButton.on('click', function () {
             var redeemNupoints = select.find('.js-selected-option-container').data('selectValue');
             $.ajax({
