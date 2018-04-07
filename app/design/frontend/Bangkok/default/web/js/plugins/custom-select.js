@@ -13,12 +13,18 @@ define([
         isListOpened: false,
         selectedOption: false,
         selectedOptionContainer: false,
+        marginBottom: 0,
+        listHeight: 0,
+        noItem: false,
 
         /** @inheritdoc */
         _create: function () {
             this.list = this.element.find('.js-list');
+            this.listHeight = this.list.height();
             this.optionsList = this.list.find('.js-option');
+            this.list.prepend($('<div class="js-no-item">' + this.options.placeholder + '</div>'));
             this.list.prepend($('<span class="js-selected-option-container placeholder"></span>'));
+            this.noItem = this.list.find('.js-no-item');
             this.selectedOptionContainer = this.element.find('.js-selected-option-container');
             this.selectedOptionContainer.html(this.options.placeholder);
             this._initListing();
@@ -27,7 +33,7 @@ define([
         _initListing: function () {
             var self = this;
             this._hideOptions();
-            this.list.on('click', function () {
+            this.selectedOptionContainer.on('click', function () {
                 if (self.isListOpened) {
                     self._hideOptions();
                 } else {
@@ -41,7 +47,15 @@ define([
                 if ($(value).attr('selected')) {
                     self.onOptionClick($(value));
                 }
-            })
+                self.marginBottom += 90;
+            });
+            this.noItem.on('click', function () {
+                self.selectedOptionContainer.removeClass('js-option-selected');
+                self.selectedOptionContainer.removeAttr('data-select-value');
+                self.selectedOptionContainer.html(self.options.placeholder);
+                self.list.css('height', self.listHeight);
+                self._hideOptions();
+            });
         },
 
         onOptionClick: function (e) {
@@ -55,11 +69,19 @@ define([
 
         _hideOptions: function () {
             this.optionsList.hide();
+            this.noItem.hide();
             this.element.removeClass('active');
             this.isListOpened = false;
+            if (!this.selectedOptionContainer.hasClass('js-option-selected')) {
+                this.list.css('margin-bottom', 0);
+            }
         },
         _showOptions: function () {
             this.optionsList.show();
+            if (this.selectedOptionContainer.hasClass('js-option-selected')) {
+                this.noItem.show();
+            }
+            this.list.css('margin-bottom', this.marginBottom);
             this.element.addClass('active');
             this.isListOpened = true;
         },
