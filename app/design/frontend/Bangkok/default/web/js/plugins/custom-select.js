@@ -72,9 +72,7 @@ define([
             this.noItem.hide();
             this.element.removeClass('active');
             this.isListOpened = false;
-            if (!this.selectedOptionContainer.hasClass('js-option-selected')) {
-                this.list.css('margin-bottom', 0);
-            }
+            this.list.css('margin-bottom', 0);
         },
         _showOptions: function () {
             this.optionsList.show();

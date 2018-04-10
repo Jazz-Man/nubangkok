@@ -16,22 +16,24 @@
             <div class="js-list">
                 <?php foreach ($block->getAvailableRedeemList() as $item): ?>
                     <?php $product = $item['product']; ?>
-                    <?php if ($product) : ?>
-                        <?php $image = $block->getImage($product, 'nupoint_related_product'); ?>
-                        <div
-                            class="js-option" <?= ($block->getSelectedOption() == $item['nupoints']) ? 'selected="true"' : ''; ?>
-                            data-option-value="<?= $item['nupoints'] ?>">
-                            <div class="option-container">
+                    <div
+                        class="js-option" <?= ($block->getSelectedOption() == $item['nupoints']) ? 'selected="true"' : ''; ?>
+                        data-option-value="<?= $item['nupoints'] ?>">
+                        <div class="option-container">
+                            <?php if ($product) : ?>
                                 <div class="image-container">
+                                    <?php $image = $block->getImage($product, 'nupoint_related_product'); ?>
                                     <?= $image->toHtml(); ?>
                                 </div>
-                                <div class="text-container">
-                                    <p><?= __('%1 nuPoints for (฿) %2 off', $item['nupoints'], $item['money']); ?></p>
+                            <?php endif; ?>
+                            <div class="text-container">
+                                <p><?= __('%1 nuPoints for (฿) %2 off', $item['nupoints'], $item['money']); ?></p>
+                                <?php if ($product) : ?>
                                     <p><?= __('Free a product'); ?> <?= $product->getName(); ?></p>
-                                </div>
+                                <?php endif; ?>
                             </div>
                         </div>
-                    <?php endif; ?>
+                    </div>
                 <?php endforeach; ?>
             </div>
             <span><button class="js-customer-nuponts-redeem"><span><?= __('Redeem'); ?></span></button></span>
