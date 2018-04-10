@@ -6,7 +6,7 @@ use Magento\Framework\App\Action\Context;
 use \Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Catalog\Api\ProductRepositoryInterfaceFactory;
-use Magento\Quote\Model\ResourceModel\Quote as QuoteResource;
+use Magento\Quote\Api\CartRepositoryInterface as CartRepository;
 
 /**
  * Class RedeemAjax
@@ -42,7 +42,7 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
     /**
      * @var QuoteResource
      */
-    private $quoteResource;
+    private $cartRepository;
 
     /**
      * RedeemAjax constructor.
@@ -52,7 +52,7 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
      * @param \Encomage\Nupoints\Quote\ReCalculate $reCalculateQuote
      * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param ProductRepositoryInterfaceFactory $productRepositoryFactory
-     * @param QuoteResource $quoteResource
+     * @param CartRepository $cartRepository
      */
     public function __construct(
         Context $context,
@@ -61,7 +61,7 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
         \Encomage\Nupoints\Quote\ReCalculate $reCalculateQuote,
         \Magento\Checkout\Model\Session $checkoutSession,
         ProductRepositoryInterfaceFactory $productRepositoryFactory,
-        QuoteResource $quoteResource
+        CartRepository $cartRepository
     )
     {
         parent::__construct($context);
@@ -70,7 +70,7 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
         $this->customerSession = $customerSession;
         $this->checkoutSession = $checkoutSession;
         $this->productRepositoryFactory = $productRepositoryFactory;
-        $this->quoteResource = $quoteResource;
+        $this->cartRepository = $cartRepository;
     }
 
     /**
@@ -92,12 +92,10 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
         if (!empty($var)) {
             try {
                 $result = $this->customerSession->getCustomer()->getNupointItem()->enableUseNupointsOnCheckout($var);
-                if ($result) {
-                    $product = $this->_getProductBySku($result->getNupointsCheckoutData());
-                    if ($product) {
-                        $quote = $this->checkoutSession->getQuote()->addItem($this->checkoutSession->getQuote()->addProduct($product));
-                        $this->quoteResource->save($quote);
-                    }
+                if ($result && $product = $this->_getProductBySku($result->getNupointsCheckoutData())) {
+                    $quote = $this->checkoutSession->getQuote();
+                    $quote->addProduct($product);
+                    $this->cartRepository->save($quote);
                 }
                 $this->reCalculateQuote->reCalculate();
             } catch (\Exception $e) {
@@ -113,10 +111,12 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
      */
     protected function _getProductBySku($nuData)
     {
-        $productRepository = $this->productRepositoryFactory->create();
-        $product = $productRepository->get($nuData->getProduct());
-        if ($product->getId()) {
-            return $product;
+        if ($nuData->getProduct()) {
+            $productRepository = $this->productRepositoryFactory->create();
+            $product = $productRepository->get($nuData->getProduct());
+            if ($product->getId()) {
+                return $product;
+            }
         }
         return false;
     }
