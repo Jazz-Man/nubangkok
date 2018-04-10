@@ -115,15 +115,15 @@ class NupointsRedeem extends \Magento\Framework\App\Action\Action
                 break;
             }
         }
+        $quote = $this->checkoutSession->getQuote();
         if ($productSku) {
             $productRepository = $this->productRepositoryFactory->create();
             $product = $productRepository->get($productSku);
             if ($product->getId()) {
-                $quote = $this->checkoutSession->getQuote();
-                $quote->addItem($quote->addProduct($product));
-                $this->cartRepository->save($quote);
+                $quote->addProduct($product);
             }
         }
+        $this->cartRepository->save($quote);
         return $this;
     }
 

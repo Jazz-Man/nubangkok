@@ -275,18 +275,6 @@ class Nupoints extends AbstractModel implements NupointsInterface
     }
 
     /**
-     * @return int|null
-     */
-    public function getMinNupointAmount()
-    {
-        $minAmount = false;
-        foreach ($this->getNupointsToMoneyRates() as $moneyRate) {
-            $minAmount = (!$minAmount || $minAmount > $moneyRate['from']) ? $moneyRate['from'] : $minAmount;
-        }
-        return $minAmount;
-    }
-
-    /**
      * @return int
      */
     public function getItemId()

@@ -15,11 +15,18 @@ define([
         var $element = $(element),
             customerNupoints = customerData.get('nupoints')(),
             select = $element.find('.js-nupoints-rates'),
-            redeemButton = $element.find('.js-customer-nuponts-redeem');
+            redeemButton = $element.find('.js-customer-nuponts-redeem'),
+            expiredSectionNames = customerData.getExpiredSectionNames();
 
         customerData.get('nupoints').subscribe(function (updatedCart) {
             initUi(updatedCart);
         }, this);
+
+        if (expiredSectionNames.length > 0){
+            expiredSectionNames.forEach(function (index, value) {
+                if (index == 'customer-data') customerData.reload(['nupoints'], false);
+            });
+        }
 
         if (!customerNupoints.data_id) {
             customerData.reload(['nupoints'], false);
