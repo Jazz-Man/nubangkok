@@ -22,7 +22,7 @@ define([
             this.list = this.element.find('.js-list');
             this.listHeight = this.list.height();
             this.optionsList = this.list.find('.js-option');
-            this.list.prepend($('<div class="js-no-item">' + this.options.placeholder + '</div>'));
+            this.list.prepend($('<div class="js-no-item"><span>' + this.options.placeholder + '</span></div>'));
             this.list.prepend($('<span class="js-selected-option-container placeholder"></span>'));
             this.noItem = this.list.find('.js-no-item');
             this.selectedOptionContainer = this.element.find('.js-selected-option-container');
@@ -47,7 +47,7 @@ define([
                 if ($(value).attr('selected')) {
                     self.onOptionClick($(value));
                 }
-                self.marginBottom += 90;
+                self.marginBottom += 85;
             });
             this.noItem.on('click', function () {
                 self.selectedOptionContainer.removeClass('js-option-selected');
