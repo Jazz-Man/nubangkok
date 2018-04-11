@@ -37,13 +37,13 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                tabindex="-1"
                class="product-item-photo">
                 <?php else: ?>
-                <span class="product-item-photo">
+                <div class="product-item-photo">
             <?php endif; ?>
             <?= $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml() ?>
             <?php if ($block->hasProductUrl()): ?>
             </a>
         <?php else: ?>
-            </span>
+            </div>
         <?php endif; ?>
             <div class="product-item-details">
                 <strong class="product-item-name">
