@@ -1,0 +1,24 @@
+<?php /** @var Encomage\Stories\Block\Stories $block */ ?>
+
+<div class="stories-content js-stories-content">
+    <div class="buttons-container">
+        <a class="js-our-story-button story-button active" href="#"><?= __('Our Stories'); ?></a>
+        <a class="js-your-stories-button story-button" href="#"><?= __('Your Stories'); ?></a>
+        <a class="js-add-story-button add-story-button" href="<?= $block->escapeUrl($block->getAddUrl()); ?>"
+           hidden><?= __('Add note'); ?></a>
+    </div>
+    <div class="js-our-story-block our-story-block">
+        <?=  /* @noEscape */$block->getChildHtml('our_stories') ?>
+    </div>
+    <div class="js-your-stories-block your-stories-block" hidden>
+        <?= /* @noEscape */$block->getChildHtml('your.stories.block'); ?>
+    </div>
+</div>
+<script type="text/x-magento-init">
+            {
+                ".js-stories-content": {
+                    "Encomage_Stories/js/page-toggle": {}
+                }
+            }
+
+</script>
