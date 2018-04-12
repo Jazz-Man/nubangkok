@@ -2,4 +2,9 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\Quote\Model\Cart\CartTotalRepository" type="Encomage\Quote\Model\Cart\CartTotalRepository"/>
+    <preference for="Mageplaza\BetterSlider\Block\Adminhtml\Banner\Edit\Tab\Banner"
+                type="Encomage\Slider\Block\Adminhtml\Banner\Edit\Tab\Banner"></preference>
+    <preference for="Mageplaza\BetterSlider\Controller\Adminhtml\Banner\Save"
+                type="Encomage\Slider\Controller\Adminhtml\Banner\Save"></preference>
+    <preference for="Mageplaza\BetterSlider\Model\Banner" type="Encomage\Slider\Model\Banner"></preference>
 </config>
