@@ -17,19 +17,23 @@
     margin-top: 20px;
     width: 125%;
     .mark {
-      width: 30%;
+      width: 15%;
       display: inline-block;
+    }
+    input.redeem-nupoints {
+      width: 30%;
+      margin-left: 2%;
     }
     .input {
       display: inline-block;
-      width: 30%;
+      width: 12%;
       border-bottom: 2px solid #e8e8e8;
-      padding-bottom: 6px;
+      padding-bottom: 5px;
     }
     .btn {
       width: 90px;
       display: inline-block;
-      margin-left: 15px;
+      margin-left: 2%;
       button {
         width: 100%;
         border: 1px solid #aeaeae;
@@ -41,6 +45,7 @@
     .amount {
       display: inline-block;
       float: right;
+      padding-top: 13px;
     }
   }
   // Page Heading
@@ -235,7 +240,6 @@
     .item-options {
 
       font-size: 14px;
-      //margin-bottom: 10px;
       dt {
         font-weight: 400 !important;
         margin: 0 10px 10px 0;
@@ -251,7 +255,6 @@
         display: inline-block;
       }
       .label {
-        //width: 50px;
         float: left;
         &:after {
           content: ':';
@@ -265,26 +268,16 @@
         float: none;
         border: 2px solid @color-active-bgk;
       }
-      div:nth-child(2):after {
-        //content: url(../images/select-arrow-down.png);
-        //vertical-align: middle;
-      }
       .field.qty {
-        //float: left;
-        //width: 80%;
-        //min-width: 100px;
-        //display: inline-block;
         float: left;
         width: 60%;
         min-width: 100px;
         display: inline-block;
       }
       div:last-of-type {
-        //float: left;
 
         &:after {
-          //content: url(../images/select-arrow-down.png);
-          //vertical-align: middle;
+
         }
       }
       .option-color {
@@ -296,10 +289,6 @@
       }
       .option-size {
         > div:last-of-type {
-          //width: 20%;
-          //display: inline-block;
-          //float: right;
-          //min-width: 80px;
           width: 30%;
           display: inline-block;
           float: right;
@@ -402,14 +391,12 @@
     .col.qty,
     .col.subtotal,
     .col.msrp {
-      //padding-top: 50px;
       text-align: right;
       position: relative;
     }
     .col.qty {
       display: inline-block;
       width: 100px;
-      //margin-top: 20px;
     }
     .col.qty span,
     .col.subtotal span {
@@ -436,12 +423,6 @@
         top: -6px;
       }
     }
-    //.qty-enhance:after{
-    //  content: '\f067';
-    //  font-size: 14px;
-    //  position: absolute;
-    //  right: -11px;
-    //}
     .control.qty {
       text-align: left;
     }
@@ -578,11 +559,10 @@
       }
       .actions-toolbar {
         margin-top: 0;
+        width: 70px;
         .primary {
           .action.apply.primary {
             font-size: 14px;
-            //height: 32px;
-            //margin-top: 0;
             padding: 10px;
             margin-left: 21px;
           }
@@ -874,23 +854,40 @@
       .totals.redeem.excl {
         font-size: 14px;
         div.amount {
-          padding-top: 7px;
           overflow: hidden;
           width: 58px;
           padding-right: 0;
           display: inline-grid;
+          padding-top: 20px;
         }
         .btn {
           button {
             font-size: 14px;
           }
         }
-        .input span{
-          padding-left: 7px;
+        .input{
+          width: 50%;
+          float: right;
+          span{
+            padding-left: 7px;
+          }
+        }
+        .mark{
+          width: 70px;
+          margin-bottom: 10px;
+        }
+        input.redeem-nupoints{
+          margin-top: 15px;
+          width: 50%;
+          margin-left: 0;
+        }
+        .btn {
+          margin-left: 3px;
         }
       }
     }
   }
+
   .block.discount {
     .applied {
       span {
@@ -913,11 +910,11 @@
     padding: 5px 8px;
     font-size: 13px;
   }
-  .totals.redeem.excl{
-    .input{
-      width: 28%;
-    }
-  }
+  //.totals.redeem.excl{
+  //  .input{
+  //    width: 28%;
+  //  }
+  //}
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs){
@@ -1109,7 +1106,7 @@
       }
       .actions-toolbar {
         display: inline-block;
-        width: 39%;
+        width: 100px;
         margin-top: 6px;
         float: left;
         .primary {
