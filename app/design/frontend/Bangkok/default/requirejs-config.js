@@ -5,7 +5,7 @@ var config = {
     map: {
         '*': {
             niceselect: 'js/plugins/jquery.nice-select',
-
+            customSelect: 'js/plugins/custom-select',
             sticky: 'js/plugins/jquery.sticky',
             owlcarousel: 'Mageplaza_BetterSlider/js/owl.carousel',
             simpleCropper: 'js/plugins/cropper/jquery.SimpleCropper'
