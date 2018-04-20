@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="erp_etoday_settings" showInDefault="1" showInStore="1" showInWebsite="1" translate="label" type="text">
+            <label>ERP eToday Settings</label>
+            <tab>nubangkok</tab>
+            <resource>Encomage_ErpIntegration::erpIntegration</resource>
+            <group id="erp_authorization" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" type="text">
+                <label>ERP Authorization</label>
+                <field id="host_name" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                    <label>Host Name</label>
+                </field>
+                <field id="login" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label">
+                    <label>Login</label>
+                </field>
+                <field id="password" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                    <label>Password</label>
+                </field>
+            </group>
+            <group id="additional_settings" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" type="text">
+                <label>Additional settings</label>
+                <field id="compcode" sortOrder="10" showInWebsite="1" showInDefault="1" showInStore="1" translate="label">
+                    <label>Company Code</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
