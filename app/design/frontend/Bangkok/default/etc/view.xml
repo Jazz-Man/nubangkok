@@ -185,6 +185,10 @@
                 <width>240</width>
                 <height>300</height>
             </image>
+            <image id="nupoint_related_product" type="thumbnail">
+                <width>60</width>
+                <height>60</height>
+            </image>
         </images>
     </media>
     <vars module="Magento_Catalog">

@@ -5,6 +5,8 @@ namespace Encomage\Nupoints\Controller\Cart;
 use Magento\Framework\App\Action\Context;
 use \Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Catalog\Api\ProductRepositoryInterfaceFactory;
+use Magento\Quote\Api\CartRepositoryInterface as CartRepository;
 
 /**
  * Class RedeemAjax
@@ -18,11 +20,6 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
     private $resultJsonFactory;
 
     /**
-     * @var \Magento\Checkout\Model\Session
-     */
-    private $checkoutSession;
-
-    /**
      * @var \Magento\Customer\Model\Session
      */
     private $customerSession;
@@ -32,28 +29,48 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
      */
     private $reCalculateQuote;
 
+    /**
+     * @var ProductRepositoryInterfaceFactory
+     */
+    private $productRepositoryFactory;
+
+    /**
+     * @var \Magento\Checkout\Model\Session
+     */
+    private $checkoutSession;
+
+    /**
+     * @var QuoteResource
+     */
+    private $cartRepository;
 
     /**
      * RedeemAjax constructor.
      * @param Context $context
-     * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Encomage\Nupoints\Quote\ReCalculate $reCalculateQuote
+     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param ProductRepositoryInterfaceFactory $productRepositoryFactory
+     * @param CartRepository $cartRepository
      */
     public function __construct(
         Context $context,
-        \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
         \Magento\Customer\Model\Session $customerSession,
-        \Encomage\Nupoints\Quote\ReCalculate $reCalculateQuote
+        \Encomage\Nupoints\Quote\ReCalculate $reCalculateQuote,
+        \Magento\Checkout\Model\Session $checkoutSession,
+        ProductRepositoryInterfaceFactory $productRepositoryFactory,
+        CartRepository $cartRepository
     )
     {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->reCalculateQuote = $reCalculateQuote;
-        $this->checkoutSession = $checkoutSession;
         $this->customerSession = $customerSession;
+        $this->checkoutSession = $checkoutSession;
+        $this->productRepositoryFactory = $productRepositoryFactory;
+        $this->cartRepository = $cartRepository;
     }
 
     /**
@@ -71,7 +88,36 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
             $resultRedirect->setUrl($this->_redirect->getRefererUrl());
             return $resultRedirect;
         }
-        $this->checkoutSession->setUseCustomerNuPoints(true);
-        $this->reCalculateQuote->reCalculate();
+        $var = $this->getRequest()->getParam('redeem_nupoints');
+        if (!empty($var)) {
+            try {
+                $result = $this->customerSession->getCustomer()->getNupointItem()->enableUseNupointsOnCheckout($var);
+                if ($result && $product = $this->_getProductBySku($result->getNupointsCheckoutData())) {
+                    $quote = $this->checkoutSession->getQuote();
+                    $quote->addProduct($product);
+                    $this->cartRepository->save($quote);
+                }
+                $this->reCalculateQuote->reCalculate();
+            } catch (\Exception $e) {
+                $this->messageManager->addErrorMessage(__('Related product wasn\'t added to the cart.'));
+            }
+        }
+    }
+
+    /**
+     * @param $nuData
+     * @return \Magento\Catalog\Api\Data\ProductInterface|mixed
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    protected function _getProductBySku($nuData)
+    {
+        if ($nuData->getProduct()) {
+            $productRepository = $this->productRepositoryFactory->create();
+            $product = $productRepository->get($nuData->getProduct());
+            if ($product->getId()) {
+                return $product;
+            }
+        }
+        return false;
     }
 }
