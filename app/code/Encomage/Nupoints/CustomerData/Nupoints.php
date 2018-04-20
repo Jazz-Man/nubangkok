@@ -4,7 +4,6 @@ namespace Encomage\Nupoints\CustomerData;
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
 use Magento\Customer\Model\Session as CustomerSession;
-use Magento\Checkout\Model\Session as CheckoutSession;
 
 /**
  * Class Nupoints
@@ -18,19 +17,12 @@ class Nupoints implements SectionSourceInterface
     private $customerSession;
 
     /**
-     * @var CheckoutSession
-     */
-    private $checkoutSession;
-
-    /**
      * Nupoints constructor.
      * @param CustomerSession $customerSession
-     * @param CheckoutSession $checkoutSession
      */
-    public function __construct(CustomerSession $customerSession, CheckoutSession $checkoutSession)
+    public function __construct(CustomerSession $customerSession)
     {
         $this->customerSession = $customerSession;
-        $this->checkoutSession = $checkoutSession;
     }
 
     /**
@@ -41,17 +33,15 @@ class Nupoints implements SectionSourceInterface
         return [
             'value' => $this->_getCustomerNupontsCount(),
             'is_can_redeem' => $this->_getIsEnoughNuPointsForRedeem(),
-            'is_used_nupoints' => (bool)$this->checkoutSession->getUseCustomerNuPoints(),
+            'is_used_nupoints' => (bool)$this->_getNupointItem()->getCustomerNupointsCheckoutData(),
             'redeem_value' => $this->_getRedeemValue()
         ];
     }
 
     protected function _getRedeemValue()
     {
-        if ($this->customerSession->isLoggedIn()) {
-            if ($this->checkoutSession->getUseCustomerNuPoints()) {
-                return (int)$this->checkoutSession->getNupointsRedeemedMoney();
-            }
+        if ($this->customerSession->isLoggedIn() && $this->_getNupointItem()->getCustomerNupointsCheckoutData()) {
+            return (int)$this->_getNupointItem()->getCustomerNupointsCheckoutData()->getMoneyToRedeem();
         }
         return 0;
     }
@@ -62,18 +52,20 @@ class Nupoints implements SectionSourceInterface
     protected function _getCustomerNupontsCount()
     {
         if ($this->customerSession->isLoggedIn()) {
-            if (!$this->checkoutSession->getUseCustomerNuPoints()) {
+            if (!$this->_getNupointItem()->getCustomerNupointsCheckoutData()) {
                 return (int)$this->_getNupointItem()->getNupoints();
             }
-            return (int)$this->_getNupointItem()->getNupoints() - $this->_getNupointItem()->getConvertedNupointsToMoney(null, true);
+            return (int)$this->_getNupointItem()->getAvailableNupoints();
         }
         return 0;
     }
 
+    /**
+     * @return bool
+     */
     protected function _getIsEnoughNuPointsForRedeem()
     {
-        return (bool)!$this->checkoutSession->getUseCustomerNuPoints()
-            && $this->_getNupointItem()->getNupoints() >= $this->_getNupointItem()->getMinNuPointsCountForRedeem();
+        return $this->_getNupointItem()->isCanCustomerRedeem();
     }
 
     /**
