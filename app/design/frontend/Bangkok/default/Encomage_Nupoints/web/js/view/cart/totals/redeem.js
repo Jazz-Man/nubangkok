@@ -35,19 +35,26 @@ define([
         },
 
         applyRedeem: function () {
-            var $this = this;
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: $this.ajaxUrl,
-                success: function (response) {
-                    cartCache.set('totals', null);
-                    defaultTotal.estimateTotals();
-                },
-                error: function (error) {
-                    //TODO
-                }
-            });
+            var $this = this,
+                amount = $('.redeem-nupoints').val();
+            if (amount) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    data: {"redeem_nupoints":amount},
+                    url: $this.ajaxUrl,
+                    success: function (response) {
+                        cartCache.set('totals', null);
+                        defaultTotal.estimateTotals();
+                        $this.updateItemsList();
+                    },
+                    error: function (error) {
+                        //TODO
+                        
+                    }
+                });
+            }
+
         },
         revertRedeem: function () {
             var $this = this;
@@ -58,6 +65,23 @@ define([
                 success: function (response) {
                     cartCache.set('totals', null);
                     defaultTotal.estimateTotals();
+                    $this.updateItemsList();
+                },
+                error: function (error) {
+                    //TODO
+                }
+            });
+        },
+        updateItemsList: function () {
+            var $this = this;
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: $this.cartPageUrl,
+                data:{'ajax_get_block':'checkout.cart.form.content'},
+                success: function (response) {
+                    $('form.form.form-cart').html(response.html);
+                    $('.redeem-nupoints').val('');
                 },
                 error: function (error) {
                     //TODO
