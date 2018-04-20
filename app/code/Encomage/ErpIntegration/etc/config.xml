@@ -1,0 +1,14 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <erp_etoday_settings>
+            <erp_authorization>
+                <login>Web</login>
+                <password>x]vf4ypw;hdjvo</password>
+                <host_name>https://cloudapp1.eflowsys.com/EC_API</host_name>
+            </erp_authorization>
+            <additional_settings>
+                <compcode>nuBangkok</compcode>
+            </additional_settings>
+        </erp_etoday_settings>
+    </default>
+</config>
