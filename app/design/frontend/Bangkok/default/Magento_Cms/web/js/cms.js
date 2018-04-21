@@ -33,7 +33,7 @@ define([
         } else {
             if ($('.desktop-change-position-right').has('img#myImage').length > 0) {
                 target.remove();
-                $('.desktop-change-position-right').prepend('<iframe class="js-google-map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15502.62769014799!2d100.5552439!3d13.739209!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x24c438254d55b574!2zTlUgQmFuZ2tvayBIZWFkIG9mZmljZSDguJou4LiZ4Li44LmJ4LiiIOC4iOC4s-C4geC4seC4lA!5e0!3m2!1sen!2sth!4v1524228920680" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>')
+                $('.desktop-change-position-right').prepend('<iframe class="js-google-map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15502.62769014799!2d100.5552439!3d13.739209!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x24c438254d55b574!2zTlUgQmFuZ2tvayBIZWFkIG9mZmljZSDguJou4LiZ4Li44LmJ4LiiIOC4iOC4s-C4geC4seC4lA!5e0!3m2!1sen!2sth!4v1524228920680" width="100%" height="'+$('.desktop-change-position-right').width()+'" frameborder="0" style="border:0" allowfullscreen></iframe>')
             }
         }
         $('.cms-block').hide();
