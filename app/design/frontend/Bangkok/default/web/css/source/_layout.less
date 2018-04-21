@@ -11,11 +11,16 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-
+  .cms-index-index .page-wrapper .page-main .columns{
+    .column.main {
+      padding-top: 0;
+    }
+  }
   .columns {
     #lib-layout-columns();
 
     .column.main {
+      padding-top: 20px;
       padding-bottom: 20px !important;
       &:extend(.abs-add-box-sizing all);
       .lib-css(padding-bottom, @indent__xl);
