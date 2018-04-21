@@ -153,9 +153,14 @@
         <referenceBlock name="store_language" remove="true"/>
         <referenceBlock name="page.main.title" remove="true"/>
         <referenceBlock name="sale.reorder.sidebar" remove="true"/>
+        <referenceBlock name="copyright" remove="true"/>
 
         <referenceContainer name="footer">
-            <block class="Magento\Framework\View\Element\Template" name="footer.mobile" before="-" template="Magento_Theme::html/mobile/html/footer-mobile.phtml"/>
+            <block class="Magento\Cms\Block\Block" name="mobile_footer">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">mobile_footer</argument>
+                </arguments>
+            </block>
             <block class="Magento\Cms\Block\Block" name="desktop_footer">
                 <arguments>
                     <argument name="block_id" xsi:type="string">desktop_footer</argument>
