@@ -2,7 +2,7 @@
 <?= $block->getChildHtml('info') ?>
 <?php if ($_orders && count($_orders)): ?>
     <div class="table-wrapper orders-history">
-        <h2>My orders</h2>
+        <h2><?= /* @escapeNotVerified */  __('My orders');?></h2>
         <table class="data table table-order-items history" id="my-orders-table">
             <caption class="table-caption"><?= /* @escapeNotVerified */ __('Orders') ?></caption>
             <thead>
@@ -27,7 +27,7 @@
                         <?php endif; ?>
                         <td data-th="<?= $block->escapeHtml(__('Total')) ?>" class="col total"><?= /* @escapeNotVerified */ $_order->formatPrice($_order->getGrandTotal()) ?></td>
                         <td data-th="<?= $block->escapeHtml(__('Status')) ?>" class="col status"><?= /* @escapeNotVerified */ $_order->getStatusLabel() ?></td>
-                        <td data-th="<?= $block->escapeHtml(__('nuPoints')) ?>" class="col points">+ 500</td>
+                        <td data-th="<?= $block->escapeHtml(__('nuPoints')) ?>" class="col points">+ <?= (int)$_order->getNupoints(); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
