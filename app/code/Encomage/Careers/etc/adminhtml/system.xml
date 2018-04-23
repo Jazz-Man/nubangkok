@@ -1,12 +1,9 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="careers_settings" translate="label" sortOrder="12">
-            <label>Careers Settings</label>
-        </tab>
         <section id="careers_email_settings" showInDefault="1" showInStore="1" showInWebsite="1" translate="label" type="text">
             <label>Careers Email Settings</label>
-            <tab>careers_settings</tab>
+            <tab>nubangkok</tab>
             <resource>Encomage_Careers::careers</resource>
             <group id="email" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="1" type="text">
                 <label>Email Settings</label>
