@@ -45,7 +45,7 @@
     .amount {
       display: inline-block;
       float: right;
-      padding-top: 13px;
+      padding-top: 5px;
     }
   }
   // Page Heading
@@ -408,23 +408,39 @@
       top: -32px;
       right: 0;
     }
-    .qty-reduce, .qty-enhance {
-      position: relative;
-      width: 18px;
-      height: 16px;
-      display: inline-table;
-      color: black;
-      border: 1px solid #d9d2cb;
-      vertical-align: middle;
-      cursor: pointer;
-      span {
-        position: absolute;
-        left: 6px;
-        top: -6px;
-      }
-    }
+
     .control.qty {
       text-align: left;
+      .qty-reduce {
+        position: relative;
+        width: 18px;
+        height: 16px;
+        display: inline-table;
+        color: black;
+        border: 1px solid #d9d2cb;
+        vertical-align: middle;
+        cursor: pointer;
+        span {
+          position: absolute;
+          left: 7px;
+          top: -8px;
+        }
+      }
+      .qty-enhance {
+        position: relative;
+        width: 18px;
+        height: 16px;
+        display: inline-table;
+        color: black;
+        border: 1px solid #d9d2cb;
+        vertical-align: middle;
+        cursor: pointer;
+        span {
+          position: absolute;
+          left: 5px;
+          top: -6px;
+        }
+      }
     }
   }
   //
@@ -710,7 +726,7 @@
     .col.price span,
     .col.qty span,
     .col.subtotal span {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 400;
     }
     .col.qty {
@@ -722,6 +738,22 @@
   }
 
   .cart.table-wrapper {
+    .control.qty {
+      .qty-reduce {
+        span {
+          left: 6px;
+          top: -5px;
+          font-size: 20px;
+        }
+      }
+      .qty-enhance {
+        span {
+          left: 3px;
+          top: -3px;
+          font-size: 20px;
+        }
+      }
+    }
     .items {
       thead + .item {
       }
@@ -946,7 +978,6 @@
             height: 15px;
             width: 15px;
             margin-bottom: 4px;
-            //float: right;
             span {
               left: 0;
               top: -2px;
@@ -965,7 +996,6 @@
     }
   }
   .cart.table-wrapper .product-item-details .col.qty {
-    //width: 60px;
     width: 133px;
   }
   .fieldset.coupon.applied {
@@ -1330,5 +1360,6 @@
     }
   }
 }
+
 
 
