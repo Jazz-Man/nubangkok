@@ -19,4 +19,13 @@
         <section name="nupoints"/>
         <section name="cart"/>
     </action>
+    <action name="sales/order/reorder">
+        <section name="nupoints"/>
+    </action>
+    <action name="customer/ajax/login">
+        <section name="nupoints"/>
+    </action>
+    <action name="rest/*/V1/carts/*/payment-information">
+        <section name="nupoints"/>
+    </action>
 </config>
