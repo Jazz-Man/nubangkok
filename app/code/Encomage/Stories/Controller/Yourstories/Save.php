@@ -109,7 +109,6 @@ class Save extends Action
             $this->messageManager->addErrorMessage(__('No data'));
         }
         $this->_redirect('stories');
-        return $this;
     }
 
     /**

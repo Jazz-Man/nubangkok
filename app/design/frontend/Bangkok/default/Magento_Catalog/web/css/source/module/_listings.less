@@ -566,6 +566,7 @@
 .catalog-category-view .page-wrapper .page-main .breadcrumbs {
   padding-top: 9px;
   padding-bottom: 0;
+  margin-bottom: 30px;
 }
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
@@ -628,11 +629,16 @@
         padding: 0;
         width: 48%;
         //border: 1px solid;
-        margin-left: 4%;
+       //&:nth-child(odd){
+       //  margin-left: 4%;
+       //}
 
-        &:nth-child(odd) {
+        &:nth-child(even) {
           margin-left: 0;
+          float: left;
+          margin-right: 4%;
         }
+
         //&:nth-child(even){
         //  .product-item-details{
         //    padding-left: 40px;

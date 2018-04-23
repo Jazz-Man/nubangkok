@@ -37,6 +37,9 @@ class Redeem extends AbstractTotal
 
         /** @var \Encomage\Customer\Model\Customer $customer */
         $nupointItem = $this->getNupointItem();
+        if (!$nupointItem) {
+            return $this;
+        }
         $nupointsCheckoutData = $nupointItem->getCustomerNupointsCheckoutData();
         if (!$nupointsCheckoutData || !$this->customerSession->isLoggedIn()) {
             $total->setNupointsRedeemTotal(0);
@@ -67,7 +70,6 @@ class Redeem extends AbstractTotal
                 }
             }
         }
-
         return $this;
     }
 
@@ -100,7 +102,7 @@ class Redeem extends AbstractTotal
      */
     protected function _getValue()
     {
-        if ($this->getNupointItem()->getCustomerNupointsCheckoutData()) {
+        if ($this->getNupointItem() && $this->getNupointItem()->getCustomerNupointsCheckoutData()) {
             return (int)$this->getNupointItem()->getConvertedNupointsToMoney();
         }
         return 0;
