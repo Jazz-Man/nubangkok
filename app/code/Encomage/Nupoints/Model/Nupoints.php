@@ -249,16 +249,19 @@ class Nupoints extends AbstractModel implements NupointsInterface
      */
     public function addNupoints($value, $isConvert = false)
     {
-        $this->setData('value', $value);
+        $this->setData('add_value', $value);
         $this->setData('is_convert', $isConvert);
         if ($this->getData('is_convert')) {
-            $value = $this->getConvertedMoneyToNupoints($this->getData('value'));
+            $this->setData('add_value', $this->getConvertedMoneyToNupoints($this->getData('add_value')));
         }
-        $this->setNupoints((int)$this->getNupoints() + (int)$value);
+        $this->setNupoints((int)$this->getNupoints() + (int)$this->getData('add_value'));
         $this->_eventManager->dispatch($this->_eventPrefix . '_add_nupoints_after', [$this->_eventObject => $this]);
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function fillNupointsToMoneyRates()
     {
         $nuPoints = $this->json->unserialize($this->scopeConfig->getValue(static::NUPOINT_SETTING_LIST));
@@ -272,6 +275,7 @@ class Nupoints extends AbstractModel implements NupointsInterface
                     ? $rate['related_product'] : null;
             }
         }
+        return $this;
     }
 
     /**
