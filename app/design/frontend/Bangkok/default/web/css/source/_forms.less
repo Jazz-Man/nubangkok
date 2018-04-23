@@ -535,6 +535,15 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .customer-account-login {
+    .captcha {
+      .label{
+        width: 80%;
+        margin: 0 auto;
+        display: inherit;
+      }
+    }
+  }
   .mobile-my-account-title {
     display: none;
   }
@@ -599,6 +608,16 @@
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m){
+  .customer-account-login {
+    .captcha {
+      .label{
+        display: inherit;
+        margin-top: 48px;
+        width: 100%;
+        font-size: 13px;
+      }
+    }
+  }
   .mobile-my-account-title {
     display: block;
     text-align: center;

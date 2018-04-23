@@ -79,7 +79,6 @@ define([
         shoppingCartUrl: window.checkout.shoppingCartUrl,
         maxItemsToDisplay: window.checkout.maxItemsToDisplay,
         cart: {},
-        miniBagCssClass: ko.observable(),
 
         /**
          * @override
@@ -165,12 +164,11 @@ define([
                     this.cart[name] = ko.observable();
                 }
             }
-
             if(name == 'summary_count') {
                 if (this.cart[name]() >= 10) {
-                    this.miniBagCssClass = 'count-ten';
+                    $('.js-counter-number').addClass('count-ten');
                 } else if (this.cart[name]() >= 100) {
-                    this.miniBagCssClass = 'count-hundred';
+                    $('.js-counter-number').addClass('count-hundred');
                 }
             }
             return this.cart[name]();

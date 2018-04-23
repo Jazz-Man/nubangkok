@@ -159,9 +159,9 @@
       }
     }
 
-    .general-subcategories{
-      .active{
-        a{
+    .general-subcategories {
+      .active {
+        a {
           position: relative;
           font-weight: 700;
           &:before {
@@ -187,6 +187,11 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
   .mobile-account-top-links {
     width: 0;
+    .page.messages {
+      .messages div {
+        display: none;
+      }
+    }
     .minicart-wrapper {
       display: none;
     }

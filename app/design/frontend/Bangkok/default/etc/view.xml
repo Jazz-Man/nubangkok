@@ -146,8 +146,8 @@
                 <height>270</height>
             </image>
             <image id="related_products_list" type="small_image">
-                <width>140</width>
-                <height>140</height>
+                <width>270</width>
+                <height>270</height>
             </image>
             <image id="review_page_product_image" type="small_image">
                 <width>285</width>
