@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Encomage_Stories::stories" title="Stories" translate="title" module="Encomage_Stories" sortOrder="10"
+             resource="Encomage_Stories::stories" parent="Encomage_Theme::nubangkok"/>
+        <add id="Encomage_Stories::stories_list" translate="title" parent="Encomage_Stories::stories" title="Stories List"
+             module="Encomage_Stories" sortOrder="10" resource="Encomage_Stories::stories" action="stories"/>
+    </menu>
+</config>

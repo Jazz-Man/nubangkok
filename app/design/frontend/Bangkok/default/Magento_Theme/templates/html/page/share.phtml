@@ -1,0 +1,13 @@
+<?php
+/** @var  \Encomage\Theme\Block\Html\Page\FacebookShareLinkInterface $block */
+
+$css = $block->getCssClass() ? $block->getCssClass() : '';
+?>
+<div class="default-shared-link <?= $css; ?>">
+    <a target="_blank" title="<?php echo __('Share on Facebook'); ?>"
+       href="<?php echo $block->getLink(); ?>">
+        <div class="share-btn">
+            <span class="arrow-up"></span>
+        </div>
+    </a>
+</div>

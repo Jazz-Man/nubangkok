@@ -80,6 +80,41 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.1.1', '<')) {
             $this->updateContactUs();
         }
+        
+        if (version_compare($context->getVersion(), '0.1.2', '<')) {
+            $this->updateLeftLinksSidebarBlock012();
+        }
+        
+        if (version_compare($context->getVersion(), '0.1.2', '<')) {
+            //$this->upgradeCmsPagesContactCustomerCareFaqPoliciesProductCare();
+        }
+
+        if (version_compare($context->getVersion(), '0.1.3', '<')) {
+            $this->upgradeCmsPages();
+            $this->upgradeLeftSidebarCmsBlock();
+        }
+
+        if (version_compare($context->getVersion(), '0.1.4', '<')) {
+            $this->upgradeComingSoon014();
+            $this->upgradeLeftMenu014();
+        }
+
+        if (version_compare($context->getVersion(), '0.1.5', '<')) {
+            $this->addCmsBlockOurStories();
+            $this->upgradeLeftSidebar();
+        }
+
+        if (version_compare($context->getVersion(), '0.1.6', '<')) {
+//            $this->upgradeCmsBlockOurStories();
+        }
+        
+        if (version_compare($context->getVersion(), '0.1.7', '<')) {
+            $this->upgradeLeftMenu017();
+        }
+        if (version_compare($context->getVersion(), '0.1.8', '<')) {
+            $this->addNewCmsBlockOurStories();
+//            $this->upgradeCmsBlockOurStories();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -711,5 +746,507 @@ EOD;
         $contactUs->setContent($content);
         $this->pageRepository->save($contactUs);
         return $this;
+    }
+
+
+    private function updateLeftLinksSidebarBlock012()
+    {
+        $content = <<<EOD
+        <div style="margin-bottom: 1rem;"><a class="violet-link" style="margin-bottom: 1rem;" href="{{store url='why-nu'}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='blog'}}">INSPIRATION</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='stories'}}">nu STORIES (yours and ours)</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='customer-care'}}">CUSTOMER CARE</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='product-care'}}">PRODUCT CARE</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='contact-us'}}">CONTACT US</a></div>
+<div><a href="{{store url='careers/listing/index'}}">CAREER</a></div>
+<div class="social-links" style="margin-bottom: 1rem;">
+<a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/icons/homePage/Facebook.svg}}" alt="facebook-icon" /> </a> 
+<a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/icons/homePage/Instagram.svg}}" alt="instagram-icon" /> </a> 
+<a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/icons/homePage/youtube.svg}}" alt="youtube-icon" /> </a> 
+<a class="social-acc-pic" style="padding-top: 0;"> <img src="{{view url=images/empty-link.png}}" alt="youtube-icon" /></a>
+</div>
+<div>
+<p>#nuBangkok</p>
+</div>
+<div><a href="{{store url='policies'}}">POLICIES</a></div>
+EOD;
+
+        $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+    }
+    
+    private function upgradeCmsPagesContactCustomerCareFaqPoliciesProductCare()
+    {
+        $pages = [
+            'customer-care' => [
+                'title' => 'Customer Care',
+                'identifier' => 'customer-care',
+                'active' => true,
+                'page_layout' => '2columns-left',
+                'stores' => [0],
+                'content' => <<<EOM
+<div class="cms-customer-care">
+<h1 class="cms-heading">Customer Care</h1>
+<hr class="cms-heading-line" />
+<div class="accordion-container">
+<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url="wysiwyg/cms/arrow-right.svg"}}" width="9" height="11" /></a></p>
+</div>
+EOM
+            ],
+            'product-care' => [
+                'title' => 'Product Care',
+                'identifier' => 'product-care',
+                'active' => true,
+                'page_layout' => '2columns-left',
+                'stores' => [0],
+                'content' => <<<EOM
+<div class="cms-product-care">
+<h1 class="cms-heading">Product Care</h1>
+<hr class="cms-heading-line" />
+<div class="accordion-container">
+<p class="accordion js-accordion">Shoes <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Bags<img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+</div>
+EOM
+            ]
+        ];
+        foreach ($pages as $pageData) {
+            $pageObject = $this->pageFactory->create();
+            $pageObject->addData($pageData);
+            $this->pageRepository->save($pageObject);
+        }
+        return $this;
+
+    }
+
+    private function addCmsBlockOurStories()
+    {
+        $content = <<<EOD
+        <style xml="space"><!--
+@media only screen and (max-width: 772px) {
+.cms-img-container {
+width: 100%;
+}
+.cms-img-container p {
+width: 100%;
+display: block;
+}
+
+img {
+width: 100%;
+}
+--></style>
+<p>VISION</p>
+<p style="padding-bottom: 10px;">A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+<p></p>
+<p></p>
+<p style="text-align: center; padding-bottom: 20px;"><img src="{{media url="wysiwyg/_MG_0573.jpg"}}" width="80%" /></p>
+<p></p>
+<p style="font-size: 16px; padding-bottom: 10px;">What we do. (History)</p>
+<p></p>
+<p style="text-align: center;"><img src="{{media url="wysiwyg/_MG_0578.jpg"}}" width="80%" /></p>
+<div class="cms-img-container" style="width: 80%; margin: 0 auto; padding-bottom: 20px;">
+<p style="width: 49%; display: inline-block;"><img src="{{media url="wysiwyg/cms/career2.JPG"}}" /></p>
+<p style="width: 49%; display: inline-block; float: right;"><img src="{{media url="wysiwyg/cms/career3.JPG"}}" /></p>
+</div>
+<p>A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+EOD;
+        $ourStoriesBlock = [
+            'title' => 'Our stories',
+            'identifier' => 'our_stories',
+            'stores' => ['0'],
+            'is_active' => 1,
+            'content' => $content
+        ];
+
+        $block = $this->blockFactory->create(['data' => $ourStoriesBlock]);
+        $this->blockRepository->save($block);
+    }
+
+    private function upgradeCmsPages()
+    {
+        $pages = [
+            'home' => <<<EOD
+<p><img src="{{media url="wysiwyg/01Homepage_1.jpg"}}" width="1200" height="auto" /></p>
+<p><img src="{{media url="wysiwyg/02image-Ads1.jpg"}}" width="1200" height="auto" /></p>
+<p><img src="{{media url="wysiwyg/03image-Ads2.jpg"}}" width="1200" height="auto" /></p>
+<p><img src="{{media url="wysiwyg/04image-Ads3_1.jpg"}}" width="1200" height="auto" /></p>
+EOD
+            ,
+            'why-nu' => <<<EOD
+<div class="cms-why-nu-page">
+<p class="page-title">OUR SHOES</p>
+<table style="margin-bottom: 40px;" border="0">
+<tbody>
+<tr>
+<td style="display: inline-block; padding-right: 25px;"><img src="{{media url='wysiwyg/cms/grip-icon.png'}}" width="35" /></td>
+<td style="display: inline-block; padding-right: 50px; padding-top: 15px;">Grip</td>
+<td style="display: inline-block;"></td>
+<td style="display: inline-block; padding-right: 25px;"><img src="{{media url='wysiwyg/cms/grip-icon.png'}}" width="35" /></td>
+<td style="display: inline-block; padding-top: 15px;">Grip</td>
+</tr>
+<tr>
+<td style="display: inline-block; padding-right: 25px;"><img src="{{media url='wysiwyg/cms/grip-icon.png'}}" width="35" /></td>
+<td style="display: inline-block; padding-right: 50px; padding-top: 15px;">Grip</td>
+<td style="display: inline-block;"></td>
+<td style="display: inline-block; padding-right: 25px;"><img src="{{media url='wysiwyg/cms/grip-icon.png'}}" width="35" /></td>
+<td style="display: inline-block; padding-top: 15px;">Grip</td>
+</tr>
+<tr>
+<td style="display: inline-block; padding-right: 25px;"><img src="{{media url='wysiwyg/cms/grip-icon.png'}}" width="35" /></td>
+<td style="display: inline-block; padding-right: 50px; padding-top: 15px;">Grip</td>
+<td style="display: inline-block;"></td>
+<td style="display: inline-block; padding-right: 25px;"><img src="{{media url='wysiwyg/cms/grip-icon.png'}}" width="35" /></td>
+<td style="display: inline-block; padding-top: 15px;">Grip</td>
+</tr>
+</tbody>
+</table>
+<p><img src="{{media url='wysiwyg/cms/why-nu1.jpg'}}" width="1500" height="999" /></p>
+<p class="description">In the interests of hygiene we do not accept returns of, or refunds on earrings unless it is defective or a wrong item sent.</p>
+<p><img style="margin-top: 40px;" src="{{media url='wysiwyg/cms/why-nu2.jpg'}}" width="1500" height="999" /></p>
+<p class="description">In the interests of hygiene we do not accept returns of, or refunds on earrings unless it is defective or a wrong item sent.</p>
+<p></p>
+<p style="margin: 20px 0;">WE GUARANTEE</p>
+<p></p>
+<div style="margin-bottom: 10px;">
+<div class="numberCircle" style="display: inline-block;">1</div>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">In the interests of hygiene we do not accept returns of.</p>
+</div>
+<div style="margin-bottom: 10px;">
+<div class="numberCircle" style="display: inline-block;">2</div>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
+</div>
+<div style="margin-bottom: 10px;">
+<div class="numberCircle" style="display: inline-block;">3</div>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
+</div>
+</div>
+
+
+EOD
+            ,
+            'where-to-buy' => <<<EOD
+<div class="cms-where-to-buy-page">
+<div class="desktop-change-position-left">
+<h1 class="cms-heading" style="margin-bottom: 30px;">WHERE TO BUY</h1>
+<div class="accordion-container" style="border-top: 1px solid #55463e;">
+<div class="accordion active js-revert-image-on-click" data-gmp-btn="false" data-target="#myImage" data-src="{{media url="wysiwyg/cms/outlet-mini-shops.jpg"}}">Outlet mini shops</div>
+</div>
+<div class="accordion-container">
+<div class="accordion js-revert-image-on-click" data-gmp-btn="true" data-target="#myImage" data-src="{{media url="wysiwyg/cms/bangkok-map.png"}}">Thailand Malls</div>
+</div>
+<div class="accordion-container">
+<div class="accordion js-revert-image-on-click" data-gmp-btn="false" data-target="#myImage" data-src="{{media url="wysiwyg/cms/nu-roadshow3.jpg"}}">Roadshows &amp; Events</div>
+</div>
+</div>
+<div class="desktop-change-position-right"><img id="myImage" src="{{media url="wysiwyg/cms/outlet-mini-shops.jpg"}}" alt="" />
+<p class="js-show-gm-btn" style="text-align: center; display: none;"><a class="cms-button" href="https://goo.gl/gk4eqW" target="_blank">Open with google map</a></p>
+</div>
+</div>
+EOD
+            ,
+            'product-care' => <<<EOD
+<div class="cms-product-care">
+<h1 class="cms-heading">Product Care</h1>
+<hr class="cms-heading-line" />
+<div class="accordion-container">
+<p class="accordion js-accordion">Shoes <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Bags<img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+</div>
+EOD
+            ,
+            'customer-care' => <<<EOD
+<div class="cms-customer-care">
+<h1 class="cms-heading">Customer Care</h1>
+<hr class="cms-heading-line" />
+<div class="accordion-container">
+<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<div class="accordion-container">
+<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
+<div class="panel">
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url='wysiwyg/cms/arrow-right.png'}}" width="9" height="11" /></a></p>
+</div>
+EOD
+        ];
+
+        foreach ($pages as $pageId => $content) {
+            $page = $this->pageRepository->getById($pageId);
+            $page->setContent($content);
+            $this->pageRepository->save($page);
+        }
+        return $this;
+    }
+
+    private function upgradeLeftSidebarCmsBlock()
+    {
+        $content = <<<EOD
+<div style="margin-bottom: 1rem;"><a class="violet-link" style="margin-bottom: 1rem;" href="{{store url="why-nu"}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div style="margin-bottom: 1rem;"><a href="#">INSPIRATION</a></div>
+<div style="margin-bottom: 1rem;"><a href="#">nu STORIES (yours and ours)</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='customer-care'}}">CUSTOMER CARE</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='product-care'}}">PRODUCT CARE</a></div>
+<div style="margin-bottom: 1rem;"><a href="{{store url='contact-us'}}">CONTACT US</a></div>
+<div><a href="{{store url='careers/listing/index'}}">CAREER</a></div>
+<div class="social-links" style="margin-bottom: 1rem;"><a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/facebook.png}}" alt="facebook-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/instagram.png}}" alt="instagram-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/youtube.png}}" alt="youtube-icon" /> </a></div>
+<div>
+<p>#nuBangkok</p>
+</div>
+<div><a href="{{store url='policies'}}">POLICIES</a></div>
+EOD;
+
+        $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+        return $this;
+    }
+
+    private function upgradeComingSoon014()
+    {
+        $content = <<<EOD
+<div class="cms-coming-soon-category">
+<p><strong><span style="margin-bottom: 2rem;"><img src="{{media url="wysiwyg/05Women-clothes.jpg"}}" width="1000" height="288" />OUR WOMEN CLOTHING IS COMING LATER!</span></strong></p>
+<p></p>
+<p style="margin-bottom: 2rem;">Stay tuned!</p>
+<p style="margin-bottom: 2rem;">If you would like to be notified when it launches please enter your email below!</p>
+</div>
+EOD;
+        $block = $this->blockRepository->getById('coming_coon_category_women_clothing');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+        return $this;
+    }
+
+    private function upgradeLeftMenu014()
+    {
+        $content = <<<EOD
+<div class="nav-left-links"><a class="violet-link" href="{{store url="why-nu"}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div class="nav-left-links"><a href="#">INSPIRATION</a></div>
+<div class="nav-left-links"><a href="#">nu STORIES (yours and ours)</a></div>
+<div class="nav-left-links"><a href="{{store url='customer-care'}}">CUSTOMER CARE</a></div>
+<div class="nav-left-links"><a href="{{store url='product-care'}}">PRODUCT CARE</a></div>
+<div class="nav-left-links"><a href="{{store url='contact-us'}}">CONTACT US</a></div>
+<div class="nav-left-links"><a href="{{store url='careers/listing/index'}}">CAREER</a></div>
+<div class="social-links"><a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/facebook.png}}" alt="facebook-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/instagram.png}}" alt="instagram-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/youtube.png}}" alt="youtube-icon" /> </a></div>
+<div class="nav-left-links">
+<p style="margin-top: 3px; margin-bottom: 0;">#nuBangkok</p>
+</div>
+<div class="nav-left-links" style="margin-bottom: 0;"><a href="{{store url='policies'}}">POLICIES</a></div>
+EOD;
+        $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+        return $this;
+    }
+
+    private function upgradeLeftSidebar()
+    {
+        $content = <<<EOD
+<div class="nav-left-links"><a class="violet-link" href="{{store url="why-nu"}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div class="nav-left-links"><a href="{{store url='inspiration'}}">INSPIRATION</a></div>
+<div class="nav-left-links"><a href="{{store url='stories'}}">nu STORIES (yours and ours)</a></div>
+<div class="nav-left-links"><a href="{{store url='customer-care'}}">CUSTOMER CARE</a></div>
+<div class="nav-left-links"><a href="{{store url='product-care'}}">PRODUCT CARE</a></div>
+<div class="nav-left-links"><a href="{{store url='contact-us'}}">CONTACT US</a></div>
+<div class="nav-left-links"><a href="{{store url='careers/listing/index'}}">CAREER</a></div>
+<div class="social-links"><a class="social-acc-pic" style="padding-top: 0;" href="https://www.facebook.com" target="_blank"> <img src="{{view url=images/facebook.png}}" alt="facebook-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.instagram.com" target="_blank"> <img src="{{view url=images/instagram.png}}" alt="instagram-icon" /> </a> <a class="social-acc-pic" style="padding-top: 0;" href="https://www.youtube.com" target="_blank"> <img src="{{view url=images/youtube.png}}" alt="youtube-icon" /> </a></div>
+<div class="nav-left-links">
+<p style="margin-top: 3px; margin-bottom: 0;">#nuBangkok</p>
+</div>
+<div class="nav-left-links" style="margin-bottom: 0;"><a href="{{store url='policies'}}">POLICIES</a></div>
+EOD;
+        $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+        return $this;
+    }
+    
+
+    private function upgradeLeftMenu017()
+    {
+        $content = <<<EOD
+<div class="nav-left-links js-left-link" data-page-class="why-nu"><a class="violet-link" href="{{store url="why-nu"}}">WHY <strong style="font-size: 18px;">nu</strong> ?</a></div>
+<div class="nav-left-links js-left-link" data-page-class="blog-index-index"><a href="{{store url='inspiration'}}">INSPIRATION</a></div>
+<div class="nav-left-links js-left-link" data-page-class="stories-index-index"><a href="{{store url='stories'}}">nu STORIES (yours and ours)</a></div>
+<div class="nav-left-links js-left-link" data-page-class="cms-product-care"><a href="{{store url='product-care'}}">PRODUCT CARE</a></div>
+<div class="nav-left-links js-left-link" data-page-class="careers-listing-index"><a href="{{store url='careers/listing/index'}}">CAREER</a></div>
+<div class="nav-left-links js-left-links"><a style="margin-top: 3px; margin-bottom: 0;">#nuBangkok</a></div>
+EOD;
+        $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+        return $this;
+    }
+
+    private function upgradeCmsBlockOurStories()
+    {
+        $content = <<<EOD
+<style xml="space"><!--
+.cms-img-container {
+width: 80%; margin: 0 auto; padding-bottom: 20px;
+}
+.cms-img-container p {
+width: 49%; 
+display: inline-block;
+}
+
+@media only screen and (max-width: 772px) {
+.cms-img-container {
+width: 100%;
+}
+.cms-img-container p {
+width: 100%;
+display: block;
+float: none;
+}
+
+img {
+width: 100%;
+}
+}
+--></style>
+<p>VISION</p>
+<p style="padding-bottom: 10px;">A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+<p></p>
+<p></p>
+<p style="text-align: center; padding-bottom: 10px;"><img src="{{media url="wysiwyg/_MG_0573.jpg"}}" width="80%" /></p>
+<p></p>
+<p style="padding-bottom: 10px;">What we do. (History)</p>
+<p></p>
+<p style="text-align: center;"><img src="{{media url="wysiwyg/_MG_0578.jpg"}}" width="80%" /></p>
+<div class="cms-img-container">
+<p><img src="{{media url="wysiwyg/cms/career2.JPG"}}" /></p>
+<p style="float: right;"><img src="{{media url="wysiwyg/cms/career3.JPG"}}" /></p>
+</div>
+<p style="padding-bottom: 10px;">A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+EOD;
+        $block = $this->blockRepository->getById('our_stories');
+        $block->setContent($content);
+        $this->blockRepository->save($block);
+        return $this;
+    }
+
+    private function addNewCmsBlockOurStories()
+    {
+        $content = <<<EOD
+        <style xml="space"><!--
+@media only screen and (max-width: 772px) {
+.cms-img-container {
+width: 100%;
+}
+.cms-img-container p {
+width: 100%;
+display: block;
+}
+
+img {
+width: 100%;
+}
+--></style>
+<p>VISION</p>
+<p style="padding-bottom: 10px;">A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+<p></p>
+<p></p>
+<p style="text-align: center; padding-bottom: 20px;"><img src="{{media url="wysiwyg/_MG_0573.jpg"}}" width="80%" /></p>
+<p></p>
+<p style="font-size: 16px; padding-bottom: 10px;">What we do. (History)</p>
+<p></p>
+<p style="text-align: center;"><img src="{{media url="wysiwyg/_MG_0578.jpg"}}" width="80%" /></p>
+<div class="cms-img-container" style="width: 80%; margin: 0 auto; padding-bottom: 20px;">
+<p style="width: 49%; display: inline-block;"><img src="{{media url="wysiwyg/cms/career2.JPG"}}" /></p>
+<p style="width: 49%; display: inline-block; float: right;"><img src="{{media url="wysiwyg/cms/career3.JPG"}}" /></p>
+</div>
+<p>A lifestyle brand that transforms the latest trends into accessible fashion, nuBangkok's product offerings have diversified to include bags, accessories and costume jewelry that inspire with experimental designs. The brand is the fashion destination for stylish urbanites and is synonymous with curated collections of relevant designs.</p>
+EOD;
+        $ourStoriesBlock = [
+            'title' => 'Our stories',
+            'identifier' => 'our_stories',
+            'stores' => ['0'],
+            'is_active' => 1,
+            'content' => $content
+        ];
+        $oldBlock = $this->blockFactory->create()->load('our_stories', 'identifier');
+        if (!$oldBlock->getId()) {
+            $block = $this->blockFactory->create(['data' => $ourStoriesBlock]);
+            $this->blockRepository->save($block);
+        }
     }
 }

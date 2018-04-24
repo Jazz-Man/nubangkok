@@ -123,6 +123,17 @@
             </block>
         </referenceBlock>
 
+        <referenceContainer name="header.panel">
+            <container name="mobile-header-logo" htmlClass="hide-dsk" htmlTag="div">
+                <block class="Magento\Theme\Block\Html\Header\Logo" name="mobile-logo" before="-">
+                    <arguments>
+                        <argument name="logo_img_width" xsi:type="number">189</argument>
+                        <argument name="logo_img_height" xsi:type="number">64</argument>
+                    </arguments>
+                </block>
+            </container>
+        </referenceContainer>
+
 
         <move element="logo" destination="left-sidebar-container" before="-"/>
 
@@ -142,5 +153,20 @@
         <referenceBlock name="store_language" remove="true"/>
         <referenceBlock name="page.main.title" remove="true"/>
         <referenceBlock name="sale.reorder.sidebar" remove="true"/>
+        <referenceBlock name="copyright" remove="true"/>
+
+        <referenceContainer name="footer">
+            <block class="Magento\Cms\Block\Block" name="mobile_footer">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">mobile_footer</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Cms\Block\Block" name="desktop_footer">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">desktop_footer</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
     </body>
 </page>
