@@ -156,11 +156,16 @@
         border: none;
         text-align: left;
         outline: none;
-        span {
-          content: @icon-arrow-right;
-          padding-left: 5px;
-          vertical-align: middle;
-          height: 14px;
+        &:after {
+          display: inline-block;
+          content: ' ';
+          background-image: @icon-arrow-right;
+          background-size: 15px 16px;
+          height: 16px;
+          width: 15px;
+          margin-left: 5px;
+          position: absolute;
+          margin-top: 2px;
         }
       }
       .open-account-details {
@@ -171,13 +176,21 @@
         text-align: left;
         outline: none;
         &:after {
-          content: @icon-select-arrow-down;
-          padding-left: 5px;
-          vertical-align: middle;
-          transform: rotate(182deg);
+          display: inline-block;
+          content: ' ';
+          background-image: @icon-select-arrow-down;
+          background-size: 15px 16px;
+          height: 16px;
+          width: 15px;
+          margin-left: 5px;
+          position: absolute;
+          margin-top: 2px;
         }
         &.active:after {
-          content: @icon-select-arrow-up;
+          display: inline-block;
+          content: ' ';
+          background-image: @icon-select-arrow-down;
+          transform: rotate(182deg);
         }
       }
       h2 {
