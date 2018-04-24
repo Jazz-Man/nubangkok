@@ -10,10 +10,15 @@
       line-height: 19px;
       position: relative;
       &:after {
-        content: url('../images/arrow-right.png');
-        margin-left: 15px;
+        display: inline-block;
+        content: ' ';
+        background-image: @icon-arrow-right;
+        background-size: 15px 16px;
+        height: 16px;
+        width: 15px;
+        margin-left: 14px;
         position: absolute;
-        top: 0.5px;
+        margin-top: 2px;
       }
     }
     .short-description {
@@ -132,13 +137,18 @@
                   position: relative;
                   font-size: 15px;
                   span {
-                    padding-left: 20px;
+                    padding-left: 30px;
                     color: #8f8278;
                     &:before {
-                      content: url('../Encomage_Careers/images/icon-attach.png');
+                      content: ' ';
+                      background-image: @icon-attach-file;
+                      background-size: 24px 24px;
+                      height: 24px;
+                      width: 24px;
                       position: absolute;
-                      top: -5px;
-                      left: 5px;
+                      top: -4px;
+                      left: 4px;
+
                     }
                   }
                 }

@@ -237,10 +237,6 @@
 }
 .cms-customer-care > .accordion img {
     transform: none;
-    vertical-align: middle;
-    height: 14px;
-    width: 20px;
-    padding-left: 5px !important;
 }
 
 .active:hover, .accordion:hover {
