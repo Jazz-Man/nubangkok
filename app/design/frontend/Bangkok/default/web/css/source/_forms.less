@@ -36,7 +36,6 @@
 
     > .field,
     > .fields > .field {
-      //.lib-form-field();
       margin: 0;
       &.no-label {
         > .label {
@@ -107,14 +106,8 @@
 
   .field-error,
   div.mage-error[generated] {
-    //margin-top: 7px;
     line-height: 10px;
   }
-  //.field.required {
-  //  div.mage-error {
-  //    margin-top: 0;
-  //  }
-  //}
 
   .field-error {
     .lib-form-validation-note();
@@ -144,7 +137,6 @@
         @_icon-font-display: block,
         @_icon-font-text-hide: true
       );
-      //display: inline-block;
       display: none;
       vertical-align: middle;
 
@@ -353,7 +345,6 @@
     .register-form-right-image {
 
     }
-
   }
   .legend-contact-info, .legend-address {
     margin-bottom: 0 !important;
@@ -374,7 +365,6 @@
   }
 }
 
-
 .product-options-wrapper {
   .field .control .input-text {
     width: 32%;
@@ -387,34 +377,7 @@
     &:focus {
       box-shadow: none;
     }
-    //  background: @icon-select-arrow-down;
-    //  background-position: 96%;
-    //  background-repeat: no-repeat;
-    //  &:focus, &:active {
-    //    background: @icon-select-arrow-up;
-    //    background-position: 96%;
-    //    background-repeat: no-repeat;
-    //  }
   }
-
-  //.swatch-select {
-  //  width: 32%;
-  //  height: 45px;
-  //  border-left: none;
-  //  border-right: none;
-  //  border-top: @dropdown-list__border;
-  //  border-bottom: @dropdown-list__border;
-  //  padding: 0;
-  //  background: @icon-select-arrow-down;
-  //  background-position: 96%;
-  //  background-repeat: no-repeat;
-  //  margin-top: 10px;
-  //  &:focus, &:active {
-  //    background: @icon-select-arrow-up;
-  //    background-position: 96%;
-  //    background-repeat: no-repeat;
-  //  }
-  //}
 }
 
 ._keyfocus *:focus, input:not([disabled]):focus, textarea:not([disabled]):focus, select:not([disabled]):focus {
@@ -615,6 +578,7 @@
         margin-top: 48px;
         width: 100%;
         font-size: 13px;
+
       }
     }
   }
@@ -626,6 +590,16 @@
   }
   .field .control .input-text {
     width: 36%;
+  }
+  .modal-content {
+    overflow-y: auto;
+    .block-customer-login{
+      .block-content{
+        .field .control .input-text{
+          width: 100%;
+        }
+      }
+    }
   }
   .fieldset .field.qty {
     margin-top: 30px;
@@ -708,6 +682,13 @@
 
   .form-edit-account {
     .fieldset {
+      .field.date.field-dob {
+        .control.customer-dob {
+          input {
+            width: 100%;
+          }
+        }
+      }
       .field .control .input-text {
         width: 100%;
       }
