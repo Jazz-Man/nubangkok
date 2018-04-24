@@ -2,10 +2,38 @@
 
 namespace Encomage\Careers\Controller\Adminhtml\Index;
 
-class Edit extends \Magento\Backend\App\Action
+use \Magento\Backend\App\Action;
+use \Magento\Framework\View\Result\PageFactory;
+
+class Edit extends Action
 {
+    /**
+     * @var bool|PageFactory
+     */
+    private $resultPageFactory = false;
+
+    /**
+     * Form constructor.
+     * @param Action\Context $context
+     * @param PageFactory $resultPageFactory
+     */
+    public function __construct(
+        Action\Context $context,
+        PageFactory $resultPageFactory
+    )
+    {
+        $this->resultPageFactory = $resultPageFactory;
+        parent::__construct($context);
+    }
+
+    /**
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|\Magento\Framework\View\Result\Page
+     */
     public function execute()
     {
-        $this->_forward('form');
+        $resultPage = $this->resultPageFactory->create();
+        $resultPage->setActiveMenu('Encomage_Careers::careers');
+        $resultPage->getConfig()->getTitle()->prepend((__('Edit Vacancy')));
+        return $resultPage;
     }
 }

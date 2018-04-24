@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="content.aside">
+            <block class="Encomage\Nupoints\Block\Catalog\Product\View\NupointsRedeem"
+                   after="-" name="catalog.product.view.nupoints.redeem" as="catalog.product.view.nupoints.redeem"
+                   template="Encomage_Nupoints::catalog/product/view/nupoints-redeem.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

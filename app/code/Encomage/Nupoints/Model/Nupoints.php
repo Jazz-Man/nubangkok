@@ -10,6 +10,9 @@ use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\DataObject;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 
 /**
@@ -18,16 +21,30 @@ use Magento\Framework\Exception\LocalizedException;
  */
 class Nupoints extends AbstractModel implements NupointsInterface
 {
+    const NUPOINT_SETTING_LIST = 'nupoints_settings/nupoints_rates/nupoints_list';
+
     /**
      * @var CheckoutSession
      */
     private $checkoutSession;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    /**
+     * @var Json
+     */
+    private $json;
+
+    /**
      * Nupoints constructor.
      * @param Context $context
      * @param Registry $registry
      * @param CheckoutSession $checkoutSession
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Json $json
      * @param AbstractResource|null $resource
      * @param AbstractDb|null $resourceCollection
      * @param array $data
@@ -36,12 +53,20 @@ class Nupoints extends AbstractModel implements NupointsInterface
         Context $context,
         Registry $registry,
         CheckoutSession $checkoutSession,
+        ScopeConfigInterface $scopeConfig,
+        Json $json,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = []
-    ) {
+    )
+    {
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
         $this->checkoutSession = $checkoutSession;
+        $this->scopeConfig = $scopeConfig;
+        $this->json = $json;
+        $this->_eventPrefix = 'nupoints';
+        $this->_eventObject = 'nupoints';
+        $this->fillNupointsToMoneyRates();
     }
 
     /**
@@ -55,9 +80,70 @@ class Nupoints extends AbstractModel implements NupointsInterface
     protected function _construct()
     {
         $this->_init(\Encomage\Nupoints\Model\ResourceModel\Nupoints::class);
-        $this->_nuPointsToMoneyRates[50] = ['from' => 3000, 'to' => 3999];
-        $this->_nuPointsToMoneyRates[100] = ['from' => 4000, 'to' => 4999];
-        $this->_nuPointsToMoneyRates[150] = ['from' => 5000];
+    }
+
+    /**
+     * @param int $nupoints
+     * @return $this
+     */
+    public function enableUseNupointsOnCheckout(int $nupoints)
+    {
+        $money = $this->getConvertedNupointsToMoney($nupoints);
+        $this->setNupointsCheckoutData(
+            new DataObject(
+                [
+                    'nupoints_to_redeem' => $nupoints,
+                    'money_to_redeem' => $money,
+                    'product' => $this->_nuPointsToMoneyRates[$money]['related_product']
+                ]
+            )
+        );
+        $this->_eventManager->dispatch(
+            $this->_eventPrefix . '_enable_use_nupoints_on_checkout_before',
+            [$this->_eventObject => $this]
+        );
+        $this->checkoutSession->setUseCustomerNuPoints($this->getNupointsCheckoutData());
+        $this->_eventManager->dispatch(
+            $this->_eventPrefix . '_enable_use_nupoints_on_checkout_after',
+            [$this->_eventObject => $this]
+        );
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function disableUseNupointsOnCheckout()
+    {
+        $this->_eventManager->dispatch(
+            $this->_eventPrefix . '_disable_use_nupoints_on_checkout_before',
+            [$this->_eventObject => $this]
+        );
+        $this->checkoutSession->setUseCustomerNuPoints(false);
+        $this->_eventManager->dispatch(
+            $this->_eventPrefix . '_disable_use_nupoints_on_checkout_after',
+            [$this->_eventObject => $this]
+        );
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerNupointsCheckoutData()
+    {
+        return $this->checkoutSession->getUseCustomerNuPoints();
+    }
+
+    /**
+     * @return int
+     */
+    public function getAvailableNupoints()
+    {
+        if (!$this->getCustomerNupointsCheckoutData()) {
+            return $this->getNupoints();
+        }
+        return $this->getNupoints() - $this->getCustomerNupointsCheckoutData()->getNupointsToRedeem();
     }
 
     /**
@@ -67,6 +153,23 @@ class Nupoints extends AbstractModel implements NupointsInterface
     public function getConvertedMoneyToNupoints($baht)
     {
         return (floor($baht / 100)) * 100;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCanCustomerRedeem()
+    {
+        return (bool)!$this->getCustomerNupointsCheckoutData()
+        && $this->getNupoints() >= $this->getMinNuPointsCountForRedeem();
+    }
+
+    /**
+     * @return array
+     */
+    public function getNupointsToMoneyRates()
+    {
+        return $this->_nuPointsToMoneyRates;
     }
 
     /**
@@ -116,25 +219,26 @@ class Nupoints extends AbstractModel implements NupointsInterface
      */
     public function redeemNupointsAfterOrderPlaced()
     {
-        if ($this->checkoutSession->getUseCustomerNuPoints()) {
-            $convertedToMoney = $this->getConvertedNupointsToMoney();
+        if ($this->getCustomerNupointsCheckoutData()) {
+            $this->_eventManager->dispatch(
+                $this->_eventPrefix . '_redeem_nupoints_after_order_place_before',
+                [$this->_eventObject => $this]
+            );
+
+            $convertedToMoney = $this->getConvertedNupointsToMoney(
+                $this->getCustomerNupointsCheckoutData()->getNupointsToRedeem()
+            );
             $redeemed = $this->_nuPointsToMoneyRates[$convertedToMoney]['from'];
             if ($this->getNupoints() < $redeemed) {
                 throw new LocalizedException(__('Not enough nupoints for redeem'));
             }
             $this->setNupoints((int)$this->getNupoints() - (int)$redeemed);
-            $this->clearSession();
+            $this->disableUseNupointsOnCheckout();
+            $this->_eventManager->dispatch(
+                $this->_eventPrefix . '_redeem_nupoints_after_order_place_after',
+                [$this->_eventObject => $this]
+            );
         }
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function clearSession()
-    {
-        $this->checkoutSession->setNupointsRedeemedMoney(false);
-        $this->checkoutSession->setUseCustomerNuPoints(false);
         return $this;
     }
 
@@ -145,10 +249,33 @@ class Nupoints extends AbstractModel implements NupointsInterface
      */
     public function addNupoints($value, $isConvert = false)
     {
-        if ($isConvert) {
-            $value = $this->getConvertedMoneyToNupoints($value);
+        $this->setData('add_value', $value);
+        $this->setData('is_convert', $isConvert);
+        if ($this->getData('is_convert')) {
+            $this->setData('add_value', $this->getConvertedMoneyToNupoints($this->getData('add_value')));
         }
-        return $this->setNupoints((int)$this->getNupoints() + (int)$value);
+        $this->setNupoints((int)$this->getNupoints() + (int)$this->getData('add_value'));
+        $this->_eventManager->dispatch($this->_eventPrefix . '_add_nupoints_after', [$this->_eventObject => $this]);
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function fillNupointsToMoneyRates()
+    {
+        $nuPoints = $this->json->unserialize($this->scopeConfig->getValue(static::NUPOINT_SETTING_LIST));
+        foreach ($nuPoints as $rate) {
+            if (!empty($rate['money'])) {
+                $this->_nuPointsToMoneyRates[$rate['money']]['from'] = (!empty($rate['nupoints_from']))
+                    ? $rate['nupoints_from'] : null;
+                $this->_nuPointsToMoneyRates[$rate['money']]['to'] = (!empty($rate['nupoints_to']))
+                    ? $rate['nupoints_to'] : null;
+                $this->_nuPointsToMoneyRates[$rate['money']]['related_product'] = (!empty($rate['related_product']))
+                    ? $rate['related_product'] : null;
+            }
+        }
+        return $this;
     }
 
     /**

@@ -8,43 +8,9 @@
 
 /**  @var $block \Magento\Checkout\Block\Cart\Grid */
 ?>
-<?php $mergedCells = ($this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices() ? 2 : 1); ?>
 <?= $block->getChildHtml('form_before') ?>
-<h1 class="page-heading">My shopping bag</h1>
-<form action="<?= /* @escapeNotVerified */ $block->getUrl('checkout/cart/updatePost') ?>"
-      method="post"
-      id="form-validate"
-      data-mage-init='{"validation":{}}'
-      class="form form-cart">
-    <?= $block->getBlockHtml('formkey') ?>
-    <div class="cart table-wrapper<?= $mergedCells == 2 ? ' detailed' : '' ?>" data-mage-init='{"Magento_Theme/js/qty/qty-add":{}}'>
-        <?php if ($block->getPagerHtml()): ?>
-            <div class="cart-products-toolbar cart-products-toolbar-top toolbar" data-attribute="cart-products-toolbar-top"><?= $block->getPagerHtml() ?></div>
-        <?php endif ?>
-        <table id="shopping-cart-table"
-               class="cart items data table"
-               data-mage-init='{"shoppingCart":{"emptyCartButton": "action.clear",
-               "updateCartActionContainer": "#update_cart_action_container"}}'>
-            <?php foreach ($block->getItems() as $_item): ?>
-                <?= $block->getItemHtml($_item) ?>
-            <?php endforeach ?>
-        </table>
-        <?php if ($block->getPagerHtml()): ?>
-            <div class="cart-products-toolbar cart-products-toolbar-bottom toolbar" data-attribute="cart-products-toolbar-bottom"><?= $block->getPagerHtml() ?></div>
-        <?php endif ?>
-    </div>
-    <div class="cart main actions">
-        <button type="submit"
-                name="update_cart_action"
-                data-cart-item-update=""
-                value="update_qty"
-                title="<?= $block->escapeHtml(__('Update Shopping Cart')) ?>"
-                class="action update">
-            <span><?= /* @escapeNotVerified */ __('Update Shopping Cart') ?></span>
-        </button>
-        <input type="hidden" value="" id="update_cart_action_container" data-cart-item-update=""/>
-    </div>
-</form>
+<h1 class="page-heading"><?= /* @escapeNotVerified */ __('My shopping bag'); ?></h1>
+<?= $block->getChildHtml('checkout.cart.form.content'); ?>
 <?= $block->getChildHtml('checkout.cart.order.actions') ?>
 <?= $block->getChildHtml('shopping.cart.table.after') ?>
 

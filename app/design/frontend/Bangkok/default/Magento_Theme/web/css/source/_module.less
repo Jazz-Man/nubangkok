@@ -127,7 +127,7 @@
           background-size: cover;
         }
         &:hover, &:focus, &:active {
-          .top-link-myaccount{
+          .top-link-myaccount {
             background: @icon-customer-account-active;
             background-size: cover;
           }
@@ -145,7 +145,7 @@
         height: 25px;
         display: block;
         background-size: cover;
-        &:hover, &:focus, &:active{
+        &:hover, &:focus, &:active {
           background: @icon-locate-active;
           background-size: cover;
         }
@@ -260,11 +260,13 @@
   .page-footer {
     .lib-css(background-color, @footer__background-color);
     margin-top: auto;
+    .mobile-footer {
+      display: none;
+    }
   }
 
   .footer {
     &.content {
-      border-top: 1px solid @border-color__base;
       margin-top: 0;
       padding-bottom: 10px;
       padding-top: 10px;
@@ -282,7 +284,11 @@
       .switcher-store {
         margin: 0 0 30px;
       }
-
+      .desktop-footer {
+        width: 83.33333333%;
+        float: right;
+        margin-bottom: 20px;
+      }
     }
 
     .copyright,
@@ -316,7 +322,7 @@
           a {
             display: block;
             padding: 8px;
-
+            text-transform: uppercase;
             &:hover {
               text-decoration: none;
             }
@@ -381,6 +387,67 @@
     }
   }
 
+  .view-nupoints-redeem {
+    > div:nth-child(2) {
+      margin-top: 50px;
+      > span:first-of-type {
+        display: inline-block;
+        float: left;
+        padding-top: 9px;
+        margin-right: 5%;
+      }
+      .mobile-to-redeem {
+        display: none;
+      }
+      .js-select-custom {
+        div.js-list {
+          position: relative;
+          width: 50%;
+          height: 38px;
+          float: left;
+          border-top: 1px solid;
+          border-bottom: 1px solid;
+          display: inline-block;
+          .placeholder {
+            padding-left: 20%;
+            padding-top: 9px;
+            display: block;
+          }
+          .js-option {
+            display: none;
+            .option-container {
+              height: max-content;
+              border-bottom: 1px solid;
+              background-color: #ffffff;
+            }
+          }
+        }
+        > span:first-of-type {
+          button {
+            background-color: #55463e;
+            color: white;
+            height: 38px;
+            text-transform: uppercase;
+            border: none;
+            margin-left: 5%;
+          }
+        }
+        .js-selected-option-container:after {
+          content: @icon-select-arrow-down;
+          position: absolute;
+          height: 15px;
+          width: 15px;
+          right: 0;
+          top: 9px;
+        }
+        &.active {
+          .js-selected-option-container:after {
+            content: @icon-select-arrow-up;
+          }
+        }
+      }
+    }
+  }
 }
 
 //
@@ -522,8 +589,11 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
   //icon menu list
   .mobile-account-top-links {
+    .header.content {
+      display: none;
+    }
     .columns .column.main {
-      position: relative;
+      display: none;
     }
     .page-wrapper {
       position: relative;
@@ -538,7 +608,7 @@
                 background-color: #ffffff;
                 height: 100%;
                 li {
-                  width: 70%;
+                  width: 80%;
                   display: inline-block;
                   float: right;
                   border-bottom: 2px solid #6d6d6d;
@@ -576,13 +646,14 @@
               }
             }
             .close-account-links-js {
-              width: 50px;
-              height: 30px;
+              width: 115px;
+              height: 36px;
               position: absolute;
               top: 4px;
               cursor: pointer;
-              right: 10px;
+              right: 0;
               z-index: 10;
+              padding-right: 10px;
               span {
                 content: @icon-close-element-mob-vers;
                 width: 22px;
@@ -594,6 +665,87 @@
               font-weight: 700;
             }
           }
+        }
+      }
+    }
+  }
+  //
+  // Footer mobile
+  //
+  .page-footer {
+    .footer.content {
+      padding-left: 0;
+      padding-right: 0;
+      padding-top: 0;
+      .mobile-footer {
+        display: block;
+        margin-top: 50px;
+        .social-links {
+          width: 100%;
+          display: inline-block;
+          border-bottom: 2px solid #d9d2cb - 50%;
+          span {
+            padding-left: 10px;
+            display: inline-block;
+            margin-top: 12px;
+            text-transform: uppercase;
+            font-size: 1.6rem;
+          }
+          .links-container {
+            width: 217px;
+            float: right;
+            margin-right: 5%;
+            a.social-acc-pic {
+              margin-right: 15px;
+              height: 40px;
+              width: 40px;
+              display: inline-block;
+              img {
+                width: 100%;
+              }
+            }
+            a.social-acc-pic:last-of-type {
+              margin-right: 0;
+            }
+          }
+        }
+        .general-subcategories {
+          div {
+            border-bottom: 2px solid #d9d2cb - 50%;
+            padding-bottom: 0;
+            padding-top: 8px;
+            height: 30px;
+            a {
+              padding-left: 10px;
+              font-size: 1.6rem;
+            }
+          }
+        }
+      }
+      .copyright {
+        padding-top: 7px;
+        font-size: 12px;
+      }
+    }
+  }
+  .cms-home .mobile-footer{
+    margin-top: 0 !important;
+  }
+  .view-nupoints-redeem {
+    margin-top: 30px;
+    > div:nth-child(2) {
+      margin-top: 20px;
+      position: relative;
+      > span:first-of-type {
+        display: none;
+      }
+      .js-select-custom div.js-list {
+        width: 100%;
+        .placeholder {
+          //padding: 0;
+        }
+        .js-option div {
+          height: max-content;
         }
       }
     }
