@@ -3,6 +3,10 @@ namespace Encomage\ErpIntegration\Model\Api;
 
 use Zend\Http\Request as HttpRequest;
 
+/**
+ * Class Product
+ * @package Encomage\ErpIntegration\Model\Api
+ */
 class Product extends Request
 {
     /**
@@ -10,13 +14,17 @@ class Product extends Request
      */
     public function getAllProducts()
     {
-        $this->_setLastPoint('GetProductList');
+        $this->_setApiLastPoint('GetProductList');
         $this->_setApiMethod(HttpRequest::METHOD_GET);
         $this->_setAdditionalDataUrl([
             'Branchpricedisplay' => 1,
-            "CategoryDisplaySubCat" => 1
+            "CategoryDisplaySubCat" => 1,
+            "warehouseCode" => 'WH_ON'
         ]);
         $result = $this->sendApiRequest();
+        if (is_object($result)){
+            $result = get_object_vars($result);
+        }
         return $result;
     }
 
@@ -24,7 +32,7 @@ class Product extends Request
      * @param string $point
      * @return string
      */
-    protected function _setLastPoint($point = 'GetProductList')
+    protected function _setApiLastPoint($point = 'GetProductList')
     {
         return $this->apiPoint = $point;
     }

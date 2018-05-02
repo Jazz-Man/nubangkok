@@ -1,10 +1,13 @@
 <?php
 namespace Encomage\ErpIntegration\Model\Api;
 
-use Encomage\ErpIntegration\Api\ApiInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
-abstract class Request implements ApiInterface
+/**
+ * Class Request
+ * @package Encomage\ErpIntegration\Model\Api
+ */
+abstract class Request
 {
     const ERP_LOGIN = 'erp_etoday_settings/erp_authorization/login';
     const ERP_PASSWORD = 'erp_etoday_settings/erp_authorization/password';
@@ -56,16 +59,12 @@ abstract class Request implements ApiInterface
     }
 
     /**
+     * Api request
+     * 
      * @return mixed
      */
     public function sendApiRequest()
     {
-        /*
-         API URL for authentication
-         Example http://cloudapp.eflowsys.com/GetProductList?userAccount=Web@nuBangkok&userPassword=eCommerce@2018Test&compCode=COMPCODE&testmode=1
-         host = http://cloudapp.eflowsys.com/EC_API OR http://ERPSiteName.thaiddns.com/EC_API OR http://cloudapp1.eflowsys.com/EC_API
-         lastPoint = GetProductList
-        */
         $dataUrl = [
             "userAccount" => $this->_getLogin(),
             "userPassword" => $this->_getPassword(),
@@ -76,9 +75,9 @@ abstract class Request implements ApiInterface
             $dataUrl = array_merge($dataUrl, $this->additionalDataUrl);
         }
 
-        $apiURL = $this->_getHostName() . '/' . $this->_getLastPoint() . $this->_getAuthorization($dataUrl);
+        $apiURL = $this->_getHostName() . '/' . $this->_getApiLastPoint() . $this->_getAuthorization($dataUrl);
+       
         // parameters passing with URL
-
         $data_string = json_encode($this->_getAdditionalDataContent());
         $ch = curl_init($apiURL);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->_getApiMethod());
@@ -131,6 +130,10 @@ abstract class Request implements ApiInterface
         return $this->scopeConfig->getValue(self::ERP_COMPCODE);
     }
 
+    /**
+     * @param $data
+     * @return string
+     */
     protected function _getAuthorization($data)
     {
         $result = '?';
@@ -144,7 +147,7 @@ abstract class Request implements ApiInterface
     /**
      * @return string
      */
-    protected function _getLastPoint()
+    protected function _getApiLastPoint()
     {
         return $this->apiPoint;
     }
@@ -165,12 +168,15 @@ abstract class Request implements ApiInterface
         return $this->additionalDataUrl;
     }
 
+    /**
+     * @return array
+     */
     protected function _getAdditionalDataContent()
     {
         return $this->additionalDataContent;
     }
 
-    abstract protected function _setLastPoint($point); // todo: return one of - GetProductList, createcustomer, updatecustomer, GetCustomerInfo, GetCustomerTypeList, GetCountryList, Get SalesPriceGroupList
+    abstract protected function _setApiLastPoint($point); // todo: return one of - GetProductList, createcustomer, updatecustomer, GetCustomerInfo, GetCustomerTypeList, GetCountryList, Get SalesPriceGroupList
 
     abstract protected function _setApiMethod($method);// todo: return one of - GET, POST, PUT, DELETE.
 
