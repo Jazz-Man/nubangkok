@@ -219,19 +219,24 @@
 }
 
 .accordion-container .accordion img {
-    transform: rotate(180deg);
+    transform: rotate(0deg);
     padding-right: 10px;
 }
 
 .accordion-container .accordion.active img {
-    transform: none;
-    padding-right: 0;
+    transform: rotate(182deg);
     padding-left: 10px;
 }
-
+.cms-product-care .accordion-container .accordion img{
+    transform: rotate(182deg);
+    padding-right: 10px;
+}
+.cms-product-care .accordion-container .accordion.active img{
+    transform: rotate(0deg);
+    padding-left: 10px;
+}
 .cms-customer-care > .accordion img {
     transform: none;
-    padding-right: 10px;
 }
 
 .active:hover, .accordion:hover {

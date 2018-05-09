@@ -292,12 +292,13 @@
         color: inherit;
       }
       .js-selected-option-container:after {
-        content: @icon-select-arrow-down;
+        content: @icon-select-arrow-up;
         position: absolute;
         height: 15px;
         width: 15px;
         right: 0;
-        top: 9px;
+        top: 15px;
+        transform: rotate(177deg);
       }
       &.active {
         .js-selected-option-container:after {
@@ -307,6 +308,7 @@
           width: 15px;
           right: 0;
           top: 9px;
+          transform: rotate(-3deg);
         }
       }
     }

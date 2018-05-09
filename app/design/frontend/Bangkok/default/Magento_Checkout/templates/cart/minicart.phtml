@@ -3,6 +3,7 @@
     $block->getShoppingCartUrl() ?>"
        data-bind="scope: 'minicart_content'">
         <span class="text"><?= /* @escapeNotVerified */ __('My Cart') ?></span>
+
         <span class="count-bag"
               data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
             <span class="counter-number js-counter-number"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>

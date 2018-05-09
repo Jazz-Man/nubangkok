@@ -101,7 +101,6 @@
       text-align: center;
     }
   }
-
   .minicart-wrapper {
     //
     // bag handle
@@ -227,6 +226,7 @@
           .loader {
             > img {
               .lib-css(max-width, @minicart-qty__height);
+
             }
           }
         }
@@ -235,7 +235,7 @@
           &:extend(.abs-visually-hidden all);
         }
         &:before {
-          background: url(../images/icons/homePage/shopping-bag.svg) no-repeat;
+          background: @icon-cart no-repeat;
           display: inline-block;
           background-size: cover;
           width: 32px;
@@ -428,6 +428,7 @@
 //  Mobile
 //  _____________________________________________
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
+
   .minicart-wrapper {
     .action.showcart:before{
       margin-top: 5px;
