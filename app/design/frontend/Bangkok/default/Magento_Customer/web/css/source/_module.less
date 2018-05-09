@@ -157,9 +157,15 @@
         text-align: left;
         outline: none;
         &:after {
-          content: @icon-arrow-right;
-          padding-left: 5px;
-          vertical-align: middle;
+          display: inline-block;
+          content: ' ';
+          background-image: @icon-arrow-right;
+          background-size: 15px 16px;
+          height: 16px;
+          width: 15px;
+          margin-left: 5px;
+          position: absolute;
+          margin-top: 2px;
         }
       }
       .open-account-details {
@@ -170,12 +176,21 @@
         text-align: left;
         outline: none;
         &:after {
-          content: @icon-select-arrow-down;
-          padding-left: 5px;
-          vertical-align: middle;
+          display: inline-block;
+          content: ' ';
+          background-image: @icon-select-arrow-down;
+          background-size: 15px 16px;
+          height: 16px;
+          width: 15px;
+          margin-left: 5px;
+          position: absolute;
+          margin-top: 2px;
         }
         &.active:after {
-          content: @icon-select-arrow-up;
+          display: inline-block;
+          content: ' ';
+          background-image: @icon-select-arrow-down;
+          transform: rotate(182deg);
         }
       }
       h2 {
@@ -747,11 +762,6 @@
         outline: none;
         width: 15%;
         min-width: 150px;
-        &:after {
-          content: @icon-arrow-right;
-          padding-left: 5px;
-          vertical-align: middle;
-        }
       }
       .open-account-details {
         text-transform: uppercase;
@@ -760,13 +770,18 @@
         border: none;
         text-align: left;
         outline: none;
-        &:after {
+
+        span {
           content: @icon-select-arrow-down;
-          padding-left: 5px;
           vertical-align: middle;
+          height: 11px;
+          transform: rotate(0deg);
+          padding-left: 5px;
         }
-        &.active:after {
-          content: @icon-select-arrow-up;
+        &.active span {
+          content: @icon-select-arrow-down;
+          transform: rotate(182deg);
+          padding-right: 5px;
         }
       }
     }

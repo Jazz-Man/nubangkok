@@ -27,23 +27,30 @@
 .page-header .switcher .options .action.toggle:after,
 .page-footer .switcher .options .action.toggle:after {
     position: absolute;
-    background: url(../images/select-arrow-down.png);
-    width: 14px;
+    background: url(../images/icons/homePage/arrow-dropdown.svg) no-repeat;
+    width: 12px;
     height: 9px;
-    background-size: contain;
-    top: 7px;
+    background-size: cover;
+    top: 6px;
     right: 4px;
 }
 
+/*.header.links .minicart-wrapper .action.showcart:before {*/
+    /*background: url(../images/icons/homePage/shopping-bag.svg) no-repeat;*/
+    /*display: inline-block;*/
+    /*background-size: cover;*/
+    /*width: 32px;*/
+    /*height: 27px;*/
+    /*margin-top: 5px;*/
+/*}*/
+
 .page-header .switcher .options .action.toggle.active:after,
 .page-footer .switcher .options .action.toggle.active:after {
-    position: absolute;
-    background: url(../images/select-arrow-up.png);
-    width: 14px;
-    height: 9px;
-    background-size: contain;
-    top: 7px;
-    right: 4px;
+    -moz-transform: rotate(182deg);
+    -ms-transform: rotate(182deg);
+    -webkit-transform: rotate(182deg);
+    -o-transform: rotate(182deg);
+    transform: rotate(182deg);
 }
 
 /* gallery.css*/
