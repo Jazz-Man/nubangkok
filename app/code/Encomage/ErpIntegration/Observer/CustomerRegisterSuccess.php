@@ -30,7 +30,12 @@ class CustomerRegisterSuccess implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $customer = $observer->getCustomer();
-        $this->apiCustomer->createOrUpdateCustomer($customer);
+        $customerId = $observer->getCustomer()->getId();
+        $phone = null;
+        if ($observer->getAccountController()) {
+            $params = $observer->getAccountController()->getRequest()->getParams();
+            $phone = $params['telephone'];
+        }
+        $this->apiCustomer->createOrUpdateCustomer($customerId, $phone);
     }
 }

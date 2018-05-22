@@ -7,13 +7,6 @@
     </route>
 
     <route url="/V1/nupoints" method="POST">
-        <service class="Encomage\Nupoints\Api\NupointsRepositoryInterface" method="save"/>
-        <resources>
-            <resource ref="anonymous"/>
-        </resources>
-    </route>
-
-    <route url="/V1/nupoints" method="PUT">
         <service class="Encomage\Nupoints\Api\NupointsRepositoryInterface" method="changeNupointsCount"/>
         <resources>
             <resource ref="anonymous"/>

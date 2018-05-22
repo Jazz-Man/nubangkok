@@ -2,10 +2,11 @@
 namespace Encomage\ErpIntegration\Model\Api;
 
 use Zend\Http\Request as HttpRequest;
-use Magento\Customer\Model\ResourceModel\CustomerRepository;
+use Magento\Customer\Model\ResourceModel\Customer as CustomerResource;
+use Magento\Customer\Model\CustomerFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Directory\Model\CountryFactory;
-use Encomage\Nupoints\Model\NupointsRepository;
+use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
 
 /**
  * Class Customer
@@ -14,38 +15,45 @@ use Encomage\Nupoints\Model\NupointsRepository;
 class Customer extends Request
 {
     /**
-     * @var CustomerRepository
+     * @var CustomerResource
      */
-    private $customerRepository;
-    
+    private $customerResource;
     /**
-     * @var NupointsRepository
+     * @var SerializerJson
      */
-    private $nupointsRepository;
+    private $json;
     
     /**
      * @var CountryFactory
      */
     private $countryFactory;
+    
+    /**
+     * @var CustomerFactory
+     */
+    private $customerFactory;
 
     /**
      * Customer constructor.
      * @param ScopeConfigInterface $scopeConfig
-     * @param CustomerRepository $customerRepository
-     * @param NupointsRepository $nupointsRepository
+     * @param CustomerResource $customerResource
+     * @param CustomerFactory $customerFactory
+     * @param SerializerJson $json
      * @param CountryFactory $countryFactory
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig, 
-        CustomerRepository $customerRepository,
-        NupointsRepository $nupointsRepository,
+        ScopeConfigInterface $scopeConfig,
+        CustomerResource $customerResource,
+        CustomerFactory $customerFactory,
+        SerializerJson $json,
         CountryFactory $countryFactory
     )
     {
-        parent::__construct($scopeConfig);
-        $this->customerRepository = $customerRepository;
-        $this->nupointsRepository = $nupointsRepository;
+        parent::__construct($scopeConfig, $json);
+        $this->customerResource = $customerResource;
+        $this->customerFactory = $customerFactory;
         $this->countryFactory = $countryFactory;
+        $this->json = $json;
     }
 
     /**
@@ -54,8 +62,8 @@ class Customer extends Request
      */
     public function getAllCustomers()
     {
-        $this->_setApiLastPoint('GetCustomerInfo');
-        $this->_setApiMethod(HttpRequest::METHOD_GET);
+        $this->setApiLastPoint('GetCustomerInfo');
+        $this->setApiMethod(HttpRequest::METHOD_GET);
         $result = $this->sendApiRequest();
         if (is_object($result)){
             $result = get_object_vars($result);
@@ -70,10 +78,11 @@ class Customer extends Request
      */
     public function getSpecificCustomer($customerCode)
     {
-        $this->_setApiLastPoint('GetCustomerInfo');
-        $this->_setApiMethod(HttpRequest::METHOD_GET);
-        $this->_setAdditionalDataUrl(["CustomerCode" => $customerCode]);
+        $this->setApiLastPoint('GetCustomerInfo');
+        $this->setApiMethod(HttpRequest::METHOD_GET);
+        $this->setAdditionalDataUrl(["CustomerCode" => $customerCode]);
         $result = $this->sendApiRequest();
+        $result = $this->json->unserialize($result);
         if (is_object($result)){
             $result = get_object_vars($result);
         }
@@ -82,59 +91,47 @@ class Customer extends Request
 
     /**
      * Method for create or update customer info in ERP system
-     * 
+     *
      * @api
-     * @param \Magento\Customer\Model\Data\Customer $customer
+     * @param $customerId
+     * @param $phone
      * @return mixed
      */
-    public function createOrUpdateCustomer($customer)
+    public function createOrUpdateCustomer($customerId, $phone = null)
     {
+        /** @var \Magento\Customer\Model\Customer $customer */
+        $customer = $this->customerFactory->create()->load($customerId);
         $customerCode = null;
         if ($customer->getCustomAttribute('erp_customer_code')) {
-            $customerCode = $customer->getCustomAttribute('erp_customer_code')->getValue();
+            $customerCode = $customer->getCcustomAttribute('erp_customer_code')->getValue();
         }
         $chooseMethod = ($customerCode) ? 'updatecustomer' : 'createcustomer';
-        $this->_setApiLastPoint($chooseMethod);
-        
-        $data = $this->_prepareCustomerData($customer, $customerCode);
-        $this->_setAdditionalDataContent($data);
-        
-        $this->_setApiMethod(HttpRequest::METHOD_POST);
+        $data = $this->_prepareCustomerData($customer, $customerCode, $phone);
+        $this->setApiLastPoint($chooseMethod);
+        $this->setAdditionalDataContent($data);
+        $this->setApiMethod(HttpRequest::METHOD_POST);
         $result = $this->sendApiRequest();
-        if (is_object($result)){
+        $result = $this->json->unserialize($result);
+        if (is_object($result)) {
             $result = get_object_vars($result);
         }
-        if ($customerCode == null) {
-            $customer->setCustomAttribute('erp_customer_code', $result['customerCode']);
-            $this->customerRepository->save($customer);
+
+        if ($customerCode == null && $result['customerCode']) {
+            $customerData = $customer->getDataModel();
+            $customerData->setCustomAttribute('erp_customer_code', $result['customerCode']);
+            $customer->updateData($customerData);
+            $this->customerResource->save($customer);
         }
         return $result;
     }
 
     /**
-     * Get points from erp system
-     * 
-     * @api
-     * @return array|mixed
-     */
-    public function getPoints()
-    {
-        $this->_setApiLastPoint('GetCustomerPoint');
-        $this->_setApiMethod(HttpRequest::METHOD_GET);
-
-        $result = $this->sendApiRequest();
-        if (is_object($result)){
-            $result = get_object_vars($result);
-        }
-        return $result;
-    }
-
-    /**
-     * @param \Magento\Customer\Api\Data\CustomerInterface $customer
+     * @param $customer
      * @param string $customerCode
+     * @param $phone
      * @return mixed
      */
-    protected function _prepareCustomerData($customer, $customerCode)
+    protected function _prepareCustomerData($customer, $customerCode, $phone)
     {
         $fieldName = 'Customer';
         $data[$fieldName] = [
@@ -147,6 +144,9 @@ class Customer extends Request
             'salespersonCode' => 'customer',
             'paymentTermCode' => 'cash'
         ];
+        if ($phone) {
+            $data[$fieldName]['customerTelephone'] = $phone;
+        }
         if ($addresses = $customer->getAddresses()) {
             $street = '';
             $customerAddress = [];
@@ -172,20 +172,7 @@ class Customer extends Request
             ];
             $data = array_merge($data[$fieldName], $dataAddress[$fieldName]);
         }
-        $points = ($this->_getNupoints($customer->getId())) ? $this->_getNupoints($customer->getId()) : 0;
-        $data[$fieldName]['RebatePoint'] = $points;
         return $data;
-    }
-
-    /**
-     * Get NuPoints from DataBase by customer_id
-     * 
-     * @param integer $customerId
-     * @return \Encomage\Nupoints\Api\Data\NupointsInterface
-     */
-    protected function _getNupoints($customerId)
-    {
-        return $this->nupointsRepository->getByCustomerId($customerId)->getNupoints();
     }
 
     /**
@@ -202,16 +189,16 @@ class Customer extends Request
      * @param string $point
      * @return string
      */
-    protected function _setApiLastPoint($point = 'GetCustomerInfo')
+    public function setApiLastPoint($point = 'GetCustomerInfo')
     {
-        return $this->apiPoint = $point;
+        return $this->apiLastPoint = $point;
     }
 
     /**
      * @param string $method
      * @return string
      */
-    protected function _setApiMethod($method = HttpRequest::METHOD_GET)
+    public function setApiMethod($method = HttpRequest::METHOD_GET)
     {
         return $this->apiMethod = $method;
     }
@@ -220,7 +207,7 @@ class Customer extends Request
      * @param array $data
      * @return array
      */
-    protected function _setAdditionalDataUrl(array $data = [])
+    public function setAdditionalDataUrl(array $data = [])
     {
         return $this->additionalDataUrl = $data;
     }
@@ -229,7 +216,7 @@ class Customer extends Request
      * @param array $content
      * @return array
      */
-    protected function _setAdditionalDataContent(array $content = [])
+    public function setAdditionalDataContent(array $content = [])
     {
         return $this->additionalDataContent = $content;
     }
