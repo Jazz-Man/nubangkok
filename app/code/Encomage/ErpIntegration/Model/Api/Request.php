@@ -2,7 +2,7 @@
 namespace Encomage\ErpIntegration\Model\Api;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-
+use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
 /**
  * Class Request
  * @package Encomage\ErpIntegration\Model\Api
@@ -18,6 +18,11 @@ abstract class Request
      * @var ScopeConfigInterface
      */
     private $scopeConfig;
+
+    /**
+     * @var SerializerJson
+     */
+    private $serializerJson;
     
     /**
      * Data for api request to eToday mast by use actual keys
@@ -47,15 +52,16 @@ abstract class Request
      *
      * @var string
      */
-    protected $apiPoint;
+    protected $apiLastPoint;
 
     /**
      * Request constructor.
      * @param ScopeConfigInterface $scopeConfig
      */
-    public function __construct(ScopeConfigInterface $scopeConfig)
+    public function __construct(ScopeConfigInterface $scopeConfig, SerializerJson $serializerJson)
     {
         $this->scopeConfig = $scopeConfig;
+        $this->serializerJson = $serializerJson;
     }
 
     /**
@@ -69,6 +75,7 @@ abstract class Request
             "userAccount" => $this->_getLogin(),
             "userPassword" => $this->_getPassword(),
             "compCode" => $this->_getCompCode(),
+            "warehouseCode" => 'WH_ON',
             "testmode" => 1
         ];
         if (!empty($this->additionalDataUrl)) {
@@ -76,17 +83,14 @@ abstract class Request
         }
 
         $apiURL = $this->_getHostName() . '/' . $this->_getApiLastPoint() . $this->_getAuthorization($dataUrl);
-       
-        // parameters passing with URL
-        $data_string = json_encode($this->_getAdditionalDataContent());
+
+        $data_string = $this->serializerJson->serialize($this->_getAdditionalDataContent());
         $ch = curl_init($apiURL);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->_getApiMethod());
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json", "Content-Length: " . strlen($data_string)));
         $response = curl_exec($ch);
-        //decoding generated token and saving it in a variable
-        $response = json_decode($response);
         return $response;
     }
 
@@ -149,7 +153,7 @@ abstract class Request
      */
     protected function _getApiLastPoint()
     {
-        return $this->apiPoint;
+        return $this->apiLastPoint;
     }
 
     /**
@@ -176,11 +180,11 @@ abstract class Request
         return $this->additionalDataContent;
     }
 
-    abstract protected function _setApiLastPoint($point); // todo: return one of - GetProductList, createcustomer, updatecustomer, GetCustomerInfo, GetCustomerTypeList, GetCountryList, Get SalesPriceGroupList
+    abstract public function setApiLastPoint($point);
 
-    abstract protected function _setApiMethod($method);// todo: return one of - GET, POST, PUT, DELETE.
+    abstract public function setApiMethod($method);
 
-    abstract protected function _setAdditionalDataUrl(array $data = []);
+    abstract public function setAdditionalDataUrl(array $data = []);
 
-    abstract protected function _setAdditionalDataContent(array $content = []);
+    abstract public function setAdditionalDataContent(array $content = []);
 }

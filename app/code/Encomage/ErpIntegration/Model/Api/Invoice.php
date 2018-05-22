@@ -2,9 +2,10 @@
 namespace Encomage\ErpIntegration\Model\Api;
 
 use Zend\Http\Request as HttpRequest;
+use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Customer\Model\ResourceModel\CustomerRepository;
-
+use Magento\Customer\Model\Session as CustomerSession;
 /**
  * Class Invoice
  * @package Encomage\ErpIntegration\Model\Api
@@ -20,21 +21,31 @@ class Invoice extends Request
      */
     private $erpCustomer;
 
+    private $customerSession;
+
+    private $json;
+
     /**
      * Invoice constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param CustomerRepository $customerRepository
+     * @param SerializerJson $json
      * @param Customer $erpCustomer
+     * @param CustomerSession $customerSession
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         CustomerRepository $customerRepository,
-        Customer $erpCustomer
+        SerializerJson $json,
+        Customer $erpCustomer,
+        CustomerSession $customerSession
     )
     {
-        parent::__construct($scopeConfig);
+        parent::__construct($scopeConfig, $json);
         $this->customerRepository = $customerRepository;
         $this->erpCustomer = $erpCustomer;
+        $this->customerSession = $customerSession;
+        $this->json = $json;
     }
 
     /**
@@ -43,13 +54,14 @@ class Invoice extends Request
      */
     public function createInvoice($order)
     {
-        $this->_setApiLastPoint('createInvoice');
-        $this->_setApiMethod(HttpRequest::METHOD_GET);
+        $this->setApiLastPoint('createInvoice');
+        $this->setApiMethod(HttpRequest::METHOD_GET);
 
         $data = $this->_prepareInvoiceData($order);
-        $this->_setAdditionalDataContent($data);
+        $this->setAdditionalDataContent($data);
 
         $result = $this->sendApiRequest();
+        $result = $this->json->unserialize($result);
         if (is_object($result)) {
             $result = get_object_vars($result);
         }
@@ -77,20 +89,22 @@ class Invoice extends Request
         $data[$fieldName]['customerBranchNo'] = 0;
         $data[$fieldName]['salespersonCode'] = 'admin';
         $iterator = 0;
+        
         foreach ($order->getItems() as $item) {
+            if ($order->getRedeemNupoints()) {
+                $data[$fieldName][$productsFieldName][$iterator]['productCode'] = 'Redeem'.$order->getRedeemNupoints()->getMoneyToRedeem();
+                $data[$fieldName][$productsFieldName][$iterator]['quantity'] = 1;
+                $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = 'WH_ON';
+                $order->setData('redeem_nupoints', false);
+                $iterator ++;
+                continue;
+            }
             if ($item->getProductType() == 'simple') {
                 $discount = $item->getParentItem()->getDiscountPercent();
                 $data[$fieldName][$productsFieldName][$iterator]['productCode'] = $item->getSku();
                 $data[$fieldName][$productsFieldName][$iterator]['quantity'] = $item->getQtyOrdered();
                 $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = 'WH_ON';
                 $data[$fieldName][$productsFieldName][$iterator]['discountText'] = $discount . '%';
-                $iterator ++;
-            }
-            if ($item->getProductType() == 'virtual') {
-                $data[$fieldName][$productsFieldName][$iterator]['productCode'] = $item->getSku();
-                $data[$fieldName][$productsFieldName][$iterator]['quantity'] = $item->getQtyOrdered();
-                $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = 'WH_ON';
-                $data[$fieldName][$productsFieldName][$iterator]['discountText'] = $item->getDiscountPercent();
                 $iterator ++;
             }
         }
@@ -109,8 +123,8 @@ class Invoice extends Request
         $customer = $this->customerRepository->getById($customerId);
         if ($customer->getId() && $customAttr = $customer->getCustomAttribute('erp_customer_code')) {
             return $customAttr->getValue();
-        } else if ($customer->getId()) {
-            $this->erpCustomer->createOrUpdateCustomer($customer);
+        } elseif ($customer->getId()) {
+            $this->erpCustomer->createOrUpdateCustomer($customerId);
             $this->_getCustomerCodeById($customer->getId());
         }
         return null;
@@ -120,16 +134,16 @@ class Invoice extends Request
      * @param $point
      * @return mixed
      */
-    protected function _setApiLastPoint($point)
+    public function setApiLastPoint($point)
     {
-        return $this->apiPoint = $point;
+        return $this->apiLastPoint = $point;
     }
 
     /**
      * @param string $method
      * @return string
      */
-    protected function _setApiMethod($method = HttpRequest::METHOD_GET)
+    public function setApiMethod($method = HttpRequest::METHOD_GET)
     {
         return $this->apiMethod = $method;
     }
@@ -138,7 +152,7 @@ class Invoice extends Request
      * @param array $data
      * @return array
      */
-    protected function _setAdditionalDataUrl(array $data = [])
+    public function setAdditionalDataUrl(array $data = [])
     {
         return $this->additionalDataUrl = $data;
     }
@@ -147,7 +161,7 @@ class Invoice extends Request
      * @param array $content
      * @return array
      */
-    protected function _setAdditionalDataContent(array $content = [])
+    public function setAdditionalDataContent(array $content = [])
     {
         return $this->additionalDataContent = $content;
     }

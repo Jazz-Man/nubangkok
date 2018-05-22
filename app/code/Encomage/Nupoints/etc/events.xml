@@ -8,4 +8,8 @@
         <observer name="encomage_nupoints_place_order_after"
                   instance="Encomage\Nupoints\Observer\Sales\PlaceOrderAfter"/>
     </event>
+    <!--<event name="customer_login">-->
+        <!--<observer name="encomage_nupoints_customer_login"-->
+                  <!--instance="Encomage\Nupoints\Observer\Customer\Login"/>-->
+    <!--</event>-->
 </config>

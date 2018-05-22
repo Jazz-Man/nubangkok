@@ -183,7 +183,7 @@ class NupointsRepository implements NupointsRepositoryInterface
      */
     public function changeNupointsCount($options, $method)
     {
-        $customerId = $options['customer_id'];
+        $customerId = $this->_getCustomerIdByCode($options['customer_code']);
         $item = $this->getByCustomerId($customerId);
         $nupoint = (int)$item->getNupoints();
         switch ($method){
