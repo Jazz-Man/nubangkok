@@ -13,10 +13,10 @@ use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product as ProductResource;
 use Psr\Log\LoggerInterface;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as TypeConfigurableProduct;
-
+use Magento\ConfigurableProduct\Api\LinkManagementInterfaceFactory;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Model\ResourceModel\Category as CategoryResource;
-
+use Magento\CatalogInventory\Api\StockRegistryInterfaceFactory;
 
 /**
  * Class Product
@@ -36,109 +36,78 @@ class Product extends Request
      * @var Attribute
      */
     private $entityAttribute;
-
+    /**
+     * @var ProductResource
+     */
     private $productResource;
-
+    /**
+     * @var CategoryResource
+     */
     private $categoryResource;
-
+    /**
+     * @var CategoryLinkManagementInterface
+     */
     private $categoryLinkManagement;
-
+    /**
+     * @var TypeConfigurableProduct
+     */
     private $typeConfigurableProduct;
-
+    /**
+     * @var SerializerJson
+     */
     private $json;
-
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
-    
-    protected $rootCategoryList = [
-        'woman/shoes' => 'WS',
-        'woman/bags' => 'WB',
-        'woman/clothing/dress' => 'WD',
-        'woman/clothing/skirt' => 'WK',
-        'woman/clothing/shorts' => 'WR',
-        'woman/clothing/pants' => 'WP',
-        'woman/clothing/tops' => 'WT',
-        'woman/clothing/coal-jacket' => 'WC',
-        'woman/accessories' => 'WA',
-        'woman/accessories/belts' => 'WL',
-        'woman/accessories/hats' => 'WH',
-        'woman/accessories/scarf' => 'WF',
-        'woman/accessories/earrings' => 'WE',
-        'woman/accessories/jewelry' => 'WJ',
-        'woman/accessories/sunglasses' => 'WG',
-
-        'men/shoes' => 'MS',
-        'men/bags' => 'MB',
-        'men/bags/wallet' => 'MW',
-        'men/accessories/hats' => 'MA',
-        'men/accessories/necktie' => 'MN',
-        'men/clothing/shirt' => 'MT',
-        'men/clothing/pants' => 'MP',
-        'men/clothing/shorts' => 'MR',
-        'men/clothing/jacket' => 'MJ',
-
-        'girl/shoes' => 'GS',
-        'girl/bags' => 'GB',
-        'girl/clothing/dress' => 'GD',
-        'girl/clothing/skirt' => 'GK',
-        'girl/clothing/shorts' => 'GR',
-        'girl/clothing/pants' => 'GP',
-        'girl/clothing/tops' => 'GT',
-
-        'boy/shoes' => 'BS',
-        'boy/clothing/shorts' => 'BR',
-        'boy/clothing/pants' => 'BP',
-        'boy/clothing/skirt' => 'BT'
-    ];
-
-    protected $categoryShoeType = [
-
-        'flipper' => 'F',
-        'sandal' => 'S',
-        'ballet-flat' => 'B',
-        'loafer' => 'L',
-        'wedge' => 'W',
-        'low-heel' => 'H',
-        'pump-hi-heel' => 'P',
-        'lace-up' => 'U',
-        'boot' => 'T',
-        'athletic' => 'A'
-    ];
-
-    protected $categoryBagsType = [
-        'wallet-card' => 'W',
-        'wristlet' => 'R',
-        'phone' => 'P',
-        'mini-midi' => 'M',
-        'clutch' => 'C',
-        'handbag' => 'H',
-        'shoulder-cross' => 'S',
-        'sling-hobo' => 'L',
-        'sachel' => 'A',
-        'tote' => 'T',
-        'backpack' => 'B',
-        'business' => 'Z',
-        'weekender' => 'K',
-        'luggage' => 'G'
-    ];
-
-    protected $colorsList = [
-        'Metallic' => 'ML',
-        'Silver' => 'NN',
-        'Brown' => 'RW',
-        'Grey' => 'GY',
-        'Black' => 'BK',
-        'Pink Gold' => 'PG',
-        'Platinum' => 'PL',
-        'Gold' => 'GL',
-        'Red' => 'RD'
-    ];
-
+    /**
+     * @var LinkManagementInterfaceFactory
+     */
+    private $linkManagementFactory;
+    /**
+     * @var StockRegistryInterfaceFactory
+     */
+    private $stockRegistryFactory;
+    /**
+     * @var array
+     */
     protected $_attributesOptions = ['size' => [], 'color' => []];
-
+    /**
+     * @var int
+     */
     protected $_useBarCode = 16;
-    
-    protected $configurableProduct;
+    /**
+     * @var array
+     */
+    protected $categoryCodes;
+    /**
+     * @var array
+     */
+    protected $subCategoryCodesShoe;
+    /**
+     * @var array
+     */
+    protected $subCategoryCodesBags;
+    /**
+     * @var array
+     */
+    protected $colorCodes;
 
+    /**
+     * Product constructor.
+     * @param ScopeConfigInterface $scopeConfig
+     * @param ProductRepositoryInterface $productRepository
+     * @param ProductFactory $productFactory
+     * @param Attribute $entityAttribute
+     * @param ProductResource $productResource
+     * @param CategoryLinkManagementInterface $categoryLinkManagement
+     * @param CategoryResource $categoryResource
+     * @param TypeConfigurableProduct $typeConfigurableProduct
+     * @param SerializerJson $json
+     * @param LoggerInterface $logger
+     * @param LinkManagementInterfaceFactory $linkManagementFactory
+     * @param StockRegistryInterfaceFactory $stockRegistryFactory
+     */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         ProductRepositoryInterface $productRepository,
@@ -149,7 +118,9 @@ class Product extends Request
         CategoryResource $categoryResource,
         TypeConfigurableProduct $typeConfigurableProduct,
         SerializerJson $json,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        LinkManagementInterfaceFactory $linkManagementFactory,
+        StockRegistryInterfaceFactory $stockRegistryFactory
     )
     {
         parent::__construct($scopeConfig, $json);
@@ -162,11 +133,12 @@ class Product extends Request
         $this->typeConfigurableProduct = $typeConfigurableProduct;
         $this->json = $json;
         $this->logger = $logger;
+        $this->linkManagementFactory = $linkManagementFactory;
+        $this->stockRegistryFactory = $stockRegistryFactory;
     }
 
     /**
-     * @return mixed
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @return bool
      */
     public function importAllProducts()
     {
@@ -177,63 +149,58 @@ class Product extends Request
             "CategoryDisplaySubCat" => 1
         ]);
         $result = $this->sendApiRequest();
-
-        if (empty($result) || !$result) {
-            $this->logger->info('Response is empty');
-            return $this;
-        }
-        $result = $this->json->unserialize($result);
+        $configurable = [];
         foreach ($result as $item) {
             $item = (is_object($item)) ? get_object_vars($item) : $item;
-
             $productId = $this->productResource->getIdBySku($item['IcProductCode']);
             if (strlen($item['IcProductCode']) >= 18 || $productId) {
                 continue;
             }
-
             $confSku = $this->_prepareConfSku($item['BarCode']);
             $confName = $this->_prepareConfName($item['IcProductDescription0']);
-            $categoryId = $this->_getCategoryId($item['BarCode']);
+            $categoryIds = $this->_getCategoryId($item['BarCode']);
+            $attributesOptions = $this->_getAttributesCodes($item['BarCode']);
+            $color = $this->_getAttributeIdByLabel($attributesOptions['colors'], 'color');
+            $size = $this->_getAttributeIdByLabel($attributesOptions['size'] / 10, 'size');
 
-            $attributesOptions = $this->_getAttributesOptions($item['BarCode']);
-            $color = $this->_getOptionByLabel($attributesOptions['colors'], 'color');
-            $size = $this->_getOptionByLabel($attributesOptions['size'] / 10, 'size');
-            
-            if (!empty($confSku) && !empty($confName)) {
-                if (!$this->configurableProduct || $this->configurableProduct->getSku() !== $confSku) {
-                    $productId = $this->productResource->getIdBySku($confSku);
-                    if (!$productId) {
-                        $this->configurableProduct = $this->_createConfigurableProduct($confSku, $confName, $categoryId);
-                    } else {
-                        $this->configurableProduct = $this->productRepository->get($confSku);
-                    }
-                }
-            }
-            if ($this->configurableProduct) {
-
-                /** @var \Magento\Catalog\Model\Product $product */
-                $product = $this->productFactory->create();
-                $product->setSku($item['IcProductCode']);
-                $product->setName($item['IcProductDescription0']);
-                $product->setAttributeSetId(Visibility::VISIBILITY_BOTH);
-                $product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-                $product->setTypeId('simple');
-                $product->setPrice($item['salesprice']);
-                $product->setWeight(null);
-                $product->addData([
-                    'quantity_and_stock_status' => [
-                        'is_in_stock' => Status::STATUS_ENABLED,
-                        'qty' => $item['UnrestrictStock']
-                    ]
-                ]);
-                $product->setColor($color['value']);
-                $product->setSize($size['value']);
+            /** @var \Magento\Catalog\Model\Product $product */
+            $product = $this->productFactory->create();
+            $product->setSku($item['IcProductCode']);
+            $product->setName($item['IcProductDescription0']);
+            $product->setAttributeSetId(Visibility::VISIBILITY_BOTH);
+            $product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
+            $product->setTypeId('simple');
+            $product->setPrice($item['salesprice']);
+            $product->setWeight(null);
+            $product->addData([
+                'quantity_and_stock_status' => [
+                    'is_in_stock' => Status::STATUS_ENABLED,
+                    'qty' => $item['UnrestrictStock']
+                ]
+            ]);
+            $product->setColor($color['value']);
+            $product->setSize($size['value']);
+            try {
                 $product = $this->productRepository->save($product);
-                $this->categoryLinkManagement->assignProductToCategories($item['IcProductCode'], [$categoryId]);
+                $this->categoryLinkManagement->assignProductToCategories($item['IcProductCode'], [$categoryIds]);
+            } catch (Exception $e) {
+                $this->logger->info('ERROR: ' . $e->getMessage());
+            }
+
+            if (!empty($confSku) && !empty($confName) && !array_key_exists($confSku, $configurable)) {
+                $configurable[$confSku] = ['name' => $confName, 'category_ids' => $categoryIds];
+            }
+            if ($product->getId() && array_key_exists($confSku, $configurable)) {
+                $configurable[$confSku]['associate_ids'][$product->getId()] = $product->getId();
+                $configurable[$confSku]['skus'][] = $product->getSku();
             }
         }
-
-        return $this;
+        if (count($configurable) > 0) {
+            foreach ($configurable as $sku => $settings) {
+                $this->_createConfigurableProduct($sku, $settings);
+            }
+        }
+        return true;
     }
 
     /**
@@ -256,35 +223,73 @@ class Product extends Request
     {
         if (!empty($name)) {
             $result = explode(',', $name);
-//            $name = array_shift($result);
             return array_shift($result);
         }
-        return null;
+        return ' ';
     }
 
     /**
      * @param $sku
-     * @param $name
-     * @param $categoryId
-     * @return \Magento\Catalog\Model\Product
+     * @param $settings
+     * @return bool
      */
-    protected function _createConfigurableProduct($sku, $name, $categoryId)
+    protected function _createConfigurableProduct($sku, $settings)
     {
-        /** @var \Magento\Catalog\Model\Product $product */
-        $product = $this->productFactory->create();
-        $product->setSku($sku);
-        $product->setName($name);
-        $product->setTypeId(TypeConfigurableProduct::TYPE_CODE);
-        $product->setAttributeSetId(Visibility::VISIBILITY_BOTH);
-        $product->setCategoryIds([$categoryId]);
-        $product->setColor(' ');
-        $product->setSize(' ');
-        $product = $this->productRepository->save($product);
-        $this->categoryLinkManagement->assignProductToCategories($sku, [$categoryId]);
-//        if ($this->colorAttribute && $this->sizeAttribute) {
-//            $this->_setAttributeToConfProduct($product, [$this->colorAttribute, $this->sizeAttribute]);
-//        }
-        return $product;
+        $productId = $this->productResource->getIdBySku($sku);
+        if (!$productId) {
+            /** @var \Magento\Catalog\Model\Product $product */
+            $product = $this->productFactory->create();
+            $product->setSku($sku);
+            $product->setName($settings['name']);
+            $product->setTypeId(TypeConfigurableProduct::TYPE_CODE);
+            $product->setAttributeSetId(Visibility::VISIBILITY_BOTH);
+            $product->setCategoryIds([$settings['category_ids']]);
+            $product->setColor(' ');
+            $product->setSize(' ');
+            $sizeAttrId = $this->productResource->getAttribute('size')->getId();
+            $colorAttrId = $this->productResource->getAttribute('color')->getId();
+            $product->getTypeInstance()->setUsedProductAttributeIds([$sizeAttrId, $colorAttrId], $product);
+
+            $configurableAttributesData = $product->getTypeInstance()->getConfigurableAttributesAsArray($product);
+            $product->setCanSaveConfigurableAttributes(true);
+            $product->setConfigurableAttributesData($configurableAttributesData);
+            $configurableProductsData = [];
+            $product->setConfigurableProductsData($configurableProductsData);
+
+            try {
+                $productId = $this->productRepository->save($product)->getId();
+                $this->categoryLinkManagement->assignProductToCategories($sku, [$settings['category_ids']]);
+            } catch (Exception $e) {
+                $this->logger->info('ERROR: ' . $e->getMessage() . 'Product SKU - ' . $sku);
+                return false;
+            }
+        }
+        if ($settings['associate_ids']) {
+            foreach ($settings['skus'] as $childSku) {
+                $this->_addAssociatedProducts($sku, $childSku);
+            }
+            if ($productId) {
+                /** @var \Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem */
+                $stockItem = $this->stockRegistryFactory->create()->getStockItem($productId);
+                if ($stockItem->getItemId()) {
+                    $stockItem->setIsInStock(true);
+                    $stockItem->setStockStatusChangedAutomaticallyFlag(true);
+                    $stockItem->save();
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param $sku
+     * @param $childSku
+     */
+    protected function _addAssociatedProducts($sku, $childSku)
+    {
+        /** @var \Magento\ConfigurableProduct\Api\LinkManagementInterface $linkManagement */
+        $linkManagement = $this->linkManagementFactory->create();
+        $linkManagement->addChild($sku, $childSku);
     }
 
     /**
@@ -294,12 +299,40 @@ class Product extends Request
     protected function _getCategoryId($barCode)
     {
         if ($barCode) {
+            $category = '';
             $subCategory = '';
-            $category = array_search(substr($barCode, 0, 2), $this->rootCategoryList);
-            if (substr($barCode, 2, 1) == 'S') {
-                $subCategory = array_search(substr($barCode, 2, 1), $this->categoryShoeType);
-            } elseif (substr($barCode, 2, 1) == 'B') {
-                $subCategory = array_search(substr($barCode, 2, 1), $this->categoryBagsType);
+            if (empty($this->categoryCodes)) {
+                $this->categoryCodes = $this->json->unserialize($this->_getCategoryCodes());
+            }
+            $erpCategoryCode = substr($barCode, 0, 2);
+            foreach ($this->categoryCodes as $categoryCode) {
+                if ($categoryCode['erp_category_code'] == $erpCategoryCode) {
+                    $category = $categoryCode['category_path'];
+                    break;
+                }
+            }
+            $typeProduct = substr($barCode, 1, 1);
+            $erpSubCategoryCode = substr($barCode, 2, 1);
+            if ($typeProduct == 'S') {
+                if (empty($this->subCategoryCodesShoe)) {
+                    $this->subCategoryCodesShoe = $this->json->unserialize($this->_getShoeCodes());
+                }
+                foreach ($this->subCategoryCodesShoe as $subCategoryCode) {
+                    if ($subCategoryCode['erp_shoe_code'] == $erpSubCategoryCode) {
+                        $subCategory = $subCategoryCode['shoe_category_value'];
+                        break;
+                    }
+                }
+            } elseif ($typeProduct == 'B') {
+                if (empty($this->subCategoryCodesBags)) {
+                    $this->subCategoryCodesBags = $this->json->unserialize($this->_getBagsCodes());
+                }
+                foreach ($this->subCategoryCodesBags as $subCategoryCode) {
+                    if ($subCategoryCode['erp_bags_code'] == $erpSubCategoryCode) {
+                        $subCategory = $subCategoryCode['bags_category_value'];
+                        break;
+                    }
+                }
             }
             if (!empty($category) && !empty($subCategory)) {
                 $category .= '/' . $subCategory;
@@ -311,7 +344,6 @@ class Product extends Request
 
     /**
      * @param $categoryFieldValue
-     * @param string $field
      * @return mixed
      */
     protected function _getCategoryByValue($categoryFieldValue)
@@ -338,7 +370,6 @@ class Product extends Request
 
     /**
      * @param $categoryFieldValue
-     * @param $field
      * @return array
      */
     protected function _sendCategoryRequest($categoryFieldValue)
@@ -357,9 +388,10 @@ class Product extends Request
      * @param $barCode
      * @return array
      */
-    protected function _getAttributesOptions($barCode)
+    protected function _getAttributesCodes($barCode)
     {
         $result = [];
+        $erpColorCode = ' ';
         $barCode = substr($barCode, 2);
         $barCode = preg_replace('/(\d+)/i', '${1},', $barCode);
         $barCode = explode(',', rtrim($barCode, ','));
@@ -368,36 +400,42 @@ class Product extends Request
         $check = substr($options, -3) * 2;
         if ((bool)$check && gettype($check) == 'integer') {
             $result['size'] = substr($options, -3);
-            $result['colors'][] = array_search(substr($options, 0, 2), $this->colorsList);
-            $result['colors'][] = array_search(substr($options, 2, 2), $this->colorsList);
+            $erpColorCode = substr($options, -8, 4);
         } else {
             $result['size'] = null;
-            $result['colors'][] = array_search(substr($options, 0, 2), $this->colorsList);
-            $result['colors'][] = array_search(substr($options, 2, 2), $this->colorsList);
-            $result['colors'][] = array_search(substr($options, 4, 2), $this->colorsList);
-            $result['colors'][] = array_search(substr($options, 6, 2), $this->colorsList);
+        }
+        if (empty($this->colorCodes)) {
+            $this->colorCodes = $this->json->unserialize($this->_getColorCodes());
+        }
+        foreach ($this->colorCodes as $colorCode) {
+            if ($colorCode['erp_color_code'] == $erpColorCode) {
+                $result['colors'] = $colorCode['color_name'];
+                break;
+            }
+        }
+        if (empty($result['colors'])) {
+            $result['colors'] = $erpColorCode;
         }
         return $result;
     }
 
     /**
      * @param $label
-     * @param $attrLabel
-     * @return array|string
+     * @param $attrName
+     * @return mixed
      */
-    protected function _getOptionByLabel($label, $attrLabel)
+    protected function _getAttributeIdByLabel($label, $attrName)
     {
-        if (!$this->_attributesOptions[$attrLabel]) {
-            $attribute = $this->_getAttributeInfo('catalog_product', $attrLabel);
-            $this->_attributesOptions[$attrLabel]['attribute'] = $attribute;
-            $this->_attributesOptions[$attrLabel]['all_options'] = $attribute->getSource()->getAllOptions();
+        if (!$this->_attributesOptions[$attrName]) {
+            $attribute = $this->_getAttributeInfo('catalog_product', $attrName);
+            $this->_attributesOptions[$attrName]['all_options'] = $attribute->getSource()->getAllOptions();
         }
-        foreach ($this->_attributesOptions[$attrLabel]['all_options'] as $option) {
+        foreach ($this->_attributesOptions[$attrName]['all_options'] as $option) {
             if ($option['label'] == $label) {
                 return $option;
             }
         }
-        return array_shift($this->_attributesOptions[$attrLabel]['all_options']);
+        return array_shift($this->_attributesOptions[$attrName]['all_options']);
     }
 
     /**

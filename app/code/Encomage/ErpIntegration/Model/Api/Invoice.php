@@ -20,9 +20,13 @@ class Invoice extends Request
      * @var Customer
      */
     private $erpCustomer;
-
+    /**
+     * @var CustomerSession
+     */
     private $customerSession;
-
+    /**
+     * @var SerializerJson
+     */
     private $json;
 
     /**
@@ -50,21 +54,16 @@ class Invoice extends Request
 
     /**
      * @param $order
-     * @return array|mixed
+     * @return array|bool|float|int|mixed|null|string
+     * @throws \Exception
      */
     public function createInvoice($order)
     {
         $this->setApiLastPoint('createInvoice');
         $this->setApiMethod(HttpRequest::METHOD_GET);
-
         $data = $this->_prepareInvoiceData($order);
         $this->setAdditionalDataContent($data);
-
         $result = $this->sendApiRequest();
-        $result = $this->json->unserialize($result);
-        if (is_object($result)) {
-            $result = get_object_vars($result);
-        }
         return $result;
     }
 
@@ -72,7 +71,7 @@ class Invoice extends Request
      * @param \Magento\Sales\Model\Order $order
      * @return mixed
      */
-    protected function _prepareInvoiceData($order)
+    protected function _prepareInvoiceData(\Magento\Sales\Model\Order $order)
     {
         $fieldName = 'Order';
         $productsFieldName = 'lineItems';
@@ -85,8 +84,8 @@ class Invoice extends Request
         $data[$fieldName]['customerName'] = $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname();
         $data[$fieldName]['customerAddress'] = $shippingAddress->getCity() . ' ' . trim($street, ' ') . ' ' . $shippingAddress->getPostcode();
         $data[$fieldName]['customerTelephone'] = $shippingAddress->getTelephone();
-        $data[$fieldName]['customerTaxid'] = 0;
-        $data[$fieldName]['customerBranchNo'] = 0;
+        $data[$fieldName]['customerTaxid'] = 'tax1';
+        $data[$fieldName]['customerBranchNo'] = 'Online';
         $data[$fieldName]['salespersonCode'] = 'admin';
         $iterator = 0;
         
@@ -108,9 +107,20 @@ class Invoice extends Request
                 $iterator ++;
             }
         }
-        $data[$fieldName]['linePayments']['paymentMethodCode'] = $order->getPayment()->getMethod();
-        $data[$fieldName]['linePayments']['amount'] = $order->getGrandTotal();
+        $paymentInfo = $this->_getPaymentInfo($order);
+        $data[$fieldName] = array_merge($data[$fieldName], $paymentInfo[$fieldName]);
 
+        return $data;
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     * @return mixed
+     */
+    protected function _getPaymentInfo(\Magento\Sales\Model\Order $order)
+    {
+        $data['Order']['linePayments'][0]['paymentMethodCode'] = $order->getPayment()->getMethod();
+        $data['Order']['linePayments'][0]['amount'] = $order->getGrandTotal();
         return $data;
     }
 
