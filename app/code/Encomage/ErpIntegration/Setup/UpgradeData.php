@@ -1,6 +1,6 @@
 <?php
 
-namespace Encomage\Customer\Setup;
+namespace Encomage\ErpIntegration\Setup;
 
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Setup\CustomerSetup;
@@ -9,6 +9,10 @@ use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
 
+/**
+ * Class UpgradeData
+ * @package Encomage\ErpIntegration\Setup
+ */
 class UpgradeData implements UpgradeDataInterface
 {
     /**
@@ -36,11 +40,11 @@ class UpgradeData implements UpgradeDataInterface
             $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
             $customerSetup->addAttribute(
                 Customer::ENTITY,
-                'line_id',
+                'erp_customer_code',
                 [
                     'type' => 'varchar',
                     'input' => 'text',
-                    'label' => 'Line Id',
+                    'label' => 'ERP Customer Code',
                     'required' => false,
                     'visible' => true,
                     'system' => 0,
@@ -48,7 +52,7 @@ class UpgradeData implements UpgradeDataInterface
                     'filterable' => true,
                 ]
             );
-            $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'line_id')
+            $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'erp_customer_code')
                 ->setData('used_in_forms', ['customer_account_create'])
                 ->save();
         }
