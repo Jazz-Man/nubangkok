@@ -13,16 +13,30 @@ use Encomage\Nupoints\Model\NupointsRepository;
  */
 class Points extends Request
 {
+    /**
+     * @var NupointsRepository
+     */
     private $nupointsRepository;
+    /**
+     * @var SerializerJson
+     */
+    private $json;
 
+    /**
+     * Points constructor.
+     * @param ScopeConfigInterface $scopeConfig
+     * @param NupointsRepository $nupointsRepository
+     * @param SerializerJson $json
+     */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         NupointsRepository $nupointsRepository,
         SerializerJson $json
     )
     {
-        $this->nupointsRepository = $nupointsRepository;
         parent::__construct($scopeConfig, $json);
+        $this->nupointsRepository = $nupointsRepository;
+        $this->json = $json;
     }
 
     /**
@@ -32,17 +46,14 @@ class Points extends Request
     {
         $this->setApiLastPoint('GetCustomerPoint');
         $this->setApiMethod(HttpRequest::METHOD_GET);
-
         $result = $this->sendApiRequest();
-        if (is_object($result)) {
-            $result = get_object_vars($result);
-        }
         return $result;
     }
 
     /**
      * @param $customerCode
-     * @return array|mixed
+     * @return array|bool|\Encomage\Nupoints\Api\Data\NupointsInterface|float|int|mixed|null|string
+     * @throws \Exception
      */
     public function getNuPointByCustomerCode($customerCode)
     {
@@ -51,11 +62,7 @@ class Points extends Request
         $this->setAdditionalDataUrl([
             "CustomerCode" => $customerCode
         ]);
-
         $result = $this->sendApiRequest();
-        if (is_object($result)) {
-            $result = get_object_vars($result);
-        }
         $options['customer_code'] = $customerCode;
         $options['nupoints'] = $result['RebatePoint'];
         $result = $this->nupointsRepository->changeNupointsCount($options, 'update');

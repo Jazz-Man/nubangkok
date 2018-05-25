@@ -65,9 +65,6 @@ class Customer extends Request
         $this->setApiLastPoint('GetCustomerInfo');
         $this->setApiMethod(HttpRequest::METHOD_GET);
         $result = $this->sendApiRequest();
-        if (is_object($result)){
-            $result = get_object_vars($result);
-        }
         return $result;
     }
 
@@ -82,40 +79,33 @@ class Customer extends Request
         $this->setApiMethod(HttpRequest::METHOD_GET);
         $this->setAdditionalDataUrl(["CustomerCode" => $customerCode]);
         $result = $this->sendApiRequest();
-        $result = $this->json->unserialize($result);
-        if (is_object($result)){
-            $result = get_object_vars($result);
-        }
         return $result;
     }
 
     /**
      * Method for create or update customer info in ERP system
      *
-     * @api
      * @param $customerId
-     * @param $phone
-     * @return mixed
+     * @param null $phone
+     * @return array|bool|float|int|mixed|null|string
+     * @throws \Exception
      */
     public function createOrUpdateCustomer($customerId, $phone = null)
     {
         /** @var \Magento\Customer\Model\Customer $customer */
         $customer = $this->customerFactory->create()->load($customerId);
-        $customerCode = null;
-        if ($customer->getCustomAttribute('erp_customer_code')) {
-            $customerCode = $customer->getCcustomAttribute('erp_customer_code')->getValue();
-        }
+        $customerCode = $customer->getErpCustomerCode();
         $chooseMethod = ($customerCode) ? 'updatecustomer' : 'createcustomer';
         $data = $this->_prepareCustomerData($customer, $customerCode, $phone);
+        if (!$data || $data == null) {
+            if (empty($result) || !$result) {
+                throw new \Exception(__('Data is empty'));
+            }
+        }
         $this->setApiLastPoint($chooseMethod);
         $this->setAdditionalDataContent($data);
         $this->setApiMethod(HttpRequest::METHOD_POST);
         $result = $this->sendApiRequest();
-        $result = $this->json->unserialize($result);
-        if (is_object($result)) {
-            $result = get_object_vars($result);
-        }
-
         if ($customerCode == null && $result['customerCode']) {
             $customerData = $customer->getDataModel();
             $customerData->setCustomAttribute('erp_customer_code', $result['customerCode']);
@@ -136,12 +126,10 @@ class Customer extends Request
         $fieldName = 'Customer';
         $data[$fieldName] = [
             'CustomerCode' => $customerCode,
-            'prenameCode' => $customer->getPrefix(),
             'customerName' => $customer->getFirstname() . ' ' . $customer->getLastname(),
             'customerAddressCountryCode' => $customer->getCreatedIn(),
             'customerTypeCode' => 'Silver',
-            'memberCode' => '',
-            'salespersonCode' => 'customer',
+            'salespersonCode' => 'admin',
             'paymentTermCode' => 'cash'
         ];
         if ($phone) {
@@ -161,16 +149,15 @@ class Customer extends Request
             }
             $countryName = $this->_getCountryName($customerAddress->getCountryId());
             $dataAddress[$fieldName] = [
-                'customerTaxid' => '',
-                'customerBranchno' => '',
-                'customerAddress' => trim($street),
                 'customerTelephone' => $customerAddress->getTelephone(),
+                'customerTaxid' => 'tax1',
+                'customerBranchno' => 'Online',
+                'customerAddress' => trim($street),
                 'customerAddressCity' => $customerAddress->getCity(),
-                'customerAddressDistrict' => '',
                 'customerAddressProvince' => $countryName,
                 'customerAddressPostCode' => $customerAddress->getPostcode(),
             ];
-            $data = array_merge($data[$fieldName], $dataAddress[$fieldName]);
+            $data[$fieldName] = array_merge($data[$fieldName], $dataAddress[$fieldName]);
         }
         return $data;
     }
