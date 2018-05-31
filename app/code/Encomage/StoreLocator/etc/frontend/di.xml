@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+    /**
+     * @author Andrey Bondarenko
+     * @link http://encomage.com
+     * @mail info@encomage.com
+     */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Theme\Block\Html\Topmenu">
+        <plugin name="storelocator-topmenu" type="Encomage\StoreLocator\Plugin\Block\Topmenu" />
+    </type>
+</config>

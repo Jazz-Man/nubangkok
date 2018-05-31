@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\Customer\Controller\Account\CreatePost" type="Encomage\Customer\Controller\Account\CreatePost" />
+    <preference for="Magento\Customer\Controller\Address\FormPost" type="Encomage\Customer\Controller\Address\FormPost" />
     <preference for="Magento\Customer\Model\Data\Customer" type="Encomage\Customer\Model\Data\Customer" />
     <preference for="Magento\Customer\Model\Customer" type="Encomage\Customer\Model\Customer" />
     <preference for="Magento\Customer\Block\Form\Register" type="Encomage\Customer\Block\Form\Register" />

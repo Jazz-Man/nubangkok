@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="erp_etoday_settings" showInDefault="1" showInStore="1" showInWebsite="1" translate="label" type="text">
+            <label>ERP eToday Settings</label>
+            <tab>nubangkok</tab>
+            <resource>Encomage_ErpIntegration::erpIntegration</resource>
+            <group id="erp_authorization" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" type="text">
+                <label>ERP Authorization</label>
+                <field id="host_name" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                    <label>Host Name</label>
+                </field>
+                <field id="login" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label">
+                    <label>Login</label>
+                </field>
+                <field id="password" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                    <label>Password</label>
+                </field>
+                <field id="compcode" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label">
+                    <label>Company Code</label>
+                </field>
+                <field id="warehouse_code" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="50" translate="label">
+                    <label>Warehouse Code</label>
+                </field>
+                <field id="enabled_test_mode" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="60"
+                       translate="label" type="select">
+                    <label>Enabled Test Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="color_settings" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" type="text">
+                <label>Color Settings</label>
+                <field id="color_code" showInDefault="1" showInStore="1" showInWebsite="1" translate="label" type="select">
+                    <label>Color codes</label>
+                    <frontend_model>Encomage\ErpIntegration\Block\Adminhtml\Form\Field\ColorCodes</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
+            <group id="category_type_bags" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" type="text">
+                <label>Category Type Bags</label>
+                <field id="bags_codes" showInDefault="1" showInStore="1" showInWebsite="1" translate="label" type="select">
+                    <label>Bags codes</label>
+                    <frontend_model>Encomage\ErpIntegration\Block\Adminhtml\Form\Field\BagsCodes</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
+            <group id="category_type_shoe" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" type="text">
+                <label>Category Type Shoe</label>
+                <field id="shoe_codes" showInDefault="1" showInStore="1" showInWebsite="1" translate="label" type="select">
+                    <label>Shoe codes</label>
+                    <frontend_model>Encomage\ErpIntegration\Block\Adminhtml\Form\Field\ShoeCodes</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
+            <group id="categories" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="50" type="text">
+                <label>Categories</label>
+                <field id="categories_codes" showInDefault="1" showInStore="1" showInWebsite="1" translate="label" type="select">
+                    <label>Categories codes</label>
+                    <frontend_model>Encomage\ErpIntegration\Block\Adminhtml\Form\Field\CategoriesCodes</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
+
+
+

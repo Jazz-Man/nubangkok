@@ -28,20 +28,20 @@ interface NupointsInterface
     public function getNupoints();
 
     /**
-     * @param $id
-     * @return mixed
+     * @param integer $id
+     * @return \Encomage\Nupoints\Api\Data\NupointsInterface
      */
     public function setItemId($id);
 
     /**
-     * @param $customerId
-     * @return mixed
+     * @param integer $customerId
+     * @return \Encomage\Nupoints\Api\Data\NupointsInterface
      */
     public function setCustomerId($customerId);
 
     /**
      * @param $value
-     * @return mixed
+     * @return \Encomage\Nupoints\Api\Data\NupointsInterface
      */
     public function setNupoints($value);
 }
