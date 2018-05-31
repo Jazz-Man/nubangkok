@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="encomage_storelocator" class="Encomage\StoreLocator\Block\Widget\StoreLocator">
+        <label translate="true">Encomage Store Locator</label>
+        <description translate="true">Google Map Store Locator</description>
+        <parameters>
+            <parameter xsi:type="text" name="widget_frontend_label" required="false" visible="true">
+                <label translate="true">Frontend widget label</label>
+            </parameter>
+            <parameter xsi:type="multiselect" name="markers" visible="true" required="true" source_model="Encomage\StoreLocator\Model\Config\Source\Markers">
+                <label translate="true">Available Markers</label>
+                <description translate="true">First you should select 'Assign to Store Views'</description>
+            </parameter>
+            <parameter xsi:type="select" name="center_marker" required="false" visible="true" source_model="Encomage\StoreLocator\Model\Config\Source\CenterMarker">
+                <label translate="true">Center on marker</label>
+            </parameter>
+            <parameter xsi:type="select" name="is_show_markers_list" required="false" visible="true">
+                <label translate="true">Markers List</label>
+                <options>
+                    <option name="yes" value="1" selected="true">
+                        <label translate="true">Enable</label>
+                    </option>
+                    <option name="no" value="0">
+                        <label translate="true">Disable</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter xsi:type="text" name="widget_width" required="true" visible="true">
+                <label translate="true">Widget Width</label>
+                <description translate="true">Example: 150px|150%</description>
+            </parameter>
+            <parameter xsi:type="text" name="widget_height" required="true" visible="true">
+                <label translate="true">Widget Height</label>
+                <description translate="true">Example: 150px|150%</description>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

@@ -1,0 +1,1 @@
+Encomage Store Locator Extension
