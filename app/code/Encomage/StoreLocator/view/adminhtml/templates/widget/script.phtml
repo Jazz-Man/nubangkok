@@ -1,0 +1,21 @@
+<?php
+/**
+ * @author Andrey Bondarenko
+ * @link http://encomage.com
+ * @mail info@encomage.com
+ */
+
+/** @var \Encomage\StoreLocator\Block\Adminhtml\Widget\Script $block */
+?>
+<script type="text/x-magento-init">
+  <?php
+    /* @escapeNotVerified */
+    echo $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode(
+        [
+            '*' => [
+                'Encomage_StoreLocator/js/dependency' => $block->getParams()
+            ],
+        ]
+    );
+    ?>
+</script>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="encomage" translate="label" sortOrder="100">
+            <label>Encomage</label>
+        </tab>
+        <section id="store_locator" translate="label" sortOrder="15"
+                 showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Store Locator</label>
+            <tab>encomage</tab>
+            <resource>Encomage_StoreLocator::store_locator_config</resource>
+            <group id="front_options" translate="label" type="text" sortOrder="10"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Store List Options</label>
+                <field id="is_active" translate="label" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Store List Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="api_key" translate="label" type="text" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Google Maps API key</label>
+                </field>
+                <field id="api_version" translate="label" type="text" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Google Maps API version</label>
+                </field>
+                <field id="zoom_for_default_map" translate="label" type="text" sortOrder="40"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Zoom For Default Map</label>
+                    <validate>validate-digits-range digits-range-0-22</validate>
+                </field>
+                <field id="zoom_for_stores_marker" translate="label" type="text" sortOrder="50"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Zoom For Stores Marker On Map</label>
+                    <validate>validate-digits-range digits-range-0-22</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
