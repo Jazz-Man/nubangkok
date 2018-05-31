@@ -1,0 +1,51 @@
+<?php
+/**
+ * @author Andrey Bondarenko
+ * @link http://encomage.com
+ * @mail info@encomage.com
+ */
+
+/** @var \Encomage\StoreLocator\Block\StoreLocationPage $block */
+$markers = $block->getCollection();
+$size = $markers->getSize();
+?>
+<?php if ($size): ?>
+    <div class="store-locator-page-markers-list">
+        <ul>
+            <?php $i = 0; ?>
+            <?php foreach ($markers as $marker): ?>
+                <?php $i++; ?>
+                <li class="js-show-marker markers-listing-item <?php echo ($size == $i) ? 'last' : ''; ?>"
+                    data-marker-id="<?php echo (int)$marker->getId() ?>">
+                    <div class="title">
+                        <?php echo $block->escapeHtml($marker->getName()); ?>
+                    </div>
+                    <div class="marker-icon"></div>
+                    <?php if ($marker->getComment()): ?>
+                        <div class="comment">
+                            <?php echo $block->escapeHtml($marker->getComment()); ?>
+                        </div>
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <div class="store-locator-page-map-container"
+         id="<?php echo $block->escapeHtml($block->getMapContainerId()); ?>"></div>
+    <script type="text/x-magento-init">
+  <?php
+        /* @escapeNotVerified */
+        echo $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode(
+            [
+                '*' => [
+                    'Encomage_StoreLocator/js/locator' => $block->getJsParams()
+                ],
+            ]
+        );
+        ?>
+    </script>
+<?php else: ?>
+    <div class="empty">
+        <?php echo $block->escapeHtml($block->getNoMarkersLabel()) ?>
+    </div>
+<?php endif; ?>

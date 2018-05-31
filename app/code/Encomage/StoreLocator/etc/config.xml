@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <store_locator>
+            <front_options>
+                <is_active>0</is_active>
+                <api_version>3.exp</api_version>
+                <show_on_column>left</show_on_column>
+                <title_on_sidebar_map>Find Our Stores On Map</title_on_sidebar_map>
+                <show_on_sidebar_map>0</show_on_sidebar_map>
+                <zoom_for_default_map>8</zoom_for_default_map>
+                <zoom_for_stores_marker>16</zoom_for_stores_marker>
+            </front_options>
+        </store_locator>
+    </default>
+</config>
