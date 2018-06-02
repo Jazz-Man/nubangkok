@@ -76,9 +76,8 @@ abstract class Request
     }
 
     /**
-     * Api request
-     * 
-     * @return mixed
+     * @return array|bool|float|int|mixed|null|string
+     * @throws \Exception
      */
     public function sendApiRequest()
     {
@@ -103,11 +102,11 @@ abstract class Request
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "Content-Length: " . strlen($data_string)]);
-        $response = curl_exec($ch);
+        $response = $this->serializerJson->unserialize(curl_exec($ch));
         if (empty($response)) {
             throw new \Exception(__('Response is empty'));
         }
-        return $this->serializerJson->unserialize($response);
+        return $response;
     }
 
     /**

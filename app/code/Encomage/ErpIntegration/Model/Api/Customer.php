@@ -128,7 +128,7 @@ class Customer extends Request
             'CustomerCode' => $customerCode,
             'customerName' => $customer->getFirstname() . ' ' . $customer->getLastname(),
             'customerAddressCountryCode' => $customer->getCreatedIn(),
-            'email' => $customer->getEmail(),
+            'customerEmail' => $customer->getEmail(),
             'customerTypeCode' => 'Silver',
             'salespersonCode' => 'admin',
             'paymentTermCode' => 'cash'

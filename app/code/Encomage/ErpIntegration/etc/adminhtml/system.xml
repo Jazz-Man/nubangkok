@@ -13,7 +13,7 @@
                 <field id="login" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label">
                     <label>Login</label>
                 </field>
-                <field id="password" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <field id="password" type='obscure' showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
                     <label>Password</label>
                 </field>
                 <field id="compcode" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label">

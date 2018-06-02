@@ -8,6 +8,8 @@ use Magento\Customer\Setup\CustomerSetupFactory;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
+use Magento\Sales\Setup\SalesSetupFactory;
+use Magento\Sales\Model\Order;
 
 /**
  * Class UpgradeData
@@ -20,14 +22,19 @@ class UpgradeData implements UpgradeDataInterface
      */
     private $customerSetupFactory;
 
+    protected $salesSetupFactory;
+
     /**
      * UpgradeData constructor.
      * @param CustomerSetupFactory $customerSetupFactory
+     * @param SalesSetupFactory $salesSetupFactory
      */
-    public function __construct(CustomerSetupFactory $customerSetupFactory)
+    public function __construct(CustomerSetupFactory $customerSetupFactory, SalesSetupFactory $salesSetupFactory)
     {
         $this->customerSetupFactory = $customerSetupFactory;
+        $this->salesSetupFactory = $salesSetupFactory;
     }
+
 
     /**
      * @param ModuleDataSetupInterface $setup
@@ -55,6 +62,21 @@ class UpgradeData implements UpgradeDataInterface
             $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'erp_customer_code')
                 ->setData('used_in_forms', ['customer_account_create'])
                 ->save();
+        }
+        if (version_compare($context->getVersion(), '0.0.3', '<')) {
+            $setup->startSetup();
+            $setup->getConnection()
+                ->addColumn(
+                    $setup->getTable('sales_order'),
+                    'redeem_amount',
+                    [
+                        'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                        'length' => 10,
+                        'comment' =>'Redeem Amount'
+                    ]
+                );
+
+            $setup->endSetup();
         }
     }
 }
