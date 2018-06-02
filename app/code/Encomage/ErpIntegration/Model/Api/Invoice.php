@@ -98,19 +98,11 @@ class Invoice extends Request
         $iterator = 0;
         
         foreach ($order->getItems() as $item) {
-//            if ($order->getRedeemAmount()) {
-//                $data[$fieldName][$productsFieldName][$iterator]['productCode'] = 'Redeem'.$order->getRedeemAmount();
-//                $data[$fieldName][$productsFieldName][$iterator]['quantity'] = 1;
-//                $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = 'WH_ON';
-//                $order->setRedeemAmount(null);
-//                $iterator ++;
-//                continue;
-//            }
             if ($item->getProductType() == 'simple') {
                 $discount = $item->getParentItem()->getDiscountPercent();
                 $data[$fieldName][$productsFieldName][$iterator]['productCode'] = $item->getSku();
                 $data[$fieldName][$productsFieldName][$iterator]['quantity'] = $item->getQtyOrdered();
-                $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = 'WH_ON';
+                $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = $this->_getWarehouseCode();
                 $data[$fieldName][$productsFieldName][$iterator]['discountText'] = $discount . '%';
                 $iterator ++;
             }
@@ -118,7 +110,7 @@ class Invoice extends Request
         if ($order->getRedeemAmount()) {
             $data[$fieldName][$productsFieldName][$iterator]['productCode'] = 'Redeem'.$order->getRedeemAmount();
             $data[$fieldName][$productsFieldName][$iterator]['quantity'] = 1;
-            $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = 'WH_ON';
+            $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = $this->_getWarehouseCode();
         }
         $paymentInfo = $this->_getPaymentInfo($order);
         $data[$fieldName] = array_merge($data[$fieldName], $paymentInfo[$fieldName]);
