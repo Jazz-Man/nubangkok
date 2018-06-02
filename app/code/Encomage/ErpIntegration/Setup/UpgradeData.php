@@ -10,6 +10,8 @@ use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
 use Magento\Sales\Setup\SalesSetupFactory;
 use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Status as OrderStatus;
+use Magento\Sales\Model\ResourceModel\Order\Status as OrderStatusResource;
 
 /**
  * Class UpgradeData
@@ -21,18 +23,35 @@ class UpgradeData implements UpgradeDataInterface
      * @var CustomerSetupFactory
      */
     private $customerSetupFactory;
-
+    /**
+     * @var SalesSetupFactory
+     */
     protected $salesSetupFactory;
+    /**
+     * @var OrderStatus
+     */
+    protected $orderStatus;
+    
+    protected $orderStatusResource;
 
     /**
      * UpgradeData constructor.
      * @param CustomerSetupFactory $customerSetupFactory
      * @param SalesSetupFactory $salesSetupFactory
+     * @param OrderStatus $orderStatus
+     * @param OrderStatusResource $orderStatusResource
      */
-    public function __construct(CustomerSetupFactory $customerSetupFactory, SalesSetupFactory $salesSetupFactory)
+    public function __construct(
+        CustomerSetupFactory $customerSetupFactory,
+        SalesSetupFactory $salesSetupFactory,
+        OrderStatus $orderStatus,
+        OrderStatusResource $orderStatusResource
+    )
     {
         $this->customerSetupFactory = $customerSetupFactory;
         $this->salesSetupFactory = $salesSetupFactory;
+        $this->orderStatus = $orderStatus;
+        $this->orderStatusResource = $orderStatusResource;
     }
 
 
@@ -72,11 +91,18 @@ class UpgradeData implements UpgradeDataInterface
                     [
                         'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                         'length' => 10,
-                        'comment' =>'Redeem Amount'
+                        'comment' => 'Redeem Amount'
                     ]
                 );
 
             $setup->endSetup();
+        }
+        if (version_compare($context->getVersion(), '0.0.4', '<')) {
+            $data['status'] = 'pending_not_sent';
+            $data['label'] = 'Pending but not sent';
+            /** @var \Magento\Sales\Model\Order\Status $orderStatus */
+            $orderStatus = $this->orderStatus->setData($data)->setStatus($data['status']);
+            $this->orderStatusResource->save($orderStatus);
         }
     }
 }
