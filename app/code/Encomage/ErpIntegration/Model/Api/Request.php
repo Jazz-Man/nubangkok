@@ -20,6 +20,9 @@ abstract class Request
     const ERP_BAGS_CODES = 'erp_etoday_settings/category_type_bags/bags_codes';
     const ERP_SHOE_CODES = 'erp_etoday_settings/category_type_shoe/shoe_codes';
     const ERP_CATEGORY_CODES = 'erp_etoday_settings/categories/categories_codes';
+    
+    const ORDER_STATUS_PENDING_NOT_SENT = 'pending_not_sent';
+    const ORDER_STATUS_PENDING = 'pending';
 
     /**
      * @var ScopeConfigInterface

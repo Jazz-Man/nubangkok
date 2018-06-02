@@ -6,6 +6,7 @@ use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Customer\Model\ResourceModel\CustomerRepository;
 use Magento\Sales\Model\ResourceModel\Order as OrderResource;
+use Magento\Sales\Model\Order;
 
 /**
  * Class Invoice
@@ -66,10 +67,10 @@ class Invoice extends Request
         $this->setAdditionalDataContent($data);
         $result = $this->sendApiRequest();
         if (!$result['returnResult']) {
-            $order->addStatusHistoryComment(__("Invoice wasn't sent to ERP system. \n ERROR: ". $result['errorMessage']), 'pending_not_send');
+            $order->addStatusHistoryComment(__("Invoice wasn't sent to ERP system. \n ERROR: ". $result['errorMessage']), parent::ORDER_STATUS_PENDING_NOT_SENT);
             $this->orderResource->save($order);
         } else {
-            $order->addStatusHistoryComment(__("Sent invoice to ERP. DocNo: %1. RecId: %2", $result['DocNo'], $result['recId']), 'pending');
+            $order->addStatusHistoryComment(__("Sent invoice to ERP. DocNo: %1. RecId: %2", $result['DocNo'], $result['recId']), parent::ORDER_STATUS_PENDING);
             $this->orderResource->save($order);
         }
         return $result;
