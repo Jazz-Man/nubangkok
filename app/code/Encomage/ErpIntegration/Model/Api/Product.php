@@ -152,8 +152,21 @@ class Product extends Request
         $configurable = [];
         foreach ($result as $item) {
             $item = (is_object($item)) ? get_object_vars($item) : $item;
+            if (strlen($item['IcProductCode']) >= 18) {
+                continue;
+            }
             $productId = $this->productResource->getIdBySku($item['IcProductCode']);
-            if (strlen($item['IcProductCode']) >= 18 || $productId) {
+            if ($productId) {
+                /** @var \Magento\Catalog\Model\Product $product */
+                $product = $this->productFactory->create()->load($productId);
+                $product->setPrice($item['salesprice']);
+                $product->addData([
+                    'quantity_and_stock_status' => [
+                        'is_in_stock' => Status::STATUS_ENABLED,
+                        'qty' => $item['UnrestrictStock']
+                    ]
+                ]);
+                $this->productRepository->save($product);
                 continue;
             }
             $confSku = $this->_prepareConfSku($item['BarCode']);
