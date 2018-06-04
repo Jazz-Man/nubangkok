@@ -20,6 +20,9 @@ abstract class Request
     const ERP_BAGS_CODES = 'erp_etoday_settings/category_type_bags/bags_codes';
     const ERP_SHOE_CODES = 'erp_etoday_settings/category_type_shoe/shoe_codes';
     const ERP_CATEGORY_CODES = 'erp_etoday_settings/categories/categories_codes';
+    
+    const ORDER_STATUS_PENDING_NOT_SENT = 'pending_not_sent';
+    const ORDER_STATUS_PENDING = 'pending';
 
     /**
      * @var ScopeConfigInterface
@@ -76,9 +79,8 @@ abstract class Request
     }
 
     /**
-     * Api request
-     * 
-     * @return mixed
+     * @return array|bool|float|int|mixed|null|string
+     * @throws \Exception
      */
     public function sendApiRequest()
     {
@@ -103,11 +105,11 @@ abstract class Request
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "Content-Length: " . strlen($data_string)]);
-        $response = curl_exec($ch);
+        $response = $this->serializerJson->unserialize(curl_exec($ch));
         if (empty($response)) {
             throw new \Exception(__('Response is empty'));
         }
-        return $this->serializerJson->unserialize($response);
+        return $response;
     }
 
     /**

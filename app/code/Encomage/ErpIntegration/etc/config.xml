@@ -5,7 +5,7 @@
                 <login>Web</login>
                 <password>x]vf4ypw;hdjvo</password>
                 <host_name>https://cloudapp1.eflowsys.com/EC_API</host_name>
-                <compcode>nuBangkok</compcode>
+                <compcode>NuBangkok</compcode>
                 <enabled_test_mode>1</enabled_test_mode>
                 <warehouse_code>WH_ON</warehouse_code>
             </erp_authorization>
