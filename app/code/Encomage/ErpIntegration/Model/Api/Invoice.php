@@ -5,7 +5,9 @@ use Zend\Http\Request as HttpRequest;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Customer\Model\ResourceModel\CustomerRepository;
-use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Sales\Model\ResourceModel\Order as OrderResource;
+use Magento\Sales\Model\Order;
+
 /**
  * Class Invoice
  * @package Encomage\ErpIntegration\Model\Api
@@ -21,13 +23,13 @@ class Invoice extends Request
      */
     private $erpCustomer;
     /**
-     * @var CustomerSession
-     */
-    private $customerSession;
-    /**
      * @var SerializerJson
      */
     private $json;
+    /**
+     * @var OrderResource
+     */
+    private $orderResource;
 
     /**
      * Invoice constructor.
@@ -35,25 +37,25 @@ class Invoice extends Request
      * @param CustomerRepository $customerRepository
      * @param SerializerJson $json
      * @param Customer $erpCustomer
-     * @param CustomerSession $customerSession
+     * @param OrderResource $orderResource
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         CustomerRepository $customerRepository,
         SerializerJson $json,
         Customer $erpCustomer,
-        CustomerSession $customerSession
+        OrderResource $orderResource
     )
     {
         parent::__construct($scopeConfig, $json);
         $this->customerRepository = $customerRepository;
         $this->erpCustomer = $erpCustomer;
-        $this->customerSession = $customerSession;
         $this->json = $json;
+        $this->orderResource = $orderResource;
     }
 
     /**
-     * @param $order
+     * @param \Magento\Sales\Model\Order $order
      * @return array|bool|float|int|mixed|null|string
      * @throws \Exception
      */
@@ -64,6 +66,13 @@ class Invoice extends Request
         $data = $this->_prepareInvoiceData($order);
         $this->setAdditionalDataContent($data);
         $result = $this->sendApiRequest();
+        if (!$result['returnResult']) {
+            $order->addStatusHistoryComment(__("Invoice wasn't sent to ERP system. \n ERROR: ". $result['errorMessage']), parent::ORDER_STATUS_PENDING_NOT_SENT);
+            $this->orderResource->save($order);
+        } else {
+            $order->addStatusHistoryComment(__("Sent invoice to ERP. DocNo: %1. RecId: %2", $result['DocNo'], $result['recId']), parent::ORDER_STATUS_PENDING);
+            $this->orderResource->save($order);
+        }
         return $result;
     }
 
@@ -90,22 +99,19 @@ class Invoice extends Request
         $iterator = 0;
         
         foreach ($order->getItems() as $item) {
-            if ($order->getRedeemNupoints()) {
-                $data[$fieldName][$productsFieldName][$iterator]['productCode'] = 'Redeem'.$order->getRedeemNupoints()->getMoneyToRedeem();
-                $data[$fieldName][$productsFieldName][$iterator]['quantity'] = 1;
-                $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = 'WH_ON';
-                $order->setData('redeem_nupoints', false);
-                $iterator ++;
-                continue;
-            }
             if ($item->getProductType() == 'simple') {
                 $discount = $item->getParentItem()->getDiscountPercent();
                 $data[$fieldName][$productsFieldName][$iterator]['productCode'] = $item->getSku();
                 $data[$fieldName][$productsFieldName][$iterator]['quantity'] = $item->getQtyOrdered();
-                $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = 'WH_ON';
+                $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = $this->_getWarehouseCode();
                 $data[$fieldName][$productsFieldName][$iterator]['discountText'] = $discount . '%';
                 $iterator ++;
             }
+        }
+        if ($order->getRedeemAmount()) {
+            $data[$fieldName][$productsFieldName][$iterator]['productCode'] = 'Redeem'.$order->getRedeemAmount();
+            $data[$fieldName][$productsFieldName][$iterator]['quantity'] = 1;
+            $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = $this->_getWarehouseCode();
         }
         $paymentInfo = $this->_getPaymentInfo($order);
         $data[$fieldName] = array_merge($data[$fieldName], $paymentInfo[$fieldName]);
@@ -120,7 +126,7 @@ class Invoice extends Request
     protected function _getPaymentInfo(\Magento\Sales\Model\Order $order)
     {
         $data['Order']['linePayments'][0]['paymentMethodCode'] = $order->getPayment()->getMethod();
-        $data['Order']['linePayments'][0]['amount'] = $order->getGrandTotal();
+        $data['Order']['linePayments'][0]['amount'] = $order->getBaseSubtotalInclTax() + $order->getBaseShippingAmount();
         return $data;
     }
 
