@@ -303,6 +303,10 @@ define([
 
             this.options.tierPriceTemplate = $(this.options.tierPriceTemplateSelector).html();
             $('.swatch-attribute-options select').niceSelect();
+            if ($('.nice-select.swatch-select.size').length > 0) {
+                $('.nice-select.swatch-select.size').children('ul.list').children('li.option.selected').click();
+                $('.nice-select.swatch-select.size').click();
+            }
         },
 
         /**
@@ -429,8 +433,15 @@ define([
                 );
 
                 $widget.optionsMap[item.id] = {};
-
-                // Aggregate options array to hash (key => value)
+                if (item.options.length == 1 && item.code == 'color') {
+                    var firsElement = item.options[0],
+                    selectedElement = document.getElementById('option-label-'+ item.code +'-'+item.id+'-item-'+firsElement.id);
+                    $widget._OnClick($(selectedElement), $widget);
+                }
+                if (item.options.length == 1 && item.code == 'size') {
+                    $($('select.swatch-select.size')[0][1]).attr('selected', true);
+                }
+                    // Aggregate options array to hash (key => value)
                 $.each(item.options, function () {
                     if (this.products.length > 0) {
                         $widget.optionsMap[item.id][this.id] = {
