@@ -217,7 +217,7 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
                 );
             }
         } else {
-            $message = __('Account created. Welcome to UPBangkok!');
+            $message = __('Account created. Welcome to NU bangkok!');
         }
         return $message;
     }
@@ -238,7 +238,7 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
         try {
             $this->addressRepository->save($address);
         } catch (LocalizedException $e) {
-            $this->messageManager->addException($e, __($e->getMessage()));
+            $this->messageManager->addExceptionMessage($e, __($e->getMessage()));
         }
     }
 }
