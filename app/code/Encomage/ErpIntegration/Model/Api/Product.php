@@ -207,6 +207,14 @@ class Product extends Request
                 $configurable[$confSku]['associate_ids'][$product->getId()] = $product->getId();
                 $configurable[$confSku]['skus'][] = $product->getSku();
             }
+            $configurable[$confSku]['color'] = (array_key_exists('color', $configurable[$confSku])) ? $configurable[$confSku]['color'] : '';
+            if ($configurable[$confSku]['color'] == null) {
+                $configurable[$confSku]['color'] = ($product->getColor()) ? $product->getColor() : null;
+            }
+            $configurable[$confSku]['size'] = (array_key_exists('size', $configurable[$confSku])) ? $configurable[$confSku]['size'] : '';
+            if ($configurable[$confSku]['size'] == null) {
+                $configurable[$confSku]['size'] = ($product->getSize()) ? $product->getSize() : null;
+            }
         }
         if (count($configurable) > 0) {
             foreach ($configurable as $sku => $settings) {
@@ -259,9 +267,14 @@ class Product extends Request
             $product->setCategoryIds([$settings['category_ids']]);
             $product->setColor(' ');
             $product->setSize(' ');
-            $sizeAttrId = $this->productResource->getAttribute('size')->getId();
-            $colorAttrId = $this->productResource->getAttribute('color')->getId();
-            $product->getTypeInstance()->setUsedProductAttributeIds([$sizeAttrId, $colorAttrId], $product);
+            $attributes = [];
+            if ($settings['color']) {
+                $attributes[] = $this->productResource->getAttribute('color')->getId();
+            }
+            if ($settings['size']) {
+                $attributes[] = $this->productResource->getAttribute('size')->getId();
+            }
+            $product->getTypeInstance()->setUsedProductAttributeIds($attributes, $product);
 
             $configurableAttributesData = $product->getTypeInstance()->getConfigurableAttributesAsArray($product);
             $product->setCanSaveConfigurableAttributes(true);
@@ -273,7 +286,7 @@ class Product extends Request
                 $productId = $this->productRepository->save($product)->getId();
                 $this->categoryLinkManagement->assignProductToCategories($sku, [$settings['category_ids']]);
             } catch (Exception $e) {
-                $this->logger->info('ERROR: ' . $e->getMessage() . 'Product SKU - ' . $sku);
+                $this->logger->info('ERROR: Import. ' . $e->getMessage() . 'Product SKU - ' . $sku);
                 return false;
             }
         }
@@ -282,7 +295,7 @@ class Product extends Request
                 $this->_addAssociatedProducts($sku, $childSku);
             }
             if ($productId) {
-                /** @var \Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem */
+                /** @var \Magento\CatalogInventory\Model\Stock\Item $stockItem */
                 $stockItem = $this->stockRegistryFactory->create()->getStockItem($productId);
                 if ($stockItem->getItemId()) {
                     $stockItem->setIsInStock(true);
@@ -404,7 +417,7 @@ class Product extends Request
     protected function _getAttributesCodes($barCode)
     {
         $result = [];
-        $erpColorCode = ' ';
+        
         $barCode = substr($barCode, 2);
         $barCode = preg_replace('/(\d+)/i', '${1},', $barCode);
         $barCode = explode(',', rtrim($barCode, ','));
@@ -416,6 +429,7 @@ class Product extends Request
             $erpColorCode = substr($options, -8, 4);
         } else {
             $result['size'] = null;
+            $erpColorCode = substr($options, -8, 4);
         }
         if (empty($this->colorCodes)) {
             $this->colorCodes = $this->json->unserialize($this->_getColorCodes());
@@ -448,7 +462,7 @@ class Product extends Request
                 return $option;
             }
         }
-        return array_shift($this->_attributesOptions[$attrName]['all_options']);
+        return ['label' => " ", 'value' => ""];
     }
 
     /**
