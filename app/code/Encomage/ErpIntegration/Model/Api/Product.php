@@ -138,21 +138,24 @@ class Product extends Request
     }
 
     /**
+     * @param int $i don't set this param
      * @return bool
+     * @throws \Exception
      */
-    public function importAllProducts()
+    public function importAllProducts($i = 0)
     {
         $this->setApiLastPoint('GetProductList');
         $this->setApiMethod(HttpRequest::METHOD_GET);
         $this->setAdditionalDataUrl([
             'Branchpricedisplay' => 1,
-            "CategoryDisplaySubCat" => 1
+            "CategoryDisplaySubCat" => 1,
+            "Page" => $i
         ]);
         $result = $this->sendApiRequest();
         $configurable = [];
         foreach ($result as $item) {
             $item = (is_object($item)) ? get_object_vars($item) : $item;
-            if (strlen($item['IcProductCode']) >= 18) {
+            if (strlen($item['IcProductCode']) > 17 || strlen($item['IcProductCode']) < 16) {
                 continue;
             }
             $productId = $this->productResource->getIdBySku($item['IcProductCode']);
@@ -221,6 +224,8 @@ class Product extends Request
                 $this->_createConfigurableProduct($sku, $settings);
             }
         }
+        $i++;
+        $this->importAllProducts($i);
         return true;
     }
 
@@ -231,6 +236,9 @@ class Product extends Request
     protected function _prepareConfSku($barCode)
     {
         if (!empty($barCode)) {
+            if ((int)substr($barCode, 3, 1) > 0 ) {
+                return substr($barCode, 0, 10);
+            }
             return substr($barCode, 0, 9);
         }
         return null;
@@ -429,7 +437,7 @@ class Product extends Request
             $erpColorCode = substr($options, -8, 4);
         } else {
             $result['size'] = null;
-            $erpColorCode = substr($options, -8, 4);
+            $erpColorCode = substr($options, -6, 4);
         }
         if (empty($this->colorCodes)) {
             $this->colorCodes = $this->json->unserialize($this->_getColorCodes());
