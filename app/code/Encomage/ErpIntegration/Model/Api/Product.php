@@ -24,6 +24,10 @@ use Magento\CatalogInventory\Api\StockRegistryInterfaceFactory;
  */
 class Product extends Request
 {
+    const STATUS_IN_STOCK = 1;
+    const STATUS_OUT_OF_STOCK = 0;
+
+
     /**
      * @var ProductRepositoryInterface
      */
@@ -159,13 +163,15 @@ class Product extends Request
                 continue;
             }
             $productId = $this->productResource->getIdBySku($item['IcProductCode']);
+            $stockStatus = ((int)$item['UnrestrictStock'] > 0) ? self::STATUS_IN_STOCK: self::STATUS_OUT_OF_STOCK;
             if ($productId) {
+
                 /** @var \Magento\Catalog\Model\Product $product */
                 $product = $this->productFactory->create()->load($productId);
                 $product->setPrice($item['salesprice']);
                 $product->addData([
                     'quantity_and_stock_status' => [
-                        'is_in_stock' => Status::STATUS_ENABLED,
+                        'is_in_stock' => $stockStatus,
                         'qty' => $item['UnrestrictStock']
                     ]
                 ]);
@@ -190,7 +196,7 @@ class Product extends Request
             $product->setWeight(null);
             $product->addData([
                 'quantity_and_stock_status' => [
-                    'is_in_stock' => Status::STATUS_ENABLED,
+                    'is_in_stock' => $stockStatus,
                     'qty' => $item['UnrestrictStock']
                 ]
             ]);
