@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
-    <widget id="encomage_storelocator" class="Encomage\Slider\Block\Widget\Slider">
+    <widget id="encomage_slider" class="Encomage\Slider\Block\Widget\Slider">
         <label translate="true">Slider</label>
         <description>Slider</description>
         <parameters>

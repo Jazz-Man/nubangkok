@@ -1,0 +1,11 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Encomage_StoreLocator::markers"
+             title="Encomage Store Locator"
+             module="Encomage_StoreLocator"
+             sortOrder="80"
+             resource="Encomage_StoreLocator::markers"
+             action="storelocator/markers/grid"/>
+    </menu>
+</config>

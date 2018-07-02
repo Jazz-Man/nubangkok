@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Encomage\StoreLocator\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Encomage\StoreLocator\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">EncomageStoreLocator</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Encomage\StoreLocator\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="StoreLocatorMarkerGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="StoreLocatorMarkerGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Encomage\StoreLocator\Model\ResourceModel\Marker\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">StoreLocatorMarkerGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Encomage\StoreLocator\Model\ResourceModel\Marker\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">encomage_storelocator</argument>
+            <argument name="eventPrefix" xsi:type="string">store_locator_marker_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">marker_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Encomage\StoreLocator\Model\ResourceModel\Marker</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="markers_grid_data_source" xsi:type="string">Encomage\StoreLocator\Model\ResourceModel\Marker\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Page\Config\Generator\Head">
+        <plugin name="storelocator-generator-head" type="Encomage\StoreLocator\Plugin\View\Page\Config\Generator\Head"/>
+    </type>
+</config>
