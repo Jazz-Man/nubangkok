@@ -54,10 +54,10 @@ class PlaceOrderAfter implements ObserverInterface
                 $observer->getOrder()->save();
                 $customerNupointItem->redeemNupointsAfterOrderPlaced();
             }
-            if ($observer->getOrder()->getNupoints()) {
-                $customerNupointItem->addNupoints($observer->getOrder()->getNupoints());
-                $this->nupointsRepository->save($customerNupointItem);
-            }
+//            if ($observer->getOrder()->getNupoints()) {
+//                $customerNupointItem->addNupoints($observer->getOrder()->getNupoints());
+//                $this->nupointsRepository->save($customerNupointItem);
+//            }
         }
     }
 }
