@@ -4,15 +4,15 @@
 <div class="catalog-product-view-nupoints-redeem view-nupoints-redeem"
      data-mage-init='{"Encomage_Nupoints/js/catalog/product/view/nupoints-redeem":{"nupointsRedeemUrl":"nupoints/catalog/nupointsRedeem"}}'>
     <div>
-        <span><?= __('Your balance is'); ?></span>
+        <span><?= __('Points available to redeem'); ?>:</span>
         <span class="js-customer-nupoints-balance"></span>
         <span><?= __('nuPoints'); ?></span>
     </div>
     <div>
-        <span><?= __('I want to redeem'); ?></span>
-        <p class="mobile-to-redeem"><?= __('I want to redeem'); ?></p>
+        <span><?= __('Choose from this options'); ?></span>
+        <p class="mobile-to-redeem"><?= __('Choose from this options'); ?></p>
         <div class="js-select-custom js-nupoints-rates select-redeem"
-             data-mage-init='{"customSelect":{"placeholder":"<?= __('Choose your redeem'); ?>"}}'>
+             data-mage-init='{"customSelect":{"placeholder":"<?= __('Redeem the following number of points'); ?>"}}'>
             <div class="js-list">
                 <?php foreach ($block->getAvailableRedeemList() as $item): ?>
                     <?php $product = $item['product']; ?>
