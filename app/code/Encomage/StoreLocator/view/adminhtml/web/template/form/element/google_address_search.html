@@ -1,0 +1,45 @@
+<input class="admin__field admin__control-text _required" type="text" id="google-address-lat"
+       data-bind="
+        value: valueLat,
+        attr: {
+            name: inputName,
+            placeholder: placeholderLat,
+            'aria-describedby': noticeId,
+    }"/>
+<!-- ko if: error -->
+<label class="admin__field-error" data-bind="attr: {for: uid}, text: error"></label>
+<!-- /ko -->
+<input class="admin__field admin__control-text" type="text" id="google-address-lng"
+       data-bind="
+        value: valueLng,
+        attr: {
+            name: inputName,
+            placeholder: placeholderLng,
+            'aria-describedby': noticeId,
+    }"/>
+<!-- ko if: error -->
+<label class="admin__field-error" data-bind="attr: {for: uid}, text: error"></label>
+<!-- /ko -->
+<button type="button" class="admin__field action-secondary google-address-show primary" click="clickShowMarkerOnMap">
+    <span text="title">
+    </span>
+</button>
+<input class="admin__field google-search-field" type="text" id="google-address-search"
+       data-bind="
+        value: valueSearch,
+        attr: {
+            name: inputName,
+            placeholder: placeholder,
+            'aria-describedby': noticeId,
+    }"/>
+<!-- ko if: $data.searchNotice -->
+<div class="admin__field-note google-search-notice" data-bind="attr: {id: noticeId}">
+    <span data-bind="text: searchNotice"></span>
+</div>
+<!-- /ko -->
+<input class="google-search-field" type="hidden" id="google-address-search-result"
+       data-bind="
+        value: value,
+        afterRender: onElementRender"
+       name="coordinates"/>
+<div id="google-address-search-map" class="google-address-search-map-container"></div>

@@ -1,0 +1,56 @@
+<?php
+/**
+ * @author Andrey Bondarenko
+ * @link http://encomage.com
+ * @mail info@encomage.com
+ */
+
+/** @var \Encomage\StoreLocator\Block\Widget\StoreLocator $block */
+?>
+<div class="block widget-store-locator">
+    <?php if ($block->getLabel()): ?>
+        <div class="block-title">
+            <strong><?php echo $block->escapeHtml($block->getLabel()); ?></strong>
+        </div>
+    <?php endif; ?>
+    <div class="block-content">
+        <?php if ($block->isListingEnabled()): ?>
+            <div
+                class="store-locator-marker-listing"
+                <?php echo $block->getListingBlockAttributes(); ?>>
+                <?php if ($block->isShowMarkersList()): ?>
+                    <ul>
+                        <?php $markersCollection = $block->getCollection(); ?>
+                        <?php if ($markersCollection->getSize()): ?>
+                            <?php foreach ($markersCollection as $marker): ?>
+                                <li class="js-show-marker markers-listing-item"
+                                    data-marker-id="<?php echo (int)$marker->getId() ?>">
+                                    <div class="store-locator-widget title">
+                                        <?php echo $block->escapeHtml($marker->getName()); ?>
+                                    </div>
+                                    <div class="marker-icon"></div>
+                                </li>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </ul>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+        <div <?php /* @escapeNotVerified */
+        echo $block->getMapBlockAttributes(); ?>></div>
+    </div>
+</div>
+<script type="text/x-magento-init">
+  <?php
+    /* @escapeNotVerified */
+    echo $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode(
+        [
+            '*' => [
+                'Encomage_StoreLocator/js/locator' => $block->getJsParams()
+            ],
+        ]
+    );
+    ?>
+
+
+</script>

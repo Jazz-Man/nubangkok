@@ -1,0 +1,11 @@
+<?php
+/**
+ * @author Andrey Bondarenko
+ * @link http://encomage.com
+ * @mail info@encomage.com
+ */
+
+/** @var \Encomage\StoreLocator\Block\Google\MapApi $block */
+?>
+<?php $helper = $this->helper('\Encomage\StoreLocator\Helper\Config'); ?>
+<script type="text/javascript" src="<?php echo $this->escapeUrl($helper->getGoogleMapApiJsUrl()); ?>"></script>
