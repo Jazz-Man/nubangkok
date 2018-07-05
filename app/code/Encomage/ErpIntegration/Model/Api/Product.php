@@ -155,7 +155,12 @@ class Product extends Request
             "CategoryDisplaySubCat" => 1,
             "Page" => $i
         ]);
-        $result = $this->sendApiRequest();
+        try{
+            $result = $this->sendApiRequest();
+        }catch (\Exception $e){
+            $this->logger->critical($e->getMessage());
+            return false;
+        }
         $configurable = [];
         foreach ($result as $item) {
             $item = (is_object($item)) ? get_object_vars($item) : $item;
