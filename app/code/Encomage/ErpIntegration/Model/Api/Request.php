@@ -106,9 +106,6 @@ abstract class Request
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "Content-Length: " . strlen($data_string)]);
         $response = $this->serializerJson->unserialize(curl_exec($ch));
-        if (empty($response)) {
-            throw new \Exception(__('Response is empty'));
-        }
         return $response;
     }
 

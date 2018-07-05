@@ -66,14 +66,14 @@ class Invoice extends Request
         $data = $this->_prepareInvoiceData($order);
         $this->setAdditionalDataContent($data);
         $result = $this->sendApiRequest();
-        if (!$result['returnResult']) {
-            $order->addStatusHistoryComment(__("Invoice wasn't sent to ERP system. \n ERROR: ". $result['errorMessage']), parent::ORDER_STATUS_PENDING_NOT_SENT);
+        if (array_key_exists('returnResult', $result) && $result['returnResult']) {
+            $order->addStatusHistoryComment(__("Sent invoice to ERP. DocNo: %1. RecId: %2", $result['DocNo'], $result['recId']), $order->getStatus());
             $this->orderResource->save($order);
         } else {
-            $order->addStatusHistoryComment(__("Sent invoice to ERP. DocNo: %1. RecId: %2", $result['DocNo'], $result['recId']), parent::ORDER_STATUS_PENDING);
+            $order->addStatusHistoryComment(__("Invoice wasn't sent to ERP system. \n ERROR: ". $result['errorMessage']), parent::ORDER_STATUS_PENDING_NOT_SENT);
             $this->orderResource->save($order);
         }
-        return $result;
+        return $this;
     }
 
     /**
