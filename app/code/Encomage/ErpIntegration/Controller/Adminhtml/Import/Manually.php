@@ -8,24 +8,35 @@ use Encomage\ErpIntegration\Model\Api\Product;
 
 class Manually extends Action
 {
+    /**
+     * @var Product
+     */
     protected $product;
 
+    /**
+     * Manually constructor.
+     * @param Action\Context $context
+     * @param Product $product
+     */
     public function __construct(Action\Context $context, Product $product)
     {
         parent::__construct($context);
         $this->product = $product;
     }
 
+    /**
+     * @return \Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-        $productImport =$this->product->importAllProducts();
-        if(!$productImport){
-            $this->messageManager->addErrorMessage('Something Wrong');
-            return $resultRedirect;
+        try {
+            $this->product->importAllProducts();
+            $this->messageManager->addSuccessMessage('Products was imported');
+        } catch (\Exception $e) {
+            $this->messageManager->addErrorMessage($e->getMessage());
         }
-        $this->messageManager->addSuccessMessage('Product was imported');
         return $resultRedirect;
     }
 }

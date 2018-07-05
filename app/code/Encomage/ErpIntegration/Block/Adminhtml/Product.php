@@ -1,10 +1,8 @@
 <?php
-
-namespace Encomage\Catalog\Block\Adminhtml;
+namespace Encomage\ErpIntegration\Block\Adminhtml;
 
 class Product extends \Magento\Catalog\Block\Adminhtml\Product
 {
-
     /**
      * @return \Magento\Catalog\Block\Adminhtml\Product
      */
