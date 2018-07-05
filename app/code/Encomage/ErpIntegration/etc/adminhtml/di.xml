@@ -3,4 +3,5 @@
     <type name="Magento\Sales\Block\Adminhtml\Order\View">
         <plugin name="encomage_erpintegration_adminhtml_order_view_add_button" type="Encomage\ErpIntegration\Plugin\Sales\Block\Adminhtml\Order\View" sortOrder="10" />
     </type>
+    <preference for="Magento\Catalog\Block\Adminhtml\Product" type="Encomage\ErpIntegration\Block\Adminhtml\Product"/>
 </config>

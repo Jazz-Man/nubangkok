@@ -40,17 +40,6 @@ class Points extends Request
     }
 
     /**
-     * @return array|mixed
-     */
-    public function getAllNuPoints()
-    {
-        $this->setApiLastPoint('GetCustomerPoint');
-        $this->setApiMethod(HttpRequest::METHOD_GET);
-        $result = $this->sendApiRequest();
-        return $result;
-    }
-
-    /**
      * @param $customerCode
      * @return array|bool|\Encomage\Nupoints\Api\Data\NupointsInterface|float|int|mixed|null|string
      * @throws \Exception
@@ -63,6 +52,9 @@ class Points extends Request
             "CustomerCode" => $customerCode
         ]);
         $result = $this->sendApiRequest();
+        if (empty($result) || !$result) {
+            throw new \Exception(__('The ERP system sent an empty response.'));
+        }
         $options['customer_code'] = $customerCode;
         $options['nupoints'] = $result['RebatePoint'];
         $result = $this->nupointsRepository->changeNupointsCount($options, 'update');

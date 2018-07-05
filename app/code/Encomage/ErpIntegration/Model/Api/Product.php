@@ -8,10 +8,8 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Eav\Model\Entity\Attribute;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ProductFactory;
-use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product as ProductResource;
-use Psr\Log\LoggerInterface;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as TypeConfigurableProduct;
 use Magento\ConfigurableProduct\Api\LinkManagementInterfaceFactory;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
@@ -26,7 +24,6 @@ class Product extends Request
 {
     const STATUS_IN_STOCK = 1;
     const STATUS_OUT_OF_STOCK = 0;
-
 
     /**
      * @var ProductRepositoryInterface
@@ -60,10 +57,6 @@ class Product extends Request
      * @var SerializerJson
      */
     private $json;
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
     /**
      * @var LinkManagementInterfaceFactory
      */
@@ -108,7 +101,6 @@ class Product extends Request
      * @param CategoryResource $categoryResource
      * @param TypeConfigurableProduct $typeConfigurableProduct
      * @param SerializerJson $json
-     * @param LoggerInterface $logger
      * @param LinkManagementInterfaceFactory $linkManagementFactory
      * @param StockRegistryInterfaceFactory $stockRegistryFactory
      */
@@ -122,7 +114,7 @@ class Product extends Request
         CategoryResource $categoryResource,
         TypeConfigurableProduct $typeConfigurableProduct,
         SerializerJson $json,
-        LoggerInterface $logger,
+
         LinkManagementInterfaceFactory $linkManagementFactory,
         StockRegistryInterfaceFactory $stockRegistryFactory
     )
@@ -136,13 +128,12 @@ class Product extends Request
         $this->categoryResource = $categoryResource;
         $this->typeConfigurableProduct = $typeConfigurableProduct;
         $this->json = $json;
-        $this->logger = $logger;
         $this->linkManagementFactory = $linkManagementFactory;
         $this->stockRegistryFactory = $stockRegistryFactory;
     }
 
     /**
-     * @param int $i don't set this param
+     * @param int $i don't set this param. Default must by 0
      * @return bool
      * @throws \Exception
      */
@@ -155,20 +146,28 @@ class Product extends Request
             "CategoryDisplaySubCat" => 1,
             "Page" => $i
         ]);
-        try{
+        try {
             $result = $this->sendApiRequest();
-        }catch (\Exception $e){
-            $this->logger->critical($e->getMessage());
-            return false;
+        } catch (\Exception $e) {
+            throw new \Exception(__($e->getMessage()));
+        }
+        if (empty($result)) {
+            if ($i == 0) {
+                throw new \Exception(__('The ERP system sent an empty response.'));
+            }
+            return true;
         }
         $configurable = [];
+        $colorsNotExist = '';
+        $sizeNotExist = '';
+
         foreach ($result as $item) {
             $item = (is_object($item)) ? get_object_vars($item) : $item;
             if (strlen($item['IcProductCode']) > 17 || strlen($item['IcProductCode']) < 16) {
                 continue;
             }
             $productId = $this->productResource->getIdBySku($item['IcProductCode']);
-            $stockStatus = ((int)$item['UnrestrictStock'] > 0) ? self::STATUS_IN_STOCK: self::STATUS_OUT_OF_STOCK;
+            $stockStatus = ((int)$item['UnrestrictStock'] > 0) ? self::STATUS_IN_STOCK : self::STATUS_OUT_OF_STOCK;
             if ($productId) {
 
                 /** @var \Magento\Catalog\Model\Product $product */
@@ -189,7 +188,14 @@ class Product extends Request
             $attributesOptions = $this->_getAttributesCodes($item['BarCode']);
             $color = $this->_getAttributeIdByLabel($attributesOptions['colors'], 'color');
             $size = $this->_getAttributeIdByLabel($attributesOptions['size'] / 10, 'size');
-
+            if (empty($color['value'])) {
+                $colorsNotExist .= $item['IcProductDescription0'] . ', ';
+                continue;
+            }
+            if (empty($size['value'])) {
+                $sizeNotExist .= $item['IcProductDescription0'] . ', ';
+                continue;
+            }
             /** @var \Magento\Catalog\Model\Product $product */
             $product = $this->productFactory->create();
             $product->setSku($item['IcProductCode']);
@@ -211,7 +217,7 @@ class Product extends Request
                 $product = $this->productRepository->save($product);
                 $this->categoryLinkManagement->assignProductToCategories($item['IcProductCode'], [$categoryIds]);
             } catch (Exception $e) {
-                $this->logger->info('ERROR: ' . $e->getMessage());
+                throw new \Exception(__($e->getMessage()));
             }
 
             if (!empty($confSku) && !empty($confName) && !array_key_exists($confSku, $configurable)) {
@@ -232,12 +238,26 @@ class Product extends Request
         }
         if (count($configurable) > 0) {
             foreach ($configurable as $sku => $settings) {
-                $this->_createConfigurableProduct($sku, $settings);
+                try {
+                    $this->_createConfigurableProduct($sku, $settings);
+                } catch (Exception $e) {
+                    throw new \Exception(__($e->getMessage()));
+
+                }
             }
+        }
+        if (!empty($colorsNotExist)) {
+            throw new \Exception(
+                __('Color is not exist. Please add new color for this product - %1, and try again.', trim($colorsNotExist, ', '))
+            );
+        }
+        if (!empty($sizeNotExist)) {
+            throw new \Exception(
+                __('Size is not exist. Please add new size for this product - %1, and try again.', trim($sizeNotExist, ', '))
+            );
         }
         $i++;
         $this->importAllProducts($i);
-        return true;
     }
 
     /**
@@ -247,7 +267,7 @@ class Product extends Request
     protected function _prepareConfSku($barCode)
     {
         if (!empty($barCode)) {
-            if ((int)substr($barCode, 3, 1) > 0 ) {
+            if ((int)substr($barCode, 3, 1) > 0) {
                 return substr($barCode, 0, 10);
             }
             return substr($barCode, 0, 9);
@@ -272,6 +292,7 @@ class Product extends Request
      * @param $sku
      * @param $settings
      * @return bool
+     * @throws \Exception
      */
     protected function _createConfigurableProduct($sku, $settings)
     {
@@ -305,8 +326,7 @@ class Product extends Request
                 $productId = $this->productRepository->save($product)->getId();
                 $this->categoryLinkManagement->assignProductToCategories($sku, [$settings['category_ids']]);
             } catch (Exception $e) {
-                $this->logger->info('ERROR: Import. ' . $e->getMessage() . 'Product SKU - ' . $sku);
-                return false;
+                throw new \Exception(__($e->getMessage()));
             }
         }
         if ($settings['associate_ids']) {
@@ -319,7 +339,11 @@ class Product extends Request
                 if ($stockItem->getItemId()) {
                     $stockItem->setIsInStock(true);
                     $stockItem->setStockStatusChangedAutomaticallyFlag(true);
-                    $stockItem->save();
+                    try {
+                        $stockItem->save();
+                    } catch (Exception $e) {
+                        throw new \Exception(__($e->getMessage()));
+                    }
                 }
             }
         }
@@ -436,7 +460,7 @@ class Product extends Request
     protected function _getAttributesCodes($barCode)
     {
         $result = [];
-        
+
         $barCode = substr($barCode, 2);
         $barCode = preg_replace('/(\d+)/i', '${1},', $barCode);
         $barCode = explode(',', rtrim($barCode, ','));

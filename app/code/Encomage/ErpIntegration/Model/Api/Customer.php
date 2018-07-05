@@ -57,32 +57,6 @@ class Customer extends Request
     }
 
     /**
-     * @api
-     * @return mixed
-     */
-    public function getAllCustomers()
-    {
-        $this->setApiLastPoint('GetCustomerInfo');
-        $this->setApiMethod(HttpRequest::METHOD_GET);
-        $result = $this->sendApiRequest();
-        return $result;
-    }
-
-    /**
-     * @api
-     * @param string $customerCode
-     * @return mixed
-     */
-    public function getSpecificCustomer($customerCode)
-    {
-        $this->setApiLastPoint('GetCustomerInfo');
-        $this->setApiMethod(HttpRequest::METHOD_GET);
-        $this->setAdditionalDataUrl(["CustomerCode" => $customerCode]);
-        $result = $this->sendApiRequest();
-        return $result;
-    }
-
-    /**
      * Method for create or update customer info in ERP system
      *
      * @param $customerId
@@ -98,14 +72,15 @@ class Customer extends Request
         $chooseMethod = ($customerCode) ? 'updatecustomer' : 'createcustomer';
         $data = $this->_prepareCustomerData($customer, $customerCode, $phone);
         if (!$data || $data == null) {
-            if (empty($result) || !$result) {
-                throw new \Exception(__('Data is empty'));
-            }
+            throw new \Exception(__('Data is empty'));
         }
         $this->setApiLastPoint($chooseMethod);
         $this->setAdditionalDataContent($data);
         $this->setApiMethod(HttpRequest::METHOD_POST);
         $result = $this->sendApiRequest();
+        if (empty($result) || !$result) {
+            throw new \Exception(__('The ERP system sent an empty response.'));
+        }
         if ($customerCode == null && $result['customerCode']) {
             $customerData = $customer->getDataModel();
             $customerData->setCustomAttribute('erp_customer_code', $result['customerCode']);
