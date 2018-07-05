@@ -15,6 +15,9 @@ class Items extends \Magefan\Blog\Block\Post\View\RelatedProducts
         return $_collection;
     }
 
+    /**
+     * @return $this
+     */
     protected function _prepareCollection()
     {
         $post = $this->getPost();
@@ -24,7 +27,7 @@ class Items extends \Magefan\Blog\Block\Post\View\RelatedProducts
             $this->_addProductAttributesAndPrices($this->_itemCollection);
         }
         $this->_itemCollection->setPageSize(
-            (int) $this->_scopeConfig->getValue(
+            (int)$this->_scopeConfig->getValue(
                 'mfblog/post_view/related_products/number_of_products',
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE
             )
