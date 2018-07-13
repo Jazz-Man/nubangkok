@@ -313,8 +313,10 @@ define([
          * @private
          */
         _sortAttributes: function () {
+            var $this = this;
             this.options.jsonConfig.attributes = _.sortBy(this.options.jsonConfig.attributes, function (attribute) {
                 if (attribute.code == "size") {
+                    attribute.options = $this._sortOptionsSize(attribute.options);
                     return attribute.position = 10;
                 }
                 return attribute.position;
@@ -1410,6 +1412,14 @@ define([
                     $('#productItemQty').show();
                 }
             })
+        },
+
+        _sortOptionsSize: function (options) {
+            var result;
+            result = options.sort(function (option1, option2) {
+                return option1.label > option2.label;
+            });
+            return result;
         }
     });
 
