@@ -1417,7 +1417,7 @@ define([
         _sortOptionsSize: function (options) {
             var result;
             result = options.sort(function (option1, option2) {
-                return option1.label - option2.label;
+                return option1.label > option2.label;
             });
             return result;
         }
