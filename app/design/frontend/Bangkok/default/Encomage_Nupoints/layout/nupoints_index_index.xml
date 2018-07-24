@@ -6,6 +6,11 @@
             <block class="Encomage\Nupoints\Block\Customer\Nupoints"
                    name="customer.nupoints"
                    template="Encomage_Nupoints::customer/nupoints.phtml">
+                <block class="Magento\Cms\Block\Block" name="block_reward_point_details">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">reward_point_details</argument>
+                    </arguments>
+                </block>
             </block>
         </referenceContainer>
     </body>
