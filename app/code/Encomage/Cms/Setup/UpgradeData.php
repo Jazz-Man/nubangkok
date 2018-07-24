@@ -115,6 +115,10 @@ class UpgradeData implements UpgradeDataInterface
             $this->addNewCmsBlockOurStories();
 //            $this->upgradeCmsBlockOurStories();
         }
+
+        if (version_compare($context->getVersion(), '0.1.9', '<')) {
+            $this->addCmsBlockRewardPointDetails();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -1248,5 +1252,68 @@ EOD;
             $block = $this->blockFactory->create(['data' => $ourStoriesBlock]);
             $this->blockRepository->save($block);
         }
+    }
+
+    private function addCmsBlockRewardPointDetails()
+    {
+        $content = <<<EOD
+    <div class="left-block">
+        <p class="title">my nu<span class="js-open-left"></span></p>
+        <div class="content">
+                <div class="float-left-content">
+                    <div class="js-close-left"></div>
+                    <p> After your first purchase, you will automatically
+                        become our my nu member. You will receive a my nu
+                        card with the following rewards and benefits.</p>
+                </div>
+            <div class="left-points-part">
+                <p>Earn 100 nuPoints for every 100 &#3647; purchase.</p>
+                <p>Earn nuPoints from shopping special promotion products.</p>
+                <p>Redeem 3,000 nuPoints for 50 &#3647; voucher <span>+ gift hand bag.</span></p>
+                <p>Redeem 4,000 nuPoints for 100 &#3647; voucher <span>+ gift hand bag.</span></p>
+                <p>Redeem 5,000 nuPoints for 150 &#3647; voucher <span>+ gift hand bag.</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="right-block">
+        <p class="title">my nu Gold<span class="js-open"></span></p>
+        <div class="content">
+                <div class="float-right-content">
+                    <div class="js-close"></div>
+                    <p> When you have 12.000 pts in your balance, you will
+                        automatically become our my nu Gold. You will receive
+                        a new gold card with the following rewards and benefits.
+                    </p>
+                </div>
+           
+            <div class="right-points-part">
+                <p>Earn 100 nuPoints for every 100 &#3647; purchase.</p>
+                <p>Earn nuPoints from shopping special promotion products.</p>
+                <p>Redeem 3,000 nuPoints for 50 &#3647; voucher <span>+ gift hand bag.</span></p>
+                <p>Redeem 4,000 nuPoints for 100 &#3647; voucher <span>+ gift hand bag.</span></p>
+                <p>Redeem 5,000 nuPoints for 150 &#3647; voucher <span>+ gift hand bag.</span></p>
+                <p>Redeem 12,000 nuPoints for 500 &#3647; voucher
+                    <span>+ gift hand bag.</span>
+                    <span>+ 50% discount for the next pair of shoes.</span>
+                    <span>+ Invitation for special promotions only for my nu Gold member.</span>
+                    <span>+ Invitation to private events.</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <p class="bottom-points-block"><span>*</span>nuPoints are not awarded for special promotions</p>
+    <p class="bottom-points-block"><span>*</span>nuPoints have no cash value</p>
+EOD;
+        $pointDetailsBlock = [
+            'title' => 'Reward Point Details',
+            'identifier' => 'reward_point_details',
+            'stores' => ['0'],
+            'is_active' => 1,
+            'content' => $content
+        ];
+        $block = $this->blockFactory->create(['data' => $pointDetailsBlock]);
+        $this->blockRepository->save($block);
     }
 }
