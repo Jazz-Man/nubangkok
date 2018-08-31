@@ -213,6 +213,9 @@ class Product extends Request
             ]);
             $product->setColor($color['value']);
             $product->setSize($size['value']);
+            if ($urlKey = $this->_prepareUrlKey($item['IcProductDescription0'], $item['IcCategoryName'])) {
+                $product->setUrlKey($urlKey);
+            }
             try {
                 $product = $this->productRepository->save($product);
                 $this->categoryLinkManagement->assignProductToCategories($item['IcProductCode'], [$categoryIds]);
@@ -222,6 +225,7 @@ class Product extends Request
 
             if (!empty($confSku) && !empty($confName) && !array_key_exists($confSku, $configurable)) {
                 $configurable[$confSku] = ['name' => $confName, 'category_ids' => $categoryIds];
+                $configurable[$confSku]['category_name'] = $item['IcCategoryName'];
             }
             if ($product->getId() && array_key_exists($confSku, $configurable)) {
                 $configurable[$confSku]['associate_ids'][$product->getId()] = $product->getId();
@@ -307,6 +311,9 @@ class Product extends Request
             $product->setCategoryIds([$settings['category_ids']]);
             $product->setColor(' ');
             $product->setSize(' ');
+            if ($urlKey = $this->_prepareUrlKey($settings['name'], $settings['category_name'])) {
+                $product->setUrlKey($urlKey);
+            }
             $attributes = [];
             if ($settings['color']) {
                 $attributes[] = $this->productResource->getAttribute('color')->getId();
@@ -506,6 +513,21 @@ class Product extends Request
             }
         }
         return ['label' => " ", 'value' => ""];
+    }
+
+    /**
+     * @param $productName
+     * @param $categoryName
+     * @return bool|string
+     */
+    protected function _prepareUrlKey($productName, $categoryName)
+    {
+        if (!empty($productName) && !empty($categoryName)) {
+            $urlKey = str_replace([' ', ','], '-', mb_strtolower($categoryName))
+                . '-' . str_replace([' ', ','], '-', mb_strtolower($productName));
+            return trim($urlKey);
+        }
+        return false;
     }
 
     /**
