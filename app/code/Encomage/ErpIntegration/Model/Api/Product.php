@@ -163,7 +163,7 @@ class Product extends Request
 
         foreach ($result as $item) {
             $item = (is_object($item)) ? get_object_vars($item) : $item;
-            if (strlen($item['IcProductCode']) > 17 || strlen($item['IcProductCode']) < 16) {
+            if (strlen($item['IcProductCode']) > 18 || strlen($item['IcProductCode']) < 16) {
                 continue;
             }
             $productId = $this->productResource->getIdBySku($item['IcProductCode']);
