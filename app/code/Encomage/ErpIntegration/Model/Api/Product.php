@@ -192,7 +192,7 @@ class Product extends Request
                 $colorsNotExist .= $item['IcProductDescription0'] . ', ';
                 continue;
             }
-            if (empty($size['value'])) {
+            if (substr($item['BarCode'],1,1) !== 'B' && empty($size['value'])) {
                 $sizeNotExist .= $item['IcProductDescription0'] . ', ';
                 continue;
             }
@@ -311,6 +311,9 @@ class Product extends Request
             $product->setCategoryIds([$settings['category_ids']]);
             $product->setColor(' ');
             $product->setSize(' ');
+            if (substr($sku,1,1) == 'S') {
+                $product->setAskAboutShoeSize(1);
+            }
             if ($urlKey = $this->_prepareUrlKey($settings['name'], $settings['category_name'])) {
                 $product->setUrlKey($urlKey);
             }
