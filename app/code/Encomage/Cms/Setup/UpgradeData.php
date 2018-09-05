@@ -119,6 +119,10 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.1.9', '<')) {
             $this->addCmsBlockRewardPointDetails();
         }
+
+        if (version_compare($context->getVersion(), '0.1.9.1', '<')) {
+            $this->addCmsBlockThankYouPage();
+        }
     }
 
     private function createBlockForRightImageOnRegisterForm()
@@ -1309,6 +1313,31 @@ EOD;
         $pointDetailsBlock = [
             'title' => 'Reward Point Details',
             'identifier' => 'reward_point_details',
+            'stores' => ['0'],
+            'is_active' => 1,
+            'content' => $content
+        ];
+        $block = $this->blockFactory->create(['data' => $pointDetailsBlock]);
+        $this->blockRepository->save($block);
+    }
+
+    private function addCmsBlockThankYouPage()
+    {
+        $content = <<<EOD
+        <p class="bank-transfer-info">Please transfer payment to</p>
+            <p>1. Kasikorn Bank Account number  934-100-0804</p>
+            <p>Account name: NUI company Limited</p>
+            <p>Brunch:  Nana Neua. code. 0063</p>
+            <p>2. Bank of Ayutthaya</p>
+            <p>Account number 769-000-1317 Current account</p>
+            <p>Account name: NUI company Limited.</p>
+            <p>3. Promtpay - Phone Number 087-500-5222</p>
+            <p>Account name: Samusha Sutsoong</p>
+<p><img src="{{media url="wysiwyg/cms/nuAccount-graphic-for-transter.jpg"}}" width="1300" height="809" /></p>
+EOD;
+        $pointDetailsBlock = [
+            'title' => 'Image on thank you page',
+            'identifier' => 'image_thank_you_page',
             'stores' => ['0'],
             'is_active' => 1,
             'content' => $content

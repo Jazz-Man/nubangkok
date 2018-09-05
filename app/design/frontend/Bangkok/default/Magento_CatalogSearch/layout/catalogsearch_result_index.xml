@@ -15,5 +15,6 @@
         <referenceBlock name="category.product.addto" remove="true"/>
         <referenceBlock name="product.review.form" remove="true"/>
         <referenceContainer name="catalog.leftnav" remove="true" />
+        <referenceBlock name="catalogsearch.leftnav" remove="true"/>
     </body>
 </page>
