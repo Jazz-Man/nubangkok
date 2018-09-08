@@ -5,7 +5,6 @@
         <div class="input">
             <span data-bind="text: getCustomerNupoints()"></span>
         </div>
-        <input type="number" placeholder="Amount to redeem" class="redeem-nupoints" name="redeem_nupoints"/>
         <div class="btn">
             <if args="isCanRedeem()">
                 <button type="button" data-bind="click: applyRedeem">
@@ -18,9 +17,10 @@
                 </button>
             </if>
         </div>
-
         <div class="amount">
             <span class="price" data-bind="text: getValue()"></span>
         </div>
+        <div class="custom-select" data-bind="text: getAvailableRedeemList()"></div>
     </div>
+
 </if>
