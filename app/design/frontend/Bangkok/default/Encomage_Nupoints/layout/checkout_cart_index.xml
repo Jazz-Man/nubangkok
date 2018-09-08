@@ -18,6 +18,7 @@
                                                 <item name="ajaxUrl" xsi:type="url" path="nupoints/cart/redeemAjax"/>
                                                 <item name="revertAjaxUrl" xsi:type="url" path="nupoints/cart/cancelRedeemAjax"/>
                                                 <item name="cartPageUrl" xsi:type="url" path="checkout/cart/index"/>
+                                                <item name="selectOptionsAjaxUrl" xsi:type="url" path="nupoints/cart/selectOptionsAjax" />
                                                 <item name="template" xsi:type="string">Encomage_Nupoints/cart/totals/redeem</item>
                                             </item>
                                         </item>
