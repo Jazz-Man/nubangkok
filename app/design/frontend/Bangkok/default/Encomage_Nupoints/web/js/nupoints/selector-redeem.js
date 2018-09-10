@@ -34,23 +34,23 @@ define([
             initUi(customerNupoints);
 
         }
-
-        redeemButton.on('click', function () {
-            var redeemNupoints = select.find('.js-selected-option-container').data('selectValue');
-            $.ajax({
-                url: urlBuilder.build(config.nupointsRedeemUrl),
-                data: {'redeem_nupoints': redeemNupoints},
-                type: 'post',
-                dataType: 'json',
-                async: false,
-                showLoader: true,
-                success: function (response) {
-                    if (response.customer_nupoints && response.success) {
-                        $element.find('.js-customer-nupoints-balance').html(response.customer_nupoints);
-                    }
-                }
-            });
-            $element.find('.js-customer-nuponts-redeem').attr('disabled', true);
-        });
+        
+        // redeemButton.on('click', function () {
+        //     var redeemNupoints = select.find('.js-selected-option-container').data('selectValue');
+        //     $.ajax({
+        //         url: urlBuilder.build(config.nupointsRedeemUrl),
+        //         data: {'redeem_nupoints': redeemNupoints},
+        //         type: 'post',
+        //         dataType: 'json',
+        //         async: false,
+        //         showLoader: true,
+        //         success: function (response) {
+        //             if (response.customer_nupoints && response.success) {
+        //                 $element.find('.js-customer-nupoints-balance').html(response.customer_nupoints);
+        //             }
+        //         }
+        //     });
+        //     $element.find('.js-customer-nuponts-redeem').attr('disabled', true);
+        // });
     }
 });
