@@ -176,27 +176,34 @@
   display: block;
 }
 
-/* Checkout cart page */
-.totals {
-  .custom-select {
-    display: block;
-    width: 50%;
-    padding-top: 15px;
-    padding-bottom: 65px;
-    margin-left: 20%;
+/*PDP points redeem*/
+.catalog-product-view-nupoints-redeem {
+  > div:first-of-type {
+    margin-top: 15px;
+    > span:first-of-type {
+      display: inline-block;
+      float: left;
+      padding-top: 9px;
+      margin-right: 5%;
+    }
+    .mobile-to-redeem {
+      display: none;
+    }
     .js-select-custom {
       div.js-list {
         position: relative;
-        width: 100%;
+        width: 50%;
         height: 38px;
         float: left;
         border-top: 1px solid;
         border-bottom: 1px solid;
         display: inline-block;
+        margin-bottom: 20px;
         .placeholder {
           padding-left: 20%;
           padding-top: 9px;
           display: block;
+          //margin-bottom: 10px;
           .option-container {
             position: relative;
             .image-container {
@@ -254,7 +261,7 @@
             }
             .text-container {
               float: unset;
-              display: block;
+              //display: table;
               padding-left: 95px;
             }
           }
@@ -297,18 +304,18 @@
         }
       }
     }
-    /*IF SELECTED OPTION*/
-    .js-option-selected {
-      .image-container {
-        background-color: #ffffff;
-        width: 55px;
-        height: 55px;
-        border: 1px solid;
-        display: inline-block;
-        float: left;
-        margin-left: 10px;
-        margin-right: 20px;
-      }
+  }
+  /*IF SELECTED OPTION*/
+  .js-option-selected {
+    .image-container {
+      background-color: #ffffff;
+      width: 55px;
+      height: 55px;
+      border: 1px solid;
+      display: inline-block;
+      float: left;
+      margin-left: 10px;
+      margin-right: 20px;
     }
   }
 }
@@ -360,12 +367,17 @@
     }
   }
 
-  /* Checkout cart page */
-  .totals {
-    .custom-select {
+  /*PDP nupoints redeem*/
+  .catalog-product-view-nupoints-redeem {
+    margin-top: 30px;
+    > div:first-of-type {
+      margin-top: 20px;
+      > span:first-of-type {
+        display: none;
+      }
       .js-select-custom div.js-list {
         width: 62%;
-        height: 60px;
+        height: 55px;
         .placeholder {
           padding-left: 0;
           .option-container {
@@ -374,7 +386,7 @@
               position: absolute;
             }
             .text-container {
-              display: block;
+              //display: block;
               font-size: 12px;
               padding-right: 15px;
               padding-left: 62px;
@@ -417,7 +429,6 @@
         }
         .text-container {
           float: unset;
-          display: block;
         }
         .js-no-item {
           font-size: 12px;
@@ -430,6 +441,17 @@
           }
         }
       }
+      p.mobile-to-redeem {
+        display: block;
+        width: 100%;
+        margin-bottom: 30px;
+      }
+    }
+    .js-customer-nuponts-redeem {
+      position: absolute;
+      top: -12px;
+      right: 0;
+
     }
   }
 }
