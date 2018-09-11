@@ -15,21 +15,25 @@
   .totals.redeem.excl {
     text-transform: uppercase;
     margin-top: 20px;
-    margin-bottom: 20px;
     width: 125%;
+    margin-bottom: 20px;
     .mark {
-      width: 10%;
+      width: 30%;
       display: inline-block;
     }
-    select.redeem-nupoints {
+    .mark-label {
+      width: 15%;
+      display: inline-block;
+    }
+    input.redeem-nupoints {
       width: 30%;
       margin-left: 2%;
     }
     .input {
       display: inline-block;
-      width: 10%;
-      border-bottom: 2px solid #e8e8e8;
-      text-align: center;
+      width: 12%;
+      //border-bottom: 2px solid #e8e8e8;
+      padding-bottom: 5px;
     }
     .btn {
       width: 90px;
@@ -896,8 +900,7 @@
           width: 58px;
           padding-right: 0;
           display: inline-grid;
-          padding-top: 20px;
-          float: right;
+          padding-top: 0;
         }
         .btn {
           button {
@@ -905,16 +908,18 @@
           }
         }
         .input{
-          width: 10%;
+          width: 20%;
+          //float: right;
           span{
             padding-left: 7px;
           }
         }
         .mark{
-          width: 70px;
+          width: 100%;
           margin-bottom: 10px;
+          display: block;
         }
-        select.redeem-nupoints{
+        input.redeem-nupoints{
           margin-top: 15px;
           width: 50%;
           margin-left: 0;
@@ -1366,6 +1371,5 @@
     }
   }
 }
-
 
 

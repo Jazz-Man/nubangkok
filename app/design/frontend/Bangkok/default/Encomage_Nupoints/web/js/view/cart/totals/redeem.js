@@ -5,17 +5,13 @@ define([
     'Magento_Customer/js/customer-data',
     'Magento_Checkout/js/model/cart/totals-processor/default',
     'Magento_Checkout/js/model/cart/cache',
-    'Encomage_Nupoints/js/catalog/product/view/nupoints-redeem',
+    'Encomage_Nupoints/js/nupoints/selector-redeem',
     'customSelect'
 ], function ($, Component, quote, customerData, defaultTotal, cartCache, redeem, customSelect) {
     'use strict';
 
     return Component.extend({
-
-        // initialize: function () {
-        //     customSelect({"placeholder":"Redeem the following number of points"});
-        //     redeem({"nupointsRedeemUrl":"nupoints/catalog/nupointsRedeem"})
-        // },
+        
         isLogged: function () {
             var customer = customerData.get('customer');
             return customer() && customer().firstname;
@@ -105,8 +101,6 @@ define([
                 success: function (response) {
                     $('.custom-select').html(response.html);
                     customSelect({placeholder:"Redeem the following number of points"});
-                    redeem({nupointsRedeemUrl:"nupoints/catalog/nupointsRedeem"});
-
                 },
                 error: function (error) {
                     //TODO
