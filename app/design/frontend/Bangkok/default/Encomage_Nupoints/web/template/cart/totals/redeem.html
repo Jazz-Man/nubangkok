@@ -5,6 +5,17 @@
         <div class="input">
             <span data-bind="text: getCustomerNupoints()"></span>
         </div>
+
+        <p class="mark-label" data-bind="i18n: 'nuPoints'"></p>
+
+        <div class="amount">
+            <span class="price" data-bind="text: getValue()"></span>
+        </div>
+
+        <if args="isCanRedeem() || isCanCancelRedeem()">
+            <div class="custom-select" data-bind="text: getAvailableRedeemList()"></div>
+        </if>
+
         <div class="btn">
             <if args="isCanRedeem()">
                 <button type="button" data-bind="click: applyRedeem">
@@ -17,10 +28,6 @@
                 </button>
             </if>
         </div>
-        <div class="amount">
-            <span class="price" data-bind="text: getValue()"></span>
-        </div>
-        <div class="custom-select" data-bind="text: getAvailableRedeemList()"></div>
     </div>
 
 </if>
