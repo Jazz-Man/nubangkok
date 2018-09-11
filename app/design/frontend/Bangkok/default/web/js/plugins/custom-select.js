@@ -13,7 +13,7 @@ define([
         isListOpened: false,
         selectedOption: false,
         selectedOptionContainer: false,
-        marginBottom: 0,
+        marginBottom: 45,
         listHeight: 0,
         noItem: false,
 
@@ -47,7 +47,7 @@ define([
                 if ($(value).attr('selected')) {
                     self.onOptionClick($(value));
                 }
-                self.marginBottom += 65;
+                self.marginBottom += $(value).height();
             });
             this.noItem.on('click', function () {
                 self.selectedOptionContainer.removeClass('js-option-selected');
@@ -73,7 +73,7 @@ define([
             this.noItem.hide();
             this.element.removeClass('active');
             this.isListOpened = false;
-            this.list.css('margin-bottom', 0);
+            this.list.css('margin-bottom', 20);
             $(document).find('.totals.redeem').css('margin-bottom', 0);
         },
         _showOptions: function () {
@@ -81,7 +81,7 @@ define([
             if (this.selectedOptionContainer.hasClass('js-option-selected')) {
                 this.noItem.show();
             }
-            // this.list.css('margin-bottom', this.marginBottom);
+            this.list.css('margin-bottom', this.marginBottom);
             $(document).find('.totals.redeem').css('margin-bottom', this.marginBottom);
             this.element.addClass('active');
             this.isListOpened = true;
