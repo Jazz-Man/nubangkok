@@ -14,10 +14,11 @@
                                         <item name="redeem" xsi:type="array">
                                             <item name="component"  xsi:type="string">Encomage_Nupoints/js/view/cart/totals/redeem</item>
                                             <item name="config" xsi:type="array">
-                                                <item name="title" xsi:type="string" translate="true">Redeem</item>
+                                                <item name="title" xsi:type="string" translate="true">POINTS AVAILABLE TO REDEEM:</item>
                                                 <item name="ajaxUrl" xsi:type="url" path="nupoints/cart/redeemAjax"/>
                                                 <item name="revertAjaxUrl" xsi:type="url" path="nupoints/cart/cancelRedeemAjax"/>
                                                 <item name="cartPageUrl" xsi:type="url" path="checkout/cart/index"/>
+                                                <item name="selectOptionsAjaxUrl" xsi:type="url" path="nupoints/cart/selectOptionsAjax" />
                                                 <item name="template" xsi:type="string">Encomage_Nupoints/cart/totals/redeem</item>
                                             </item>
                                         </item>
