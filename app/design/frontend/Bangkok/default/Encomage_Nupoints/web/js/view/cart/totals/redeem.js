@@ -4,12 +4,14 @@ define([
     'Magento_Checkout/js/model/quote',
     'Magento_Customer/js/customer-data',
     'Magento_Checkout/js/model/cart/totals-processor/default',
-    'Magento_Checkout/js/model/cart/cache'
-], function ($, Component, quote, customerData, defaultTotal, cartCache) {
+    'Magento_Checkout/js/model/cart/cache',
+    'Encomage_Nupoints/js/nupoints/selector-redeem',
+    'customSelect'
+], function ($, Component, quote, customerData, defaultTotal, cartCache, redeem, customSelect) {
     'use strict';
 
     return Component.extend({
-
+        
         isLogged: function () {
             var customer = customerData.get('customer');
             return customer() && customer().firstname;
@@ -36,7 +38,7 @@ define([
 
         applyRedeem: function () {
             var $this = this,
-                amount = $('.redeem-nupoints').val();
+                amount = $('.js-option-selected').data('select-value');
             if (amount) {
                 $.ajax({
                     type: "POST",
@@ -82,6 +84,23 @@ define([
                 success: function (response) {
                     $('form.form.form-cart').html(response.html);
                     $('.redeem-nupoints').val('');
+                },
+                error: function (error) {
+                    //TODO
+                }
+            });
+        },
+        getAvailableRedeemList: function () {
+            var $this = this;
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: $this.selectOptionsAjaxUrl,
+                data:{'is_ajax': true},
+                showLoader: true,
+                success: function (response) {
+                    $('.custom-select').html(response.html);
+                    customSelect({placeholder:"Redeem the following number of points"});
                 },
                 error: function (error) {
                     //TODO
