@@ -73,7 +73,7 @@ class Invoice extends Request
             $order->addStatusHistoryComment(__("Invoice wasn't sent to ERP system. \n ERROR: ". $result['errorMessage']), parent::ORDER_STATUS_PENDING_NOT_SENT);
             $this->orderResource->save($order);
         }
-        return $this;
+        return $result;
     }
 
     /**
