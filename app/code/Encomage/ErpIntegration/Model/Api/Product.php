@@ -189,7 +189,8 @@ class Product extends Request
             $color = $this->_getAttributeIdByLabel($attributesOptions['colors'], 'color');
             $size = $this->_getAttributeIdByLabel($attributesOptions['size'] / 10, 'size');
             if (empty($color['value'])) {
-                $colorsNotExist .= $item['IcProductDescription0'] . ', ';
+                $colorsNotExist .= $item['IcProductDescription0'] . ' - ';
+                $colorsNotExist .= $attributesOptions['colors'] . ', ';
                 continue;
             }
             if (substr($item['BarCode'],1,1) !== 'B' && empty($size['value'])) {
@@ -252,12 +253,12 @@ class Product extends Request
         }
         if (!empty($colorsNotExist)) {
             throw new \Exception(
-                __('Color is not exist. Please add new color for this product - %1, and try again.', trim($colorsNotExist, ', '))
+                __('Color is not exist. Please add new color for this product - %1, and try again.', rtrim($colorsNotExist, ', '))
             );
         }
         if (!empty($sizeNotExist)) {
             throw new \Exception(
-                __('Size is not exist. Please add new size for this product - %1, and try again.', trim($sizeNotExist, ', '))
+                __('Size is not exist. Please add new size for this product - %1, and try again.', rtrim($sizeNotExist, ', '))
             );
         }
         $i++;
