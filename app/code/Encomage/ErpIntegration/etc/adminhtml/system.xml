@@ -27,6 +27,10 @@
                     <label>Enabled Test Mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="time_limit" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="70" translate="label">
+                    <label>Time Limit</label>
+                    <validate>validate-digits</validate>
+                </field>
             </group>
             <group id="color_settings" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" type="text">
                 <label>Color Settings</label>

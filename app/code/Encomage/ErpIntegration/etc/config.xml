@@ -8,6 +8,7 @@
                 <compcode>NuBangkok</compcode>
                 <enabled_test_mode>1</enabled_test_mode>
                 <warehouse_code>WH_ON</warehouse_code>
+                <time_limit>200</time_limit>
             </erp_authorization>
             <color_settings>
                 <color_code>{"_1527067360604_604":{"erp_color_code":"MLML","color_name":"Metallic Silver"},"_1527067771556_556":{"erp_color_code":"MHBK","color_name":"Mahogany"},"_1527067780875_875":{"erp_color_code":"MBRW","color_name":"Metallic Brown"},"_1527067781363_363":{"erp_color_code":"BRBR","color_name":"Brown"},"_1527067781803_803":{"erp_color_code":"GYGY","color_name":"Grey"},"_1527067782291_291":{"erp_color_code":"BKBK","color_name":"Black"},"_1527067782770_770":{"erp_color_code":"PGPG","color_name":"Pink Gold"},"_1527067783298_298":{"erp_color_code":"PLPL","color_name":"Platinum"},"_1527067842553_553":{"erp_color_code":"GLBK","color_name":"Gold Black"},"_1527067843157_157":{"erp_color_code":"GLXX","color_name":"Gold"},"_1527067843749_749":{"erp_color_code":"RDXX","color_name":"Red"},"_1527067844581_581":{"erp_color_code":"TPBK","color_name":"Taupe"},"_1527067845045_45":{"erp_color_code":"XXNN","color_name":" "}}</color_code>
