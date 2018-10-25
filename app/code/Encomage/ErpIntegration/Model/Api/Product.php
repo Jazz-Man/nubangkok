@@ -15,14 +15,16 @@ use Magento\ConfigurableProduct\Api\LinkManagementInterfaceFactory;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Model\ResourceModel\Category as CategoryResource;
 use Magento\CatalogInventory\Api\StockRegistryInterfaceFactory;
+use Encomage\ErpIntegration\Helper\Data;
 
 /**
  * Class Product
+ *
  * @package Encomage\ErpIntegration\Model\Api
  */
 class Product extends Request
 {
-    const STATUS_IN_STOCK = 1;
+    const STATUS_IN_STOCK     = 1;
     const STATUS_OUT_OF_STOCK = 0;
 
     /**
@@ -89,9 +91,14 @@ class Product extends Request
      * @var array
      */
     protected $colorCodes;
+    /**
+     * @var Data
+     */
+    protected $_helper;
 
     /**
      * Product constructor.
+     *
      * @param ScopeConfigInterface $scopeConfig
      * @param ProductRepositoryInterface $productRepository
      * @param ProductFactory $productFactory
@@ -101,6 +108,7 @@ class Product extends Request
      * @param CategoryResource $categoryResource
      * @param TypeConfigurableProduct $typeConfigurableProduct
      * @param SerializerJson $json
+     * @param Data $data
      * @param LinkManagementInterfaceFactory $linkManagementFactory
      * @param StockRegistryInterfaceFactory $stockRegistryFactory
      */
@@ -114,11 +122,10 @@ class Product extends Request
         CategoryResource $categoryResource,
         TypeConfigurableProduct $typeConfigurableProduct,
         SerializerJson $json,
-
+        Data $data,
         LinkManagementInterfaceFactory $linkManagementFactory,
         StockRegistryInterfaceFactory $stockRegistryFactory
-    )
-    {
+    ) {
         parent::__construct($scopeConfig, $json);
         $this->productRepository = $productRepository;
         $this->productFactory = $productFactory;
@@ -130,6 +137,7 @@ class Product extends Request
         $this->json = $json;
         $this->linkManagementFactory = $linkManagementFactory;
         $this->stockRegistryFactory = $stockRegistryFactory;
+        $this->_helper = $data;
     }
 
     /**
@@ -142,9 +150,9 @@ class Product extends Request
         $this->setApiLastPoint('GetProductList');
         $this->setApiMethod(HttpRequest::METHOD_GET);
         $this->setAdditionalDataUrl([
-            'Branchpricedisplay' => 1,
+            'Branchpricedisplay'    => 1,
             "CategoryDisplaySubCat" => 1,
-            "Page" => $i
+            "Page"                  => $i
         ]);
         try {
             $result = $this->sendApiRequest();
@@ -155,6 +163,7 @@ class Product extends Request
             if ($i == 0) {
                 throw new \Exception(__('The ERP system sent an empty response.'));
             }
+
             return true;
         }
         $configurable = [];
@@ -162,6 +171,7 @@ class Product extends Request
         $sizeNotExist = '';
 
         foreach ($result as $item) {
+            set_time_limit($this->_helper->getTimeLimit());
             $item = (is_object($item)) ? get_object_vars($item) : $item;
             if (strlen($item['IcProductCode']) > 18 || strlen($item['IcProductCode']) < 16) {
                 continue;
@@ -176,7 +186,7 @@ class Product extends Request
                 $product->addData([
                     'quantity_and_stock_status' => [
                         'is_in_stock' => $stockStatus,
-                        'qty' => $item['UnrestrictStock']
+                        'qty'         => $item['UnrestrictStock']
                     ]
                 ]);
                 $this->productRepository->save($product);
@@ -193,7 +203,7 @@ class Product extends Request
                 $colorsNotExist .= $attributesOptions['colors'] . ', ';
                 continue;
             }
-            if (substr($item['BarCode'],1,1) !== 'B' && empty($size['value'])) {
+            if (substr($item['BarCode'], 1, 1) !== 'B' && empty($size['value'])) {
                 $sizeNotExist .= $item['IcProductDescription0'] . ', ';
                 continue;
             }
@@ -209,7 +219,7 @@ class Product extends Request
             $product->addData([
                 'quantity_and_stock_status' => [
                     'is_in_stock' => $stockStatus,
-                    'qty' => $item['UnrestrictStock']
+                    'qty'         => $item['UnrestrictStock']
                 ]
             ]);
             $product->setColor($color['value']);
@@ -275,8 +285,10 @@ class Product extends Request
             if ((int)substr($barCode, 3, 1) > 0) {
                 return substr($barCode, 0, 10);
             }
+
             return substr($barCode, 0, 9);
         }
+
         return null;
     }
 
@@ -288,8 +300,10 @@ class Product extends Request
     {
         if (!empty($name)) {
             $result = explode(',', $name);
+
             return array_shift($result);
         }
+
         return ' ';
     }
 
@@ -312,7 +326,7 @@ class Product extends Request
             $product->setCategoryIds([$settings['category_ids']]);
             $product->setColor(' ');
             $product->setSize(' ');
-            if (substr($sku,1,1) == 'S') {
+            if (substr($sku, 1, 1) == 'S') {
                 $product->setAskAboutShoeSize(1);
             }
             if ($urlKey = $this->_prepareUrlKey($settings['name'], $settings['category_name'])) {
@@ -358,6 +372,7 @@ class Product extends Request
                 }
             }
         }
+
         return true;
     }
 
@@ -417,8 +432,10 @@ class Product extends Request
             if (!empty($category) && !empty($subCategory)) {
                 $category .= '/' . $subCategory;
             }
+
             return $this->_getCategoryByValue($category);
         }
+
         return null;
     }
 
@@ -445,6 +462,7 @@ class Product extends Request
         }
 
         $category = array_shift($result);
+
         return $category['entity_id'];
     }
 
@@ -497,6 +515,7 @@ class Product extends Request
         if (empty($result['colors'])) {
             $result['colors'] = $erpColorCode;
         }
+
         return $result;
     }
 
@@ -516,6 +535,7 @@ class Product extends Request
                 return $option;
             }
         }
+
         return ['label' => " ", 'value' => ""];
     }
 
@@ -529,8 +549,10 @@ class Product extends Request
         if (!empty($productName) && !empty($categoryName)) {
             $urlKey = str_replace([' ', ','], '-', mb_strtolower($categoryName))
                 . '-' . str_replace([' ', ','], '-', mb_strtolower($productName));
+
             return trim($urlKey);
         }
+
         return false;
     }
 
