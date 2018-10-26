@@ -3,8 +3,8 @@ namespace Encomage\ErpIntegration\Model\Api;
 
 use Magento\Framework\Webapi\Exception;
 use Zend\Http\Request as HttpRequest;
-use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
 use Magento\Eav\Model\Entity\Attribute;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ProductFactory;
@@ -56,10 +56,6 @@ class Product extends Request
      */
     private $typeConfigurableProduct;
     /**
-     * @var SerializerJson
-     */
-    private $json;
-    /**
      * @var LinkManagementInterfaceFactory
      */
     private $linkManagementFactory;
@@ -70,7 +66,7 @@ class Product extends Request
     /**
      * @var array
      */
-    protected $_attributesOptions = ['size' => [], 'color' => []];
+    protected $_attributesOptions = [];
     /**
      * @var int
      */
@@ -90,7 +86,7 @@ class Product extends Request
     /**
      * @var array
      */
-    protected $colorCodes;
+    protected $_colorCodes;
     /**
      * @var Data
      */
@@ -100,6 +96,7 @@ class Product extends Request
      * Product constructor.
      *
      * @param ScopeConfigInterface $scopeConfig
+     * @param SerializerJson $serializerJson
      * @param ProductRepositoryInterface $productRepository
      * @param ProductFactory $productFactory
      * @param Attribute $entityAttribute
@@ -107,13 +104,13 @@ class Product extends Request
      * @param CategoryLinkManagementInterface $categoryLinkManagement
      * @param CategoryResource $categoryResource
      * @param TypeConfigurableProduct $typeConfigurableProduct
-     * @param SerializerJson $json
      * @param Data $data
      * @param LinkManagementInterfaceFactory $linkManagementFactory
      * @param StockRegistryInterfaceFactory $stockRegistryFactory
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
+        SerializerJson $serializerJson,
         ProductRepositoryInterface $productRepository,
         ProductFactory $productFactory,
         Attribute $entityAttribute,
@@ -121,12 +118,11 @@ class Product extends Request
         CategoryLinkManagementInterface $categoryLinkManagement,
         CategoryResource $categoryResource,
         TypeConfigurableProduct $typeConfigurableProduct,
-        SerializerJson $json,
         Data $data,
         LinkManagementInterfaceFactory $linkManagementFactory,
         StockRegistryInterfaceFactory $stockRegistryFactory
     ) {
-        parent::__construct($scopeConfig, $json);
+        parent::__construct($scopeConfig, $serializerJson);
         $this->productRepository = $productRepository;
         $this->productFactory = $productFactory;
         $this->entityAttribute = $entityAttribute;
@@ -134,45 +130,51 @@ class Product extends Request
         $this->categoryLinkManagement = $categoryLinkManagement;
         $this->categoryResource = $categoryResource;
         $this->typeConfigurableProduct = $typeConfigurableProduct;
-        $this->json = $json;
         $this->linkManagementFactory = $linkManagementFactory;
         $this->stockRegistryFactory = $stockRegistryFactory;
         $this->_helper = $data;
+
+        $this->_attributesOptions['size'] = $this->entityAttribute->loadByCode('catalog_product', 'size')->getSource()->getAllOptions();
+        $this->_attributesOptions['color'] = $this->entityAttribute->loadByCode('catalog_product', 'color')->getSource()->getAllOptions();
+        $this->_colorCodes = $this->_prepareColorArray($this->serializerJson->unserialize($this->scopeConfig->getValue(parent::ERP_COLOR_CODES)));
+        $this->categoryCodes = $this->serializerJson->unserialize($this->_getCategoryCodes());
+        $this->subCategoryCodesBags = $this->serializerJson->unserialize($this->_getBagsCodes());
+        $this->subCategoryCodesShoe = $this->serializerJson->unserialize($this->_getShoeCodes());
     }
 
-    /**
-     * @param int $i don't set this param. Default must by 0
-     * @return bool
-     * @throws \Exception
-     */
-    public function importAllProducts($i = 0)
+    protected function _prepareColorArray($colorArray)
+    {
+        $resultArray = [];
+        foreach ($colorArray as $item) {
+            $resultArray[$item['erp_color_code']] = $item;
+        }
+        return new \Magento\Framework\DataObject($resultArray);
+    }
+
+    public function getDataFromApi($page)
     {
         $this->setApiLastPoint('GetProductList');
         $this->setApiMethod(HttpRequest::METHOD_GET);
         $this->setAdditionalDataUrl([
             'Branchpricedisplay'    => 1,
             "CategoryDisplaySubCat" => 1,
-            "Page"                  => $i
+            "Page"                  => $page
         ]);
         try {
-            $result = $this->sendApiRequest();
+            $apiData = $this->sendApiRequest();
         } catch (\Exception $e) {
             throw new \Exception(__($e->getMessage()));
         }
-        if (empty($result)) {
-            if ($i == 0) {
-                throw new \Exception(__('The ERP system sent an empty response.'));
-            }
-
-            return true;
-        }
+       return $apiData;
+    }
+    
+    //result = page
+    public function createProducts($result)
+    {
         $configurable = [];
         $colorsNotExist = '';
         $sizeNotExist = '';
-        ini_set('max_input_vars', 300);
-        ini_set('max_input_time', 10000);
         foreach ($result as $item) {
-            set_time_limit($this->_helper->getTimeLimit());
             $item = (is_object($item)) ? get_object_vars($item) : $item;
             if (strlen($item['IcProductCode']) > 18 || strlen($item['IcProductCode']) < 16) {
                 continue;
@@ -208,6 +210,7 @@ class Product extends Request
                 $sizeNotExist .= $item['IcProductDescription0'] . ', ';
                 continue;
             }
+            unset($attributesOptions);
             /** @var \Magento\Catalog\Model\Product $product */
             $product = $this->productFactory->create();
             $product->setSku($item['IcProductCode']);
@@ -251,7 +254,9 @@ class Product extends Request
             if ($configurable[$confSku]['size'] == null) {
                 $configurable[$confSku]['size'] = ($product->getSize()) ? $product->getSize() : null;
             }
+            unset($product);
         }
+        unset($result);
         if (count($configurable) > 0) {
             foreach ($configurable as $sku => $settings) {
                 try {
@@ -261,6 +266,7 @@ class Product extends Request
 
                 }
             }
+            unset($configurable);
         }
         if (!empty($colorsNotExist)) {
             throw new \Exception(
@@ -272,10 +278,9 @@ class Product extends Request
                 __('Size is not exist. Please add new size for this product - %1, and try again.', rtrim($sizeNotExist, ', '))
             );
         }
-        $i++;
-        $this->importAllProducts($i);
+        return $this;
     }
-
+    
     /**
      * @param $barCode
      * @return null|string
@@ -354,6 +359,7 @@ class Product extends Request
             } catch (Exception $e) {
                 throw new \Exception(__($e->getMessage()));
             }
+//            unset($product);
         }
         if ($settings['associate_ids']) {
             foreach ($settings['skus'] as $childSku) {
@@ -371,6 +377,7 @@ class Product extends Request
                         throw new \Exception(__($e->getMessage()));
                     }
                 }
+                unset($stockItem);
             }
         }
 
@@ -397,9 +404,6 @@ class Product extends Request
         if ($barCode) {
             $category = '';
             $subCategory = '';
-            if (empty($this->categoryCodes)) {
-                $this->categoryCodes = $this->json->unserialize($this->_getCategoryCodes());
-            }
             $erpCategoryCode = substr($barCode, 0, 2);
             foreach ($this->categoryCodes as $categoryCode) {
                 if ($categoryCode['erp_category_code'] == $erpCategoryCode) {
@@ -410,9 +414,6 @@ class Product extends Request
             $typeProduct = substr($barCode, 1, 1);
             $erpSubCategoryCode = substr($barCode, 2, 1);
             if ($typeProduct == 'S') {
-                if (empty($this->subCategoryCodesShoe)) {
-                    $this->subCategoryCodesShoe = $this->json->unserialize($this->_getShoeCodes());
-                }
                 foreach ($this->subCategoryCodesShoe as $subCategoryCode) {
                     if ($subCategoryCode['erp_shoe_code'] == $erpSubCategoryCode) {
                         $subCategory = $subCategoryCode['shoe_category_value'];
@@ -420,9 +421,6 @@ class Product extends Request
                     }
                 }
             } elseif ($typeProduct == 'B') {
-                if (empty($this->subCategoryCodesBags)) {
-                    $this->subCategoryCodesBags = $this->json->unserialize($this->_getBagsCodes());
-                }
                 foreach ($this->subCategoryCodesBags as $subCategoryCode) {
                     if ($subCategoryCode['erp_bags_code'] == $erpSubCategoryCode) {
                         $subCategory = $subCategoryCode['bags_category_value'];
@@ -489,14 +487,10 @@ class Product extends Request
      */
     protected function _getAttributesCodes($barCode)
     {
-        $result = [];
-
-        $barCode = substr($barCode, 2);
-        $barCode = preg_replace('/(\d+)/i', '${1},', $barCode);
-        $barCode = explode(',', rtrim($barCode, ','));
-
+        $barCode = explode(',', rtrim(preg_replace('/(\d+)/i', '${1},', substr($barCode, 2)), ','));
         $options = (!empty(end($barCode)) && $last = array_pop($barCode)) ? $last : array_pop($barCode);
         $check = substr($options, -3) * 2;
+        $result = [];
         if ((bool)$check && gettype($check) == 'integer') {
             $result['size'] = substr($options, -3);
             $erpColorCode = substr($options, -8, 4);
@@ -504,14 +498,8 @@ class Product extends Request
             $result['size'] = null;
             $erpColorCode = substr($options, -6, 4);
         }
-        if (empty($this->colorCodes)) {
-            $this->colorCodes = $this->json->unserialize($this->_getColorCodes());
-        }
-        foreach ($this->colorCodes as $colorCode) {
-            if ($colorCode['erp_color_code'] == $erpColorCode) {
-                $result['colors'] = $colorCode['color_name'];
-                break;
-            }
+        if ($this->_colorCodes->getData($erpColorCode)) {
+            $result['colors'] = $this->_colorCodes->getData($erpColorCode)['color_name'];
         }
         if (empty($result['colors'])) {
             $result['colors'] = $erpColorCode;
@@ -527,11 +515,7 @@ class Product extends Request
      */
     protected function _getAttributeIdByLabel($label, $attrName)
     {
-        if (!$this->_attributesOptions[$attrName]) {
-            $attribute = $this->_getAttributeInfo('catalog_product', $attrName);
-            $this->_attributesOptions[$attrName]['all_options'] = $attribute->getSource()->getAllOptions();
-        }
-        foreach ($this->_attributesOptions[$attrName]['all_options'] as $option) {
+        foreach ($this->_attributesOptions[$attrName] as $option) {
             if ($option['label'] == $label) {
                 return $option;
             }
@@ -555,18 +539,6 @@ class Product extends Request
         }
 
         return false;
-    }
-
-    /**
-     * @param $entityType
-     * @param $attributeCode
-     * @return $this
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    protected function _getAttributeInfo($entityType, $attributeCode)
-    {
-        return $this->entityAttribute
-            ->loadByCode($entityType, $attributeCode);
     }
 
     /**
