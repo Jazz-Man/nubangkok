@@ -27,12 +27,12 @@ abstract class Request
     /**
      * @var ScopeConfigInterface
      */
-    private $scopeConfig;
+    protected $scopeConfig;
 
     /**
      * @var SerializerJson
      */
-    private $serializerJson;
+    protected $serializerJson;
     
     /**
      * Data for api request to eToday mast by use actual keys
@@ -165,15 +165,7 @@ abstract class Request
         return $this->scopeConfig->getValue(self::ERP_WAREHOUSE_CODE);
     }
 
-    /**
-     * Get ERP color codes and color names
-     *
-     * @return mixed
-     */
-    protected function _getColorCodes()
-    {
-        return $this->scopeConfig->getValue(self::ERP_COLOR_CODES);
-    }
+    
 
     /**
      * Get Bags category codes and category path

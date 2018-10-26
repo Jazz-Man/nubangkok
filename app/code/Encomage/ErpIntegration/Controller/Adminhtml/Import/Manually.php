@@ -4,27 +4,29 @@ namespace Encomage\ErpIntegration\Controller\Adminhtml\Import;
 
 use Magento\Backend\App\Action;
 use Magento\Framework\Controller\ResultFactory;
-use Encomage\ErpIntegration\Model\Api\Product;
+use Encomage\ErpIntegration\Model\Api\Product as ErpIntegrationProduct;
 use Encomage\ErpIntegration\Helper\Data;
 
 class Manually extends Action
 {
+    const ITERATION_PAGE_LIMIT = 1;
+
     /**
      * @var Product
      */
-    protected $product;
+    protected $erpIntegrationProduct;
 
     /**
      * Manually constructor.
      *
      * @param Action\Context $context
-     * @param Product $product
+     * @param ErpIntegrationProduct $erpIntegrationProduct
      * @param Data $data
      */
-    public function __construct(Action\Context $context, Product $product, Data $data)
+    public function __construct(Action\Context $context, ErpIntegrationProduct $erpIntegrationProduct, Data $data)
     {
         parent::__construct($context);
-        $this->product = $product;
+        $this->erpIntegrationProduct = $erpIntegrationProduct;
         $this->_helper = $data;
     }
 
@@ -34,15 +36,25 @@ class Manually extends Action
     public function execute()
     {
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-        $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-        set_time_limit($this->_helper->getTimeLimit());
+        $page = (int)$this->getRequest()->getParam('p', 0);
         try {
-            $this->product->importAllProducts();
-            $this->messageManager->addSuccessMessage('Products was imported');
+            $i = 0;
+            while ($i < self::ITERATION_PAGE_LIMIT) {
+                $apiData = $this->erpIntegrationProduct->getDataFromApi($page);
+                if (empty($apiData)) {
+                    $this->messageManager->addSuccessMessage('Products was imported');
+                    return $resultRedirect->setPath('catalog/product');
+                }
+                $this->erpIntegrationProduct->createProducts($apiData);
+                $i++;
+                $page++;
+            }
+            return $resultRedirect->setPath('erp/import/manually',['p' => $page]);
+
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
+            $resultRedirect->setPath('catalog/product');
         }
-        ini_restore('max_execution_time');
 
         return $resultRedirect;
     }
