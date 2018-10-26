@@ -169,7 +169,8 @@ class Product extends Request
         $configurable = [];
         $colorsNotExist = '';
         $sizeNotExist = '';
-
+        ini_set('max_input_vars', 300);
+        ini_set('max_input_time', 10000);
         foreach ($result as $item) {
             set_time_limit($this->_helper->getTimeLimit());
             $item = (is_object($item)) ? get_object_vars($item) : $item;
