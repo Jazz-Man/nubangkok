@@ -36,14 +36,20 @@ class ImportProducts
     public function execute()
     {
         $this->logger->info('Start Cron Import');
+        $page = 0;
         try {
-            $this->apiProduct->importAllProducts();
-            $this->logger->info('Products was imported');
+            for ($i = 1; $page < $i; $i++) {
+                $apiData = $this->apiProduct->getDataFromApi($page);
+                if (empty($apiData)) {
+                    $this->logger->info('Products was imported');
+                    break;
+                }
+                $this->apiProduct->createProducts($apiData);
+                $page++;
+            }
         } catch (\Exception $e) {
-            ini_restore('max_execution_time');
             $this->logger->error($e->getMessage());
         }
-        ini_restore('max_execution_time');
         $this->logger->info('Finish Cron Import');
     }
 }
