@@ -1362,9 +1362,9 @@ define([
                     $.each(stockStatuses, function (item, value) {
                         if (value[attrOptionId] != null) {
                             if (value[attrOptionId].stock) {
-                                stockStatusMessage [value[attrOptionId].size] = "In stock"
+                                stockStatusMessage[value[attrOptionId].size] = $.mage.__("In stock")
                             } else {
-                                stockStatusMessage[value[attrOptionId].size] = "Not in stock Notify me";
+                                stockStatusMessage[value[attrOptionId].size] = $.mage.__("Not in stock Notify me");
                             }
                         }
                     });
