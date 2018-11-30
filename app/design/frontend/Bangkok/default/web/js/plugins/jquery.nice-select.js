@@ -72,7 +72,9 @@
       $options.each(function(i) {
         var $option = $(this);
         var display = $option.data('display');
-
+        if ($option.is(':disabled')) {
+          return true;
+        }
         $dropdown.find('ul').append($('<li></li>')
           .attr('data-value', $option.val())
           .attr('data-display', (display || null))
