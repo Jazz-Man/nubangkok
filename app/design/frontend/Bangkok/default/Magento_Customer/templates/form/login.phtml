@@ -18,14 +18,14 @@
                         <input name="login[username]" value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>"
                             <?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?> id="email"
                                type="email" class="input-text" title="<?= $block->escapeHtmlAttr(__('Email')) ?>"
-                               data-validate="{required:true, 'validate-email':true}" placeholder="Email">
+                               data-validate="{required:true, 'validate-email':true}" placeholder="<?=__('Email')?>">
                     </div>
                 </div>
                 <div class="field password required">
                     <div class="control">
                         <input name="login[password]" type="password" <?php if ($block->isAutocompleteDisabled()): ?>
                             autocomplete="off"<?php endif; ?> class="input-text" id="pass" title="<?= $block->escapeHtmlAttr(__('Password')) ?>"
-                               data-validate="{required:true}" placeholder="Password">
+                               data-validate="{required:true}" placeholder="<?=__('Password')?>">
                         <div class="customer-show-password">
                             <label for="customer-show-password" class="label"
                                    data-mage-init='{"Magento_Customer/js/customer-sign-in":{}}'>
