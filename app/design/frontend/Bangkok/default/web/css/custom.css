@@ -340,11 +340,6 @@ input:-webkit-autofill {
         width: 50%;
     }
 
-    .products-list .product-item-photo .popular-products {
-        padding: 5px 5px;
-        bottom: 20px;
-    }
-
     /*Post view*/
     .post-view .post-bottom .block.related .products-grid .product-item .image-block span.popular-products {
         bottom: 10px;
@@ -1027,29 +1022,18 @@ input:-webkit-autofill {
         padding-left: 25px;
     }
 
-    .products-related .product-item .popular-products {
-        bottom: 15px !important;
-        padding: 5px 10px;
-    }
+    /*.products-related .product-item .popular-products {*/
+        /*bottom: 15px !important;*/
+        /*padding: 5px 10px;*/
+    /*}*/
 
     .product-item .clearance-att {
         padding-left: 5px;
     }
 
-    .products-list .product-item-photo .popular-products {
-        bottom: 20px;
-        padding: 7px;
-        font-size: 14px;
-        text-align: center;
-    }
-
-    .products-list .product-item-photo .product-note-info {
-        top: 2px;
-        font-size: 14px;
-    }
-
+    .products-list .product-item-photo .popular-products,
+    .products-list .product-item-photo .product-note-info,
     .products-list .product-item-photo .product-note-status {
-        bottom: 18px;
         font-size: 14px;
     }
 
@@ -1080,22 +1064,15 @@ input:-webkit-autofill {
     }
 }
 
-@media screen and (max-width: 380px) {
-    .products-related .product-item .popular-products {
-        bottom: 10px;
-        font-size: 12px;
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-}
-
 /*mobile navigation*/
 @media screen and (max-width: 350px) {
     .nav-sections-item-content .sidebar-menu .main-categories .font-less {
         font-size: 14px;
     }
 
-    .block.related .block-content .products-related .product-item .popular-products {
+    .block.related .block-content .products-related .product-item .popular-products,
+    .block.related .block-content .products-related .product-item .product-note-info,
+    .block.related .block-content .products-related .product-item .product-note-status{
         font-size: 13px;
     }
 
