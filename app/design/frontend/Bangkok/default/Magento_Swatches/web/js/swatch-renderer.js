@@ -1417,6 +1417,10 @@ define([
                 return option1.label > option2.label;
             });
             return result;
+        },
+
+        _translatePhrase:function () {
+            $t('Color');$t('Size');
         }
     });
 
