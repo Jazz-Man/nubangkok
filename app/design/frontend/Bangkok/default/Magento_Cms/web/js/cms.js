@@ -12,7 +12,10 @@ define([
 
     //used on where-to-buy CMS page
     //---------------------------------------------
-    var map = $('#widget-map')[0].firstElementChild;
+    var map = $('#widget-map');
+    if (map.length) {
+        map = map[0].firstElementChild;
+    }
     $(document).on('click', '.js-revert-image-on-click', function () {
         var target = $($(this).data('target')),
             gmtBtn = $('.js-show-gm-btn'),
