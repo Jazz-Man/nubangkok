@@ -1,0 +1,17 @@
+variables:
+  PROJECT_DIR: /data/sites/nubangkok.dev.encomage.com/www
+  SERVER_USER: nubangkok
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying project ${CI_PROJECT_NAMESPACE}_${CI_PROJECT_NAME} by user ${GITLAB_USER_LOGIN}..."
+    - cd ${PROJECT_DIR} &&  sudo su -c "git pull origin master"
+    - sudo chown -R ${SERVER_USER}:apache ${PROJECT_DIR}
+    - sudo su - ${SERVER_USER} -c "cd ${PROJECT_DIR} && php bin/magento setup:upgrade"
+    - sudo su - ${SERVER_USER} -c "cd ${PROJECT_DIR} && bin/magento setup:static-content:deploy -f"
+  only:
+    - master
