@@ -12,6 +12,5 @@ deploy:
     - cd ${PROJECT_DIR} &&  sudo su -c "git pull origin master"
     - sudo chown -R ${SERVER_USER}:apache ${PROJECT_DIR}
     - sudo su - ${SERVER_USER} -c "cd ${PROJECT_DIR} && php bin/magento setup:upgrade"
-    - sudo su - ${SERVER_USER} -c "cd ${PROJECT_DIR} && bin/magento setup:static-content:deploy -f"
   only:
     - master
