@@ -31,7 +31,7 @@
                         <?php echo __('Sign in with %1', $social['label']) ?>
                     </a>
                 </div>
-                <p>or</p>
+                <p><?=/* @escapeNotVerified */ __('or')?></p>
             <?php endforeach; ?>
         </div>
     </div>
