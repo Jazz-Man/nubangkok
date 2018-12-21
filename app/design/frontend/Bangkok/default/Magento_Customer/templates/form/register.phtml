@@ -6,7 +6,7 @@
       method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
     <?= $block->getBlockHtml('formkey'); ?>
     <fieldset class="fieldset create info">
-        <h2>Create my account</h2>
+        <h2><?=/* @escapeNotVerified */ __('Create my account')?></h2>
         <legend class="legend"><span><?= $block->escapeHtml(__('Personal Information')) ?></span></legend>
         <br>
         <input type="hidden" name="success_url" value="<?= $block->escapeUrl($block->getSuccessUrl()) ?>">
