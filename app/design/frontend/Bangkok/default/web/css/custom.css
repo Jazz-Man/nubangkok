@@ -967,22 +967,22 @@ input:-webkit-autofill {
 
 /*new icons*/
 .mode-list {
-    content: url(../images/icons/productPage/desktop-list.svg);
+    content: url(../images/icons/productPage/desktop-list2.svg);
     width: 31px !important;
     padding: 4px 9px !important;
 }
 
 .mode-list.active {
-    content: url(../images/icons/productPage/desktop-list-active.png);
+    content: url(../images/icons/productPage/desktop-list-active2.svg);
 }
 
 .mode-grid {
-    content: url(../images/icons/productPage/desktop-grid.svg);
+    content: url(../images/icons/productPage/desktop-grid2.svg);
     width: 30px;
 }
 
 .mode-grid.active {
-    content: url(../images/icons/productPage/desktop-grid-active.png);
+    content: url(../images/icons/productPage/desktop-grid-active2.svg);
     padding: 4px 0;
     width: 31px;
 }
@@ -993,22 +993,30 @@ input:-webkit-autofill {
     }
 
     .mode-list {
-        content: url(../images/mobile/list.svg);
-        width: 41px !important;
-        padding: 0 7px !important;
+        content: url(../images/mobile/mobile-list2.svg);
+        height: 31px;
+        vertical-align: top;
+        padding-top: 15px;
+        display: inline-block;
+        margin-top: 4px;
     }
 
     .mode-list.active {
-        content: url(../images/mobile/mobile-list-active.png);
+        content: url(../images/mobile/mobile-list-active2.svg);
+        height: 32px;
+        vertical-align: top;
+        padding-top: 15px;
+        display: inline-block;
+        margin-top: 1px;
     }
 
     .mode-grid {
-        content: url(../images/mobile/grid.svg);
+        content: url(../images/mobile/mobile-grid2.svg);
         width: 31px;
     }
 
     .mode-grid.active {
-        content: url(../images/mobile/mobile-grid-active.png);
+        content: url(../images/mobile/mobile-grid-active2.svg);
         padding: 8px 0;
     }
 
@@ -1021,11 +1029,6 @@ input:-webkit-autofill {
     .form.create.account.form-create-account .create.info .field.gender .control .nice-select {
         padding-left: 25px;
     }
-
-    /*.products-related .product-item .popular-products {*/
-        /*bottom: 15px !important;*/
-        /*padding: 5px 10px;*/
-    /*}*/
 
     .product-item .clearance-att {
         padding-left: 5px;
