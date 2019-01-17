@@ -6,7 +6,6 @@ define([
 
     //-------------- left points block
     $(document).on('click touchstart', '.js-open-left', function () {
-        debugger;
         $('.float-left-content').addClass('active');
     });
     $(document).on('click touchstart', '.js-close-left', function () {
