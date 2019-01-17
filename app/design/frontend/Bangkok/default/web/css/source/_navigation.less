@@ -142,8 +142,8 @@
                 width: 6px;
                 height: 6px;
                 position: absolute;
-                left: 4px;
-                top: 19px;
+                left: -10px;
+                top: 7px;
               }
             }
             font-weight: 700;
@@ -261,21 +261,6 @@
       width: 25px;
       height: 26px;
       background-size: cover;
-      //:before {
-      //  -webkit-font-smoothing: antialiased;
-      //  -moz-osx-font-smoothing: grayscale;
-      //  font-size: 50px;
-      //  line-height: inherit;
-      //  color: #8f8f8f;
-      //  content: '\002715';
-      //  font-family: 'icons-blank-theme';
-      //  vertical-align: middle;
-      //  display: inline-block;
-      //  font-weight: normal;
-      //  overflow: hidden;
-      //  speak: none;
-      //  text-align: center;
-      //}
     }
     .switcher {
       border-top: 1px solid @color-gray82;
@@ -354,6 +339,20 @@
 
       .header.links {
         border: 0;
+      }
+    }
+    .sidebar-menu .main-subcategories ul li.active {
+      > a:before {
+        left: 5px;
+        top: 16px;
+      }
+      ul.active{
+        li.active {
+          > a:before {
+            left: 24px;
+            top: 17px;
+          }
+        }
       }
     }
   }
