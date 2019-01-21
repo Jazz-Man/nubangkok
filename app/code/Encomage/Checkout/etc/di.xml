@@ -3,4 +3,11 @@
     <preference for="Magento\Checkout\Controller\Cart\Add" type="Encomage\Checkout\Controller\Cart\Add"/>
     <preference for="Magento\Checkout\Block\Onepage\Success" type="Encomage\Checkout\Block\Onepage\Success"/>
     <preference for="Magento\ConfigurableProduct\Block\Cart\Item\Renderer\Configurable" type="Encomage\Checkout\Block\Cart\Item\Renderer"/>
+    <type name="Magento\Translation\Model\Js\Config">
+        <arguments>
+            <argument name="patterns" xsi:type="array">
+                <item name="translate_args" xsi:type="string"><![CDATA[~translate args\=("|'|"')([^\'].*?)('"|'|")~]]></item>
+            </argument>
+        </arguments>
+    </type>
 </config>
