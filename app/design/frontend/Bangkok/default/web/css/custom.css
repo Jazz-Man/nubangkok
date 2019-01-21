@@ -968,7 +968,7 @@ input:-webkit-autofill {
 /*new icons*/
 .mode-list {
     content: url(../images/icons/productPage/desktop-list2.svg);
-    width: 31px !important;
+    width: 26px !important;
     padding: 4px 9px !important;
 }
 
@@ -978,13 +978,14 @@ input:-webkit-autofill {
 
 .mode-grid {
     content: url(../images/icons/productPage/desktop-grid2.svg);
-    width: 30px;
+    width: 26px;
 }
 
 .mode-grid.active {
     content: url(../images/icons/productPage/desktop-grid-active2.svg);
     padding: 4px 0;
-    width: 31px;
+    width: 26px;
+    float: right;
 }
 
 @media screen and (max-width: 768px) {
@@ -994,7 +995,7 @@ input:-webkit-autofill {
 
     .mode-list {
         content: url(../images/mobile/mobile-list2.svg);
-        height: 31px;
+        height: 26px;
         vertical-align: top;
         padding-top: 15px;
         display: inline-block;
@@ -1007,17 +1008,19 @@ input:-webkit-autofill {
         vertical-align: top;
         padding-top: 15px;
         display: inline-block;
-        margin-top: 1px;
+        margin-top: -1px;
     }
 
     .mode-grid {
         content: url(../images/mobile/mobile-grid2.svg);
-        width: 31px;
+        width: 26px;
+        float: left;
     }
 
     .mode-grid.active {
         content: url(../images/mobile/mobile-grid-active2.svg);
         padding: 8px 0;
+        float: left;
     }
 
     /*Create my account page*/
