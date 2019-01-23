@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <dropdown_fields>
+            <general>
+                <api_key>7fc58e98faad8af9bc6ca81e6384b87a</api_key>
+                <domain_region>https://battuta.medunes.net/api/region/</domain_region>
+                <domain_city>https://battuta.medunes.net/api/city/</domain_city>>
+            </general>
+        </dropdown_fields>
+    </default>
+</config>

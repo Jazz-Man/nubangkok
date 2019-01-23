@@ -62,8 +62,7 @@ define([
                 if (value.trim() === "") {
                     this._super(value, field);
                 } else {
-                    //TODO Take out the key in the settings
-                    var url = 'https://battuta.medunes.net/api/region/' + value + '/all/?key=7fc58e98faad8af9bc6ca81e6384b87a';
+                    var url = this.urlApiRegion + value + '/all/?key=' + this.apiKey;
                     $.ajax({
                         async: false,
                         url: url
