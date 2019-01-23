@@ -25,18 +25,17 @@ define([
         },
 
         update: function (value) {
-            if (value === "") {
-                this.hide();
+            var parentCity = $("[name ='shippingAddress.city']");
+            if (value === "" || value === undefined ) {
+                parentCity.hide();
                 return value;
             }
 
-            var parentCity,
-                regionCities,
+            var regionCities,
                 cityOptions =[],
                 regionData = registry.get(this.parentName + '.' + 'region_id').indexedOptions[value];
 
-            //TODO Take out the key in the settings
-            var url = 'https://battuta.medunes.net/api/city/' + regionData.country_id + '/search/?region=' + regionData.label + '&key=7fc58e98faad8af9bc6ca81e6384b87a';
+            var url = this.urlApiCity + regionData.country_id + '/search/?region=' + regionData.label + '&key=' + this.apiKey;
             $.ajax({
                 async: false,
                 url: url
@@ -57,17 +56,16 @@ define([
 
             this.setOptions(cityOptions);
 
-            var getCity = this.parentName + '.' + 'city',
+            var getCity = this.parentName + '.' + 'city_id',
                 city = registry.get(getCity),
                 cases = cityOptions.length;
 
-            parentCity = $("[name ='shippingAddress.city']");
             if (cases === 0) {
-                city.show();
-                this.hide();
+                city.hide();
+                $("[name ='shippingAddress.region']").hide();
                 parentCity.show();
             } else {
-                city.hide();
+                city.show();
                 this.show();
                 parentCity.hide();
             }
