@@ -6,30 +6,44 @@
         <table class="data table table-order-items history" id="my-orders-table">
             <caption class="table-caption"><?= /* @escapeNotVerified */ __('Orders') ?></caption>
             <thead>
-                <tr>
-                    <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Date') ?></th>
-                    <th scope="col" class="col id"><?= /* @escapeNotVerified */ __('Order No.') ?></th>
-                    <?= /* @noEscape */ $block->getChildHtml('extra.column.header') ?>
-                    <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Total') ?></th>
-                    <th scope="col" class="col status"><?= /* @escapeNotVerified */ __('Status') ?></th>
-                    <th scope="col" class="col actions"><?= /* @escapeNotVerified */ __('nuPoints') ?></th>
-                </tr>
+            <tr>
+                <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Date') ?></th>
+                <th scope="col" class="col id"><?= /* @escapeNotVerified */ __('Order No.') ?></th>
+                <?= /* @noEscape */ $block->getChildHtml('extra.column.header') ?>
+                <th scope="col" class="col total"><?= /* @escapeNotVerified */ __('Total') ?></th>
+                <th scope="col" class="col status"><?= /* @escapeNotVerified */ __('Status') ?></th>
+                <th scope="col" class="col actions"><?= /* @escapeNotVerified */ __('nuPoints') ?></th>
+                <th scope="col" class="col actions"><?= /* @escapeNotVerified */ __('Action') ?></th>
+            </tr>
             </thead>
             <tbody>
-                <?php foreach ($_orders as $_order): ?>
-                    <tr>
-                        <td data-th="<?= $block->escapeHtml(__('Date')) ?>" class="col date"><?= /* @escapeNotVerified */ $block->formatDate($_order->getCreatedAt()) ?></td>
-                        <td data-th="<?= $block->escapeHtml(__('Order #')) ?>" class="col id"><?= /* @escapeNotVerified */ $_order->getRealOrderId() ?></td>
-                        <?php $extra = $block->getChildBlock('extra.container'); ?>
-                        <?php if ($extra): ?>
-                            <?php $extra->setOrder($_order); ?>
-                            <?= /* @noEscape */ $extra->getChildHtml() ?>
-                        <?php endif; ?>
-                        <td data-th="<?= $block->escapeHtml(__('Total')) ?>" class="col total"><?= /* @escapeNotVerified */ $_order->formatPrice($_order->getGrandTotal()) ?></td>
-                        <td data-th="<?= $block->escapeHtml(__('Status')) ?>" class="col status"><?= /* @escapeNotVerified */ __($_order->getStatusLabel()) ?></td>
-                        <td data-th="<?= $block->escapeHtml(__('nuPoints')) ?>" class="col points">+ <?= (int)$_order->getNupoints(); ?></td>
-                    </tr>
-                <?php endforeach; ?>
+            <?php foreach ($_orders as $_order): ?>
+                <tr>
+                    <td data-th="<?= $block->escapeHtml(__('Date')) ?>" class="col date"><?= /* @escapeNotVerified */ $block->formatDate($_order->getCreatedAt()) ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Order #')) ?>" class="col id"><?= /* @escapeNotVerified */ $_order->getRealOrderId() ?></td>
+                    <?php $extra = $block->getChildBlock('extra.container'); ?>
+                    <?php if ($extra): ?>
+                        <?php $extra->setOrder($_order); ?>
+                        <?= /* @noEscape */ $extra->getChildHtml() ?>
+                    <?php endif; ?>
+                    <td data-th="<?= $block->escapeHtml(__('Total')) ?>" class="col total"><?= /* @escapeNotVerified */ $_order->formatPrice($_order->getGrandTotal()) ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Status')) ?>" class="col status"><?= /* @escapeNotVerified */ __($_order->getStatusLabel()) ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('nuPoints')) ?>" class="col points">+ <?= (int)$_order->getNupoints(); ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                        <a href="<?= /* @escapeNotVerified */ $block->getViewUrl($_order) ?>" class="action view">
+                            <span><?= /* @escapeNotVerified */ __('View Order') ?></span>
+                        </a>
+                        <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($_order->getEntityId())) : ?>
+                            <a href="#" data-post='<?php /* @escapeNotVerified */ echo
+                            $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
+                                ->getPostData($block->getReorderUrl($_order))
+                            ?>' class="action order">
+                                <span><?= /* @escapeNotVerified */ __('Reorder') ?></span>
+                            </a>
+                        <?php endif ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
