@@ -4,7 +4,7 @@ namespace Encomage\DropdownFields\Controller\Index;
 
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\Action;
-use Encomage\DropdownFields\Model\Api\Response;
+use Encomage\DropdownFields\Model\Api\Request;
 use Encomage\DropdownFields\Helper\Data;
 use Magento\Framework\Controller\Result\JsonFactory;
 
@@ -26,9 +26,9 @@ class Index extends Action
     protected $resultJsonFactory;
 
     /**
-     * @var Response
+     * @var Request
      */
-    protected $apiResponse;
+    protected $apiRequest;
 
     /**
      * @var Data
@@ -38,18 +38,18 @@ class Index extends Action
     /**
      * Index constructor.
      * @param Context $context
-     * @param Response $apiResponse
+     * @param Request $apiRequest
      * @param Data $helper
      * @param JsonFactory $resultJsonFactory
      */
     public function __construct(
         Context $context,
-        Response $apiResponse,
+        Request $apiRequest,
         Data $helper,
         JsonFactory $resultJsonFactory
     )
     {
-        $this->apiResponse = $apiResponse;
+        $this->apiRequest = $apiRequest;
         $this->helper = $helper;
         $this->resultJsonFactory = $resultJsonFactory;
         parent::__construct($context);
@@ -68,7 +68,7 @@ class Index extends Action
             } else {
                 $url = $this->helper->getApiCityDomainName() . $params[self::COUNTRY_CODE] . self::CITY_ENDPOINT .rawurlencode($params[self::REGION_LABEL] ) . '&key=' . $this->helper->getApiKeyValue();
             }
-            $response = $this->apiResponse->getResponseFromApi($url);
+            $response = $this->apiRequest->createRequest($url);
 
             return $result->setData($response);
         }

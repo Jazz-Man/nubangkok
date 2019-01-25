@@ -31,15 +31,16 @@ class CitiesJsonRomCity extends ParentCitiesJsonRomCity
      * @param RomCityRepository $romCityRepository
      * @param SearchCriteriaBuilder $searchCriteria
      */
-    public function __construct(Context $context,
-                                Config $configCacheType,
-                                Collection $countryCollection,
-                                CollectionFactory $regCollectionFactory,
-                                Data $jsonHelper,
-                                StoreManagerInterface $storeManager,
-                                CurrencyFactory $currencyFactory,
-                                RomCityRepository $romCityRepository,
-                                SearchCriteriaBuilder $searchCriteria)
+    public function __construct(
+        Context $context,
+        Config $configCacheType,
+        Collection $countryCollection,
+        CollectionFactory $regCollectionFactory,
+        Data $jsonHelper,
+        StoreManagerInterface $storeManager,
+        CurrencyFactory $currencyFactory,
+        RomCityRepository $romCityRepository,
+        SearchCriteriaBuilder $searchCriteria)
     {
         parent::__construct(
             $context,

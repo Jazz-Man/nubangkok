@@ -9,7 +9,7 @@ use Magento\Framework\HTTP\Client\Curl;
  * Class Request
  * @package Encomage\DropdownFields\Model\Api
  */
-class Response
+class Request
 {
     /**
      * @var Json
@@ -35,7 +35,7 @@ class Response
      * @param string $url
      * @return array|bool|float|int|mixed|string|null
      */
-    public function getResponseFromApi(string $url)
+    public function createRequest(string $url)
     {
         $this->curl->get($url);
         $response = $this->curl->getBody();
