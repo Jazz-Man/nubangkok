@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Magento\Checkout\Block\Checkout\LayoutProcessor" type="Encomage\DropdownFields\Override\Block\Checkout\LayoutProcessor"/>
+    <preference for="Eadesigndev\RomCity\Helper\CitiesJsonRomCity" type="Encomage\DropdownFields\Override\Helper\CitiesJsonRomCity"/>
 </config>
