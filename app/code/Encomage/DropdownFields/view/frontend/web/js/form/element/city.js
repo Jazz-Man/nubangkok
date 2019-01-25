@@ -2,6 +2,7 @@
  * @api
  */
 define([
+    'mage/url',
     'underscore',
     'uiRegistry',
     'Magento_Ui/js/form/element/select',
@@ -13,7 +14,7 @@ define([
     'underscore',
     'Magento_Ui/js/form/element/abstract',
     'jquery/ui'
-], function (_, registry, Select, defaultPostCodeResolver, $) {
+], function (url,_, registry, Select, defaultPostCodeResolver, $) {
     'use strict';
 
     return Select.extend({
@@ -27,7 +28,6 @@ define([
         update: function (value) {
             var parentCity = $("[name ='shippingAddress.city']");
             if (value === "" || value === undefined ) {
-                parentCity.hide();
                 return value;
             }
 
@@ -35,14 +35,14 @@ define([
                 cityOptions =[],
                 regionData = registry.get(this.parentName + '.' + 'region_id').indexedOptions[value];
 
-            var url = this.urlApiCity + regionData.country_id + '/search/?region=' + regionData.label + '&key=' + this.apiKey;
             $.ajax({
                 async: false,
-                url: url
+                url: url.build('encomage_dropdownField/index/index'),
+                type:"POST",
+                data:{type:'city',country_code:regionData.country_id,region_label:regionData.label},
             }).done(function (data) {
                 regionCities = data;
             });
-
             regionCities.forEach(function (item, i) {
                 var jsonObject = {
                     value: i,
@@ -53,19 +53,17 @@ define([
 
                 cityOptions.push(jsonObject);
             });
-
             this.setOptions(cityOptions);
-
-            var getCity = this.parentName + '.' + 'city_id',
+            var getCity = this.parentName + '.' + 'city',
                 city = registry.get(getCity),
                 cases = cityOptions.length;
 
             if (cases === 0) {
-                city.hide();
-                $("[name ='shippingAddress.region']").hide();
+                city.show();
+                this.hide();
                 parentCity.show();
             } else {
-                city.show();
+                city.hide();
                 this.show();
                 parentCity.hide();
             }

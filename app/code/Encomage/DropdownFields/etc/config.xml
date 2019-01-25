@@ -5,7 +5,7 @@
             <general>
                 <api_key>7fc58e98faad8af9bc6ca81e6384b87a</api_key>
                 <domain_region>https://battuta.medunes.net/api/region/</domain_region>
-                <domain_city>https://battuta.medunes.net/api/city/</domain_city>>
+                <domain_city>https://battuta.medunes.net/api/city/</domain_city>
             </general>
         </dropdown_fields>
     </default>
