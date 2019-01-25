@@ -2,12 +2,13 @@
  * @api
  */
 define([
+    'mage/url',
     'jquery',
     'underscore',
     'uiRegistry',
     'Magento_Ui/js/form/element/select',
     'Magento_Checkout/js/model/default-post-code-resolver'
-], function ($, _, registry, Select, defaultPostCodeResolver) {
+], function (url ,$, _, registry, Select, defaultPostCodeResolver) {
     'use strict';
 
     return Select.extend({
@@ -62,10 +63,11 @@ define([
                 if (value.trim() === "") {
                     this._super(value, field);
                 } else {
-                    var url = this.urlApiRegion + value + '/all/?key=' + this.apiKey;
                     $.ajax({
                         async: false,
-                        url: url
+                        type:"POST",
+                        url: url.build('encomage_dropdownField/index/index'),
+                        data:{type:'region',country_code:value}
                     }).done(function (data) {
                         var regionsData = data;
                         regionsData.forEach(function (item, i) {
