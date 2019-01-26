@@ -13,7 +13,8 @@
         "mageplaza/magento-2-banner-slider-extension": "^1.2",
         "mageplaza/magento-2-social-login": "^2.4",
         "magefan/module-blog": "^2.7",
-        "eadesignro/romcity": "^1.1"
+        "eadesignro/romcity": "^1.1",
+        "dhl/module-shipping-m2": "^0.8.1"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.2.0",
