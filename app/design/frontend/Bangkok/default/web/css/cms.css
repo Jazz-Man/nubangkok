@@ -271,7 +271,7 @@
 @media only screen and (max-width: 768px) {
     .accordion-container .panel {
         padding-right: 15px;
-        padding-left: 15px;
+        padding-left: 20px;
     }
 
     .cms-customer-care > p.accordion {

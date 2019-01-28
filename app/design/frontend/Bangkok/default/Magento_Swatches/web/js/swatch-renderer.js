@@ -402,11 +402,8 @@ define([
                 }
 
                 if ($widget.options.enableControlLabel) {
-                    label +=
-                        '<span id="' + controlLabelId + '" class="' + classes.attributeLabelClass + '">' +
-                        item.label +
-                        '</span>' +
-                        '<span class="' + classes.attributeSelectedOptionLabelClass + '"></span>';
+                    label += '<span id="'+ controlLabelId +'" class="'+ classes.attributeLabelClass + '">'+ $.mage.__(item.label) +'</span>';
+                    label += '<span class="' + classes.attributeSelectedOptionLabelClass + '"></span>';
                 }
 
                 if ($widget.inProductList) {
@@ -1420,6 +1417,10 @@ define([
                 return option1.label > option2.label;
             });
             return result;
+        },
+
+        _translatePhrase:function () {
+            $t('Color');$t('Size');
         }
     });
 
