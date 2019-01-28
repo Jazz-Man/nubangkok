@@ -25,6 +25,9 @@ use Zend_Measure_Length as Length;
  */
 class GlDataMapper extends ParentGlDataMapperClass
 {
+
+    const TIME = 946684800;
+
     /**
      * @var array
      */
@@ -152,7 +155,7 @@ class GlDataMapper extends ParentGlDataMapperClass
      */
     private function getPackageId(ShipmentDetailsInterface $shipmentDetails, $sequenceNumber)
     {
-        $time = time() - 946684800;
+        $time = time() - self::TIME;
         $uniquePackageId = $shipmentDetails->getCustomerPrefix() . $sequenceNumber . $time;
         $uniquePackageId = preg_replace('/[^a-zA-Z\d]/', '', $uniquePackageId);
 
