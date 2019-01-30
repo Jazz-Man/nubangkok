@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <product_notification>
+            <general>
+                <notification_template>product_notification_general_notification_template</notification_template>
+            </general>
+        </product_notification>
+    </default>
+</config>

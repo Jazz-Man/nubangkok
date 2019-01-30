@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="product_notification_general_notification_template" label="Product Notification" file="notification.html" type="html" module="Encomage_ProductNotification" area="frontend"/>
+</config>
