@@ -1,7 +1,7 @@
 define([
     "jquery",
-    "jquery/ui",
-    "mage/translate"
+    "mage/translate",
+    "jquery/ui"
 ], function ($,$t) {
     "use strict";
 
@@ -21,7 +21,7 @@ define([
                     type: "POST"
                 }).done(function (data) {
                     document.getElementById("product-notification").reset();
-                    $('.notice').html('We will notify you as soon as the product is available.');
+                    $('.notice').html($t('We will notify you as soon as the product is available.'));
                     return true;
                 });
             }
