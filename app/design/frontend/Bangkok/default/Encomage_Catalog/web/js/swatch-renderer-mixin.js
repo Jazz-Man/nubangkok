@@ -40,7 +40,7 @@ define([
 
                 var productColorData = this.options.jsonSwatchConfig.productColorData;
                 if (productColorData || typeof productColorData !== 'undefined') {
-                    $('div#option-label-color-' + productColorData.colorId + '-item-' + productColorData.colorValue + '').trigger('emulateClick');
+                    $('div#option-label-color-' + productColorData.colorId + '-item-' + productColorData.colorValue + '').trigger('click');
                 }
             }
         });
