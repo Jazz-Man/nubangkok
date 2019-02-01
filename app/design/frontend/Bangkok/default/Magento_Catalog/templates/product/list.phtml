@@ -44,10 +44,10 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
                 $checkProductConfig = [];
                 foreach ($productChildren as $productChild):?>
                 <?php
-                    if(empty($checkProductConfig)){
-                        $checkProductConfig[] = $productChild->getColor();
-                    }elseif (in_array($productChild->getColor(),$checkProductConfig)){
+                    if (in_array($productChild->getColor(), $checkProductConfig)) {
                         continue;
+                    } else {
+                        $checkProductConfig[] = $productChild->getColor();
                     }
                     ?>
                     <?= /* @escapeNotVerified */ ($iterator++ == 1) ? '<li class="item product product-item">' : '</li><li class="item product product-item">' ?>
