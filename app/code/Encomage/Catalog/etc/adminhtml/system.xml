@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="catalog" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <tab>catalog</tab>
+            <resource>Encomage_Catalog::encomage_catalog</resource>
+            <group id="frontend" translate="label comment" type="text" sortOrder="10" showInDefault="1"
+                   showInWebsite="0" showInStore="0">
+                <field id="use_simple_instead_configurable" translate="label" type="select" sortOrder="1"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Use Simple instead configurable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Method allows to implement logic: When you have simple products on PLP to show configurable
+                        products on PDP even when they are not enabled.
+                    </comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
