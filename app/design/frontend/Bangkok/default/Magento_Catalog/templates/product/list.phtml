@@ -12,6 +12,7 @@ use Magento\Framework\App\Action\Action;
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper('Magento\Catalog\Helper\Output');
+$_catalogHelper = $this->helper('Encomage\Catalog\Helper\Data');
 ?>
 <?php if (!$_productCollection->count()): ?>
     <?= $block->getChildHtml('category.empty'); ?>
@@ -50,45 +51,48 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
                         $checkProductConfig[] = $productChild->getColor();
                     }
                     ?>
-                    <?= /* @escapeNotVerified */ ($iterator++ == 1) ? '<li class="item product product-item">' : '</li><li class="item product product-item">' ?>
-                    <div class="product-item-info" data-container="product-grid">
-                        <?php
-                        $productImage = $block->getImage($productChild, $image);
-                        if ($pos != null) {
-                            $position = ' style="left:' . $productImage->getWidth() . 'px;'
-                                . 'top:' . $productImage->getHeight() . 'px;"';
-                        }
-                        ?>
-                        <?php // Product Image ?>
-                        <a href="<?= /* @escapeNotVerified */ $productChild->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1"> <?= $productImage->toHtml() ?>
-                        </a>
-                        <div class="product details product-item-details">
-                            <?php echo $_productNameStripped = $block->stripTags($productChild->getName(), null, true);
+                <?php if($_catalogHelper->getProductStockStatus($productChild->getId())):?>
+                        <?= /* @escapeNotVerified */ ($iterator++ == 1) ? '<li class="item product product-item">' : '</li><li class="item product product-item">' ?>
+                        <div class="product-item-info" data-container="product-grid">
+                            <?php
+                            $productImage = $block->getImage($productChild, $image);
+                            if ($pos != null) {
+                                $position = ' style="left:' . $productImage->getWidth() . 'px;'
+                                    . 'top:' . $productImage->getHeight() . 'px;"';
+                            }
                             ?>
-                            <strong class="product name product-item-name">
-                                <a class="product-item-link"
-                                   href="<?= /* @escapeNotVerified */ $productChild->getProductUrl() ?>">
-                                    <?= /* @escapeNotVerified */ $_helper->productAttribute($productChild, $productChild->getName(), 'name') ?>
-                                </a>
-                            </strong>
-                            <?php if (!$_product->isAvailable()): ?>
-                                <div class="product-price-row">
-                                    <div class="price-box">
-                                        <span class="product-out-of-stock"><?= /* @escapeNotVerified */ __('Out of stock')?></span>
+                            <?php // Product Image ?>
+                            <a href="<?= /* @escapeNotVerified */ $productChild->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1"> <?= $productImage->toHtml() ?>
+                            </a>
+                            <div class="product details product-item-details">
+                                <?php echo $_productNameStripped = $block->stripTags($productChild->getName(), null, true);
+                                ?>
+                                <strong class="product name product-item-name">
+                                    <a class="product-item-link"
+                                       href="<?= /* @escapeNotVerified */ $productChild->getProductUrl() ?>">
+                                        <?= /* @escapeNotVerified */ $_helper->productAttribute($productChild, $productChild->getName(), 'name') ?>
+                                    </a>
+                                </strong>
+                                <?php if (!$_product->isAvailable()): ?>
+                                    <div class="product-price-row">
+                                        <div class="price-box">
+                                            <span class="product-out-of-stock"><?= /* @escapeNotVerified */ __('Out of stock')?></span>
+                                        </div>
                                     </div>
-                                </div>
-                            <?php else:?>
-                                <div class="product-price-row">
-                                    <?= $block->getProductPrice($productChild) ?>
-                                    <?php if ($productChild->getClearance()): ?>
-                                        <div class="clearance-att"><?= __('Clearance'); ?></div>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endif; ?>
-                            <?= $block->getProductDetailsHtml($productChild) ?>
+                                <?php else:?>
+                                    <div class="product-price-row">
+                                        <?= $block->getProductPrice($productChild) ?>
+                                        <?php if ($productChild->getClearance()): ?>
+                                            <div class="clearance-att"><?= __('Clearance'); ?></div>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+                                <?= $block->getProductDetailsHtml($productChild) ?>
+                            </div>
                         </div>
-                    </div>
-                    <?= ($iterator == count($_productCollection) + 1) ? '</li>' : '' ?>
+                        <?= ($iterator == $_productCollection->count() + 1) ? '</li>' : '' ?>
+                <?php endif;?>
+
                 <?php endforeach; ?>
             <?php endforeach; ?>
         </ol>
