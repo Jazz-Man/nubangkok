@@ -1,4 +1,5 @@
 <?php
+
 use Magento\Framework\App\Action\Action;
 
 ?>
@@ -36,7 +37,9 @@ $_catalogHelper = $this->helper('Encomage\Catalog\Helper\Data');
      */
     $pos = $block->getPositioned();
     ?>
-    <div class="products wrapper <?= /* @escapeNotVerified */ $viewMode ?> products-<?= /* @escapeNotVerified */ $viewMode ?>">
+    <div class="products wrapper <?= /* @escapeNotVerified */
+    $viewMode ?> products-<?= /* @escapeNotVerified */
+    $viewMode ?>">
         <?php $iterator = 1; ?>
         <ol class="products list items product-items">
             <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
@@ -51,8 +54,10 @@ $_catalogHelper = $this->helper('Encomage\Catalog\Helper\Data');
                         $checkProductConfig[] = $productChild->getColor();
                     }
                     ?>
-                <?php if($_catalogHelper->getProductStockStatus($productChild->getId())):?>
-                        <?= /* @escapeNotVerified */ ($iterator++ == 1) ? '<li class="item product product-item">' : '</li><li class="item product product-item">' ?>
+                    <?php if ($_catalogHelper->checkProductStockStatusForProductNotify($productChildren) ||
+                        $_catalogHelper->getProductStockStatus($productChild->getId())): ?>
+                        <?= /* @escapeNotVerified */
+                        ($iterator++ == 1) ? '<li class="item product product-item">' : '</li><li class="item product product-item">' ?>
                         <div class="product-item-info" data-container="product-grid">
                             <?php
                             $productImage = $block->getImage($productChild, $image);
@@ -62,24 +67,29 @@ $_catalogHelper = $this->helper('Encomage\Catalog\Helper\Data');
                             }
                             ?>
                             <?php // Product Image ?>
-                            <a href="<?= /* @escapeNotVerified */ $productChild->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1"> <?= $productImage->toHtml() ?>
+                            <a href="<?= /* @escapeNotVerified */
+                            $productChild->getProductUrl() ?>" class="product photo product-item-photo"
+                               tabindex="-1"> <?= $productImage->toHtml() ?>
                             </a>
                             <div class="product details product-item-details">
                                 <?php echo $_productNameStripped = $block->stripTags($productChild->getName(), null, true);
                                 ?>
                                 <strong class="product name product-item-name">
                                     <a class="product-item-link"
-                                       href="<?= /* @escapeNotVerified */ $productChild->getProductUrl() ?>">
-                                        <?= /* @escapeNotVerified */ $_helper->productAttribute($productChild, $productChild->getName(), 'name') ?>
+                                       href="<?= /* @escapeNotVerified */
+                                       $productChild->getProductUrl() ?>">
+                                        <?= /* @escapeNotVerified */
+                                        $_helper->productAttribute($productChild, $productChild->getName(), 'name') ?>
                                     </a>
                                 </strong>
                                 <?php if (!$_product->isAvailable()): ?>
                                     <div class="product-price-row">
                                         <div class="price-box">
-                                            <span class="product-out-of-stock"><?= /* @escapeNotVerified */ __('Out of stock')?></span>
+                                            <span class="product-out-of-stock"><?= /* @escapeNotVerified */
+                                                __('Out of stock') ?></span>
                                         </div>
                                     </div>
-                                <?php else:?>
+                                <?php else: ?>
                                     <div class="product-price-row">
                                         <?= $block->getProductPrice($productChild) ?>
                                         <?php if ($productChild->getClearance()): ?>
@@ -91,7 +101,7 @@ $_catalogHelper = $this->helper('Encomage\Catalog\Helper\Data');
                             </div>
                         </div>
                         <?= ($iterator == $_productCollection->count() + 1) ? '</li>' : '' ?>
-                <?php endif;?>
+                    <?php endif; ?>
 
                 <?php endforeach; ?>
             <?php endforeach; ?>
