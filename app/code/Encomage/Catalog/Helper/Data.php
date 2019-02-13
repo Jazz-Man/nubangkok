@@ -6,7 +6,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\App\Helper\Context;
-use Magento\CatalogInventory\Model\Stock\Item;
+use Magento\CatalogInventory\Api\Data\StockItemInterface;
 
 /**
  * Class Data
@@ -22,11 +22,11 @@ class Data extends AbstractHelper
     /**
      * Data constructor.
      * @param Context $context
-     * @param Item $stockItem
+     * @param StockItemInterface $stockItem
      */
     public function __construct(
         Context $context,
-        Item $stockItem
+        StockItemInterface $stockItem
     )
     {
         parent::__construct($context);
@@ -77,7 +77,7 @@ class Data extends AbstractHelper
     {
         $productNotify = [];
         foreach ($productChildren as $productChild) {
-            $productStockData = $stockData = $this->stockItem->load($productChild->getId(), 'product_id');
+            $productStockData  = $this->stockItem->load($productChild->getId(), 'product_id');
 
             if (!$productStockData->getIsInStock()) {
                 $productNotify[$productChild->getId()] = true;
