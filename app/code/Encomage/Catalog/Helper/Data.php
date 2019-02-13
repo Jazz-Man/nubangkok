@@ -6,7 +6,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\App\Helper\Context;
-use Magento\CatalogInventory\Api\Data\StockItemInterfaceFactory;
+use Magento\CatalogInventory\Api\Data\StockItemInterface;
 
 /**
  * Class Data
@@ -15,22 +15,22 @@ use Magento\CatalogInventory\Api\Data\StockItemInterfaceFactory;
 class Data extends AbstractHelper
 {
     /**
-     * @var StockItemInterfaceFactory
+     * @var Item
      */
-    protected $stockItemInterfaceFactory;
+    protected $stockItem;
 
     /**
      * Data constructor.
      * @param Context $context
-     * @param StockItemInterfaceFactory $stockItemInterfaceFactory
+     * @param StockItemInterface $stockItem
      */
     public function __construct(
         Context $context,
-        StockItemInterfaceFactory $stockItemInterfaceFactory
+        StockItemInterface $stockItem
     )
     {
         parent::__construct($context);
-        $this->stockItemInterfaceFactory = $stockItemInterfaceFactory;
+        $this->stockItem = $stockItem;
     }
 
     /**
@@ -57,8 +57,7 @@ class Data extends AbstractHelper
      */
     public function getProductStockStatus(int $productId)
     {
-        $stockData = $this->stockItemInterfaceFactory->create();
-        $stockData->load($productId);
+        $stockData = $this->stockItem->load($productId, 'product_id');
         if (!$stockData->getId()){
             return false;
         }
@@ -68,5 +67,26 @@ class Data extends AbstractHelper
         }
 
         return false;
+    }
+
+    /**
+     * @param array $productChildren
+     * @return bool
+     */
+    public function checkProductStockStatusForProductNotify(array $productChildren)
+    {
+        $productNotify = [];
+        foreach ($productChildren as $productChild) {
+            $productStockData  = $this->stockItem->load($productChild->getId(), 'product_id');
+
+            if (!$productStockData->getIsInStock()) {
+                $productNotify[$productChild->getId()] = true;
+            }
+        }
+        if (count($productChildren) === count($productNotify)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -39,8 +39,14 @@ define([
                 });
 
                 var productColorData = this.options.jsonSwatchConfig.productColorData;
+
                 if (productColorData || typeof productColorData !== 'undefined') {
-                    $('div#option-label-color-' + productColorData.colorId + '-item-' + productColorData.colorValue + '').trigger('click');
+                    var selector = $('div#option-label-color-' + productColorData.colorId + '-item-' + productColorData.colorValue + '');
+                    if (selector.attr('aria-checked') === "true") {
+                        return false;
+                    } else {
+                        selector.trigger('click');
+                    }
                 }
             }
         });
