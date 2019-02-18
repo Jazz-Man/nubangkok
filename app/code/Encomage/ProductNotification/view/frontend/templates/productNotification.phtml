@@ -1,0 +1,56 @@
+<?php
+/** @var \Encomage\ProductNotification\Block\ProductNotification $block */;
+?>
+<?php
+$productStockData = $block->getProductStockData()
+?>
+<?php
+$isInStock = false;
+$productQty = false;
+if (isset($productStockData['simple'])) {
+    $isInStock = $productStockData['simple']['stockData']->getIsInStock();
+    $productQty = (bool)$productStockData['simple']['stockData']->getQty();
+    $productId = $productStockData['simple']['product_id'];
+} elseif (isset($productStockData['configurable'])) {
+    $isInStock = true;
+    $productQty = true;
+    $productId = $productStockData['configurable']['product_id'];
+}
+?>
+<?php if ($isInStock || $productQty):?>
+    <form class="form contact"
+          id="product-notification"
+          action="#"
+          method="post"
+          data-hasrequired="<?= /* @escapeNotVerified */ __('* Required Fields') ?>"
+          data-mage-init='{"validation": {}}'>
+        <div style="margin-bottom: 5px;"><?=/* @escapeNotVerified */__('if you would like to be notified when it launches please enter your email below')?></div>
+        <div class="field email required">
+            <div class="control">
+                <input name="email" id="email" title="<?= /* @escapeNotVerified */__('Email') ?>"
+                       style="width: 60%;float: left; margin-top: -4px"
+                       value="<?= /* @escapeNotVerified */ $block->getUserEmail() ?>"
+                       placeholder="<?=/* @escapeNotVerified */ __('Email')?>"
+                       class="input-text" 
+                       type="email" 
+                       data-validate="{required:true, 'validate-email':true}"/>
+            </div>
+        </div>
+        <input type="hidden" name="product_id" value="<?= /* @escapeNotVerified */ $productId ?>">
+        <input type="hidden" name="product_name" value="<?= /* @escapeNotVerified */ $block->getProductName() ?>">
+        <input type="button" name="button"
+               class="cms-button-small"
+               id="encomage_product_notify_button"
+               value="<?= /* @escapeNotVerified */ __('Please notify me') ?>">
+    </form>
+    <div class="notice" style="float: left;"></div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Encomage_ProductNotification/js/productNotification": {
+                    "ajaxUrl": "<?= $block->getActionUrl() ?>"
+                }
+            }
+        }
+    </script>
+<?php endif; ?>
