@@ -1336,7 +1336,14 @@ define([
             $.each(sizeBox, function () {
                 sizeElement = $(this);
                 sizeElementId = $(this).attr('option-id');
-                sizeElement.text(sizeLabels[sizeElementId] + ' ' + stockStatusMessage[sizeElementId])
+                if(this.disabled){
+                    sizeElement.remove()
+                }else {
+                    if (typeof(stockStatusMessage[sizeElementId]) !== "undefined") {
+                        sizeElement.text(sizeLabels[sizeElementId] + ' ' + stockStatusMessage[sizeElementId])
+                    }
+                }
+
             });
         },
 
