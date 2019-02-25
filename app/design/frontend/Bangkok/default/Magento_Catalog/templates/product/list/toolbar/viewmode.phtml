@@ -24,7 +24,6 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
                 <strong class="modes-mode active mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>"
                         data-value="<?= /* @escapeNotVerified */ strtolower($_code) ?>">
                     <span><?= /* @escapeNotVerified */ $_label ?></span>
-<!--                    <span><img src="--><?php //echo $this->getViewFileUrl('images/grid-icon-mobile.png'); ?><!--" alt=''></span>-->
                 </strong>
         <?php else: ?>
                 <a class="modes-mode mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>" href="#"
@@ -33,7 +32,6 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
                    id="mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>"
                    aria-labelledby="modes-label mode-<?= /* @escapeNotVerified */ strtolower($_code) ?>">
                     <span><?= /* @escapeNotVerified */ $_label ?></span>
-<!--                    <span><img src="--><?php //echo $this->getViewFileUrl('images/list-icon-mobile.png'); ?><!--" alt=''></span>-->
                 </a>
             <?php endif; ?>
         <?php endforeach; ?>
