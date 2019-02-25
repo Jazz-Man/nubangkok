@@ -967,25 +967,29 @@ input:-webkit-autofill {
 
 /*new icons*/
 .mode-list {
-    content: url(../images/icons/productPage/desktop-list2.svg);
+    /*content: url(../images/icons/productPage/desktop-list2.svg);*/
+    content: url(../images/icons/productPage/desktop-grid2.svg);
     width: 26px !important;
     padding: 4px 9px !important;
 }
 
 .mode-list.active {
-    content: url(../images/icons/productPage/desktop-list-active2.svg);
+    /*content: url(../images/icons/productPage/desktop-list-active2.svg);*/
+    content: url(../images/icons/productPage/desktop-grid-active2.svg);
 }
 
 .mode-grid {
-    content: url(../images/icons/productPage/desktop-grid2.svg);
+    content: url(../images/icons/productPage/desktop-list2.svg);
+    /*content: url(../images/icons/productPage/desktop-grid2.svg);*/
     width: 26px;
 }
 
 .mode-grid.active {
-    content: url(../images/icons/productPage/desktop-grid-active2.svg);
+    /*content: url(../images/icons/productPage/desktop-grid-active2.svg);*/
+    content: url(../images/icons/productPage/desktop-list-active2.svg);
     padding: 4px 0;
     width: 26px;
-    float: right;
+    /*float: right;*/
 }
 
 @media screen and (max-width: 768px) {
@@ -1069,7 +1073,18 @@ input:-webkit-autofill {
         top: -13px;
     }
 }
-
+@media screen and (min-width: 768px) and (max-width: 768px) {
+    .columns .column.main .toolbar.toolbar-products {
+        margin-bottom: 0;
+        margin-top: 14px;
+    }
+    .columns .column.main .toolbar.toolbar-products .modes-mode.mode-grid {
+        margin-top: 2px;
+    }
+    .columns .column.main .toolbar.toolbar-products .modes-mode.mode-grid.active {
+        margin-top: 0;
+    }
+}
 /*mobile navigation*/
 @media screen and (max-width: 350px) {
     .nav-sections-item-content .sidebar-menu .main-categories .font-less {
