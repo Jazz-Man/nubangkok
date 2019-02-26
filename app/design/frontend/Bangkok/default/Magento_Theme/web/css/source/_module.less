@@ -448,6 +448,75 @@
       }
     }
   }
+  //
+  // for TH store
+  //
+  html:lang(th) {
+    body {
+      .lib-typography(
+        @_font-size:  1.8rem,
+        @_color: @text__color,
+        @_font-family: 'Thai Regular',
+        @_font-weight: 300,
+        @_line-height: 1.2,
+        @_font-style: normal
+      );
+    }
+    .columns .column.main .breadcrumbs .items,
+    .page-header .switcher li, .page-footer .switcher li,
+    .header.panel > .header.links > li,
+    .product-item .price-box .price,
+    .product-info-main .price-box .price-wrapper .price,
+    .product-options-bottom .price-box .price-wrapper .price,
+    .product-info-main .action.towishlist,
+    .product-options-bottom .action.towishlist,
+    .block-bundle-summary .action.towishlist,
+    .action.primary,
+    .post-list-wrapper .post-list .post-holder .post-footer .post-title a,
+    .message.error, .message.info,
+    .points-container .left-block .content .left-points-part > p,
+    .points-container .right-block .content .right-points-part > p,
+    .points-container .bottom-points-block,
+    .products-grid.wishlist .product-item .box-tocart .fieldset .field.qty .label,
+    .products-grid.wishlist .product-item .box-tocart .message-count-in-stock span,
+    .cart.table-wrapper .col.qty span,
+    .order-items.table-wrapper
+    .col.qty span,
+    .cart.table-wrapper .col.subtotal span,
+    .order-items.table-wrapper .col.subtotal span,
+    .cart-summary .block .fieldset .field:not(.choice) > .label span,
+    .cart-container .checkout-methods-items .action.primary.checkout,
+    .cart-summary .fieldset.coupon .actions-toolbar .primary .action.apply.primary,
+    .opc-progress-bar-item._active > span,
+    .opc-progress-bar-item > span,
+    .opc-wrapper .shipping-address-item,
+    .opc-block-summary .product-item .price,
+    .methods-shipping .actions-toolbar .action.primary,
+    .checkout-payment-method .payment-method-content > .actions-toolbar > .primary .action.primary,
+    .careers-listing-content .short-description-container .short-description-title,
+    .careers-view-content .form-content form .actions-toolbar .primary button.action.submit {
+      font-size: 1.8rem;
+      font-family: 'Thai Regular';
+    }
+    .header.panel > .header.links > li.minicart-wrapper .count-bag {
+      font-family: 'Arial_Rounded_MT', Arial_Rounded_MT;
+      font-weight: 400;
+      font-size: 1.4rem;
+    }
+    .products-grid.wishlist .product-item .box-tocart .fieldset .field.qty .control {
+      .qty-reduce span {
+        top: -2px;
+        left: 6px;
+      }
+      .qty-enhance span {
+        top: -3px;
+        left: 5px;
+      }
+    }
+    .cart.table-wrapper .item-options {
+      font-size: 2rem;
+    }
+  }
 }
 
 //
@@ -586,6 +655,36 @@
 //
 // Mobile
 //
+html:lang(th) {
+  @media screen and (max-width: 992px) {
+    form.form-wishlist-items .products-grid.wishlist .product-item {
+      .product-name-wsl {
+        font-size: 1.8rem;
+      }
+      .box-tocart .fieldset .field.qty {
+        width: 65%;
+        .control {
+          .qty-reduce span {
+            font-size: 1.8rem;
+          }
+          .qty-enhance span {
+            top: -3px;
+            left: 6px;
+            font-size: 1.8rem;
+          }
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 640px) {
+    form.form-wishlist-items .products-grid.wishlist .product-item {
+      .box-tocart .message-count-in-stock {
+        top: 15px;
+      }
+    }
+  }
+}
+
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
   //icon menu list
   .mobile-account-top-links {
@@ -748,6 +847,28 @@
           height: max-content;
         }
       }
+    }
+  }
+
+  html:lang(th) {
+    body {
+      .lib-typography(
+        @_font-size:  1.8rem,
+        @_color: @text__color,
+        @_font-family: 'Thai Regular',
+        @_font-weight: 300,
+        @_line-height: 1.2,
+        @_font-style: normal
+      );
+    }
+    .breadcrumbs .items .item,
+    .product-info-main .page-title-wrapper .page-title,
+    .product-info-main .box-tocart .actions .action.primary.tocart,
+    .product-options-bottom .product-item-qty {
+      font-size: 1.8rem;
+    }
+    .header.links .minicart-wrapper .count-bag {
+      top: 14px;
     }
   }
 }

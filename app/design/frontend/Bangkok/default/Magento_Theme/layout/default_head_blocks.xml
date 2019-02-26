@@ -9,6 +9,7 @@
         <css src="css/plugins/cropper/style.css"/>
         <css src="css/plugins/cropper/jquery.Jcrop.css"/>
         <!-- Plugins end -->
+        <css src="fonts/thai/thai.css"/>
         <css src="css/custom.css"/>
         <css src="css/cms.css"/>
         <meta name="format-detection" content="telephone=no"/>

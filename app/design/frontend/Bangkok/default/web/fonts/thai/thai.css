@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Thai Regular';
+    src: url('../thai/Thai-Sans-Lite-Regular.ttf') format('woff2');
+    font-weight: 300;
+    font-style: normal
+}
+@font-face {
+    font-family: 'HelvethaicaMon Regular';
+    src: url('../thai/DB-HelvethaicaMon-Regular.ttf') format('woff2');
+    font-weight: 300;
+    font-style: normal
+}

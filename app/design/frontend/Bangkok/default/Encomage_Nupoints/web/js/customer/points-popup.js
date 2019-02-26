@@ -15,7 +15,6 @@ define([
 
     //-------------- right points block
     $(document).on('click touchstart', '.js-open', function () {
-        debugger;
         $('.float-right-content').addClass('active');
     });
     $(document).on('click touchstart', '.js-close', function () {
