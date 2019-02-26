@@ -9,6 +9,7 @@ use Encomage\ProductNotification\Model\ResourceModel\ProductNotification\Collect
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableTypeInstance;
 use Encomage\ProductNotification\Model\ResourceModel\ProductNotification as ResourceModel;
 use Encomage\ProductNotification\Helper\Email;
+use Magento\Framework\Url;
 
 /**
  * Class Observer
@@ -42,19 +43,26 @@ class Observer implements ObserverInterface
     protected $emailHelper;
 
     /**
+     * @var UrlInterface
+     */
+    protected $url;
+
+    /**
      * Observer constructor.
      * @param ProductRepositoryInterface $productRepository
      * @param CollectionFactory $collectionFactory
      * @param ConfigurableTypeInstance $configurableTypeInstance
      * @param ResourceModel $resourceModel
      * @param Email $emailHelper
+     * @param Url $url
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         CollectionFactory $collectionFactory,
         ConfigurableTypeInstance $configurableTypeInstance,
         ResourceModel $resourceModel,
-        Email $emailHelper
+        Email $emailHelper,
+        Url $url
     )
     {
         $this->productRepository = $productRepository;
@@ -62,6 +70,7 @@ class Observer implements ObserverInterface
         $this->configurableTypeInstance = $configurableTypeInstance;
         $this->resourceModel = $resourceModel;
         $this->emailHelper = $emailHelper;
+        $this->url = $url;
     }
 
     /**
@@ -73,7 +82,8 @@ class Observer implements ObserverInterface
     public function execute(EventObserver $observer)
     {
         $stockItem = $observer->getItem();
-        $product = $product = $this->productRepository->getById($stockItem->getProductId());
+        /** @var \Magento\Catalog\Product $product*/
+        $product = $this->productRepository->getById($stockItem->getProductId());
         $isInStock = $stockItem->getIsInStock();
         $qty = $stockItem->getQty();
 
@@ -89,12 +99,14 @@ class Observer implements ObserverInterface
             $collection->addFieldToFilter('product_id', ['eq' => $productId]);
             $idsForDelete = [];
             foreach ($collection as $item) {
-                /** @var \Encomage\ProductNotification\Model\ProductNotification $item */
+               $productLink = $this->url->getUrl('catalog/product/view', ['id' => $product->getId(),'s'=>$product->getUrlKey(), '_nosid' => true, ]);
+
+               /** @var \Encomage\ProductNotification\Model\ProductNotification $item */
                 $idsForDelete[] = $item->getId();
                 $this->emailHelper->sendEmail(
                     ['email'=>$item->getEmail()],
                     'general',
-                    ['product_name'=>$item->getProductName()]);
+                    ['product_name'=>$item->getProductName(),'product_link'=>$productLink]);
             }
 
             $this->resourceModel->deleteRecordsByIds($idsForDelete);
