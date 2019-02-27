@@ -6,7 +6,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\App\Helper\Context;
-use Magento\CatalogInventory\Api\Data\StockItemInterface;
+use Magento\CatalogInventory\Api\Data\StockItemInterfaceFactory;
 
 /**
  * Class Data
@@ -17,7 +17,12 @@ class Data extends AbstractHelper
     /**
      * @var Item
      */
-    protected $stockItem;
+    protected $stockItemFactory;
+
+    /**
+     * @var array
+     */
+    private $productsStockDataCollections = [];
 
     /**
      * Data constructor.
@@ -26,11 +31,11 @@ class Data extends AbstractHelper
      */
     public function __construct(
         Context $context,
-        StockItemInterface $stockItem
+        StockItemInterfaceFactory $stockItem
     )
     {
         parent::__construct($context);
-        $this->stockItem = $stockItem;
+        $this->stockItemFactory = $stockItem;
     }
 
     /**
@@ -52,41 +57,35 @@ class Data extends AbstractHelper
     }
 
     /**
+     * @param array $productChildren
      * @param int $productId
      * @return bool
      */
-    public function getProductStockStatus(int $productId)
+    public function checkProductStockStatus(array $productChildren, int $productId)
     {
-        $stockData = $this->stockItem->load($productId, 'product_id');
-        if (!$stockData->getId()){
-            return false;
+        $productStockDataCollection = [];
+        $productNotify = [];
+        foreach ($productChildren as $productChild) {
+            $productStockData = $this->stockItemFactory->create()->load($productChild->getId(), 'product_id');
+            if (!$productStockData->getId()) {
+                return false;
+            }
+
+            if (!$productStockData->getIsInStock() || $productStockData->getQty() === 0) {
+                $productNotify[$productChild->getId()] = true;
+            }
+            $productStockDataCollection[$productChild->getId()] = $productStockData;
         }
 
-        if ($stockData->getQty() && $stockData->getIsInStock()) {
+        if (count($productChildren) === count($productNotify)) {
             return true;
+        } elseif (isset($productStockDataCollection[$productId])) {
+            $currentChildProduct = $productStockDataCollection[$productId];
+            if ($currentChildProduct->getIsInStock() && $currentChildProduct->getQty()) {
+                return true;
+            }
         }
 
         return false;
-    }
-
-    /**
-     * @param array $productChildren
-     * @return bool
-     */
-    public function checkProductStockStatusForProductNotify(array $productChildren)
-    {
-        $productNotify = [];
-        foreach ($productChildren as $productChild) {
-            $productStockData  = $this->stockItem->load($productChild->getId(), 'product_id');
-
-            if (!$productStockData->getIsInStock()) {
-                $productNotify[$productChild->getId()] = true;
-            }
-        }
-        if (count($productChildren) === count($productNotify)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }
