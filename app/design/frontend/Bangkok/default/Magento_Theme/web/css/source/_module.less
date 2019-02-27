@@ -494,7 +494,9 @@
     .methods-shipping .actions-toolbar .action.primary,
     .checkout-payment-method .payment-method-content > .actions-toolbar > .primary .action.primary,
     .careers-listing-content .short-description-container .short-description-title,
-    .careers-view-content .form-content form .actions-toolbar .primary button.action.submit {
+    .careers-view-content .form-content form .actions-toolbar .primary button.action.submit,
+    .account .column.main .block:not(.widget) .box-title > span,
+    .account-right-block .sign-in-block a.action.login {
       font-size: 1.8rem;
       font-family: 'Thai Regular';
     }
@@ -502,6 +504,16 @@
       font-family: 'Arial_Rounded_MT', Arial_Rounded_MT;
       font-weight: 400;
       font-size: 1.4rem;
+    }
+    .block.block-customer-login .block-content fieldset .control .customer-show-password span,
+    .form.create.account.form-create-account .create.info .legend {
+      font-size: 1.4rem;
+    }
+    div.mage-error[generated] {
+      font-size: 1.6rem !important;
+    }
+    .create.info label span, .nice-select .current {
+      font-size: 1.8rem !important;
     }
     .products-grid.wishlist .product-item .box-tocart .fieldset .field.qty .control {
       .qty-reduce span {
@@ -515,6 +527,18 @@
     }
     .cart.table-wrapper .item-options {
       font-size: 2rem;
+    }
+    .block.block-dashboard-addresses .form-address-edit .field.country.required {
+      .label, .control .nice-select .current {
+        font-size: 1.8rem;
+      }
+    }
+    .control .nice-select.open {
+      .list {
+        .option {
+          font-size: 1.8rem;
+        }
+      }
     }
   }
 }
@@ -650,11 +674,20 @@
       &:extend(.abs-add-clearfix all);
     }
   }
+
+  // if Th store
+  html:lang(th) {
+    .product-options-bottom .product-item-qty {
+      font-size: 1.8rem;
+    }
+  }
 }
 
 //
 // Mobile
 //
+
+// if Th store
 html:lang(th) {
   @media screen and (max-width: 992px) {
     form.form-wishlist-items .products-grid.wishlist .product-item {
@@ -680,6 +713,28 @@ html:lang(th) {
     form.form-wishlist-items .products-grid.wishlist .product-item {
       .box-tocart .message-count-in-stock {
         top: 15px;
+      }
+      .price-box .price {
+        font-size: 1.8rem;
+      }
+    }
+  }
+  @media screen and (max-width: 450px) {
+    form.form-wishlist-items .products-grid.wishlist .product-item {
+      .box-tocart {
+        .message-count-in-stock span {
+          font-size: 1.4rem;
+        }
+        .fieldset .field.qty .control {
+          .qty-reduce span {
+            top: -3px;
+            left: 5px;
+          }
+          .qty-enhance span {
+            top: -4px;
+            left: 5px;
+          }
+        }
       }
     }
   }
@@ -850,6 +905,7 @@ html:lang(th) {
     }
   }
 
+  //if Th store
   html:lang(th) {
     body {
       .lib-typography(
@@ -869,6 +925,29 @@ html:lang(th) {
     }
     .header.links .minicart-wrapper .count-bag {
       top: 14px;
+    }
+    .column.main .form-wishlist-items div.actions-toolbar .primary a {
+      font-size: 1.6rem;
+    }
+    .cart.table-wrapper .product-item-details .product-item-name {
+      font-size: 1.8rem;
+      & + .item-options .option-color {
+        font-size: 1.6rem;
+      }
+    }
+    .cart-summary .cart-totals .data.table.totals {
+      tr {
+        .mark, .price {
+          font-size: 1.8rem;
+        }
+      }
+      .totals.redeem.excl {
+        font-size: 1.8rem;
+      }
+    }
+    // menu
+    .sidebar-menu .main-categories span a {
+      font-size: 1.8rem;
     }
   }
 }
