@@ -88,3 +88,5 @@ PULL_REQUEST_TEMPLATE.md
 auth.json.sample
 php.ini.sample
 deploy.sh
+pub/media/magefan_blog/
+pub/media/stories/
