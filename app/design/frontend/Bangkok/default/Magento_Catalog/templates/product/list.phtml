@@ -13,7 +13,7 @@ use Magento\Framework\App\Action\Action;
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper('Magento\Catalog\Helper\Output');
-$_catalogHelper = $this->helper('Encomage\Catalog\Helper\Data');
+$_catalogHelper = $this->helper(Encomage\Catalog\Helper\Data::class);
 ?>
 <?php if (!$_productCollection->count()): ?>
     <?= $block->getChildHtml('category.empty'); ?>
@@ -44,18 +44,25 @@ $_catalogHelper = $this->helper('Encomage\Catalog\Helper\Data');
         <ol class="products list items product-items">
             <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
             <?php foreach ($_productCollection as $_product): ?>
-                <?php $productChildren = $_product->getTypeInstance()->getUsedProducts($_product);
+                <?php
+                if (!$_product->getTypeInstance()->hasOptions($_product)) {
+                    continue;
+                }
+                $productChildren = $_product->getTypeInstance()->getUsedProducts($_product);
                 $checkProductConfig = [];
                 foreach ($productChildren as $productChild):?>
                 <?php
+                 $canRender = false;
                     if (in_array($productChild->getColor(), $checkProductConfig)) {
                         continue;
                     } else {
-                        $checkProductConfig[] = $productChild->getColor();
+                        if($_catalogHelper->checkProductStockStatus($productChildren ,$productChild->getId())){
+                            $checkProductConfig[] = $productChild->getColor();
+                            $canRender= true;
+                        };
                     }
                     ?>
-                    <?php if ($_catalogHelper->checkProductStockStatusForProductNotify($productChildren) ||
-                        $_catalogHelper->getProductStockStatus($productChild->getId())): ?>
+                    <?php if ($canRender): ?>
                         <?= /* @escapeNotVerified */
                         ($iterator++ == 1) ? '<li class="item product product-item">' : '</li><li class="item product product-item">' ?>
                         <div class="product-item-info" data-container="product-grid">
@@ -102,7 +109,6 @@ $_catalogHelper = $this->helper('Encomage\Catalog\Helper\Data');
                         </div>
                         <?= ($iterator == $_productCollection->count() + 1) ? '</li>' : '' ?>
                     <?php endif; ?>
-
                 <?php endforeach; ?>
             <?php endforeach; ?>
         </ol>
