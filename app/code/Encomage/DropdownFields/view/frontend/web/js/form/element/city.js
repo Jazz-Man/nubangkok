@@ -54,18 +54,12 @@ define([
                 cityOptions.push(jsonObject);
             });
             this.setOptions(cityOptions);
-            var getCity = this.parentName + '.' + 'city',
-                city = registry.get(getCity),
-                cases = cityOptions.length;
+            var cases = cityOptions.length;
 
             if (cases === 0) {
-                city.show();
                 this.hide();
-                parentCity.show();
             } else {
-                city.hide();
                 this.show();
-                parentCity.hide();
             }
         }
     });
