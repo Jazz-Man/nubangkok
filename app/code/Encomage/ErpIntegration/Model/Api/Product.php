@@ -503,7 +503,7 @@ class Product extends Request
             $erpColorCode = substr($options, -8, 4);
         } else {
             $result['size'] = null;
-            $erpColorCode = substr($options, -6, 4);
+            $erpColorCode = substr($options, 0, 4);
         }
         if ($this->_colorCodes->getData($erpColorCode)) {
             $result['colors'] = $this->_colorCodes->getData($erpColorCode)['color_name'];
