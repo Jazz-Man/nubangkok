@@ -185,7 +185,7 @@ class Product extends Request
 
                 /** @var \Magento\Catalog\Model\Product $product */
                 $product = $this->productFactory->create()->load($productId);
-                $product->setPrice($item['salesprice']);
+                $product->setPrice(abs($item['salesprice']));
                 $product->addData([
                     'quantity_and_stock_status' => [
                         'is_in_stock' => $stockStatus,
@@ -198,9 +198,13 @@ class Product extends Request
             $confSku = $this->_prepareConfSku($item['BarCode']);
             $confName = $this->_prepareConfName($item['IcProductDescription0']);
             $categoryIds = $this->_getCategoryId($item['BarCode']);
-            $attributesOptions = $this->_getAttributesCodes($item['BarCode']);
-            $color = $this->_getAttributeIdByLabel($attributesOptions['colors'], 'color');
-            $size = $this->_getAttributeIdByLabel($attributesOptions['size'] / 10, 'size');
+            try {
+                $attributesOptions = $this->_getAttributesCodes($item['BarCode']);
+                $color = $this->_getAttributeIdByLabel($attributesOptions['colors'], 'color');
+                $size = $this->_getAttributeIdByLabel($attributesOptions['size'] / 10, 'size');
+            } catch (\Exception $e) {
+                continue;
+            }
             if (empty($color['value'])) {
                 $colorsNotExist .= $item['IcProductDescription0'] . ' - ';
                 $colorsNotExist .= $attributesOptions['colors'] . ', ';
