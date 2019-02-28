@@ -493,7 +493,10 @@ class Product extends Request
     {
         $barCode = explode(',', rtrim(preg_replace('/(\d+)/i', '${1},', substr($barCode, 2)), ','));
         $options = (!empty(end($barCode)) && $last = array_pop($barCode)) ? $last : array_pop($barCode);
-        $check = substr($options, -3) * 2;
+        if (empty(str_replace(')', '', $options))) {
+            throw new \Exception(__('Not correct barcode'));
+        }
+        $check = (int)substr($options, -3);
         $result = [];
         if ((bool)$check && gettype($check) == 'integer') {
             $result['size'] = substr($options, -3);
