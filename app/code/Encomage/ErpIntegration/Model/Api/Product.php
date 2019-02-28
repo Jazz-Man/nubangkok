@@ -185,7 +185,7 @@ class Product extends Request
 
                 /** @var \Magento\Catalog\Model\Product $product */
                 $product = $this->productFactory->create()->load($productId);
-                $product->setPrice($item['salesprice']);
+                $product->setPrice(abs($item['salesprice']));
                 $product->addData([
                     'quantity_and_stock_status' => [
                         'is_in_stock' => $stockStatus,
@@ -198,9 +198,13 @@ class Product extends Request
             $confSku = $this->_prepareConfSku($item['BarCode']);
             $confName = $this->_prepareConfName($item['IcProductDescription0']);
             $categoryIds = $this->_getCategoryId($item['BarCode']);
-            $attributesOptions = $this->_getAttributesCodes($item['BarCode']);
-            $color = $this->_getAttributeIdByLabel($attributesOptions['colors'], 'color');
-            $size = $this->_getAttributeIdByLabel($attributesOptions['size'] / 10, 'size');
+            try {
+                $attributesOptions = $this->_getAttributesCodes($item['BarCode']);
+                $color = $this->_getAttributeIdByLabel($attributesOptions['colors'], 'color');
+                $size = $this->_getAttributeIdByLabel($attributesOptions['size'] / 10, 'size');
+            } catch (\Exception $e) {
+                continue;
+            }
             if (empty($color['value'])) {
                 $colorsNotExist .= $item['IcProductDescription0'] . ' - ';
                 $colorsNotExist .= $attributesOptions['colors'] . ', ';
@@ -218,7 +222,7 @@ class Product extends Request
             $product->setAttributeSetId(Visibility::VISIBILITY_BOTH);
             $product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
             $product->setTypeId('simple');
-            $product->setPrice($item['salesprice']);
+            $product->setPrice(abs($item['salesprice']));
             $product->setWeight(null);
             $product->addData([
                 'quantity_and_stock_status' => [
@@ -489,14 +493,17 @@ class Product extends Request
     {
         $barCode = explode(',', rtrim(preg_replace('/(\d+)/i', '${1},', substr($barCode, 2)), ','));
         $options = (!empty(end($barCode)) && $last = array_pop($barCode)) ? $last : array_pop($barCode);
-        $check = substr($options, -3) * 2;
+        if (empty(str_replace(')', '', $options))) {
+            throw new \Exception(__('Not correct barcode'));
+        }
+        $check = (int)substr($options, -3);
         $result = [];
         if ((bool)$check && gettype($check) == 'integer') {
             $result['size'] = substr($options, -3);
             $erpColorCode = substr($options, -8, 4);
         } else {
             $result['size'] = null;
-            $erpColorCode = substr($options, -6, 4);
+            $erpColorCode = substr($options, 0, 4);
         }
         if ($this->_colorCodes->getData($erpColorCode)) {
             $result['colors'] = $this->_colorCodes->getData($erpColorCode)['color_name'];
