@@ -222,7 +222,7 @@ class Product extends Request
             $product->setAttributeSetId(Visibility::VISIBILITY_BOTH);
             $product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
             $product->setTypeId('simple');
-            $product->setPrice($item['salesprice']);
+            $product->setPrice(abs($item['salesprice']));
             $product->setWeight(null);
             $product->addData([
                 'quantity_and_stock_status' => [
