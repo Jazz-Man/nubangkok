@@ -56,6 +56,6 @@ class Manually extends Action
             $resultRedirect->setPath('catalog/product');
         }
 
-        return $resultRedirect;
+        return $resultRedirect->setPath('catalog/product');
     }
 }
