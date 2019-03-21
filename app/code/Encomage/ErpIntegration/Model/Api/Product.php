@@ -134,8 +134,8 @@ class Product extends Request
         $this->stockRegistryFactory = $stockRegistryFactory;
         $this->_helper = $data;
 
-        $this->_attributesOptions['size'] = $this->entityAttribute->loadByCode('catalog_product', 'size')->getSource()->getAllOptions();
-        $this->_attributesOptions['color'] = $this->entityAttribute->loadByCode('catalog_product', 'color')->getSource()->getAllOptions();
+        $this->_attributesOptions['size'] = $this->entityAttribute->loadByCode('catalog_product', 'size')->getSource()->getAllOptions(false, true);
+        $this->_attributesOptions['color'] = $this->entityAttribute->loadByCode('catalog_product', 'color')->getSource()->getAllOptions(false, true);
         $this->_colorCodes = $this->_prepareColorArray($this->serializerJson->unserialize($this->scopeConfig->getValue(parent::ERP_COLOR_CODES)));
         $this->categoryCodes = $this->serializerJson->unserialize($this->_getCategoryCodes());
         $this->subCategoryCodesBags = $this->serializerJson->unserialize($this->_getBagsCodes());
