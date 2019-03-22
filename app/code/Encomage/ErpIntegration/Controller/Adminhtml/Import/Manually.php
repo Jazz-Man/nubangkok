@@ -9,7 +9,7 @@ use Encomage\ErpIntegration\Helper\Data;
 
 class Manually extends Action
 {
-    const ITERATION_PAGE_LIMIT = 1;
+    const ITERATION_PAGE_LIMIT = 3;
 
     /**
      * @var Product
