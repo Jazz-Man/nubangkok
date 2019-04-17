@@ -454,7 +454,7 @@
   html:lang(th) {
     body {
       .lib-typography(
-        @_font-size:  1.8rem,
+        @_font-size:  1.9rem,
         @_color: @text__color,
         @_font-family: 'Thai Regular',
         @_font-weight: 300,
@@ -496,9 +496,27 @@
     .careers-listing-content .short-description-container .short-description-title,
     .careers-view-content .form-content form .actions-toolbar .primary button.action.submit,
     .account .column.main .block:not(.widget) .box-title > span,
-    .account-right-block .sign-in-block a.action.login {
-      font-size: 1.8rem;
+    .account-right-block .sign-in-block a.action.login
+     {
+      font-size: 1.9rem;
       font-family: 'Thai Regular';
+    }
+    // nustories
+    .stories-content {
+      .your-stories-block .your-stories-container .story-item .story-content {
+        span.story-customer-info,
+        span.story-create-at,
+        span.story-title {
+          font-size: 1.9rem;
+        }
+        div.full-content {
+          font-family: 'Thai Regular';
+          font-style: normal;
+          font-weight: 300;
+          line-height: 1.2;
+          font-size: 1.9rem;
+        }
+      }
     }
     .header.panel > .header.links > li.minicart-wrapper .count-bag {
       font-family: 'Arial_Rounded_MT', Arial_Rounded_MT;
@@ -695,7 +713,7 @@ html:lang(th) {
         font-size: 1.8rem;
       }
       .box-tocart .fieldset .field.qty {
-        width: 65%;
+        width: 100%;
         .control {
           .qty-reduce span {
             font-size: 1.8rem;
@@ -909,7 +927,7 @@ html:lang(th) {
   html:lang(th) {
     body {
       .lib-typography(
-        @_font-size:  1.8rem,
+        @_font-size:  1.9rem,
         @_color: @text__color,
         @_font-family: 'Thai Regular',
         @_font-weight: 300,
@@ -948,6 +966,14 @@ html:lang(th) {
     // menu
     .sidebar-menu .main-categories span a {
       font-size: 1.8rem;
+    }
+    .page-footer .footer.content .mobile-footer {
+      .social-links span {
+        font-size: 1.9rem;
+      }
+      .general-subcategories div a {
+        font-size: 1.9rem;
+      }
     }
   }
 }
