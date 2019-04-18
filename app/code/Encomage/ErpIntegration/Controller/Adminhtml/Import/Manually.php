@@ -36,7 +36,7 @@ class Manually extends Action
     public function execute()
     {
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-        $page = (int)$this->getRequest()->getParam('p', 0);
+        $page = (int)$this->getRequest()->getParam('p', 1);
         try {
             $i = 0;
             while ($i < self::ITERATION_PAGE_LIMIT) {
