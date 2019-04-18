@@ -3,9 +3,9 @@ define([
     'matchMedia',
     'domReady!',
     'owlcarousel',
-    'Mageplaza_BetterSlider/js/owl.navigation',
-    'Mageplaza_BetterSlider/js/owl.video',
-    'Mageplaza_BetterSlider/js/owl.autoplay'
+    'Mageplaza_BannerSlider/js/owl.navigation',
+    'Mageplaza_BannerSlider/js/owl.video',
+    'Mageplaza_BannerSlider/js/owl.autoplay'
 ], function ($, mediaCheck) {
     "use strict";
 

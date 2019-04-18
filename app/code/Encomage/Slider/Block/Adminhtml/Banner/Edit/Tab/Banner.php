@@ -2,12 +2,12 @@
 
 namespace Encomage\Slider\Block\Adminhtml\Banner\Edit\Tab;
 
-class Banner extends \Mageplaza\BetterSlider\Block\Adminhtml\Banner\Edit\Tab\Banner
+class Banner extends \Mageplaza\BannerSlider\Block\Adminhtml\Banner\Edit\Tab\Banner
 {
     protected function _prepareForm()
     {
-        /** @var \Mageplaza\BetterSlider\Model\Banner $banner */
-        $banner = $this->_coreRegistry->registry('mageplaza_betterslider_banner');
+        /** @var \Mageplaza\BannerSlider\Model\Banner $banner */
+        $banner = $this->_coreRegistry->registry('mageplaza_bannerslider_banner');
         $form = $this->_formFactory->create();
         $form->setHtmlIdPrefix('banner_');
         $form->setFieldNameSuffix('banner');
@@ -18,7 +18,7 @@ class Banner extends \Mageplaza\BetterSlider\Block\Adminhtml\Banner\Edit\Tab\Ban
                 'class'  => 'fieldset-wide'
             ]
         );
-        $fieldset->addType('image', 'Mageplaza\BetterSlider\Block\Adminhtml\Banner\Helper\Image');
+        $fieldset->addType('image', 'Mageplaza\BannerSlider\Block\Adminhtml\Banner\Helper\Image');
         if ($banner->getId()) {
             $fieldset->addField(
                 'banner_id',
@@ -67,7 +67,7 @@ class Banner extends \Mageplaza\BetterSlider\Block\Adminhtml\Banner\Edit\Tab\Ban
             ]
         );
 
-        $bannerData = $this->_session->getData('mageplaza_betterslider_banner_data', true);
+        $bannerData = $this->_session->getData('mageplaza_bannerslider_banner_data', true);
         if ($bannerData) {
             $banner->addData($bannerData);
         } else {

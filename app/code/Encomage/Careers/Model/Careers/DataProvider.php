@@ -14,9 +14,9 @@ class DataProvider extends AbstractDataProvider
 
     /**
      * Edit constructor.
-     * @param $name
-     * @param $primaryFieldName
-     * @param $requestFieldName
+     * @param string $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
      * @param \Encomage\Careers\Model\ResourceModel\Careers\CollectionFactory $contactCollectionFactory
      * @param array $meta
      * @param array $data
