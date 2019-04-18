@@ -53,9 +53,8 @@ class Manually extends Action
 
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
-            $resultRedirect->setPath('catalog/product');
         }
 
-        return $resultRedirect->setPath('catalog/product');
+        return $resultRedirect->setPath('catalog/product', ['p' => $page]);
     }
 }
