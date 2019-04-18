@@ -185,7 +185,7 @@ class Product extends Request
 
                 /** @var \Magento\Catalog\Model\Product $product */
                 $product = $this->productFactory->create()->load($productId);
-                $product->setPrice(abs($item['salesprice']));
+                $product->setPrice(abs($item['SalesPrice']));
                 $product->addData([
                     'quantity_and_stock_status' => [
                         'is_in_stock' => $stockStatus,
@@ -222,7 +222,7 @@ class Product extends Request
             $product->setAttributeSetId(Visibility::VISIBILITY_BOTH);
             $product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
             $product->setTypeId('simple');
-            $product->setPrice(abs($item['salesprice']));
+            $product->setPrice(abs($item['SalesPrice']));
             $product->setWeight(null);
             $product->addData([
                 'quantity_and_stock_status' => [
