@@ -3,21 +3,25 @@
 namespace Encomage\Theme\Block;
 
 use Magento\Framework\View\Element\Template\Context;
-use Mageplaza\BetterSlider\Model\BannerFactory as BannerModelFactory;
-use Mageplaza\BetterSlider\Model\SliderFactory as SliderModelFactory;
-
-class Slider extends \Mageplaza\BetterSlider\Block\Slider
+use Magento\Cms\Model\Template\FilterProvider;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Mageplaza\BannerSlider\Helper\Data as bannerHelper;
+use Magento\Framework\Serialize\Serializer\Json;
+class Slider extends \Mageplaza\BannerSlider\Block\Slider
 {
     protected $_json;
 
     public function __construct(
         Context $context,
-        SliderModelFactory $sliderFactory,
-        BannerModelFactory $bannerFactory,
-        \Magento\Framework\Serialize\Serializer\Json $json
-    )
-    {
-        parent::__construct($context, $sliderFactory, $bannerFactory);
+        bannerHelper $helperData, 
+        CustomerRepositoryInterface $customerRepository, 
+        DateTime $dateTime, 
+        FilterProvider $filterProvider,
+        Json $json,
+        array $data = []
+    ) {
+        parent::__construct($context, $helperData, $customerRepository, $dateTime, $filterProvider, $data);
         $this->_json = $json;
     }
 

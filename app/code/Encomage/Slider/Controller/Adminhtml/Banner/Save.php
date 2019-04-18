@@ -2,7 +2,7 @@
 
 namespace Encomage\Slider\Controller\Adminhtml\Banner;
 
-class Save extends \Mageplaza\BetterSlider\Controller\Adminhtml\Banner\Save
+class Save extends \Mageplaza\BannerSlider\Controller\Adminhtml\Banner\Save
 {
     public function execute()
     {
@@ -23,7 +23,7 @@ class Save extends \Mageplaza\BetterSlider\Controller\Adminhtml\Banner\Save
                 $banner->setSlidersData($this->jsHelper->decodeGridSerializedInput($sliders));
             }
             $this->_eventManager->dispatch(
-                'mageplaza_betterslider_banner_prepare_save',
+                'mageplaza_bannerslider_banner_prepare_save',
                 [
                     'banner' => $banner,
                     'request' => $this->getRequest()
@@ -32,10 +32,10 @@ class Save extends \Mageplaza\BetterSlider\Controller\Adminhtml\Banner\Save
             try {
                 $banner->save();
                 $this->messageManager->addSuccess(__('The Banner has been saved.'));
-                $this->_session->setMageplazaBetterSliderBannerData(false);
+                $this->_session->setMageplazaBannersliderBannerData(false);
                 if ($this->getRequest()->getParam('back')) {
                     $resultRedirect->setPath(
-                        'mageplaza_betterslider/*/edit',
+                        'mageplaza_bannerslider/*/edit',
                         [
                             'banner_id' => $banner->getId(),
                             '_current' => true
@@ -43,7 +43,7 @@ class Save extends \Mageplaza\BetterSlider\Controller\Adminhtml\Banner\Save
                     );
                     return $resultRedirect;
                 }
-                $resultRedirect->setPath('mageplaza_betterslider/*/');
+                $resultRedirect->setPath('mageplaza_bannerslider/*/');
                 return $resultRedirect;
             } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
@@ -52,9 +52,9 @@ class Save extends \Mageplaza\BetterSlider\Controller\Adminhtml\Banner\Save
             } catch (\Exception $e) {
                 $this->messageManager->addException($e, __('Something went wrong while saving the Banner.'));
             }
-            $this->_getSession()->setMageplazaBetterSliderBannerData($data);
+            $this->_getSession()->setMageplazaBannersliderBannerData($data);
             $resultRedirect->setPath(
-                'mageplaza_betterslider/*/edit',
+                'mageplaza_bannerslider/*/edit',
                 [
                     'banner_id' => $banner->getId(),
                     '_current' => true
@@ -62,7 +62,7 @@ class Save extends \Mageplaza\BetterSlider\Controller\Adminhtml\Banner\Save
             );
             return $resultRedirect;
         }
-        $resultRedirect->setPath('mageplaza_betterslider/*/');
+        $resultRedirect->setPath('mageplaza_bannerslider/*/');
         return $resultRedirect;
     }
 }
