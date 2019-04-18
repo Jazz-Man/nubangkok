@@ -7,12 +7,12 @@ var config = {
             niceselect: 'js/plugins/jquery.nice-select',
             customSelect: 'js/plugins/custom-select',
             sticky: 'js/plugins/jquery.sticky',
-            owlcarousel: 'Mageplaza_BetterSlider/js/owl.carousel',
+            owlcarousel: 'Mageplaza_BannerSlider/js/owl.carousel',
             simpleCropper: 'js/plugins/cropper/jquery.SimpleCropper'
         }
     },
     paths: {
-        'owlcarousel': 'Mageplaza_BetterSlider/js/owl.carousel',
+        'owlcarousel': 'Mageplaza_BannerSlider/js/owl.carousel',
         'simpleCropper': 'js/plugins/cropper/jquery.SimpleCropper',
         'Jcrop': 'js/plugins/cropper/jquery.Jcrop'
     },
@@ -21,10 +21,10 @@ var config = {
         'js/plugins/jquery.sticky': ['jquery'],
         'js/plugins/cropper/jquery.SimpleCropper': ['jquery', 'Jcrop'],
         'js/plugins/cropper/jquery.Jcrop': ['jquery'],
-        'Mageplaza_BetterSlider/js/owl.carousel': ['jquery'],
-        'Mageplaza_BetterSlider/js/owl.navigation': ['owlcarousel'],
-        'Mageplaza_BetterSlider/js/owl.video': ['owlcarousel'],
-        'Mageplaza_BetterSlider/js/owl.autoplay': ['owlcarousel']
+        'Mageplaza_BannerSlider/js/owl.carousel': ['jquery'],
+        'Mageplaza_BannerSlider/js/owl.navigation': ['owlcarousel'],
+        'Mageplaza_BannerSlider/js/owl.video': ['owlcarousel'],
+        'Mageplaza_BannerSlider/js/owl.autoplay': ['owlcarousel']
 
     }
 };
