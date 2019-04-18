@@ -1,7 +1,7 @@
 <?php
 
 namespace Encomage\Slider\Model\Config\Source;
-use Mageplaza\BetterSlider\Model\ResourceModel\Slider\CollectionFactory as SliderCollection;
+use Mageplaza\BannerSlider\Model\ResourceModel\Slider\CollectionFactory as SliderCollection;
 class Params implements \Magento\Framework\Option\ArrayInterface
 {
     /**

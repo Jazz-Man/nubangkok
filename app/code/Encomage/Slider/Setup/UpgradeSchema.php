@@ -16,7 +16,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
     {
         if (version_compare($context->getVersion(), '0.0.2', '<')) {
             $setup->getConnection()->addColumn(
-                $setup->getTable('mageplaza_betterslider_banner'),
+                $setup->getTable('mageplaza_bannerslider_banner'),
                 'mobile_upload_file',
                 [
                     'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,

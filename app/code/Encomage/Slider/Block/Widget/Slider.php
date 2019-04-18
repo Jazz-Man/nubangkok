@@ -10,7 +10,7 @@ class Slider extends \Encomage\Theme\Block\Slider implements BlockInterface
     public function _construct()
     {
         parent::_construct();
-        $this->setTemplate('Mageplaza_BetterSlider::slider.phtml');
+        $this->setTemplate('Mageplaza_BannerSlider::slider.phtml');
     }
 
     public function getBannerId()

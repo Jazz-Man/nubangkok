@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Mageplaza\BetterSlider\Block\Slider" type="Encomage\Theme\Block\Slider"/>
+    <preference for="Mageplaza\BannerSlider\Block\Slider" type="Encomage\Theme\Block\Slider"/>
     <type name="Magento\Customer\Block\Widget\Dob">
         <plugin name="encomage_customer_widget_dob" type="Encomage\Theme\Plugin\Customer\Block\Widget\Dob" sortOrder="5"/>
     </type>
