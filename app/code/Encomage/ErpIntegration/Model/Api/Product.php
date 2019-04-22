@@ -181,11 +181,16 @@ class Product extends Request
             }
             $productId = $this->productResource->getIdBySku($item['IcProductCode']);
             $stockStatus = ((int)$item['UnrestrictStock'] > 0) ? self::STATUS_IN_STOCK : self::STATUS_OUT_OF_STOCK;
-            if ($productId) {
+            $confSku = $this->_prepareConfSku($item['BarCode']);
+            $confName = $this->_prepareConfName($item['IcProductDescription0']);
+            $categoryIds = $this->_getCategoryId($item['BarCode']);
 
-                /** @var \Magento\Catalog\Model\Product $product */
-                $product = $this->productFactory->create()->load($productId);
+            /** @var \Magento\Catalog\Model\Product $product */
+            $product = $this->productFactory->create();
+            if ($productId) {
+                $product->load($productId);
                 $product->setPrice(abs($item['SalesPrice']));
+
                 $product->addData([
                     'quantity_and_stock_status' => [
                         'is_in_stock' => $stockStatus,
@@ -193,55 +198,57 @@ class Product extends Request
                     ]
                 ]);
                 $this->productRepository->save($product);
-                continue;
-            }
-            $confSku = $this->_prepareConfSku($item['BarCode']);
-            $confName = $this->_prepareConfName($item['IcProductDescription0']);
-            $categoryIds = $this->_getCategoryId($item['BarCode']);
-            try {
-                $attributesOptions = $this->_getAttributesCodes($item['BarCode']);
-                $color = $this->_getAttributeIdByLabel($attributesOptions['colors'], 'color');
-                $size = $this->_getAttributeIdByLabel($attributesOptions['size'] / 10, 'size');
-            } catch (\Exception $e) {
-                continue;
-            }
-            if (empty($color['value'])) {
-                $colorsNotExist .= $item['IcProductDescription0'] . ' - ';
-                $colorsNotExist .= $attributesOptions['colors'] . ', ';
-                continue;
-            }
-            if (substr($item['BarCode'], 1, 1) !== 'B' && empty($size['value'])) {
-                $sizeNotExist .= $item['IcProductDescription0'] . ', ';
-                continue;
-            }
-            unset($attributesOptions);
-            /** @var \Magento\Catalog\Model\Product $product */
-            $product = $this->productFactory->create();
-            $product->setSku($item['IcProductCode']);
-            $product->setName($item['IcProductDescription0']);
-            $product->setAttributeSetId(Visibility::VISIBILITY_BOTH);
-            $product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-            $product->setTypeId('simple');
-            $product->setPrice(abs($item['SalesPrice']));
-            $product->setWeight(null);
-            $product->addData([
-                'quantity_and_stock_status' => [
-                    'is_in_stock' => $stockStatus,
-                    'qty'         => $item['UnrestrictStock']
-                ]
-            ]);
-            $product->setColor($color['value']);
-            $product->setSize($size['value']);
-            if ($urlKey = $this->_prepareUrlKey($item['IcProductDescription0'], $item['IcCategoryName'])) {
-                $product->setUrlKey($urlKey);
-            }
-            try {
-                $product = $this->productRepository->save($product);
-                $this->categoryLinkManagement->assignProductToCategories($item['IcProductCode'], [$categoryIds]);
-            } catch (Exception $e) {
-                throw new \Exception(__($e->getMessage()));
+            } else {
+                try {
+                    $attributesOptions = $this->_getAttributesCodes($item['BarCode']);
+                    $color = $this->_getAttributeIdByLabel($attributesOptions['colors'], 'color');
+                    $size = $this->_getAttributeIdByLabel($attributesOptions['size'] / 10, 'size');
+                } catch (\Exception $e) {
+                    continue;
+                }
+                if (empty($color['value'])) {
+                    $colorsNotExist .= $item['IcProductDescription0'] . ' - ';
+                    $colorsNotExist .= $attributesOptions['colors'] . ', ';
+                    continue;
+                }
+                if (substr($item['BarCode'], 1, 1) !== 'B' && empty($size['value'])) {
+                    $sizeNotExist .= $item['IcProductDescription0'] . ', ';
+                    continue;
+                }
+                unset($attributesOptions);
+
+                $product->setSku($item['IcProductCode']);
+                $product->setName($item['IcProductDescription0']);
+                $product->setAttributeSetId($product->getDefaultAttributeSetId());
+                $product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
+                $product->setTypeId('simple');
+                $product->setPrice(abs($item['SalesPrice']));
+                $product->setWeight(null);
+                $product->setStoreId(\Magento\Store\Model\Store::DEFAULT_STORE_ID);
+                $product->setWebsiteIds([1 => 1]);
+                $product->addData([
+                    'quantity_and_stock_status' => [
+                        'is_in_stock' => $stockStatus,
+                        'qty'         => $item['UnrestrictStock']
+                    ]
+                ]);
+                $product->setColor($color['value']);
+                $product->setSize($size['value']);
+                if ($urlKey = $this->_prepareUrlKey($item['IcProductDescription0'], $item['IcCategoryName'])) {
+                    $product->setUrlKey($urlKey);
+                }
+                try {
+                    $this->productResource->save($product);
+//                $product = $this->productRepository->save($product);
+                    $this->categoryLinkManagement->assignProductToCategories($item['IcProductCode'], [$categoryIds]);
+                } catch (Exception $e) {
+                    throw new \Exception(__($e->getMessage()));
+                }
             }
 
+            if (count($this->typeConfigurableProduct->getParentIdsByChild($product->getId()))) {
+                continue;
+            }
             if (!empty($confSku) && !empty($confName) && !array_key_exists($confSku, $configurable)) {
                 $configurable[$confSku] = ['name' => $confName, 'category_ids' => $categoryIds];
                 $configurable[$confSku]['category_name'] = $item['IcCategoryName'];
@@ -332,10 +339,14 @@ class Product extends Request
             $product->setSku($sku);
             $product->setName($settings['name']);
             $product->setTypeId(TypeConfigurableProduct::TYPE_CODE);
-            $product->setAttributeSetId(Visibility::VISIBILITY_BOTH);
+            $product->setAttributeSetId($product->getDefaultAttributeSetId());
             $product->setCategoryIds([$settings['category_ids']]);
             $product->setColor(' ');
             $product->setSize(' ');
+            $product->setStoreId(\Magento\Store\Model\Store::DEFAULT_STORE_ID);
+            $product->setWebsiteIds([
+                \Magento\CatalogInventory\Model\Configuration::DEFAULT_WEBSITE_ID => \Magento\CatalogInventory\Model\Configuration::DEFAULT_WEBSITE_ID
+            ]);
             if (substr($sku, 1, 1) == 'S') {
                 $product->setAskAboutShoeSize(1);
             }
@@ -358,7 +369,9 @@ class Product extends Request
             $product->setConfigurableProductsData($configurableProductsData);
 
             try {
-                $productId = $this->productRepository->save($product)->getId();
+                $this->productResource->save($product);
+                $productId = $product->getId();
+//                $productId = $this->productRepository->save($product)->getId();
                 $this->categoryLinkManagement->assignProductToCategories($sku, [$settings['category_ids']]);
             } catch (Exception $e) {
                 throw new \Exception(__($e->getMessage()));
