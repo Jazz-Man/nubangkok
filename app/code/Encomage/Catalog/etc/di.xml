@@ -11,4 +11,7 @@
     <type name="Magento\Swatches\Block\Product\Renderer\Configurable">
         <plugin name="encomage_catalog_product_visibility_after" type="Encomage\Catalog\Plugin\Block\Product\Renderer\Configurable" />
     </type>
+    <type name="Magento\Catalog\Block\Product\View\Gallery">
+        <plugin name="encomage_catalog_product_gallery_around" type="Encomage\Catalog\Plugin\Block\Product\View\Gallery"/>
+    </type>
 </config>
