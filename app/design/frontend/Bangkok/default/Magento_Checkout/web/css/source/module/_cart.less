@@ -584,7 +584,8 @@
       }
       .actions-toolbar {
         margin-top: 0;
-        width: 70px;
+        //width: 70px;
+        float: right;
         .primary {
           .action.apply.primary {
             font-size: 14px;
@@ -907,9 +908,10 @@
           }
         }
         .input{
-          width: 20%;
+          width: max-content;
+          padding-right: 5px;
           span{
-            padding-left: 7px;
+            padding-left: 4px;
           }
         }
         .mark{
@@ -1126,9 +1128,9 @@
       }
       .actions-toolbar {
         display: inline-block;
-        width: 100px;
+        //width: 100px;
         margin-top: 6px;
-        float: left;
+        margin-right: 5px;
         .primary {
           .action.apply.primary {
             display: block;
@@ -1233,6 +1235,7 @@
               width: 30px;
               position: inherit;
               padding-right: 5px;
+              text-align: left;
             }
           }
           .product-item-name {

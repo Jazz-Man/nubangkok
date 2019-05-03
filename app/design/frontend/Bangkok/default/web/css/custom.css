@@ -1114,9 +1114,9 @@ input:-webkit-autofill {
         margin-left: 0;
     }
 
-    .cart-summary .fieldset.coupon .actions-toolbar {
-        width: 30%;
-    }
+    /*.cart-summary .fieldset.coupon .actions-toolbar {*/
+        /*width: 30%;*/
+    /*}*/
 
     .fieldset.coupon.applied .actions-toolbar .primary .action.cancel.primary {
         padding: 0;
