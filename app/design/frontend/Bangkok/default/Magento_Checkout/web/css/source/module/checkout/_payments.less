@@ -46,6 +46,20 @@
                     .lib-css(border-top, @checkout-payment-method-title__border);
                 }
             }
+            // image for check money order label
+            .payment-method-title {
+                label[for="checkmo"] span:after {
+                    content: '';
+                    background: url(../images/icons/money-order.png) no-repeat;
+                    background-size: 20px 14px;
+                    width: 20px;
+                    height: 14px;
+                    display: inline-block;
+                    padding-left: -1px;
+                    margin-left: 9px;
+                    margin-bottom: -2px;
+                }
+            }
         }
 
         .payment-method-content {
@@ -55,8 +69,8 @@
                     .action {
                         &.primary {
                             padding: 10px 30px;
-                            background-color: #55463e;
-                            border: 1px solid #55463e;
+                            background-color: #706258;
+                            border: 1px solid #706258;
                             text-transform: uppercase;
                             font-size: 14px;
                             color: white;
