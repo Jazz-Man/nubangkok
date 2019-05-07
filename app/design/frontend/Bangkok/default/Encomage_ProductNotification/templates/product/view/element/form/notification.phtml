@@ -1,0 +1,48 @@
+<?php
+/** @var \Encomage\ProductNotification\Block\ProductNotification $block */;
+
+$_attributes = $block->getAttributes();
+$productId = $block->getProductId();
+?>
+
+<div style="display: none; margin-top: 20px;" class="product-notification-contact-form">
+    <form class="form contact"
+          id="product-notification"
+          action="#"
+          method="post"
+          data-hasrequired="<?= /* @escapeNotVerified */ __('* Required Fields') ?>"
+          data-mage-init='{"validation": {}}'>
+        <div style="margin-bottom: 10px;"><?=/* @escapeNotVerified */__('Sorry, the product is not available. If you would like to be notified when it launches please enter your email below!')?></div>
+        <div class="field email required">
+            <div class="control">
+                <input name="email" id="email" title="<?= /* @escapeNotVerified */__('Email') ?>"
+                       style="width: 60%;float: left; margin-top: -4px"
+                       value="<?= /* @escapeNotVerified */ $block->getUserEmail() ?>"
+                       placeholder="<?=/* @escapeNotVerified */ __('Email')?>"
+                       class="input-text"
+                       type="email"
+                       data-validate="{required:true, 'validate-email':true}"/>
+            </div>
+        </div>
+        <input type="hidden" name="product_id">
+        <input type="hidden" name="product_name" value="<?= $block->getProduct()->getName(); ?>">
+        <input type="button" name="button"
+               class="cms-button-small"
+               id="encomage_product_notify_button"
+               value="<?= /* @escapeNotVerified */ __('Please notify me') ?>">
+    </form>
+
+    <div class="notice" style="margin-top: 20px; float: left; color: red"></div>
+</div>
+<script type="text/x-magento-init">
+        {
+            "*": {
+                "Encomage_ProductNotification/js/form/notification": {
+                    "ajaxUrl": "<?= $block->getActionUrl(); ?>",
+                    "currentProductId": <?= $block->getProduct()->getId(); ?>,
+                    "attributes": "<?= implode(',', $_attributes) ?>",
+                    "stockData": <?= $block->customSerializer($block->getOutStockInfo()) ?>
+                }
+            }
+        }
+</script>
