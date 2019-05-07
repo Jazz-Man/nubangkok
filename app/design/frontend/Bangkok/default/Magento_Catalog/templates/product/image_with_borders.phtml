@@ -18,16 +18,6 @@
              $block->getResizedImageHeight() ?>"
              alt="<?= /* @escapeNotVerified */
              $block->stripTags($block->getLabel(), null, true) ?>"/>
-
-            <?php if ($product->getLimited()): ?>
-                <span class="product-note-info">Limited</span>
-            <?php endif; ?>
-            <?php if ($block->getNew()): ?>
-                <span class="product-note-status">New</span>
-            <?php endif; ?>
-            <?php if ($product->getPopular()): ?>
-                <span class="popular-products">Popular</span>
-            <?php endif; ?>
     </span>
     </div>
 </span>
