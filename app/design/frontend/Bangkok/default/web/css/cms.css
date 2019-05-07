@@ -41,8 +41,8 @@
 
 .cms-button-small {
     border-radius: 3px;
-    border: 1px solid #55463e;
-    background-color: #55463e;
+    border: 1px solid #706258;
+    background-color: #706258;
     color: white;
     padding: 7px;
     font-weight: 600;
@@ -135,7 +135,7 @@
 
 .cms-where-to-buy-page .cms-button {
     border: none;
-    background-color: #55463e;
+    background-color: #706258;
     color: white;
     text-transform: uppercase;
     padding: 10px 60px;
