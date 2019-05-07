@@ -63,20 +63,56 @@ class ProductNotification extends View
                   ['product_id'=>$this->getProductId(),
                    'stockData'=>$this->getProductStockDataById($this->getProductId())];
         } else {
-            $children = $this->getProduct()->getTypeInstance()->getUsedProducts($this->getProduct());
-            $itemsStockData =[];
-            foreach ($children as $item) {
-               $stockStatus =$this->stockRegistry->getStockItem((int)$item->getId())->getIsInStock();
-               $stockQty = $this->stockRegistry->getStockItem((int)$item->getId())->getQty();
-               if(!$stockStatus)
-               {
-                   $itemsStockData[$item->getId()] = $stockQty;
-               }
-            }
-            if(count($children) === count($itemsStockData)){
+            $customStockData = $this->getOutStockInfo();
+            if($customStockData['childrenCount'] === count($customStockData['outOfStockItems'])){
                 $items['configurable'] = ['product_id'=> $this->getProductId()];
             }
         }
         return $items;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOutStockInfo()
+    {
+        $outOfStockItems = [];
+        $children = $this->getProduct()->getTypeInstance()->getUsedProducts($this->getProduct());
+        foreach ($children as $item) {
+            $stockStatus =$this->stockRegistry->getStockItem((int)$item->getId())->getIsInStock();
+            $stockQty = $this->stockRegistry->getStockItem((int)$item->getId())->getQty();
+            if(!$stockStatus)
+            {
+                $outOfStockItems[$item->getId()]['qty'] =$stockQty;
+                foreach ($this->getAttributes() as $attributeCode){
+                    $outOfStockItems[$item->getId()]['options'][$attributeCode] = $item->getData($attributeCode);
+                }
+            }
+        }
+        return ['childrenCount' => count($children), 'outOfStockItems' => $outOfStockItems];
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getAttributes()
+    {
+        $configurableProductOptions = $this->getProduct()->getExtensionAttributes()->getConfigurableProductOptions();
+        $attributes = [];
+        if(count($configurableProductOptions) > 0) {
+            foreach ($configurableProductOptions as $option) {
+                $attributes[] = $option->getProductAttribute()->getAttributeCode();
+            }
+        }
+        return $attributes;
+    }
+
+    /**
+     * @param $array
+     * @return string
+     */
+    public function customSerializer($array)
+    {
+        return $this->_jsonEncoder->encode($array);
     }
 }
