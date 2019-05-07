@@ -7,6 +7,7 @@ use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\App\Helper\Context;
 use Magento\CatalogInventory\Api\Data\StockItemInterfaceFactory;
+use Encomage\Catalog\Block\Product\ImageBuilder;
 
 /**
  * Class Data
@@ -20,22 +21,31 @@ class Data extends AbstractHelper
     protected $stockItemFactory;
 
     /**
+     * @var ImageBuilder
+     */
+    protected $imageBuilder;
+
+    /**
      * @var array
      */
     private $productsStockDataCollections = [];
 
     /**
      * Data constructor.
+     *
      * @param Context $context
-     * @param StockItemInterface $stockItem
+     * @param StockItemInterfaceFactory $stockItem
+     * @param ImageBuilder $imageBuilder
      */
     public function __construct(
         Context $context,
-        StockItemInterfaceFactory $stockItem
+        StockItemInterfaceFactory $stockItem,
+        ImageBuilder $imageBuilder
     )
     {
         parent::__construct($context);
         $this->stockItemFactory = $stockItem;
+        $this->imageBuilder = $imageBuilder;
     }
 
     /**
@@ -87,5 +97,13 @@ class Data extends AbstractHelper
         }
 
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsNew()
+    {
+        return $this->imageBuilder->getIsNew();
     }
 }

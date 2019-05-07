@@ -77,6 +77,20 @@ $_catalogHelper = $this->helper(Encomage\Catalog\Helper\Data::class);
                             <a href="<?= /* @escapeNotVerified */
                             $productChild->getProductUrl() ?>" class="product photo product-item-photo"
                                tabindex="-1"> <?= $productImage->toHtml() ?>
+                                <?php $isNew = $_catalogHelper->getIsNew(); ?>
+                                <?php if ($_product->getLimited()): ?>
+                                    <span class="product-note-info">Limited</span>
+                                <?php endif; ?>
+                                <?php if ($_product->getPopular()): ?>
+                                    <span class="popular-products <?= $_product->getLimited() ? 'second' : '';?>">Popular</span>
+                                <?php endif; ?>
+                                <?php if ($isNew): ?>
+                                    <?php if ($_product->getLimited() && $_product->getPopular()) :?>
+                                        <span class="product-note-status third">New</span>
+                                    <?php else:?>
+                                        <span class="product-note-status <?= $_product->getLimited() || $_product->getPopular()? 'second' : ''; ?>">New</span>
+                                    <?php endif;?>
+                                <?php endif; ?>
                             </a>
                             <div class="product details product-item-details">
                                 <?php echo $_productNameStripped = $block->stripTags($productChild->getName(), null, true);
