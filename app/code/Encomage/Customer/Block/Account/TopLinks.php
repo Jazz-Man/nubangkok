@@ -29,7 +29,7 @@ class TopLinks extends \Magento\Customer\Block\Account\Link
     {
         return $this->json->serialize(
             [
-                'websiteId' => $this->_storeManager->getWebsite()->getId()
+                'storeId' => $this->_storeManager->getStore()->getId()
             ]
         );
     }
