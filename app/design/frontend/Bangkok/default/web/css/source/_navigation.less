@@ -130,10 +130,11 @@
             margin-bottom: 1rem;
             display: block;
           }
-          &.active {
+          &.active, &:hover {
             > a {
               font-weight: 700;
               position: relative;
+              color: #706258;
               &:before {
                 content: '';
                 border-radius: 50%;
@@ -158,6 +159,11 @@
             a {
               text-transform: capitalize;
               font-weight: 100;
+            }
+            &:hover {
+              a {
+                color: #706258;
+              }
             }
           }
         }
@@ -340,19 +346,37 @@
         border: 0;
       }
     }
-    .sidebar-menu .main-subcategories ul li.active {
-      > a:before {
-        left: 5px;
-        top: 19px;
-      }
-      ul.active{
-        li.active {
-          > a:before {
-            left: 24px;
-          }
-        }
-      }
-    }
+    //.sidebar-menu .main-subcategories ul.active li.active {
+    //  > a:before {
+    //    left: 5px;
+    //    top: 19px;
+    //  }
+    //  ul.active{
+    //    li.active {
+    //      > a:before {
+    //        left: 25px;
+    //      }
+    //      ul.active {
+    //        li.active {
+    //          a:before {
+    //            left: 50px;
+    //          }
+    //          &:hover, &:focus {
+    //            a:before {
+    //              left: 50px;
+    //            }
+    //          }
+    //        }
+    //      }
+    //    }
+    //    li:hover {
+    //      a:before {
+    //        left: 25px;
+    //        top: 19px;
+    //      }
+    //    }
+    //  }
+    //}
   }
   .panel.header {
     width: 85%;
@@ -843,7 +867,6 @@
       span {
         padding: 1px 7px;
         border-radius: 3px;
-        //margin-right: 5px;
         a {
           text-transform: uppercase;
           //font-weight: @font-weight__bold;
@@ -862,10 +885,9 @@
   .main-subcategories {
     margin-top: 1px;
     border-top: 2px solid #eae4dc;
-    ul {
+    ul.active {
       padding-left: 0 !important;
       li a {
-        //font-weight: 700;
         margin-bottom: 0 !important;
         border-bottom: 2px solid #eae4dc;
       }
@@ -880,6 +902,41 @@
         ul.active {
           li a {
             padding-left: 60px;
+          }
+        }
+      }
+    }
+  }
+  .sidebar-menu .main-subcategories {
+    // level 1
+    ul {
+      li {
+        &:hover, &:focus, &.active {
+          a:before {
+            left: 5px;
+            top: 19px;
+          }
+        }
+      }
+      // level 2
+      ul {
+        li {
+          &:hover, &:focus, &.active {
+            a:before {
+              left: 25px;
+              top: 19px;
+            }
+          }
+        }
+        // level 3
+        ul {
+          li {
+            &:hover, &:focus, &.active {
+              a:before {
+                left: 50px;
+                top: 19px;
+              }
+            }
           }
         }
       }
