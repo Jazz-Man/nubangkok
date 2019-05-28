@@ -216,7 +216,7 @@
 /* radio box PDP */
 @media screen and (max-width: 375px) {
     .product-info-main .radio-box, .product-options-bottom .radio-box {
-        margin-left: 5%;
+        /*margin-left: 5%;*/
     }
 }
 
