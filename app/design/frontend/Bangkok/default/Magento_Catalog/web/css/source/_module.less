@@ -657,6 +657,8 @@
         .message {
           margin-top: 40px;
           margin-bottom: 40px;
+          display: inline-block;
+          width: 100%;
         }
       }
     }
@@ -684,6 +686,8 @@
   }
   .product-info-main .radio-box, .product-options-bottom .radio-box {
     padding-left: 0;
+    float: right;
+    margin-left: 0;
   }
   .product.info.detailed {
     margin-bottom: 0;
@@ -737,6 +741,20 @@
     .product-item-info {
       .product-item-details {
         max-width: 335px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 366px) {
+  .product-info-main .product-add-form .product-options-bottom .message {
+    p {
+      font-size: 13px;
+
+    }
+    .radio-box {
+      .choose-yes, .choose-no {
+        font-size: 13px;
       }
     }
   }
