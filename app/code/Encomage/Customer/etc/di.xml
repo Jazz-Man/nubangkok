@@ -39,4 +39,7 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Customer\Block\Widget\Dob">
+        <plugin name="encomage_customer_widged_dob" type="Encomage\Customer\Plugin\Block\Widget\Dob"/>
+    </type>
 </config>
