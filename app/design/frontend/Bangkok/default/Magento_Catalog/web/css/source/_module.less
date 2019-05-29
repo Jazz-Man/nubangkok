@@ -643,6 +643,15 @@
         .swatch-attribute.size {
           width: 74%;
           float: right;
+          .swatch-attribute-options {
+            .swatch-select.size {
+              .current {
+                max-width: 100%;
+                display: inline-block;
+                overflow: hidden;
+              }
+            }
+          }
         }
         .field.qty {
           margin-top: 13px;
@@ -785,6 +794,70 @@
   }
 }
 
+@media screen and (min-width: 1073px) {
+  .product-info-main .form.contact {
+    .field.email {
+      float: left;
+      max-width: 170px;
+    }
+  }
+}
+@media screen and (min-width: @screen__m) and (max-width: 1073px) {
+  .product-info-main .form.contact {
+    .field.email {
+      width: 100%;
+    }
+    .cms-button-small {
+      width: 100%;
+      margin-left: 0;
+      margin-top: 10px;
+    }
+  }
+}
+@media screen and (min-width: 530px) and (max-width: @screen__m) {
+  .product-info-main .form.contact {
+    .field.email {
+      display: inline-block;
+      margin: auto;
+      min-width: 200px;
+      max-width: 240px;
+      float: left;
+      .control {
+        .input-text {
+          width: 100% !important;
+        }
+      }
+    }
+    .cms-button-small {
+      //width: 100%;
+      //margin-left: 0;
+      //margin-top: 10px;
+    }
+  }
+}
+@media screen and (max-width: 529px) {
+  .product-info-main .form.contact {
+    .field.email {
+      width: 70%;
+      margin: auto;
+      display: block;
+      .control {
+        .input-text {
+          width: 100% !important;
+          float: unset;
+          margin-top: 0;
+        }
+      }
+    }
+    .cms-button-small {
+      width: 70%;
+      margin-top: 10px;
+      display: inline-block;
+      margin-left: 15%;
+    }
+  }
+}
+
 //
 //  Desktop
 //  _____________________________________________
@@ -824,6 +897,17 @@
     .page-title-wrapper {
       .page-title {
         margin-top: -26px;
+      }
+    }
+    .form.contact {
+      .field.email {
+        display: inline-block;
+        .control {
+          .input-text {
+            width: 100% !important;
+            float: unset !important;
+          }
+        }
       }
     }
   }
