@@ -1372,4 +1372,8 @@ input:-webkit-autofill {
     .sidebar-menu .main-categories span {
         padding: 0 0;
     }
+
+    html:lang(th) .sidebar-menu .main-categories span a {
+        font-size: 2rem;
+    }
 }
