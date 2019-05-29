@@ -983,6 +983,14 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  // menu dots position on TH store
+  html:lang(th) {
+    .sidebar-menu .main-subcategories ul li.active > a:before, .sidebar-menu .main-subcategories ul li:hover > a:before {
+      top: 11px;
+
+    }
+  }
+
   .nav-toggle {
     display: none;
   }
