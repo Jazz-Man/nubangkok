@@ -309,14 +309,18 @@
     .message {
       p {
         float: left;
+        margin-right: 10%;
         font-size: 15px;
       }
     }
     .radio-box {
       display: inline-block;
       width: 20%;
-      margin-left: 10%;
       max-width: 100px;
+      min-width: 70px;
+      .choose-yes, .choose-no {
+        top: 26px;
+      }
     }
     .price-box {
       .price-including-tax + .price-excluding-tax,
@@ -668,6 +672,9 @@
           margin-bottom: 40px;
           display: inline-block;
           width: 100%;
+          > p {
+            margin-right: 0;
+          }
         }
       }
     }
@@ -722,6 +729,7 @@
       font-size: 15px;
       .radio-box {
         width: 18%;
+        min-width: max-content;
         input[type="radio"] + span {
           margin-left: 2%;
         }
