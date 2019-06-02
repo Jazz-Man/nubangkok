@@ -106,4 +106,30 @@ class Data extends AbstractHelper
     {
         return $this->imageBuilder->getIsNew();
     }
+
+    /**
+     * @param Product $product
+     * @return Product
+     */
+    public function checkImageForStores(Product $product)
+    {
+        $image = $product->getImage();
+        $smallImage = $product->getSmallImage();
+        $thumbnail = $product->getThumbnail();
+
+        if ($image == 'no_selection' && $smallImage == 'no_selection' && $thumbnail == 'no_selection') {
+            $mediaGalleryItems = $product->getMediaGalleryImages()->getItems();
+            if (count($mediaGalleryItems)) {
+                $mediaGalleryItem = array_shift($mediaGalleryItems);
+                if ($mediaGalleryItem->getFile()) {
+                    $product->setImage($mediaGalleryItem->getFile());
+                    $product->setSmallImage($mediaGalleryItem->getFile());
+                    $product->setThumbnail($mediaGalleryItem->getFile());
+                }
+
+            }
+        }
+
+        return $product;
+    }
 }
