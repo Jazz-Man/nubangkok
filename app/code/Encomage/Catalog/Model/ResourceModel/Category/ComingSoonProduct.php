@@ -13,12 +13,13 @@ class ComingSoonProduct extends \Magento\Framework\Model\ResourceModel\Db\Abstra
     }
 
     /**
-     * @param $categoryId
+     * @param array $categoryIds
      * @return $this
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function deleteEmailsByCategoryId($categoryId)
+    public function deleteEmailsByCategoryIds(array $categoryIds)
     {
-        $where = ['category_id = ?' => $categoryId];
+        $where = ['category_id IN ( ? )' => $categoryIds];
         $this->getConnection()->delete($this->getTable($this->getMainTable()), $where);
         return $this;
     }
