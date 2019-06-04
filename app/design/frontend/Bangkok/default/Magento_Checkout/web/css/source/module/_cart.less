@@ -409,7 +409,7 @@
     }
     .cart-price {
       position: absolute;
-      top: -32px;
+      top: -29px;
       right: 0;
     }
 
@@ -439,6 +439,7 @@
         border: 1px solid #d9d2cb;
         vertical-align: middle;
         cursor: pointer;
+        margin-left: 4px;
         span {
           position: absolute;
           left: 5px;
@@ -676,6 +677,8 @@
             background-color: @color-brown;
             color: @color-white;
             border: none;
+            margin-bottom: 0;
+            margin-top: 4px;
           }
         }
       }
@@ -1065,6 +1068,19 @@
 //
 //  Desktop
 //  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .cart.table-wrapper .item-actions .actions-toolbar .action-towishlist {
+    margin-bottom: 0;
+    margin-top: 16px;
+  }
+  html:lang(th) {
+    .cart.table-wrapper .item-actions .actions-toolbar .action-towishlist {
+      margin-bottom: 0;
+      margin-top: 10px;
+    }
+  }
+}
 
 & when (@media-common = true) {
   .cart-container {
