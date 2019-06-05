@@ -955,6 +955,16 @@ input:-webkit-autofill {
     .wishlist-index-index .products-grid .product-item .rgb {
         margin-top: 0;
     }
+    html:lang(th) .cart.table-wrapper .product-item-name + .item-options .label {
+        font-size: 1.6rem;
+        width: max-content;
+    }
+    html:lang(th) .cart.table-wrapper .item-options .options-value {
+        font-size: 1.6rem
+    }
+    html:lang(th) .cart.table-wrapper .cart-price {
+        top: -50px;
+    }
 }
 
 /*shopping cart cuppon btn*/
