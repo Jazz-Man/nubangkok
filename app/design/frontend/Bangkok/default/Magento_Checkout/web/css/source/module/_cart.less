@@ -275,7 +275,7 @@
       .field.qty {
         float: left;
         width: 60%;
-        min-width: 100px;
+        min-width: 110px;
         display: inline-block;
       }
       div:last-of-type {
@@ -409,7 +409,7 @@
     }
     .cart-price {
       position: absolute;
-      top: -32px;
+      top: -29px;
       right: 0;
     }
 
@@ -676,6 +676,8 @@
             background-color: @color-brown;
             color: @color-white;
             border: none;
+            margin-bottom: 0;
+            margin-top: 4px;
           }
         }
       }
@@ -1065,6 +1067,19 @@
 //
 //  Desktop
 //  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .cart.table-wrapper .item-actions .actions-toolbar .action-towishlist {
+    margin-bottom: 0;
+    margin-top: 16px;
+  }
+  html:lang(th) {
+    .cart.table-wrapper .item-actions .actions-toolbar .action-towishlist {
+      margin-bottom: 0;
+      margin-top: 10px;
+    }
+  }
+}
 
 & when (@media-common = true) {
   .cart-container {

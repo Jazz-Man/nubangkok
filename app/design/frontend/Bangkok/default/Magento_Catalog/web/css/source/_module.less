@@ -796,7 +796,6 @@
             right: -2px;
           }
         }
-
       }
     }
   }
@@ -806,14 +805,20 @@
   .product-info-main .form.contact {
     .field.email {
       float: left;
-      max-width: 170px;
     }
   }
 }
-@media screen and (min-width: @screen__m) and (max-width: 1073px) {
+@media screen and (min-width: @screen__m) and (max-width: 1213px) {
   .product-info-main .form.contact {
     .field.email {
       width: 100%;
+      max-width: 100%;
+      .control {
+        width: 100%;
+        .input-text {
+          width: 100%;
+        }
+      }
     }
     .cms-button-small {
       width: 100%;
