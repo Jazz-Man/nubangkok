@@ -38,18 +38,19 @@ class Manually extends Action
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $page = (int)$this->getRequest()->getParam('p', 1);
         try {
-            $i = 0;
-            while ($i < self::ITERATION_PAGE_LIMIT) {
-                $apiData = $this->erpIntegrationProduct->getDataFromApi($page);
-                if (empty($apiData)) {
-                    $this->messageManager->addSuccessMessage('Products was imported');
-                    return $resultRedirect->setPath('catalog/product');
-                }
-                $this->erpIntegrationProduct->createProducts($apiData);
-                $i++;
-                $page++;
+            $apiData = $this->erpIntegrationProduct->getDataFromApi($page);
+            if (empty($apiData)) {
+                $this->messageManager->addSuccessMessage('Products was imported');
+                return $resultRedirect->setPath('catalog/product');
             }
-            return $resultRedirect->setPath('erp/import/manually',['p' => $page]);
+            while (count($apiData)) {
+                $this->erpIntegrationProduct->createProducts($apiData);
+                $apiData = $this->erpIntegrationProduct->getDataFromApi(++$page);
+            }
+
+            $this->messageManager->addSuccessMessage('Products was imported');
+
+            return $resultRedirect->setPath('catalog/product');
 
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
