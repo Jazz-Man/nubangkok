@@ -130,7 +130,11 @@
     background-color: #55463e;
     position: absolute;
     left: 0;
-    top: 21px;
+    top: 23px;
+}
+
+html:lang(th) .cms-where-to-buy-page .accordion.active:before {
+    top: 25px;
 }
 
 .cms-where-to-buy-page .cms-button {
@@ -234,6 +238,9 @@
 .cms-product-care .accordion-container .accordion.active img{
     transform: rotate(0deg);
     padding-left: 10px;
+}
+.cms-product-care .accordion.active:before {
+    top: 14px;
 }
 .cms-customer-care > .accordion img {
     transform: none;
