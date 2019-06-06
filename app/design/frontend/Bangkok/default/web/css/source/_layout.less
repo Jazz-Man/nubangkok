@@ -61,6 +61,12 @@
       .lib-vendor-prefix-order(2);
     }
   }
+  html:lang(th) {
+    .columns .column.main .breadcrumbs .item:not(:last-child):after{
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  }
 }
 
 //
@@ -129,6 +135,15 @@
   }
   .column.main {
     position: relative;
+  }
+
+  html:lang(th) {
+    .columns .column.main .breadcrumbs .item:not(:last-child):after{
+      margin-top: 0;
+    }
+    .breadcrumbs {
+      width: 100%;
+    }
   }
 }
 
@@ -218,5 +233,11 @@
 
   .panel.header {
     //padding: 10px 20px;
+  }
+
+  html:lang(th) {
+    .breadcrumbs {
+      width: 85%;
+    }
   }
 }
