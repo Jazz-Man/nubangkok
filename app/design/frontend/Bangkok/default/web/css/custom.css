@@ -126,7 +126,7 @@
 }
 
 .modal-content p {
-    font-size: 14px;
+    font-size: 20px;
 }
 
 .modal-popup .actions-toolbar .primary {
@@ -229,6 +229,14 @@
     margin-top: 4px;
 }
 
+/*Create my account page*/
+.form.create.account.form-create-account .create.info .field label[for=country] {
+    padding-bottom: 4px;
+    height: 17px;
+}
+.form.create.account.form-create-account .create.info .field label[for=country] span {
+    display: block;
+}
 /*style for inputs sign in*/
 input:-webkit-autofill {
     background-color: #ffffff;
@@ -248,6 +256,14 @@ input:-webkit-autofill {
 
 :-moz-placeholder {
     color: #55463e;
+}
+
+/* date-picker */
+.ui-datepicker .ui-datepicker-title {
+    min-width: 135px;
+}
+.ui-datepicker .ui-datepicker-title select {
+    font-size: 1.6rem;
 }
 
 /* Sign in page */
@@ -303,6 +319,9 @@ input:-webkit-autofill {
     .column.main .form-wishlist-items div.actions-toolbar .primary a:first-of-type {
         margin-left: 10%;
     }
+    .form-wishlist-items .products-grid.wishlist .product-item .product-name-wsl {
+        width: 75%;
+    }
 }
 
 @media screen and (max-width: 992px) {
@@ -338,6 +357,10 @@ input:-webkit-autofill {
 
     .form-wishlist-items .products-grid.wishlist .product-item .box-tocart {
         width: 50%;
+    }
+
+    html:lang(th) .products-grid.wishlist .product-item .box-tocart .fieldset .field.qty .control .qty-reduce span {
+        top: -2px;
     }
 
     /*Post view*/
@@ -1350,6 +1373,9 @@ input:-webkit-autofill {
         left: 0;
         margin-top: 150px;
     }
+    html:lang(th) .custom-slide .modal-inner-wrap {
+        font-size: 2.3rem;
+    }
 }
 
 /*mobile footer 5s*/
@@ -1385,5 +1411,8 @@ input:-webkit-autofill {
 
     html:lang(th) .sidebar-menu .main-categories span a {
         font-size: 2rem;
+    }
+    html:lang(th) .form-wishlist-items .products-grid.wishlist .product-item .box-tocart {
+        width: 45%;
     }
 }

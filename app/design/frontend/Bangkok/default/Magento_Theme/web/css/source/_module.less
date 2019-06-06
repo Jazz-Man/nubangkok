@@ -501,7 +501,6 @@
       font-size: 2rem;
       font-family: 'Thai Regular';
     }
-
     .columns .column.main .breadcrumbs .items,
     .product-item .price-box .price,
     .input-notify-email,
@@ -557,11 +556,11 @@
 
     .products-grid.wishlist .product-item .box-tocart .fieldset .field.qty .control {
       .qty-reduce span {
-        top: -2px;
+        top: -7px;
         left: 6px;
       }
       .qty-enhance span {
-        top: -3px;
+        top: -7px;
         left: 5px;
       }
     }
@@ -746,10 +745,17 @@
     }
   }
 
+  // wishlist
+  .products-grid.wishlist .product-item .box-tocart .wrapper.color .label {
+    margin-right: 5px;
+  }
   // if Th store
   html:lang(th) {
     .product-options-bottom .product-item-qty {
       font-size: 1.8rem;
+    }
+    .products-grid.wishlist .product-item .box-tocart .wrapper.color .rgb {
+      margin-top: 5px;
     }
   }
 }
@@ -778,6 +784,26 @@ html:lang(th) {
           }
         }
       }
+    }
+  }
+  @media screen and (min-width: 992px) {
+    // menu
+    .sidebar-menu .main-categories span {
+      line-height: 26px;
+      padding: 0 5px;
+    }
+  }
+  @media screen and (min-width: 768px) {
+    .account .column.main {
+      a:after, .open-account-details:after {
+        margin-top: 6px;
+      }
+    }
+  }
+  @media screen and (min-width: 768px) and (max-width: 992px) {
+    .sidebar-menu .main-categories span {
+      padding: 0 3px;
+      line-height: 26px;
     }
   }
   @media screen and (max-width: 640px) {
