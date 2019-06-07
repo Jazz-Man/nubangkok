@@ -125,8 +125,12 @@
     color: #706258;
 }
 
-.modal-content p {
-    font-size: 20px;
+html:lang(th) .modal-content p {
+    font-size: 2.3rem;
+}
+html:lang(th) .modal-footer .product-question-modal-btn-consultant,
+html:lang(th) .modal-footer .product-question-modal-btn-add-to-cart {
+    font-size: 1.9rem;
 }
 
 .modal-popup .actions-toolbar .primary {
@@ -1375,6 +1379,12 @@ input:-webkit-autofill {
     }
     html:lang(th) .custom-slide .modal-inner-wrap {
         font-size: 2.3rem;
+    }
+    html:lang(th) .login-container .block.block-customer-login .block-content h2 {
+        font-size: 1.9rem;
+    }
+    html:lang(th) .login-container .block.block-customer-login .checkbox-block label.label span:last-of-type {
+        font-size: 14px;
     }
 }
 
