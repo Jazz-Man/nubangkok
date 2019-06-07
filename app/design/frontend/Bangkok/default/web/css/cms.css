@@ -242,6 +242,9 @@ html:lang(th) .cms-where-to-buy-page .accordion.active:before {
 .cms-product-care .accordion.active:before {
     top: 14px;
 }
+html:lang(th) .cms-product-care h3 {
+    font-size: 24px;
+}
 .cms-customer-care > .accordion img {
     transform: none;
 }

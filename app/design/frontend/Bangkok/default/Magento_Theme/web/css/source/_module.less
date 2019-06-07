@@ -491,11 +491,42 @@
     .methods-shipping .actions-toolbar .action.primary,
     .checkout-payment-method .payment-method-content > .actions-toolbar > .primary .action.primary,
     .careers-listing-content .short-description-container .short-description-title,
-    .account .column.main .block:not(.widget) .box-title > span,
-    .account-right-block .sign-in-block a.action.login
-     {
+    .account-right-block .sign-in-block a.action.login,
+    .cart .action.continue
+    {
       font-size: 1.9rem;
       font-family: 'Thai Regular';
+    }
+    .page-header .links li:first-of-type .options .dropdown.switcher-dropdown li {
+      font-size: 24px;
+      margin: 3px 4px;
+      a {
+        padding: 0 4px;
+      }
+    }
+    .header.panel > .header.links {
+      li.switcher-language,
+      li.switcher-currency {
+        font-size: 24px;
+        line-height: 22px;
+      }
+    }
+    .page-header .switcher .options ul.dropdown a {
+      padding: 3px 8px;
+      font-size: 22px;
+    }
+    .account .column.main .block:not(.widget) .box-title > span,
+    .product-info-main .price-box .price-wrapper .price,
+    .cart-summary .block .fieldset .field:not(.choice) > .label span,
+    .cart.table-wrapper .col.subtotal span,
+    .opc-wrapper .shipping-address-item,
+    .opc-progress-bar-item._active > span,
+    .opc-progress-bar-item > span,
+    .opc-block-summary .product-item .price {
+      font-size: 2.3rem;
+    }
+    .opc-wrapper .action-show-popup {
+      font-size: 15px;
     }
     .product-note-info {
       font-size: 2rem;
@@ -550,8 +581,14 @@
     div.mage-error[generated] {
       font-size: 1.6rem !important;
     }
-    .create.info label span, .nice-select .current, .careers-view-content .form-content .input-text, .copyright {
+    .create.info label span, .careers-view-content .form-content .input-text, .copyright {
       font-size: 1.8rem !important;
+    }
+    .nice-select {
+      font-size: 18px;
+      .current {
+        font-size: 1.9rem !important;
+      }
     }
 
     .products-grid.wishlist .product-item .box-tocart .fieldset .field.qty .control {
@@ -1049,11 +1086,13 @@ html:lang(th) {
         @_font-style: normal
       );
     }
-    .breadcrumbs .items .item,
-    .product-info-main .page-title-wrapper .page-title,
     .product-info-main .box-tocart .actions .action.primary.tocart,
     .product-options-bottom .product-item-qty {
       font-size: 1.8rem;
+    }
+    .product-info-main .page-title-wrapper .page-title,
+    .breadcrumbs .items .item {
+      font-size: 1.9rem;
     }
     .header.links .minicart-wrapper .count-bag {
       top: 14px;
@@ -1115,5 +1154,18 @@ html:lang(th) {
         font-size: 1.9rem;
       }
     }
+    .account .column.main h2,
+    .opc-estimated-wrapper .estimated-block {
+      font-size: 1.9rem;
+    }
+    .points-container p.points-balance-title,
+    .points-container p.points-balance,
+    .points-container .right-block .title,
+    .points-container .left-block .title {
+      font-size: 20px;
+    }
+  }
+  html:lang(th) .page-wrapper .page-header .links li:first-of-type .options .dropdown.switcher-dropdown li a {
+    font-size: 2.3rem;
   }
 }
