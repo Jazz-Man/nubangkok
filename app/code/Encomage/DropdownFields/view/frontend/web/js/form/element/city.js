@@ -43,16 +43,20 @@ define([
             }).done(function (data) {
                 regionCities = data;
             });
-            regionCities.forEach(function (item, i) {
-                var jsonObject = {
-                    value: i,
-                    title: item.city,
-                    country_id: "",
-                    label: item.city
-                };
 
+            var i =1;
+            for (var item in regionCities) {
+
+                var jsonObject = {
+                    country_id:regionData.country_id,
+                    label: regionCities[item],
+                    labeltitle: regionCities[item],
+                    title: regionCities[item],
+                    value: i + 600,
+                };
                 cityOptions.push(jsonObject);
-            });
+                i++;
+            }
             this.setOptions(cityOptions);
             var cases = cityOptions.length;
 
