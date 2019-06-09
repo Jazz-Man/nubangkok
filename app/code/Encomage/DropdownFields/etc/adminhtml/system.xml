@@ -18,6 +18,20 @@
                     <label>Domain url for city API</label>
                 </field>
             </group>
+            <group id="custom_group" translate="label" type="text" sortOrder="151" showInDefault="1" showInWebsite="1">
+                <label>Upload City</label>
+                <field id="city_file_upload" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File"
+                       sortOrder="6" showInDefault="1" showInWebsite="1">
+                    <comment>To import cities, choose file and "Save Config". Then push the button "Import Cities!".</comment>
+                    <label>Browse import file </label>
+                    <backend_model>Encomage\DropdownFields\Model\Config\Backend\UploadFile</backend_model>
+                    <upload_dir config="system" scope_info="0">test</upload_dir>
+                </field>
+                <field id="update_city" translate="label comment tooltip" type="button" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <frontend_model>Encomage\DropdownFields\Block\Adminhtml\System\Config\Button</frontend_model>
+                </field>
+            </group>
         </section>
     </system>
 </config>
