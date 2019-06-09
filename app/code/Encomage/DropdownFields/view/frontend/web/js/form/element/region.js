@@ -8,7 +8,7 @@ define([
     'uiRegistry',
     'Magento_Ui/js/form/element/select',
     'Magento_Checkout/js/model/default-post-code-resolver'
-], function (url ,$, _, registry, Select, defaultPostCodeResolver) {
+], function (url, $, _, registry, Select, defaultPostCodeResolver) {
     'use strict';
 
     return Select.extend({
@@ -65,21 +65,24 @@ define([
                 } else {
                     $.ajax({
                         async: false,
-                        type:"POST",
+                        type: "POST",
                         url: url.build('encomage_dropdownField/index/index'),
-                        data:{type:'region',country_code:value}
+                        data: {type: 'region', country_code: value}
                     }).done(function (data) {
-                        var regionsData = data;
-                        regionsData.forEach(function (item, i) {
+                        var regionsData = data, i = 1,
+                            countryId =  this.data.split('=').pop();
+                        for (var item in regionsData) {
+
                             var jsonObject = {
-                                country_id: item.country.toUpperCase(),
-                                label: item.region,
-                                labeltitle: item.region,
-                                title: item.region,
+                                country_id: countryId,
+                                label: regionsData[item],
+                                labeltitle: regionsData[item],
+                                title: regionsData[item],
                                 value: i + 600,
                             };
                             self.initialOptions.push(jsonObject);
-                        });
+                            i++;
+                        }
                     });
                     this._super(value, field);
                 }
