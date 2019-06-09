@@ -1176,11 +1176,11 @@ input:-webkit-autofill {
 
     /*Create my account page*/
     .form.create.account.form-create-account .create.info .field label[for=country] {
-        width: 20%;
+        /*width: 20%;*/
     }
 
     .form.create.account.form-create-account .create.info .field.country .control {
-        width: 80%;
+        /*width: 80%;*/
     }
 
     .fieldset.coupon.applied .action.cancel.primary {
