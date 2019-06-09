@@ -494,8 +494,9 @@
     .account-right-block .sign-in-block a.action.login,
     .cart .action.continue
     {
-      font-size: 1.9rem;
+      font-size: 2.3rem;
       font-family: 'Thai Regular';
+
     }
     .page-header .links li:first-of-type .options .dropdown.switcher-dropdown li {
       font-size: 24px;
@@ -550,6 +551,22 @@
       font-size: 1.4rem;
       font-family: 'Thai Regular';
     }
+    // create an account
+    input[type="text"],
+    input[type="password"],
+    input[type="url"],
+    input[type="tel"],
+    input[type="search"],
+    input[type="number"],
+    input[type="datetime"],
+    input[type="email"] {
+      font-family: 'Thai Regular';
+      font-style: normal;
+      font-weight: 300;
+      line-height: 1.2;
+      font-size: 2.1rem;
+    }
+
     // nustories
     .stories-content {
       .your-stories-block .your-stories-container .story-item .story-content {
@@ -582,12 +599,15 @@
       font-size: 1.6rem !important;
     }
     .create.info label span, .careers-view-content .form-content .input-text, .copyright {
-      font-size: 1.8rem !important;
+      font-size: 2.1rem !important;
+    }
+    .form.create.account.form-create-account .create.info label[for=gender] span {
+      padding-top: 11px;
     }
     .nice-select {
       font-size: 18px;
       .current {
-        font-size: 1.9rem !important;
+        font-size: 2.1rem !important;
       }
     }
 
@@ -794,6 +814,11 @@
     .products-grid.wishlist .product-item .box-tocart .wrapper.color .rgb {
       margin-top: 5px;
     }
+    // create asn account
+    .checkbox-block label[for=specials_offers] span:first-of-type,
+    .checkbox-block label[for=tos] span:first-of-type {
+      top: 3px;
+    }
   }
 }
 
@@ -803,6 +828,10 @@
 
 // if Th store
 html:lang(th) {
+  //create an account
+  .form.create.account.form-create-account .create.info .field label[for=country] span {
+    line-height: 18px;
+  }
   @media screen and (max-width: 992px) {
     form.form-wishlist-items .products-grid.wishlist .product-item {
       .product-name-wsl {
@@ -1163,6 +1192,21 @@ html:lang(th) {
     .points-container .right-block .title,
     .points-container .left-block .title {
       font-size: 20px;
+    }
+    // create an account
+    .form.create.account.form-create-account {
+      .field .control .input-text {
+        font-size: 2.1rem;
+      }
+      .create.info {
+        .dob-block input {
+          font-size: 2.1rem;
+
+        }
+        .field.country .control div.nice-select {
+          line-height: 26px;
+        }
+      }
     }
   }
   html:lang(th) .page-wrapper .page-header .links li:first-of-type .options .dropdown.switcher-dropdown li a {
