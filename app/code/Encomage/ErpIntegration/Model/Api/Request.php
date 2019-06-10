@@ -1,28 +1,30 @@
 <?php
+
 namespace Encomage\ErpIntegration\Model\Api;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
 /**
  * Class Request
+ *
  * @package Encomage\ErpIntegration\Model\Api
  */
 abstract class Request
 {
-    const ERP_LOGIN = 'erp_etoday_settings/erp_authorization/login';
-    const ERP_PASSWORD = 'erp_etoday_settings/erp_authorization/password';
-    const ERP_HOST_NAME = 'erp_etoday_settings/erp_authorization/host_name';
-    const ERP_COMPCODE = 'erp_etoday_settings/erp_authorization/compcode';
+    const ERP_LOGIN             = 'erp_etoday_settings/erp_authorization/login';
+    const ERP_PASSWORD          = 'erp_etoday_settings/erp_authorization/password';
+    const ERP_HOST_NAME         = 'erp_etoday_settings/erp_authorization/host_name';
+    const ERP_COMPCODE          = 'erp_etoday_settings/erp_authorization/compcode';
     const ERP_ENABLED_TEST_MODE = 'erp_etoday_settings/erp_authorization/enabled_test_mode';
-    const ERP_WAREHOUSE_CODE = 'erp_etoday_settings/erp_authorization/warehouse_code';
+    const ERP_WAREHOUSE_CODE    = 'erp_etoday_settings/erp_authorization/warehouse_code';
 
-    const ERP_COLOR_CODES = 'erp_etoday_settings/color_settings/color_code';
-    const ERP_BAGS_CODES = 'erp_etoday_settings/category_type_bags/bags_codes';
-    const ERP_SHOE_CODES = 'erp_etoday_settings/category_type_shoe/shoe_codes';
+    const ERP_COLOR_CODES    = 'erp_etoday_settings/color_settings/color_code';
+    const ERP_BAGS_CODES     = 'erp_etoday_settings/category_type_bags/bags_codes';
+    const ERP_SHOE_CODES     = 'erp_etoday_settings/category_type_shoe/shoe_codes';
     const ERP_CATEGORY_CODES = 'erp_etoday_settings/categories/categories_codes';
-    
+
     const ORDER_STATUS_PENDING_NOT_SENT = 'pending_not_sent';
-    const ORDER_STATUS_PENDING = 'pending';
+    const ORDER_STATUS_PENDING          = 'pending';
 
     /**
      * @var ScopeConfigInterface
@@ -33,7 +35,7 @@ abstract class Request
      * @var SerializerJson
      */
     protected $serializerJson;
-    
+
     /**
      * Data for api request to eToday mast by use actual keys
      * written in URL
@@ -49,14 +51,14 @@ abstract class Request
      * @var array
      */
     protected $additionalDataContent = [];
-    
+
     /**
      * Methods - GET, POST, PUT, DELETE.
      *
      * @var string
      */
     protected $apiMethod;
-    
+
     /**
      * Method name from eToday
      *
@@ -66,14 +68,14 @@ abstract class Request
 
     /**
      * Request constructor.
+     *
      * @param ScopeConfigInterface $scopeConfig
      * @param SerializerJson $serializerJson
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig, 
+        ScopeConfigInterface $scopeConfig,
         SerializerJson $serializerJson
-    )
-    {
+    ) {
         $this->scopeConfig = $scopeConfig;
         $this->serializerJson = $serializerJson;
     }
@@ -85,27 +87,35 @@ abstract class Request
     public function sendApiRequest()
     {
         $dataUrl = [
-            "userAccount" => $this->_getLogin(),
-            "userPassword" => $this->_getPassword(),
-            "compCode" => $this->_getCompCode(),
-            "warehouseCode" => $this->_getWarehouseCode()
+            "userAccount"   => $this->_getLogin(),
+            "userPassword"  => $this->_getPassword(),
+            "compCode"      => $this->_getCompCode(),
+            "warehouseCode" => $this->_getWarehouseCode(),
         ];
         if ($this->_isEnabledTestMode()) {
             $dataUrl['testmode'] = 1;
-        } 
-        if (!empty($this->additionalDataUrl)) {
-            $dataUrl = array_merge($dataUrl, $this->additionalDataUrl);
+        }
+        $response = [];
+        try {
+            if (!empty($this->additionalDataUrl)) {
+                $dataUrl = array_merge($dataUrl, $this->additionalDataUrl);
+            }
+
+            $apiURL = $this->_getHostName() . '/' . $this->_getApiLastPoint() . $this->_getAuthorization($dataUrl);
+
+            $data_string = $this->serializerJson->serialize($this->_getAdditionalDataContent());
+            $ch = curl_init($apiURL);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->_getApiMethod());
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "Content-Length: " . strlen($data_string)]);
+            $response = $this->serializerJson->unserialize(curl_exec($ch));
+        } catch (\Exception $e) {
+            $objectManger = \Magento\Framework\App\ObjectManager::getInstance();
+            $logger = $objectManger->create('Encomage\ErpIntegration\Logger\Logger');
+            $logger->addInfo($e->getMessage());
         }
 
-        $apiURL = $this->_getHostName() . '/' . $this->_getApiLastPoint() . $this->_getAuthorization($dataUrl);
-
-        $data_string = $this->serializerJson->serialize($this->_getAdditionalDataContent());
-        $ch = curl_init($apiURL);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->_getApiMethod());
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "Content-Length: " . strlen($data_string)]);
-        $response = $this->serializerJson->unserialize(curl_exec($ch));
         return $response;
     }
 
@@ -165,7 +175,6 @@ abstract class Request
         return $this->scopeConfig->getValue(self::ERP_WAREHOUSE_CODE);
     }
 
-    
 
     /**
      * Get Bags category codes and category path
@@ -204,10 +213,11 @@ abstract class Request
     protected function _getAuthorization($data)
     {
         $result = '?';
-        foreach ($data as $kay =>$value){
+        foreach ($data as $kay => $value) {
             $result .= $kay . '=' . $value . '&';
         }
         $result = trim($result, '&');
+
         return $result;
     }
 
