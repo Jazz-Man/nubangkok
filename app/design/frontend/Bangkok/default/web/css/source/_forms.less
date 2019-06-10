@@ -245,7 +245,7 @@
         float: left;
         border-bottom: 2px solid @color-gray-light3;
         height: 21px;
-        width: 15%;
+        width: 72px;
         color: @color-text-input;
         padding-top: 14px;
         span {
@@ -255,7 +255,7 @@
     }
     .field.country .control {
       float: left;
-      width: 85%;
+      width: calc(~"100% - 72px");
       .nice-select {
         width: 100%;
         border-top: none;
@@ -278,7 +278,7 @@
       float: left;
       border-bottom: 2px solid @color-gray-light3;
       height: 35px;
-      width: 27%;
+      width: 70px;
       color: @color-text-input;
       span {
         padding-left: 5px;
@@ -288,7 +288,7 @@
     }
     .field.gender .control {
       float: left;
-      width: 73%;
+      width: calc(~"100% - 70px");
       .nice-select {
         width: 100%;
         border-top: none;
@@ -447,7 +447,7 @@
     .create.info {
       .field {
         label[for=country] {
-          width: 14%;
+          //width: 14%;
         }
         label[for=gender] {
           width: 38%;
@@ -455,7 +455,6 @@
       }
       .field.country .control {
         float: left;
-        width: 86%;
         div.nice-select {
           font-size: 12px;
           line-height: 29px;
