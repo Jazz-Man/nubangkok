@@ -24,11 +24,14 @@ define([
 
     //sticky elements
     //---------------------------------------------
-    $('.js-sticky-sidebar').sticky({
-        topSpacing: $pageHeader.outerHeight() + 5,
-        bottomSpacing: $('.page-footer').outerHeight()
-    });
-    $pageHeader.sticky({zIndex: 9999});
+    setTimeout(function(){
+        $('.js-sticky-sidebar').sticky({
+            topSpacing: $pageHeader.outerHeight() + 5,
+            bottomSpacing: $('.page-footer').outerHeight()
+        });
+        $pageHeader.sticky({zIndex: 9999});
+    }, 100);
+
 
 
     //Use for change image on click
