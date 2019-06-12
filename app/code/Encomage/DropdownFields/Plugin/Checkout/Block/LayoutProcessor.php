@@ -45,6 +45,33 @@ class LayoutProcessor {
             ['children']['shippingAddress']['children']['shipping-address-fieldset']
             ['children']['postcode']['sortOrder'] = 109;
         }
+
+        if(isset($jsLayout['components']['checkout']['children']['steps']['children']
+            ['billing-step']['children']['payment']['children']['payments-list']['children']
+            ['p2c2ppayment-form'])) {
+
+            $jsLayout['components']['checkout']['children']['steps']['children']
+            ['billing-step']['children']['payment']['children']['payments-list']['children']
+            ['p2c2ppayment-form']['children']['form-fields']['children']['region_id']
+            ['component'] = 'Eadesigndev_RomCity/js/form/element/region';
+
+            $jsLayout['components']['checkout']['children']['steps']['children']
+            ['billing-step']['children']['payment']['children']['payments-list']['children']
+            ['p2c2ppayment-form']['children']['form-fields']['children']['country_id']['sortOrder'] = 107;
+
+            $jsLayout['components']['checkout']['children']['steps']['children']
+            ['billing-step']['children']['payment']['children']['payments-list']['children']
+            ['p2c2ppayment-form']['children']['form-fields']['children']['region_id']['sortOrder'] = 108;
+
+            $jsLayout['components']['checkout']['children']['steps']['children']
+            ['billing-step']['children']['payment']['children']['payments-list']['children']
+            ['p2c2ppayment-form']['children']['form-fields']['children']['city_id']['sortOrder'] = 109;
+
+            $jsLayout['components']['checkout']['children']['steps']['children']
+            ['billing-step']['children']['payment']['children']['payments-list']['children']
+            ['p2c2ppayment-form']['children']['form-fields']['children']['city']['visible'] = false;
+        }
+
         return $jsLayout;
     }
 }
