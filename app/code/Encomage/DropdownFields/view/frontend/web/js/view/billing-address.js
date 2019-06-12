@@ -88,10 +88,10 @@ define(['jquery',
                 updateAddress: function () {
                     var addressData, newBillingAddress, billingCityId, billingCityIdValue;
 
-                    if (this.selectedAddress() && this.selectedAddress() != newAddressOption) {
+             /*       if (this.selectedAddress() && this.selectedAddress() != newAddressOption) {
                         selectBillingAddress(this.selectedAddress());
                         checkoutData.setSelectedBillingAddress(this.selectedAddress().getKey());
-                    } else {
+                    } else {*/
                         this.source.set('params.invalid', false);
                         this.source.trigger(this.dataScopePrefix + '.data.validate');
 
@@ -113,7 +113,7 @@ define(['jquery',
                             billingCityId = $("#billing-new-address-form [name = 'city_id'] option:selected"),
                                 billingCityIdValue = billingCityId.text();
                         }
-                    }
+                   // }
                     newBillingAddress.city = billingCityIdValue;
 
                     this.updateAddresses();
