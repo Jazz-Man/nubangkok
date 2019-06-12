@@ -78,6 +78,7 @@ define([
                 $(document).on('click touchend', '.js-sidebar-category', function (e) {
                     var el = $(this);
                     if (el.hasClass('js-no-link')) {
+                        e.preventDefault();
                     }
                     if (el.hasClass('js-category-main')) {
                         $('.main-categories span').removeClass('active');
