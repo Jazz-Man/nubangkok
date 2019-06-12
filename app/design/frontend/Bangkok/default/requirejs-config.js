@@ -8,7 +8,8 @@ var config = {
             customSelect: 'js/plugins/custom-select',
             sticky: 'js/plugins/jquery.sticky',
             owlcarousel: 'Mageplaza_BannerSlider/js/owl.carousel',
-            simpleCropper: 'js/plugins/cropper/jquery.SimpleCropper'
+            simpleCropper: 'js/plugins/cropper/jquery.SimpleCropper',
+            fastclick: 'js/plugins/fastclick/fastclick'
         }
     },
     paths: {
