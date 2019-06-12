@@ -1,7 +1,6 @@
 define([
     'jquery',
     'matchMedia',
-    'fastclick',
     'domReady!',
     'niceselect',
     'sticky'
@@ -12,10 +11,6 @@ define([
     //---------------------------------------------
     var $pageHeader = $('header.page-header'), $sidebarAdditionalEl = $('.sidebar.sidebar-additional'),
         $mediaBreakpoint = '(max-width: 768px)';
-
-    
-        FastClick.attach(document.body);
-   
     
     //init selections
     //---------------------------------------------
