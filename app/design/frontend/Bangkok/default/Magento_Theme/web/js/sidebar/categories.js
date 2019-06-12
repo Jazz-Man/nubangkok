@@ -75,9 +75,13 @@ define([
                     activateSubMenu(config.activeMainCategoryId);
                 }
 
-                $(document).on('click', '.js-sidebar-category', function (e) {
+                $(document).on('click touchend', '.js-sidebar-category', function (e) {
                     var el = $(this);
                     if (el.hasClass('js-no-link')) {
+                        //
+                        // Solved for Double Tap/click Issue on iOS(iPhone, iPad) Devices
+                        var link = el.attr("href");
+                        window.location = link;
                         e.preventDefault();
 
                     }
@@ -87,6 +91,8 @@ define([
                         el.parent().addClass('active');
                     }
                     activateSubMenu(el.data('categoryId'));
+
+
                 })
             }
         }
