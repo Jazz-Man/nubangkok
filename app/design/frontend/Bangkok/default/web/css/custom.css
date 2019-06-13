@@ -366,6 +366,9 @@ input:-webkit-autofill {
     html:lang(th) .products-grid.wishlist .product-item .box-tocart .fieldset .field.qty .control .qty-reduce span {
         top: -2px;
     }
+    html:lang(th) .form-wishlist-items .products-grid.wishlist .product-item .box-tocart {
+        width: 48%;
+    }
 
     /*Post view*/
     .post-view .post-bottom .block.related .products-grid .product-item .image-block span.popular-products {
