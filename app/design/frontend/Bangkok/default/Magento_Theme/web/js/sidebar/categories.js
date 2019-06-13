@@ -85,6 +85,9 @@ define([
                     if (el.hasClass('js-no-link')) {
                         e.preventDefault();
                         
+                    }else{
+                        window.location.href = el.attr('href');
+                        return;
                     }
                     if (el.hasClass('js-category-main')) {
                         $('.main-categories span').removeClass('active');
