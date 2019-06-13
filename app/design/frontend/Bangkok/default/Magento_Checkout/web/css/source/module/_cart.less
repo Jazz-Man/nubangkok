@@ -160,7 +160,7 @@
       &.qty {
         .input-text {
           margin-top: -5px;
-          margin-right: 6px;
+          margin-right: 4px;
           &:extend(.abs-input-qty all);
           height: 32px;
           border: 1px solid #d9d2cb;
@@ -1075,12 +1075,23 @@
     margin-top: 16px;
   }
   html:lang(th) {
-    .cart.table-wrapper .item-actions .actions-toolbar .action-towishlist {
-      margin-bottom: 0;
-      margin-top: 10px;
+    .cart.table-wrapper {
+      .item-actions .actions-toolbar .action-towishlist {
+        margin-bottom: 0;
+        margin-top: 10px;
+      }
+      .col.qty .input-text {
+        margin-right: 7px;
+      }
+      .control.qty {
+        .qty-enhance, .qty-reduce {
+          top: -2px;
+        }
+      }
     }
   }
 }
+
 
 & when (@media-common = true) {
   .cart-container {
