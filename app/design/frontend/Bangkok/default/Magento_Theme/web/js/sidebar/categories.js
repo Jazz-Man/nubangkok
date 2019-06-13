@@ -12,6 +12,10 @@ define([
             mobileContainer = $('.navigation .js-sidebar-container'),
             sidebarCategories =  $('.js-sidebar-categories');
 
+        let isiPhone =  (
+            (navigator.platform.indexOf("iPhone") != -1) ||
+            (navigator.platform.indexOf("iPod") != -1)
+        );
 
         function activateSubMenu(categoryId) {
             var e = $('.main-subcategories ul[data-parent-id="' + categoryId + '"]');
@@ -75,10 +79,13 @@ define([
                     activateSubMenu(config.activeMainCategoryId);
                 }
 
-                let event =  (
-                    (navigator.platform.indexOf("iPhone") != -1) ||
-                    (navigator.platform.indexOf("iPod") != -1)
-                ) ? 'mouseenter' : 'click';
+                let event = isiPhone ? 'mouseenter' : 'click';
+
+                if (isiPhone) {
+                    $(document).on(event, '.js-sidebar-categories a:not([class])', function () {
+                        window.location.href = $(this).attr('href');
+                    });
+                }
 
                 $(document).on(event, '.js-sidebar-category', function (e) {
                     var el = $(this);
