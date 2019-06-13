@@ -599,9 +599,11 @@
       font-weight: 400;
       font-size: 1.4rem;
     }
-    .block.block-customer-login .block-content fieldset .control .customer-show-password span,
-    .form.create.account.form-create-account .create.info .legend {
+    .block.block-customer-login .block-content fieldset .control .customer-show-password span {
       font-size: 1.4rem;
+    }
+    .form.create.account.form-create-account .create.info .legend {
+      font-size: 1.9rem;
     }
     div.mage-error[generated] {
       font-size: 1.6rem !important;
@@ -675,6 +677,20 @@
           top: -25px;
         }
       }
+    // login account
+    .block.block-customer-login .block-content {
+      fieldset .actions-toolbar .secondary {
+        .checkbox-bk {
+          top: 4px;
+        }
+        span {
+          font-size: 2.3rem;
+        }
+      }
+    }
+    .block.block-new-customer .block-content > p {
+      font-size: 2.3rem;
+    }
   }
 }
 
@@ -816,8 +832,13 @@
   }
   // if Th store
   html:lang(th) {
-    .product-options-bottom .product-item-qty {
-      font-size: 1.8rem;
+    .product-options-bottom {
+      .product-item-qty {
+        font-size: 1.8rem;
+      }
+      .message p {
+        font-size: 2.3rem;
+      }
     }
     .products-grid.wishlist .product-item .box-tocart .wrapper.color .rgb {
       margin-top: 5px;
@@ -1131,7 +1152,17 @@ html:lang(th) {
     .product-options-bottom .product-item-qty {
       font-size: 1.8rem;
     }
-    .product-info-main .page-title-wrapper .page-title,
+    .product-info-main {
+      .page-title-wrapper .page-title,
+      .product-add-form .product-options-bottom .message {
+        > p, .choose-no, .choose-yes {
+          font-size: 1.9rem;
+        }
+        .radio-box {
+          margin-right: 12px;
+        }
+      }
+    }
     .breadcrumbs .items .item {
       font-size: 1.9rem;
     }
@@ -1232,6 +1263,22 @@ html:lang(th) {
       span.qty-enhance {
         //margin-left: 4px;
 
+      }
+    }
+    // login account
+    .login-container .block.block-customer-login {
+      .checkbox-block-mobile {
+        width: max-content;
+        label.label .checkbox-bk {
+          font-size: 1.9rem;
+        }
+      }
+      .block-content fieldset .actions-toolbar {
+        .secondary .action.remind {
+          span {
+            font-size: 1.9rem;
+          }
+        }
       }
     }
   }
