@@ -75,7 +75,12 @@ define([
                     activateSubMenu(config.activeMainCategoryId);
                 }
 
-                $(document).on('click', '.js-sidebar-category', function (e) {
+                let event =  (
+                    (navigator.platform.indexOf("iPhone") != -1) ||
+                    (navigator.platform.indexOf("iPod") != -1)
+                ) ? 'mouseenter' : 'click';
+
+                $(document).on(event, '.js-sidebar-category', function (e) {
                     var el = $(this);
                     if (el.hasClass('js-no-link')) {
                         e.preventDefault();
