@@ -9,6 +9,7 @@ define(['jquery',
         'Magento_Checkout/js/action/select-billing-address',
         'Magento_Checkout/js/checkout-data',
         'Magento_Customer/js/customer-data',
+        'mage/translate',
     ],
     function ($,
               ko,
@@ -19,13 +20,14 @@ define(['jquery',
               quote,
               createBillingAddress,
               selectBillingAddress,
-              checkoutData
+              checkoutData,
+              $t
     ) {
         'use strict';
         var lastSelectedBillingAddress = null,
             newAddressOption = {
                 getAddressInline: function () {
-                    return $t('New Address');
+                    return $.mage.__('New Address');
                 },
                 customerAddressId: null
             },
@@ -87,11 +89,10 @@ define(['jquery',
                 },
                 updateAddress: function () {
                     var addressData, newBillingAddress, billingCityId, billingCityIdValue;
-
-             /*       if (this.selectedAddress() && this.selectedAddress() != newAddressOption) {
+                    if (this.selectedAddress() && this.selectedAddress().getAddressInline() != newAddressOption.getAddressInline()) {
                         selectBillingAddress(this.selectedAddress());
                         checkoutData.setSelectedBillingAddress(this.selectedAddress().getKey());
-                    } else {*/
+                    } else {
                         this.source.set('params.invalid', false);
                         this.source.trigger(this.dataScopePrefix + '.data.validate');
 
@@ -105,17 +106,19 @@ define(['jquery',
                             if (customer.isLoggedIn() && !this.customerHasAddresses) {
                                 this.saveInAddressBook(1);
                             }
-                            addressData['save_in_address_book'] = this.saveInAddressBook() ? 1 : 0;
                             newBillingAddress = createBillingAddress(addressData);
+                            addressData['save_in_address_book'] = this.saveInAddressBook() ? 1 : 0;
+                            billingCityId = $("#billing-new-address-form [name = 'city_id'] option:selected");
+                            billingCityIdValue = billingCityId.text();
+                            let billingRegionId = $("#billing-new-address-form [name = 'region_id'] option:selected");
+                            let billingRegionIdValue = billingRegionId.text();
+                            newBillingAddress.city = billingCityIdValue;
+                            newBillingAddress.region = billingRegionIdValue;
                             selectBillingAddress(newBillingAddress);
                             checkoutData.setSelectedBillingAddress(newBillingAddress.getKey());
                             checkoutData.setNewCustomerBillingAddress(addressData);
-                            billingCityId = $("#billing-new-address-form [name = 'city_id'] option:selected"),
-                                billingCityIdValue = billingCityId.text();
                         }
-                   // }
-                    newBillingAddress.city = billingCityIdValue;
-
+                    }
                     this.updateAddresses();
                 },
             });

@@ -126,19 +126,22 @@ define(['jquery',
                     this.source.set('params.invalid', false);
                     this.triggerShippingDataValidateEvent();
 
-                    var address = quote.shippingAddress(),
-                        shippingCityId = $("[name = 'city_id'] option:selected"),
-                        shippingCityIdValue = shippingCityId.text();
-                    address.city = shippingCityIdValue;
-                    addressData = this.source.get('shippingAddress');
-                    addressData.city = shippingCityIdValue;
-                    addressData['save_in_address_book'] = this.saveInAddressBook ? 1 : 0;
-                    newShippingAddress = createShippingAddress(addressData);
-                    selectShippingAddress(newShippingAddress);
-                    checkoutData.setSelectedShippingAddress(newShippingAddress.getKey());
-                    checkoutData.setNewCustomerShippingAddress($.extend(true, {}, addressData));
-                    this.getPopUp().closeModal();
-                    this.isNewAddressAdded(true);
+                    if (!this.source.get('params.invalid')) {
+                        var address = quote.shippingAddress(),
+                            shippingCityId = $("[name = 'city_id'] option:selected"),
+                            shippingCityIdValue = shippingCityId.text();
+                        address.city = shippingCityIdValue;
+                        addressData = this.source.get('shippingAddress');
+                        addressData.city = shippingCityIdValue;
+                        addressData['save_in_address_book'] = this.saveInAddressBook ? 1 : 0;
+                        newShippingAddress = createShippingAddress(addressData);
+                        selectShippingAddress(newShippingAddress);
+                        checkoutData.setSelectedShippingAddress(newShippingAddress.getKey());
+                        checkoutData.setNewCustomerShippingAddress($.extend(true, {}, addressData));
+                        this.getPopUp().closeModal();
+                        this.isNewAddressAdded(true);
+                    }
+
                 },
             });
         }
