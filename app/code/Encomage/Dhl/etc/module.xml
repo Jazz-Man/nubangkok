@@ -6,6 +6,7 @@
             <module name="Dhl_Shipping"/>
             <module name="Eadesigndev_RomCity"/>
             <module name="Magento_Checkout"/>
+            <module name="Magento_Dhl"/>
         </sequence>
     </module>
 </config>
