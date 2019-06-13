@@ -1,8 +1,3 @@
-// /**
-//  * Copyright © Magento, Inc. All rights reserved.
-//  * See COPYING.txt for license details.
-//  */
-
 //
 //  Common
 //  _____________________________________________
@@ -307,6 +302,31 @@
 //
 //  Mobile
 //  _____________________________________________
+
+@media only screen and (max-width: 360px) {
+  html:lang(th) {
+    .form-wishlist-items .products-grid.wishlist .product-items .product-item {
+        padding-left: 0;
+      .price-box {
+        margin-top: 7px;
+      }
+      .box-tocart {
+        .wrapper.size {
+          margin-top: 6px;
+          width: 60px;
+          right: 0;
+        }
+        .wrapper.color {
+          margin-top: 4px;
+        }
+        .message-count-in-stock {
+          top: 24px;
+        }
+      }
+    }
+  }
+}
+
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
   .products-grid.wishlist {
     span.product-note-info {
@@ -342,8 +362,24 @@
     }
   }
   html:lang(th) {
-    .form-wishlist-items .products-grid.wishlist .product-item .box-tocart .wrapper.color {
-      margin-top: 0;
+    .form-wishlist-items .products-grid.wishlist .product-item {
+      .box-tocart {
+        .fieldset {
+          .field.qty {
+            .label {
+              display: none;
+            }
+            .control span{
+              &.qty-reduce, &.qty-enhance {
+                top: -1px;
+              }
+            }
+          }
+        }
+        .wrapper.color {
+          margin-top: 0;
+        }
+      }
     }
   }
 }
@@ -547,9 +583,50 @@
     }
     .wishlist-index-index .products-grid .product-item .rgb {
       margin-top: 4px;
+      min-width: 12px
     }
-    .form-wishlist-items .products-grid.wishlist .product-item .box-tocart .wrapper.color {
-      width: 40px;
+    .form-wishlist-items .products-grid.wishlist .product-item {
+      .product-name-wsl {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+        display: block;
+      }
+      .box-tocart {
+        .wrapper.color {
+          width: 40px;
+          margin-top: 4px;
+        }
+        .wrapper.size {
+          .label, .values {
+            float: left;
+            width: max-content;
+            font-size: 1.8rem;
+          }
+          .label {
+            margin-right: 5px;
+          }
+        }
+        .fieldset .field.qty {
+          width: 90%;
+          min-width: 150px;
+          .label {
+            font-size: 1.8rem;
+          }
+          .control {
+            .qty-reduce, .qty-enhance  {
+              top: -3px;
+            }
+          }
+        }
+        .message-count-in-stock span {
+          font-size: 1.8rem;
+        }
+      }
+      .price-box .price {
+        font-size: 1.8rem;
+      }
     }
   }
 }
@@ -603,7 +680,7 @@
             float: right;
             margin-top: 8px;
             .label {
-              width: 25px;
+              width: max-content;
               float: left;
               margin-right: 6px;
             }
@@ -686,17 +763,55 @@
     }
   }
 
-  html:lang(th) .products-grid.wishlist .product-item .box-tocart .wrapper.color .label {
-    min-width: 15px;
+  html:lang(th) {
+    .products-grid.wishlist .product-item {
+      .box-tocart {
+        .wrapper.color .label {
+          min-width: 15px;
+        }
+        .wrapper.size {
+          width: max-content;
+          min-width: 65px;
+        }
+        input.qty {
+          margin-right: 8px;
+        }
+        .fieldset .field.qty {
+          min-width: 166px;
+
+        }
+      }
+    }
   }
 }
-
-//}
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  html:lang(th) {
+    .products-grid.wishlist .product-item {
+      .price-box .price {
+        font-size: 1.9rem;
+      }
+      .box-tocart .fieldset {
+        .field.qty .label,
+        .wrapper.size,
+        .message-count-in-stock span {
+          font-size: 1.9rem;
+        }
+      }
+    }
+  }
+}
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__l){
   .products-grid.wishlist .product-item .product-item-actions {
     margin-left: 7%;
     border: 1px solid;
+  }
+  html:lang(th) {
+    .products-grid.wishlist .product-item {
+      .product-item-actions {
+        margin-left: 4%;
+      }
+    }
   }
 }
 
