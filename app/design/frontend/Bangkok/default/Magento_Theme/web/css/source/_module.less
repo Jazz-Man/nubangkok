@@ -587,7 +587,7 @@
           font-style: normal;
           font-weight: 300;
           line-height: 1.2;
-          font-size: 1.9rem;
+          //font-size: 1.9rem;
         }
         span.story-customer-info {
           font-size: 2.3rem;
@@ -843,7 +843,11 @@
     .products-grid.wishlist .product-item .box-tocart .wrapper.color .rgb {
       margin-top: 5px;
     }
-    // create asn account
+    // customer dropdown
+    .page-header .links li:first-of-type .dropdown.options {
+      height: 30px;
+    }
+    // create an account
     .checkbox-block label[for=specials_offers] span:first-of-type,
     .checkbox-block label[for=tos] span:first-of-type {
       top: 3px;
@@ -851,6 +855,20 @@
     //cart
     .cart.table-wrapper .col.qty span.qty-enhance {
       //margin-left: 7px;
+    }
+    // customer account
+    .customer-account-dashboard {
+      .checkbox-block label.label span:first-of-type {
+        top: 2px;
+      }
+    }
+    .form.form-edit-account {
+      .checkbox-block label.label span:first-of-type {
+        top: 2px;
+      }
+    }
+    .stories-content .your-stories-block .your-stories-container .story-item .story-content div.full-content {
+      font-size: 2.3rem;
     }
   }
 }
@@ -871,7 +889,8 @@ html:lang(th) {
         font-size: 1.8rem;
       }
       .box-tocart .fieldset .field.qty {
-        width: 100%;
+        //width: 100%;
+
         .control {
           .qty-reduce span {
             font-size: 1.8rem;
@@ -1170,7 +1189,7 @@ html:lang(th) {
       top: 14px;
     }
     .column.main .form-wishlist-items div.actions-toolbar .primary a {
-      font-size: 1.6rem;
+      font-size: 1.9rem;
     }
     .cart.table-wrapper {
       .product-item-details {
@@ -1281,8 +1300,25 @@ html:lang(th) {
         }
       }
     }
+    // custommer account
+    .customer-account-dashboard {
+      .checkbox-block label.label span:first-of-type {
+        top: -2px;
+      }
+    }
+    .form.form-edit-account {
+      .checkbox-block label.label span:first-of-type {
+        top: -2px;
+      }
+    }
+  }
+  .stories-content .your-stories-block .your-stories-container .story-item .story-content div.full-content {
+    font-size: 1.9rem;
   }
   html:lang(th) .page-wrapper .page-header .links li:first-of-type .options .dropdown.switcher-dropdown li a {
     font-size: 2.3rem;
+  }
+  .product-info-main .page-title-wrapper .page-title {
+    font-size: 2.4rem;
   }
 }
