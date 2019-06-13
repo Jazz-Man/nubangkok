@@ -10,12 +10,11 @@ define([
             mediaBreakpoint = '(max-width: 768px)',
             desktopContainer = $('.sidebar.sidebar-additional .js-sidebar-container'),
             mobileContainer = $('.navigation .js-sidebar-container'),
-            sidebarCategories =  $('.js-sidebar-categories');
-
-        let isiPhone =  (
-            (navigator.platform.indexOf("iPhone") != -1) ||
-            (navigator.platform.indexOf("iPod") != -1)
-        );
+            sidebarCategories = $('.js-sidebar-categories'),
+            isiPhone = (
+                (navigator.platform.indexOf("iPhone") != -1) ||
+                (navigator.platform.indexOf("iPod") != -1)
+            );
 
         function activateSubMenu(categoryId) {
             var e = $('.main-subcategories ul[data-parent-id="' + categoryId + '"]');
@@ -79,19 +78,11 @@ define([
                     activateSubMenu(config.activeMainCategoryId);
                 }
 
-                let event = isiPhone ? 'mouseenter' : 'click';
-
-                if (isiPhone) {
-                    $(document).on(event, '.js-sidebar-categories a:not([class])', function () {
-                        window.location.href = $(this).attr('href');
-                    });
-                }
-
-                $(document).on(event, '.js-sidebar-category', function (e) {
-                    var el = $(this);
+                let itemClickEvent = function(e){
+                    let el = $(this);
                     if (el.hasClass('js-no-link')) {
                         e.preventDefault();
-                        
+
                     }else{
                         window.location.href = el.attr('href');
                         return;
@@ -101,8 +92,16 @@ define([
                         $('.main-subcategories ul').hide().removeClass('active');
                         el.parent().addClass('active');
                     }
-                    activateSubMenu(el.data('categoryId'));
-                })
+                    activateSubMenu(el.data('categoryId'))
+                };
+
+                if (isiPhone) {
+                    $(document).on('mouseenter', '.js-sidebar-categories a:not([class])', function () {
+                        window.location.href = $(this).attr('href');
+                    });
+                    $(document).on('mouseenter', '.js-sidebar-category', itemClickEvent)
+                }
+                $(document).on('click', '.js-sidebar-category', itemClickEvent)
             }
         }
 
