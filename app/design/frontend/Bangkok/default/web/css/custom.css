@@ -1423,7 +1423,7 @@ input:-webkit-autofill {
     }
 
     html:lang(th) .sidebar-menu .main-categories span a {
-        font-size: 2rem;
+        font-size: 2.3rem;
     }
     html:lang(th) .form-wishlist-items .products-grid.wishlist .product-item .box-tocart {
         width: 42%;
