@@ -332,6 +332,16 @@ html:lang(th) {
 }
 
 //
+// Descktop
+//___________________________
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .points-container {
+    .left-block .content, .right-block .content {
+      min-height: 450px !important;
+    }
+  }
+}
+//
 // Mobile
 //___________________________
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m){

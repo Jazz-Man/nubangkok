@@ -942,6 +942,16 @@
       }
     }
   }
+  html:lang(th) {
+    .sidebar-menu .main-subcategories ul li:hover a:before, .sidebar-menu .main-subcategories ul li:focus a:before, .sidebar-menu .main-subcategories ul li.active a:before,
+    .sidebar-menu .main-subcategories ul ul li:hover a:before, .sidebar-menu .main-subcategories ul ul li:focus a:before, .sidebar-menu .main-subcategories ul ul li.active a:before{
+      top: 23px;
+    }
+    .violet-link strong {
+      font-size: 28px !important;
+      line-height: 0;
+    }
+  }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
@@ -992,7 +1002,8 @@
       top: 11px;
     }
     .violet-link strong {
-      font-size: 21px !important;
+      font-size: 31px !important;
+      line-height: 0;
     }
   }
 
