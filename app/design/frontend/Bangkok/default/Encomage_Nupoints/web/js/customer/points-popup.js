@@ -20,4 +20,22 @@ define([
     $(document).on('click touchstart', '.js-close', function () {
         $('.float-right-content').removeClass('active');
     });
+
+
+    //
+    // points blocks height 
+    //
+    function equivalentHeight () {
+        let left = $('.points-container .left-block .content'),
+            right = $('.points-container .right-block .content'),
+            rightH = right.height();
+
+            left.height(rightH);
+    }
+    equivalentHeight();
+
+    $(window).resize(function() {
+        equivalentHeight();
+    });
+
 });
