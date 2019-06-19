@@ -18,7 +18,7 @@ class Register extends \Magento\Customer\Block\Form\Register
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Customer\Model\Url $customerUrl,
         \Magento\Framework\Serialize\SerializerInterface $serializer,
-        Magento\Framework\App\Response\RedirectInterface $redirect,
+        \Magento\Framework\App\Response\RedirectInterface $redirect,
         array $data = []
     ) {
         parent::__construct(
