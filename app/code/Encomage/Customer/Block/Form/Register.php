@@ -5,6 +5,7 @@ namespace Encomage\Customer\Block\Form;
 class Register extends \Magento\Customer\Block\Form\Register
 {
     private $serializer;
+    private $redirect;
 
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
@@ -17,9 +18,9 @@ class Register extends \Magento\Customer\Block\Form\Register
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Customer\Model\Url $customerUrl,
         \Magento\Framework\Serialize\SerializerInterface $serializer,
+        Magento\Framework\App\Response\RedirectInterface $redirect,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct(
             $context,
             $directoryHelper,
@@ -33,6 +34,7 @@ class Register extends \Magento\Customer\Block\Form\Register
             $data
         );
         $this->serializer = $serializer;
+        $this->redirect = $redirect;
     }
 
     public function getCountryHtmlSelect($defValue = null, $name = 'country_id', $id = 'country', $title = 'Country')
@@ -68,6 +70,17 @@ class Register extends \Magento\Customer\Block\Form\Register
         )->getHtml();
 
         \Magento\Framework\Profiler::stop('TEST: ' . __METHOD__);
+
         return $html;
+    }
+
+    public function getSuccessUrl()
+    {
+        $refererUrl = $this->redirect->getRefererUrl();
+        if ($refererUrl === $this->getUrl('checkout/cart')) {
+            return $refererUrl;
+        }
+
+        return $this->getData('success_url');
     }
 }
