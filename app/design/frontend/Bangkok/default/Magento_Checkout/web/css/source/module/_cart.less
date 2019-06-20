@@ -954,7 +954,7 @@
 
         .mark-label {
           .point {
-            font-size: 16px !important;
+            font-size: 16px;
             line-height: 0;
           }
         }
@@ -971,8 +971,13 @@
   }
 
   html:lang(th) {
-    .totals.redeem.excl .mark-label .label-nu {
-      font-size: 30px;
+    .totals.redeem.excl .mark-label {
+      .label-nu {
+        font-size: 30px;
+      }
+      .point {
+        font-size: 22px;
+      }
     }
   }
 }
