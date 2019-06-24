@@ -24,6 +24,11 @@
     .mark-label {
       width: 15%;
       display: inline-block;
+      .label-nu {
+        text-transform: lowercase;
+        font-size: 22px;
+        line-height: 0;
+      }
     }
     input.redeem-nupoints {
       width: 30%;
@@ -506,6 +511,11 @@
       }
     }
   }
+  html:lang(th) {
+    .totals.redeem.excl .mark-label .label-nu {
+      font-size: 30px;
+    }
+  }
 }
 
 //
@@ -941,6 +951,13 @@
         .btn {
           margin-left: 3px;
         }
+
+        .mark-label {
+          .point {
+            font-size: 16px;
+            line-height: 0;
+          }
+        }
       }
     }
   }
@@ -949,6 +966,17 @@
     .applied {
       span {
         font-size: 14px;
+      }
+    }
+  }
+
+  html:lang(th) {
+    .totals.redeem.excl .mark-label {
+      .label-nu {
+        font-size: 30px;
+      }
+      .point {
+        font-size: 22px;
       }
     }
   }
