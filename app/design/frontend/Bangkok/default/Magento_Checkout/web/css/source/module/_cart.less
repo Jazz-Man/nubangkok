@@ -13,7 +13,7 @@
   //  Shopping cart
   //  ---------------------------------------------
   .totals.redeem.excl {
-    text-transform: uppercase;
+    text-transform: lowercase;
     margin-top: 20px;
     width: 125%;
     margin-bottom: 20px;
@@ -28,6 +28,10 @@
         text-transform: lowercase;
         font-size: 22px;
         line-height: 0;
+      }
+      .point {
+        //display: inherit;
+        text-transform: capitalize !important;
       }
     }
     input.redeem-nupoints {
@@ -56,6 +60,7 @@
       float: right;
       padding-top: 5px;
     }
+
   }
   // Page Heading
   .page-heading {
@@ -976,7 +981,7 @@
         font-size: 30px;
       }
       .point {
-        font-size: 22px;
+        font-size: 22px !important;
       }
     }
   }
@@ -1116,6 +1121,9 @@
           top: -2px;
         }
       }
+    }
+    .totals.redeem.excl .mark-label .point {
+      font-size: 2.2rem;
     }
   }
 }
