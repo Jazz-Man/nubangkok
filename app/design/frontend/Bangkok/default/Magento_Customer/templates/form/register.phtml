@@ -180,3 +180,15 @@
         }
     }
 </script>
+
+<script>
+    require([
+        'jquery',
+    ], function ($) {
+        let checkoutPage = '<?php echo $block->getUrl('checkout/cart');?>';
+
+        if(document.referrer == checkoutPage){
+            $('input[name="success_url"]').val(checkoutPage);
+        }
+    });
+</script>
