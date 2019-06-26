@@ -120,6 +120,22 @@
         var dataForm = $('#form-validate');
         var ignore = <?= /* @noEscape */ $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null' ?>;
 
+
+        function gender() {
+            if ($("#gender option:selected").val()) {
+                $('label[for="gender"] span').hide();
+                $('#gender').next('.nice-select').css('padding-left', '10px');
+            } else {
+                $('label[for="gender"] span').show();
+                $('#gender').next('nice-select').css('padding-left', '65px');
+            }
+        };
+        gender();
+
+        $('#gender').change(function () {
+            gender();
+        })
+
         dataForm.mage('validation', {
             <?php if ($_dob->isEnabled()): ?>
             errorPlacement: function (error, element) {
