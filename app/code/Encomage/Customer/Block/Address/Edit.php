@@ -86,6 +86,14 @@ class Edit extends \Magento\Customer\Block\Address\Edit
     public function getCountryHtmlSelect($defValue = null, $name = 'country_id', $id = 'country', $title = 'Country')
     {
         $id .= '-' . $this->getAddressType();
+
         return parent::getCountryHtmlSelect($defValue, $name, $id, $title);
+    }
+
+    public function setAddress($address)
+    {
+        $this->_address = $address;
+
+        return $this;
     }
 }
