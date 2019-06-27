@@ -6,7 +6,9 @@
 
 // @codingStandardsIgnoreFile
 
-/** @var \Magento\Customer\Block\Form\Edit $block */
+/** @var \Encomage\Customer\Block\Form\Edit $block */
+
+$address = $block->getBillingAddress()
 ?>
 <form class="form form-edit-account" action="<?= $block->escapeUrl($block->getUrl('customer/account/editPost')) ?>"
       method="post" id="form-validate" enctype="multipart/form-data"
@@ -26,6 +28,34 @@
         <?php if ($_taxvat->isEnabled()): ?>
             <?= $_taxvat->setTaxvat($block->getCustomer()->getTaxvat())->toHtml() ?>
         <?php endif ?>
+
+        <div class="field field-telephone required">
+
+            <div class="control">
+                <input type="text" id="telephone" name="telephone" value="<?php echo $address->getTelephone();?>"
+                       title="First Name" placeholder="Telephone"
+                       class="input-text required-entry" aria-required="true">
+            </div>
+        </div>
+
+        <div class="field field-line-id required">
+
+            <div class="control">
+                <input type="text" id="line_id" name="line_id" value="<?php echo $block->getCustomer()->getLineId();?>"
+                       title="First Name" placeholder="Line Id*"
+                       class="input-text required-entry"
+                       data-validate="{required:true}" aria-required="true">
+            </div>
+        </div>
+
+
+       <!-- <div class="field country required">
+            <label class="label" for="country"><span><?/*= $block->escapeHtml(__('Country')) */?></span></label>
+            <div class="control">
+                <?/*= $block->getCountryHtmlSelect() */?>
+            </div>
+        </div>-->
+
         <?php if ($_gender->isEnabled()): ?>
             <?= $_gender->setGender($block->getCustomer()->getGender())->toHtml() ?>
         <?php endif ?>
