@@ -160,7 +160,9 @@ $address = $block->getBillingAddress()
                 $('#gender').next('nice-select').css('padding-left', '65px');
             }
         };
-        gender();
+        $(document).ready(function () {
+            gender();
+        })
 
         $('#gender').change(function () {
             gender();
