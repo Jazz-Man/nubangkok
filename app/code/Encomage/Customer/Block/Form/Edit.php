@@ -38,12 +38,15 @@ class Edit extends \Magento\Customer\Block\Form\Edit
         $this->addressEditBlock = $addressEditBlock;
     }
 
-    public function getBillingAddress()
+    public function getAddress()
     {
         if ($this->billingAddress === null) {
-            $billingAddressId = $this->getCustomer()->getDefaultBilling();
-            $this->billingAddress = ($billingAddressId)
-                ? $this->addressRepository->getById($billingAddressId) : false;
+            $addressId = $this->getCustomer()->getDefaultBilling();
+            if(!$addressId){
+                $addressId = $this->getCustomer()->getDefaultShipping();
+            }
+            $this->billingAddress = ($addressId)
+                ? $this->addressRepository->getById($addressId) : false;
         }
 
         return $this->billingAddress;
@@ -51,7 +54,7 @@ class Edit extends \Magento\Customer\Block\Form\Edit
 
     public function getCountryHtmlSelect($defValue = null, $name = 'country_id', $id = 'country', $title = 'Country')
     {
-        $this->addressEditBlock->setAddress($this->getBillingAddress());
+        $this->addressEditBlock->setAddress($this->getAddress());
         return $this->addressEditBlock->getCountryHtmlSelect($defValue, $name, 'country-billing', $title);
     }
 

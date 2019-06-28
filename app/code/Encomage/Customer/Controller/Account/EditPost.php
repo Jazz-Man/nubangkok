@@ -19,6 +19,7 @@ use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\InvalidEmailOrPasswordException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\UserLockedException;
 
 /**
@@ -175,14 +176,18 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
                 $data = $this->getRequest()->getParams();
                 if (isset($data['telephone']) || isset($data['country_id'])) {
                     $customerAddressId = $customer->getDefaultBilling();
-                    $address = $this->addressRepository->getById($customerAddressId);
-                    /*if (isset($data['country_id'])) {
-                        $address->setCountryId($data['country_id']);
-                    }*/
-                    if (isset($data['telephone'])) {
-                        $address->setTelephone($data['telephone']);
-                    }
-                    $this->addressRepository->save($address);
+                   try{
+                       $address = $this->addressRepository->getById($customerAddressId);
+                       /*if (isset($data['country_id'])) {
+                           $address->setCountryId($data['country_id']);
+                       }*/
+                       if (isset($data['telephone'])) {
+                           $address->setTelephone($data['telephone']);
+                       }
+                       $this->addressRepository->save($address);
+                   }catch (\Magento\Framework\Exception\NoSuchEntityException $e){
+
+                   }
                 }
 
                 $this->dispatchSuccessEvent($customerCandidateDataObject);
