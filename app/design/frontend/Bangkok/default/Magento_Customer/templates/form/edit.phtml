@@ -32,7 +32,7 @@ $address = $block->getBillingAddress()
         <div class="field field-telephone required">
 
             <div class="control">
-                <input type="text" id="telephone" name="telephone" value="<?php echo $address->getTelephone();?>"
+                <input type="text" id="telephone" name="telephone" value="<?php echo ($address) ? $address->getTelephone() : '';?>"
                        title="First Name" placeholder="Telephone"
                        class="input-text required-entry" aria-required="true">
             </div>
