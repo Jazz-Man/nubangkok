@@ -8,7 +8,7 @@
 
 /** @var \Encomage\Customer\Block\Form\Edit $block */
 
-$address = $block->getAddress()
+//$address = $block->getAddress()
 ?>
 <form class="form form-edit-account" action="<?= $block->escapeUrl($block->getUrl('customer/account/editPost')) ?>"
       method="post" id="form-validate" enctype="multipart/form-data"
@@ -29,14 +29,14 @@ $address = $block->getAddress()
             <?= $_taxvat->setTaxvat($block->getCustomer()->getTaxvat())->toHtml() ?>
         <?php endif ?>
 
-        <div class="field field-telephone required">
+       <!-- <div class="field field-telephone required">
 
             <div class="control">
-                <input type="text" id="telephone" name="telephone" value="<?php echo ($address) ? $address->getTelephone() : '';?>"
+                <input type="text" id="telephone" name="telephone" value="<?php /*echo ($address) ? $address->getTelephone() : '';*/?>"
                        title="First Name" placeholder="Telephone"
                        class="input-text required-entry" aria-required="true">
             </div>
-        </div>
+        </div>-->
 
         <div class="field field-line-id required">
 

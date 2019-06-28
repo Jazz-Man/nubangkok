@@ -8,7 +8,7 @@ class Product extends \Magento\Catalog\Block\Adminhtml\Product
      */
     protected function _prepareLayout()
     {
-        $page = (int)$this->getRequest()->getParam('p', 0);
+        /*$page = (int)$this->getRequest()->getParam('p', 0);
         $param = [];
         if ($page) {
             $param['p'] = $page;
@@ -18,7 +18,7 @@ class Product extends \Magento\Catalog\Block\Adminhtml\Product
             ['label' => __('Import Manually'),
                 'onclick' => "setLocation('{$this->getUrl('erp/import/manually', $param)}')",
                 'class' => 'primary add']
-        );
+        );*/
         return parent::_prepareLayout();
     }
 }
