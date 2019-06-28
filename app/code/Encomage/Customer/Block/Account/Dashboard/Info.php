@@ -2,6 +2,8 @@
 
 namespace Encomage\Customer\Block\Account\Dashboard;
 
+use Magento\Framework\DataObject;
+
 class Info extends \Magento\Customer\Block\Account\Dashboard\Info
 {
     /**
@@ -47,7 +49,7 @@ class Info extends \Magento\Customer\Block\Account\Dashboard\Info
      */
     public function getCountryName()
     {
-        $countryId = $this->getBillingAddress() ? $this->getBillingAddress()->getCountryId() : null;
+        $countryId = $this->getAddress() ? $this->getAddress()->getCountryId() : null;
         if ($countryId) {
             $country = $this->_countryFactory->create()->loadByCode($countryId);
             return $country->getName();
@@ -61,7 +63,7 @@ class Info extends \Magento\Customer\Block\Account\Dashboard\Info
      */
     public function getTelephone()
     {
-        return $this->getBillingAddress() ? $this->getBillingAddress()->getTelephone() : null;
+        return $this->getAddress() ? $this->getBillingAddress()->getTelephone() : null;
     }
 
     /**
@@ -70,6 +72,17 @@ class Info extends \Magento\Customer\Block\Account\Dashboard\Info
     public function getBillingAddress()
     {
         return $this->currentCustomerAddress->getDefaultBillingAddress();
+    }
+
+    public function getAddress()
+    {
+        if($this->currentCustomerAddress->getDefaultBillingAddress()){
+            return $this->currentCustomerAddress->getDefaultBillingAddress();
+        }
+        if($this->currentCustomerAddress->getDefaultShippingAddress()){
+            return $this->currentCustomerAddress->getDefaultShippingAddress();
+        }
+        return new DataObject();
     }
 
 

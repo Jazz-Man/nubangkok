@@ -8,7 +8,7 @@
 
 /** @var \Encomage\Customer\Block\Form\Edit $block */
 
-$address = $block->getBillingAddress()
+$address = $block->getAddress()
 ?>
 <form class="form form-edit-account" action="<?= $block->escapeUrl($block->getUrl('customer/account/editPost')) ?>"
       method="post" id="form-validate" enctype="multipart/form-data"
