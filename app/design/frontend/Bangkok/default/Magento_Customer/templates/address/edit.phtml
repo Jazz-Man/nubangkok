@@ -44,8 +44,8 @@
                value="<?= $block->getCustomer()->getFirstname(); ?>">
         <input type="hidden" name="lastname"
                value="<?= $block->getCustomer()->getLastname(); ?>">
-        <input type="hidden" name="telephone"
-               value="<?= $block->getAddress()->getTelephone(); ?>">
+      <!--  <input type="hidden" name="telephone"
+               value="<?/*echo // $block->getAddress()->getTelephone(); */?>">-->
         <div class="field country required">
             <label class="label" for="country"><span><?= $block->escapeHtml(__('Country')) ?></span></label>
             <div class="control">
@@ -95,6 +95,19 @@
                        id="city-<?= $block->getAddressType();?>" placeholder="<?= __('City'); ?>">
             </div>
         </div>
+
+        <div class="field telephone required">
+
+            <div class="control">
+                <input type="text" id="telephone" name="telephone"
+                       value="<?php echo ($block->getAddress()) ? $block->getAddress()->getTelephone() : ''; ?>"
+                       title="<?= $block->escapeHtmlAttr(__('Telephone')) ?>"
+                       placeholder="<?= $block->escapeHtmlAttr(__('Telephone')) ?>"
+                       class="input-text required-entry" aria-required="true"
+                       data-validate="{'required-number':true}">
+            </div>
+        </div>
+
         <div class="field zip required">
             <div class="control">
                 <input type="text"
