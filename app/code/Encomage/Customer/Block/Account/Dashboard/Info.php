@@ -63,7 +63,7 @@ class Info extends \Magento\Customer\Block\Account\Dashboard\Info
      */
     public function getTelephone()
     {
-        return $this->getAddress() ? $this->getBillingAddress()->getTelephone() : null;
+        return $this->getAddress() ? $this->getAddress()->getTelephone() : null;
     }
 
     /**
