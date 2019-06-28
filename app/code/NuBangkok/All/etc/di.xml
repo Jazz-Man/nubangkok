@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Magento\Swatches\Block\Adminhtml\Attribute\Edit\Options\Visual"
+                type="NuBangkok\All\Override\Swatches\Block\Adminhtml\Attribute\Edit\Options\Visual"></preference>
+</config>
