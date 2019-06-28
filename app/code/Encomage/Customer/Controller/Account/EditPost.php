@@ -176,6 +176,9 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
                 $data = $this->getRequest()->getParams();
                 if (isset($data['telephone']) || isset($data['country_id'])) {
                     $customerAddressId = $customer->getDefaultBilling();
+                    if(!$customerAddressId){
+                        $customerAddressId = $customer->getDefaultShipping();
+                    }
                    try{
                        $address = $this->addressRepository->getById($customerAddressId);
                        /*if (isset($data['country_id'])) {
