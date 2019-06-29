@@ -14,13 +14,14 @@
         "apcu-autoloader": true
     },
     "require": {
-        "magento/product-community-edition": "2.2.2",
         "composer/composer": "@alpha",
-        "mageplaza/module-banner-slider": "^2.0.1",
-        "mageplaza/magento-2-social-login": "^2.4",
-        "magefan/module-blog": "^2.7",
+        "dhl/module-shipping-m2": "^0.10.1",
         "eadesignro/romcity": "^1.1",
-        "dhl/module-shipping-m2": "^0.10.1"
+        "magefan/module-blog": "^2.7",
+        "magento/product-community-edition": "^2.2",
+        "mageplaza/magento-2-social-login": "^2.4",
+        "mageplaza/module-banner-slider": "^2.0.1",
+        "php-curl-class/php-curl-class": "^8.6"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "~2.2.0",
