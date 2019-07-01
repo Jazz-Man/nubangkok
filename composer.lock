@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ec137b9bf7a89e8e172794ad40337b9",
+    "content-hash": "b31d6d413c4c41de2895879fd3a43c39",
     "packages": [
         {
             "name": "azuyalabs/yasumi",
@@ -6994,6 +6994,53 @@
             "time": "2018-11-05T09:00:11+00:00"
         },
         {
+            "name": "olegkoval/magento2-regenerate-url-rewrites",
+            "version": "1.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/olegkoval/magento2-regenerate_url_rewrites.git",
+                "reference": "8bc3974be85bc6cb6d44002f41810a986f9e9045"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/olegkoval/magento2-regenerate_url_rewrites/zipball/8bc3974be85bc6cb6d44002f41810a986f9e9045",
+                "reference": "8bc3974be85bc6cb6d44002f41810a986f9e9045",
+                "shasum": ""
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "OlegKoval\\RegenerateUrlRewrites\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Oleg Koval",
+                    "email": "contact@olegkoval.com"
+                }
+            ],
+            "description": "Add into Magento 2 a CLI feature which allow to regenerate a Url rewrites of products and categories",
+            "homepage": "https://github.com/olegkoval/magento2-regenerate_url_rewrites",
+            "keywords": [
+                "extension",
+                "magento",
+                "magento 2 extension",
+                "magento 2 module",
+                "magento2 extension",
+                "magento2 module",
+                "module"
+            ],
+            "time": "2019-05-12T16:23:41+00:00"
+        },
+        {
             "name": "oyejorge/less.php",
             "version": "v1.7.0.14",
             "source": {
@@ -7212,73 +7259,6 @@
             "description": "Converts CSS styles into inline style attributes in your HTML code",
             "homepage": "http://www.pelagodesign.com/sidecar/emogrifier/",
             "time": "2017-03-02T12:51:48+00:00"
-        },
-        {
-            "name": "php-curl-class/php-curl-class",
-            "version": "8.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-curl-class/php-curl-class.git",
-                "reference": "73bf10e2652ad2261cbab7fbf242b76f0e7ee359"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/73bf10e2652ad2261cbab7fbf242b76f0e7ee359",
-                "reference": "73bf10e2652ad2261cbab7fbf242b76f0e7ee359",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "ext-gd": "*",
-                "phpunit/phpunit": "*",
-                "squizlabs/php_codesniffer": "*"
-            },
-            "suggest": {
-                "ext-mbstring": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Curl\\": "src/Curl/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Unlicense"
-            ],
-            "authors": [
-                {
-                    "name": "Zach Borboa"
-                }
-            ],
-            "description": "PHP Curl Class makes it easy to send HTTP requests and integrate with web APIs.",
-            "homepage": "https://github.com/php-curl-class/php-curl-class",
-            "keywords": [
-                "API-Client",
-                "api",
-                "class",
-                "client",
-                "curl",
-                "framework",
-                "http",
-                "http-client",
-                "http-proxy",
-                "json",
-                "php",
-                "php-curl",
-                "php-curl-library",
-                "proxy",
-                "requests",
-                "restful",
-                "web-scraper",
-                "web-scraping ",
-                "web-service",
-                "xml"
-            ],
-            "time": "2019-05-12T08:22:01+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
