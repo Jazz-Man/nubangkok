@@ -162,7 +162,7 @@ class ErpProduct
      */
     public function getSalesPrice()
     {
-        return empty($this->SalesPrice) ? abs($this->SalesPrice) : null;
+        return !empty($this->SalesPrice) ? abs($this->SalesPrice) : null;
     }
 
     /**
