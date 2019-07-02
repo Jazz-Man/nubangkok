@@ -2,11 +2,17 @@
 
 namespace ErpAPI\ErpAPICommand\Model\Erp;
 
+use Magento\Framework\Stdlib\StringUtils;
+
 /**
  * Class Product.
  */
 class ErpProduct
 {
+
+    public const SKU_MAX_LENGTH = 64;
+
+    public const CHARSET_DEFAULT = 'UTF-8';
 
     private $LLLedTimeETodayyy;
 
@@ -52,12 +58,18 @@ class ErpProduct
     private $PPPGS_PRICE_;
 
     /**
+     * @var StringUtils
+     */
+    private $string;
+
+    /**
      * Product constructor.
      *
      * @param \stdClass $obj
      */
     public function __construct(\stdClass $obj)
     {
+        $this->string = new StringUtils();
         foreach ($obj as $property => $value) {
             $this->$property = $value;
         }
@@ -68,7 +80,11 @@ class ErpProduct
      */
     public function isValid()
     {
-        return \strlen($this->IcProductCode) > 18 || \strlen($this->IcProductCode) < 16;
+        $rawString    = mb_strtoupper($this->getIcProductCode(), self::CHARSET_DEFAULT);
+        $has_space    = ! ctype_space($this->getIcProductCode());
+        $is_uppercase = $this->getIcProductCode() === $rawString;
+
+        return $has_space && $is_uppercase;
     }
 
     /**
@@ -76,7 +92,7 @@ class ErpProduct
      */
     public function getIcProductCode(): string
     {
-        return $this->IcProductCode;
+        return $this->string->cleanString($this->IcProductCode);
     }
 
     /**
