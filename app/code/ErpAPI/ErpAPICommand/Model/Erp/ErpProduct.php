@@ -9,9 +9,6 @@ use Magento\Framework\Stdlib\StringUtils;
  */
 class ErpProduct
 {
-
-    const CHARSET_DEFAULT = 'UTF-8';
-    const SKU_MAX_LENGTH = 64;
     private $LLLedTimeETodayyy;
 
     private $InfoUpdateDateAndTime;
@@ -85,7 +82,6 @@ class ErpProduct
 
     private function parsetColorAndSize()
     {
-
         if ($this->isValid()) {
             $bar_code = $this->getBarCode();
 
@@ -97,8 +93,8 @@ class ErpProduct
 
                     preg_match($regex, $bar_code, $matches);
 
-                    if ( ! empty($matches)) {
-                        $this->Size       = $matches['Size'];
+                    if (!empty($matches)) {
+                        $this->Size = $matches['Size'];
                         $this->ModelColor = $matches['ModelColor'];
                     }
 
@@ -108,21 +104,19 @@ class ErpProduct
 
                     preg_match($regex, $bar_code, $matches);
 
-                    if ( ! empty($matches['Size'])) {
-                        $this->Size       = $matches['Size'];
+                    if (!empty($matches['Size'])) {
+                        $this->Size = $matches['Size'];
                         $this->ModelColor = $matches['ModelColor'];
-
                     } else {
                         $regex = '/(?P<Category>[A-Z]{2})(?P<SomeData>[A-Z0-9]{5})(?P<Size>[\d]*)(?P<ModelColor>[A-Z]{4})/';
 
                         preg_match($regex, $bar_code, $matches);
 
-                        if ( ! empty($matches)) {
+                        if (!empty($matches)) {
                             $this->ModelColor = $matches['ModelColor'];
-                            $this->Size       = $matches['Size'];
+                            $this->Size = $matches['Size'];
                         }
                     }
-
 
                     break;
                 case 13:
@@ -130,9 +124,9 @@ class ErpProduct
 
                     preg_match($regex, $bar_code, $matches);
 
-                    if ( ! empty($matches)) {
+                    if (!empty($matches)) {
                         $this->ModelColor = $matches['ModelColor'];
-                        $this->Size       = $matches['Size'];
+                        $this->Size = $matches['Size'];
                     }
 
                     break;
@@ -140,9 +134,9 @@ class ErpProduct
                     $regex = '/(?P<Category>[A-Z]{2})(?P<SomeData>[A-Z0-9]{7})(?P<ModelColor>[A-Z]{4})(?P<Size>[\d]*)/';
 
                     preg_match($regex, $bar_code, $matches);
-                    if ( ! empty($matches)) {
+                    if (!empty($matches)) {
                         $this->ModelColor = $matches['ModelColor'];
-                        $this->Size       = $matches['Size'];
+                        $this->Size = $matches['Size'];
                     }
                     break;
                 case 14:
@@ -150,8 +144,7 @@ class ErpProduct
 
                     preg_match($regex, $bar_code, $matches);
 
-                    if ( ! empty($matches)) {
-
+                    if (!empty($matches)) {
                         $this->Size = $matches['Size'];
 
                         switch ($matches['ModelColor']) {
@@ -186,17 +179,14 @@ class ErpProduct
                 case 20:
                 default:
                     $this->ModelColor = false;
-                    $this->Size       = false;
+                    $this->Size = false;
                     break;
-
             }
 
-
-            if (!empty($this->Size) && $this->string->strlen($this->Size) === 2){
+            if (!empty($this->Size) && 2 === $this->string->strlen($this->Size)) {
                 $this->Size = "{$this->Size}0";
             }
         }
-
     }
 
     /**
@@ -204,8 +194,8 @@ class ErpProduct
      */
     public function isValid()
     {
-        $rawString    = mb_strtoupper($this->getIcProductCode(), self::CHARSET_DEFAULT);
-        $has_space    = ! ctype_space($this->getIcProductCode());
+        $rawString = mb_strtoupper($this->getIcProductCode(), 'UTF-8');
+        $has_space = !ctype_space($this->getIcProductCode());
         $is_uppercase = $this->getIcProductCode() === $rawString;
 
         return $has_space && $is_uppercase;
@@ -248,7 +238,7 @@ class ErpProduct
      */
     public function getStockStatus()
     {
-        return (int)$this->UnrestrictStock > 0 ? 1 : 0;
+        return (int) $this->UnrestrictStock > 0 ? 1 : 0;
     }
 
     /**
@@ -272,8 +262,8 @@ class ErpProduct
      */
     public function getConfigSku()
     {
-        if ( ! empty($this->BarCode)) {
-            if ((int)substr($this->BarCode, 3, 1) > 0) {
+        if (!empty($this->BarCode)) {
+            if ((int) substr($this->BarCode, 3, 1) > 0) {
                 return substr($this->BarCode, 0, 10);
             }
 
@@ -288,7 +278,7 @@ class ErpProduct
      */
     public function getConfigName()
     {
-        if ( ! empty($this->IcProductDescription0)) {
+        if (!empty($this->IcProductDescription0)) {
             $result = explode(',', $this->IcProductDescription0);
 
             return array_shift($result);
@@ -332,30 +322,9 @@ class ErpProduct
     /**
      * @return string
      */
-    public function getCategoryAcronym()
-    {
-        $words = preg_split("/[\s,_-]+/", $this->getCategoryName());
-
-        $acronym = '';
-
-        foreach ($words as $w) {
-            $acronym .= $w[0];
-        }
-
-        return strtoupper($acronym);
-    }
-
-    /**
-     * @return string
-     */
     public function getCategoryName(): string
     {
         return $this->string->cleanString($this->IcCategoryName);
-    }
-
-    public function getOptions()
-    {
-
     }
 
     /**
@@ -363,7 +332,7 @@ class ErpProduct
      */
     public function getSalesPrice()
     {
-        return ! empty($this->SalesPrice) ? abs($this->SalesPrice) : null;
+        return !empty($this->SalesPrice) ? abs($this->SalesPrice) : null;
     }
 
     /**
@@ -371,7 +340,7 @@ class ErpProduct
      */
     public function getUrlKey()
     {
-        if ( ! empty($this->getName()) && ! empty($this->getCategoryName())) {
+        if (!empty($this->getName()) && !empty($this->getCategoryName())) {
             $urlKey = "{$this->sanitizeKey($this->getCategoryName())}-{$this->sanitizeKey($this->getName())}";
 
             return trim($urlKey);
