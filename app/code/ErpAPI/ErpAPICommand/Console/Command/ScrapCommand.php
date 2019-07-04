@@ -5,14 +5,31 @@ namespace ErpAPI\ErpAPICommand\Console\Command;
 use ErpAPI\ErpAPICommand\Model\Erp\ErpProduct;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
-use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Api\CategoryLinkManagementInterface;
+use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\ResourceModel\Category as CategoryResource;
 use Magento\Catalog\Model\ResourceModel\Product as ProductResource;
+use Magento\CatalogInventory\Api\StockRegistryInterfaceFactory;
+use Magento\CatalogInventory\Model\Configuration;
+use Magento\ConfigurableProduct\Api\LinkManagementInterfaceFactory;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable as TypeConfigurableProduct;
+use Magento\Eav\Api\AttributeOptionManagementInterface;
+use Magento\Eav\Model\AttributeRepository;
+use Magento\Eav\Model\Entity\Attribute;
+use Magento\Eav\Model\Entity\Attribute\Option;
+use Magento\Eav\Model\Entity\Attribute\OptionFactory;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\State;
+use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\StateException;
+use Magento\Framework\Filesystem;
 use Magento\Framework\ObjectManagerInterface;
-use Magento\Framework\Stdlib\StringUtils;
+use Magento\Store\Model\Store;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +40,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ScrapCommand extends Command
 {
-
     /**
      * @var ScopeConfigInterface
      */
@@ -73,6 +89,9 @@ class ScrapCommand extends Command
      * @var Client
      */
     private $request;
+    /**
+     * @var array
+     */
     private $products_data = [[]];
 
     /**
@@ -98,19 +117,75 @@ class ScrapCommand extends Command
      */
     private $productFactory;
     /**
-     * @var StringUtils
+     * @var array
      */
-    private $string;
+    private $_attributesOptions;
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
+    /**
+     * @var DirectoryList
+     */
+    private $directoryList;
+
+    /**
+     * @var CategoryLinkManagementInterface
+     */
+    private $categoryLinkManagement;
+    /**
+     * @var TypeConfigurableProduct
+     */
+    private $typeConfigurableProduct;
+    /**
+     * @var StockRegistryInterfaceFactory
+     */
+    private $stockRegistryFactory;
+
+    /**
+     * @var LinkManagementInterfaceFactory
+     */
+    private $linkManagementFactory;
+
+    /**
+     * @var OptionFactory
+     */
+    private $optionFactory;
+
+    /**
+     * @var AttributeOptionManagementInterface
+     */
+    private $attributeOptionManager;
+    /**
+     * @var AttributeRepository
+     */
+    private $attributeRepository;
+
+    /**
+     * @var int
+     */
+    private $size_attribute_id;
 
     /**
      * ScrapCommand constructor.
      *
-     * @param ScopeConfigInterface                  $scopeConfig
-     * @param CategoryResource                      $categoryResource
-     * @param ProductResource                       $productResource
-     * @param ObjectManagerInterface                $objectManager
-     * @param \Magento\Catalog\Model\ProductFactory $productFactory
-     * @param ProductRepositoryInterface            $productRepository
+     * @param ScopeConfigInterface                                            $scopeConfig
+     * @param CategoryResource                                                $categoryResource
+     * @param ProductResource                                                 $productResource
+     * @param ObjectManagerInterface                                          $objectManager
+     * @param \Magento\Catalog\Model\ProductFactory                           $productFactory
+     * @param Attribute                                                       $entityAttribute
+     * @param Filesystem                                                      $filesystem
+     * @param \Magento\Framework\App\Filesystem\DirectoryList                 $directoryList
+     * @param CategoryLinkManagementInterface                                 $categoryLinkManagement
+     * @param TypeConfigurableProduct                                         $typeConfigurableProduct
+     * @param StockRegistryInterfaceFactory                                   $stockRegistryFactory
+     * @param \Magento\ConfigurableProduct\Api\LinkManagementInterfaceFactory $linkManagementFactory
+     * @param \Magento\Eav\Model\Entity\Attribute\OptionFactory               $optionFactory
+     * @param AttributeOptionManagementInterface                              $attributeOptionManager
+     * @param \Magento\Eav\Model\AttributeRepository                          $attributeRepository
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -118,75 +193,195 @@ class ScrapCommand extends Command
         ProductResource $productResource,
         ObjectManagerInterface $objectManager,
         ProductFactory $productFactory,
-        ProductRepositoryInterface $productRepository,
-        StringUtils $string
+        Attribute $entityAttribute,
+        Filesystem $filesystem,
+        DirectoryList $directoryList,
+        CategoryLinkManagementInterface $categoryLinkManagement,
+        TypeConfigurableProduct $typeConfigurableProduct,
+        StockRegistryInterfaceFactory $stockRegistryFactory,
+        LinkManagementInterfaceFactory $linkManagementFactory,
+        OptionFactory $optionFactory,
+        AttributeOptionManagementInterface $attributeOptionManager,
+        AttributeRepository $attributeRepository
     ) {
         $this->_config = $scopeConfig;
         $this->categoryResource = $categoryResource;
         $this->productResource = $productResource;
         $this->productFactory = $productFactory;
-        $this->productRepository = $productRepository;
         $this->objectManager = $objectManager;
-        $this->string = $string;
+        $this->filesystem = $filesystem;
+        $this->directoryList = $directoryList;
+        $this->categoryLinkManagement = $categoryLinkManagement;
+        $this->typeConfigurableProduct = $typeConfigurableProduct;
+        $this->stockRegistryFactory = $stockRegistryFactory;
+        $this->linkManagementFactory = $linkManagementFactory;
+        $this->optionFactory = $optionFactory;
+        $this->attributeOptionManager = $attributeOptionManager;
+        $this->attributeRepository = $attributeRepository;
         parent::__construct();
+
+        $this->_attributesOptions['color'] = $entityAttribute
+            ->loadByCode('catalog_product', 'color')
+            ->getSource()
+            ->getAllOptions(false, true);
+
+        $this->_attributesOptions['size'] = $entityAttribute
+            ->loadByCode('catalog_product', 'size')
+            ->getSource()
+            ->getAllOptions(false, true);
     }
 
     /**
+     * @param mixed  $label
+     * @param string $attrName
+     *
+     * @return array
+     */
+    public function getAttributeIdByLabel($label, $attrName)
+    {
+        foreach ($this->_attributesOptions[$attrName] as $option) {
+            if ($option['label'] === $label) {
+                return $option;
+            }
+        }
+
+        return ['label' => '', 'value' => ''];
+    }
+
+    /**
+     * @param ErpProduct                     $datum
+     * @param \Magento\Catalog\Model\Product $_product
+     * @param int                            $category_id
+     *
+     * @throws \Exception
+     */
+    public function buildConfigurableProduct($datum, $_product, $category_id)
+    {
+        $ConfigurableProduct = $this->typeConfigurableProduct
+            ->getParentIdsByChild($_product->getId());
+
+        $configurable = [];
+
+        if (!empty($ConfigurableProduct)) {
+            if (!empty($datum->getConfigSku()) && !empty($datum->getConfigName())) {
+                $configurable[$datum->getConfigSku()] = [
+                    'name' => $datum->getConfigName(),
+                    'category_ids' => $category_id,
+                ];
+
+                $configurable[$datum->getConfigSku()]['category_name'] = $datum->getCategoryName();
+            }
+
+            if ($_product->getId() && \array_key_exists($datum->getConfigSku(), $configurable)) {
+                $configurable[$datum->getConfigSku()]['associate_ids'][$_product->getId()] = $_product->getId();
+                $configurable[$datum->getConfigSku()]['skus'][] = $_product->getSku();
+            }
+
+            $configurable[$datum->getConfigSku()]['color'] = \array_key_exists('color',
+                $configurable[$datum->getConfigSku()]) ? $configurable[$datum->getConfigSku()]['color'] : '';
+            if (null === $configurable[$datum->getConfigSku()]['color']) {
+                $configurable[$datum->getConfigSku()]['color'] = $_product->getColor() ?: null;
+            }
+
+            $configurable[$datum->getConfigSku()]['size'] = \array_key_exists('size',
+                $configurable[$datum->getConfigSku()]) ? $configurable[$datum->getConfigSku()]['size'] : '';
+            if (null === $configurable[$datum->getConfigSku()]['size']) {
+                $configurable[$datum->getConfigSku()]['size'] = $_product->getSize() ?: null;
+            }
+        }
+
+        if (!empty($configurable)) {
+            foreach ($configurable as $sku => $settings) {
+                $productId = $this->productResource->getIdBySku($sku);
+
+                if (!empty($productId)) {
+                    /** @var \Magento\Catalog\Model\Product $product */
+                    $product = $this->productFactory->create();
+                    $product->setSku($sku);
+                    $product->setName($settings['name']);
+                    $product->setTypeId(TypeConfigurableProduct::TYPE_CODE);
+                    $product->setAttributeSetId($product->getDefaultAttributeSetId());
+                    $product->setCategoryIds([$settings['category_ids']]);
+                    $product->setColor(' ');
+                    $product->setSize(' ');
+                    $product->setStoreId(Store::DEFAULT_STORE_ID);
+                    $product->setWebsiteIds([
+                        Configuration::DEFAULT_WEBSITE_ID => Configuration::DEFAULT_WEBSITE_ID,
+                    ]);
+
+                    if ('S' === substr($sku, 1, 1)) {
+                        $product->setAskAboutShoeSize(1);
+                    }
+
+                    $product->setUrlKey($this->getUrlKey($settings['name'], $settings['category_name']));
+
+                    $attributes = [];
+
+                    if ($settings['color']) {
+                        $attributes[] = $this->productResource->getAttribute('color')->getId();
+                    }
+                    if ($settings['size']) {
+                        $attributes[] = $this->productResource->getAttribute('size')->getId();
+                    }
+
+                    $product->getTypeInstance()->setUsedProductAttributeIds($attributes, $product);
+
+                    $configurableAttributesData = $product->getTypeInstance()
+                                                          ->getConfigurableAttributesAsArray($product);
+
+                    $product->setCanSaveConfigurableAttributes(true);
+                    $product->setConfigurableAttributesData($configurableAttributesData);
+                    $configurableProductsData = [];
+                    $product->setConfigurableProductsData($configurableProductsData);
+
+                    $this->productResource->save($product);
+                    $productId = $product->getId();
+
+                    $this->categoryLinkManagement->assignProductToCategories($sku, [$settings['category_ids']]);
+                }
+
+                if ($settings['associate_ids']) {
+                    foreach ($settings['skus'] as $childSku) {
+                        /** @var \Magento\ConfigurableProduct\Api\LinkManagementInterface $linkManagement */
+                        $linkManagement = $this->linkManagementFactory->create();
+                        $linkManagement->addChild($sku, $childSku);
+                    }
+                    if ($productId) {
+                        /** @var \Magento\CatalogInventory\Model\Stock\Item $stockItem */
+                        $stockItem = $this->stockRegistryFactory->create()->getStockItem($productId);
+                        if ($stockItem->getItemId()) {
+                            $stockItem->setIsInStock(true);
+                            $stockItem->setStockStatusChangedAutomaticallyFlag(true);
+                            $stockItem->save();
+                        }
+                        unset($stockItem);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param string $name
+     * @param string $category_name
+     *
      * @return string
      */
-    public function getHostName(): string
+    private function getUrlKey($name, $category_name)
     {
-        return $this->_host_name;
+        $urlKey = "{$this->sanitizeKey($category_name)}-{$this->sanitizeKey($name)}";
+
+        return trim($urlKey);
     }
 
     /**
-     * @return array|mixed
-     */
-    public function getCategoriesCodes()
-    {
-        try {
-            $categories_data = \GuzzleHttp\json_decode($this->_categories_codes, true);
-        } catch (\InvalidArgumentException $e) {
-            $categories_data = [];
-        }
-
-        return $categories_data;
-    }
-
-    /**
-     * @return array|mixed
-     */
-    public function getShoeCodes()
-    {
-        try {
-            $shoe_codes_data = \GuzzleHttp\json_decode($this->_shoe_codes, true);
-        } catch (\InvalidArgumentException $e) {
-            $shoe_codes_data = [];
-        }
-
-        return $shoe_codes_data;
-    }
-
-    /**
-     * @return array|mixed
-     */
-    public function getBagsCodes()
-    {
-        try {
-            $bags_codes_data = \GuzzleHttp\json_decode($this->_bags_codes, true);
-        } catch (\InvalidArgumentException $e) {
-            $bags_codes_data = [];
-        }
-
-        return $bags_codes_data;
-    }
-
-    /**
+     * @param string $key
+     *
      * @return string
      */
-    public function getColorCode(): string
+    private function sanitizeKey(string $key): string
     {
-        return $this->_color_code;
+        return str_replace([' ', ','], '-', strtolower($key));
     }
 
     protected function configure()
@@ -209,6 +404,8 @@ class ScrapCommand extends Command
 
         $this->setAllCategories();
 
+        $this->size_attribute_id = $this->attributeRepository->get(Product::ENTITY, 'size')->getAttributeId();
+
         $this->request = new Client([
             'timeout' => 30,
             'headers' => [
@@ -220,31 +417,9 @@ class ScrapCommand extends Command
         parent::configure();
     }
 
-    /**
-     * @return array
-     */
-    public function getAllCategories()
+    private function getAllSizes()
     {
-        if (empty($this->all_categories)) {
-            $this->setAllCategories();
-        }
-
-        return $this->all_categories;
-    }
-
-    public function setAllCategories()
-    {
-        $category_table = $this->categoryResource->getTable('catalog_category_entity_varchar');
-
-        $select = $this->categoryResource
-            ->getConnection()
-            ->select()
-            ->from($category_table)
-            ->where('value IS NOT NULL')
-            ->where('store_id = ?', \Magento\Store\Model\Store::DEFAULT_STORE_ID)
-        ;
-
-        $this->all_categories = $this->categoryResource->getConnection()->fetchAll($select);
+        return $this->attributeOptionManager->getItems(Product::ENTITY, $this->size_attribute_id);
     }
 
     /**
@@ -257,69 +432,44 @@ class ScrapCommand extends Command
     {
         $output->writeln('Hello World!');
 
-        $last_point = 'GetProductList';
+        $CacheFile = $this->getCacheFile();
 
-        $values = [
-            'userAccount' => $this->getLogin(),
-            'userPassword' => $this->getPassword(),
-            'compCode' => $this->getCompcode(),
-            'warehouseCode' => $this->getWarehouseCode(),
-            'Branchpricedisplay' => 1,
-            'CategoryDisplaySubCat' => 1,
-            'Page' => 1,
-        ];
+        if ($CacheFile) {
+            $this->dataProccesing($CacheFile);
+        } else {
+            $last_point = 'GetProductList';
 
-        if ($this->isEnabledTestMode()) {
-            $values['testmode'] = 1;
-        }
+            $values = [
+                'userAccount' => $this->getLogin(),
+                'userPassword' => $this->getPassword(),
+                'compCode' => $this->getCompcode(),
+                'warehouseCode' => $this->getWarehouseCode(),
+                'Branchpricedisplay' => 1,
+                'CategoryDisplaySubCat' => 1,
+                'Page' => 1,
+            ];
 
-        try {
-            do {
-                /** @var Response $response */
-                $response = $this->request->get("{$this->getHostName()}/{$last_point}", [
-                    'query' => $values,
-                ]);
-            } while ($this->parseBody($response) && $values['Page']++);
-        } catch (\Throwable $e) {
-            dump($e->getMessage());
-        }
+            if ($this->isEnabledTestMode()) {
+                $values['testmode'] = 1;
+            }
 
-        if (!empty($this->products_data)) {
-            $this->products_data = array_merge(...$this->products_data);
+            try {
+                do {
+                    /** @var Response $response */
+                    $response = $this->request->get("{$this->getHostName()}/{$last_point}", [
+                        'query' => $values,
+                    ]);
+                } while ($this->parseBody($response) && $values['Page']++);
+            } catch (\Throwable $e) {
+                dump($e->getMessage());
+            }
 
-            /** @var \Generator|ErpProduct[] $data */
-            $data = \iter\map(static function ($value) {
-                return new ErpProduct($value);
-            }, $this->products_data);
+            if (!empty($this->products_data)) {
+                $this->products_data = array_merge(...$this->products_data);
 
-            foreach ($data as $datum) {
+                $this->saveCacheFile($this->products_data);
 
-                if ($datum->isValid()){
-
-                    $productId = $this->productResource->getIdBySku($datum->getIcProductCode());
-
-                    /** @var \Magento\Catalog\Model\Product $product */
-                    $product = $this->productFactory->create();
-
-                    if ($productId){
-                        $product->load($productId);
-                        $product->setPrice($datum->getSalesPrice());
-
-                        $product->addData([
-                            'quantity_and_stock_status' => [
-                                'is_in_stock' => $datum->getStockStatus(),
-                                'qty'         => $datum->getUnrestrictStock()
-                            ]
-                        ]);
-
-                        try {
-                            $this->productResource->save($product);
-                        } catch (\Exception $e) {
-                            dump($e->getMessage());
-                        }
-
-                    }
-                }
+                $this->dataProccesing($this->products_data);
             }
         }
 
@@ -327,9 +477,145 @@ class ScrapCommand extends Command
     }
 
     /**
+     * @return bool|array
+     */
+    public function getCacheFile()
+    {
+        $CACHE = $this->filesystem->getDirectoryRead($this->directoryList::CACHE);
+
+        try {
+            $data = $CACHE->readFile('erp/CacheFile.json');
+
+            return \GuzzleHttp\json_decode($data);
+        } catch (FileSystemException $e) {
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $products_data
+     */
+    public function dataProccesing(array $products_data)
+    {
+        /** @var \Generator|ErpProduct[] $data */
+        $data = \iter\map(static function ($value) {
+            return new ErpProduct($value);
+        }, $products_data);
+
+        foreach ($data as $datum) {
+            if ($datum->isValid()) {
+                $productId = $this->productResource->getIdBySku($datum->getIcProductCode());
+                $CategoryId = $this->getCategoryId($datum->getBarCode());
+
+                /** @var \Magento\Catalog\Model\Product $product */
+                $product = $this->productFactory->create();
+
+                if ($productId) {
+                    $product->load($productId);
+                    $product->setPrice($datum->getSalesPrice());
+
+                    $product->addData([
+                        'quantity_and_stock_status' => [
+                            'is_in_stock' => $datum->getStockStatus(),
+                            'qty' => $datum->getUnrestrictStock(),
+                        ],
+                    ]);
+
+                    try {
+                        $this->productResource->save($product);
+
+                        dump("Save : '{$product->getName()}'");
+                    } catch (\Exception $e) {
+                        dump($e->getMessage());
+                    }
+                } else {
+                    $product->setSku($datum->getIcProductCode());
+                    $product->setName($datum->getName());
+                    $product->setAttributeSetId($product->getDefaultAttributeSetId());
+                    $product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
+                    $product->setTypeId('simple');
+                    $product->setPrice($datum->getSalesPrice());
+                    $product->setWeight(null);
+                    $product->setStoreId(Store::DEFAULT_STORE_ID);
+                    $product->setWebsiteIds([
+                        Configuration::DEFAULT_WEBSITE_ID => Configuration::DEFAULT_WEBSITE_ID,
+                    ]);
+                    $product->addData([
+                        'quantity_and_stock_status' => [
+                            'is_in_stock' => $datum->getStockStatus(),
+                            'qty' => $datum->getUnrestrictStock(),
+                        ],
+                    ]);
+
+                    if ($datum->getModelColor()) {
+                        $colod_code = $datum->getModelColor();
+
+                        $color_data = [];
+
+                        array_filter($this->getColorCode(), static function ($item) use (&$color_data, $colod_code) {
+                            if ($item['erp_color_code'] === $colod_code) {
+                                $color_data = $item;
+
+                                return true;
+                            }
+
+                            return false;
+                        });
+
+                        if (!empty($color_data)) {
+                            $color = array_filter($this->_attributesOptions['color'],
+                                static function ($item) use ($color_data) {
+                                    return $item['label'] === $color_data['color_name'];
+                                });
+
+                            if (!empty($color)) {
+                                $color = reset($color);
+                                $product->setColor($color['value']);
+                            }
+                        }
+                    }
+
+                    if ($datum->getSize()) {
+                        $size = $datum->getSize() / 10;
+
+                        /** @var Option[] $option */
+                        $option = array_filter($this->getAllSizes(), static function (Option $item) use ($size) {
+                            return $item->getLabel() === (string) $size;
+                        });
+
+                        if (!empty($option)) {
+                            $option = reset($option);
+
+                            $product->setSize($option->getLabel());
+                        } elseif ($option = $this->createSizeOption($size)) {
+                            $product->setSize($option->getLabel());
+                        }
+                    }
+
+                    $product->setUrlKey($datum->getUrlKey());
+
+                    try {
+                        $this->productResource->save($product);
+
+                        if (!empty($CategoryId)) {
+                            $this->categoryLinkManagement->assignProductToCategories($datum->getIcProductCode(),
+                                [$CategoryId]);
+                        }
+
+                        $this->buildConfigurableProduct($datum, $product, $CategoryId);
+                    } catch (\Exception $e) {
+                        dump($e->getMessage());
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * @return string
      */
-    public function getLogin(): string
+    private function getLogin(): string
     {
         return $this->_login;
     }
@@ -337,7 +623,7 @@ class ScrapCommand extends Command
     /**
      * @return string
      */
-    public function getPassword(): string
+    private function getPassword(): string
     {
         return $this->_password;
     }
@@ -345,7 +631,7 @@ class ScrapCommand extends Command
     /**
      * @return string
      */
-    public function getCompcode(): string
+    private function getCompcode(): string
     {
         return $this->_compcode;
     }
@@ -353,7 +639,7 @@ class ScrapCommand extends Command
     /**
      * @return string
      */
-    public function getWarehouseCode(): string
+    private function getWarehouseCode(): string
     {
         return $this->_warehouse_code;
     }
@@ -361,9 +647,55 @@ class ScrapCommand extends Command
     /**
      * @return bool
      */
-    public function isEnabledTestMode(): bool
+    private function isEnabledTestMode(): bool
     {
         return $this->_enabled_test_mode;
+    }
+
+    /**
+     * @return string
+     */
+    private function getHostName(): string
+    {
+        return $this->_host_name;
+    }
+
+    /**
+     * @param \Psr\Http\Message\ResponseInterface $response
+     *
+     * @return bool
+     */
+    protected function parseBody(ResponseInterface $response)
+    {
+        if (200 === $response->getStatusCode()) {
+            $body = $response->getBody()->getContents();
+
+            $products_data = \GuzzleHttp\json_decode($body);
+
+            if (!empty($products_data)) {
+                $this->products_data[] = $products_data;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $data
+     */
+    private function saveCacheFile(array $data)
+    {
+        try {
+            $CACHE = $this->filesystem->getDirectoryWrite($this->directoryList::CACHE);
+            $contents = \GuzzleHttp\json_encode($data, JSON_UNESCAPED_SLASHES);
+
+            $CACHE->writeFile('erp/CacheFile.json', $contents);
+        } catch (FileSystemException $e) {
+        }
     }
 
     /**
@@ -390,7 +722,7 @@ class ScrapCommand extends Command
      *
      * @return string
      */
-    public function getCategoryId(string $bar_code)
+    private function getCategoryId(string $bar_code)
     {
         $category = '';
         $subCategory = '';
@@ -455,7 +787,7 @@ class ScrapCommand extends Command
                 return false;
             }, $this->getAllCategories());
 
-            if ($entity_id->valid()){
+            if ($entity_id->valid()) {
                 return $entity_id->current()['entity_id'];
             }
         }
@@ -464,21 +796,115 @@ class ScrapCommand extends Command
     }
 
     /**
-     * @param \Psr\Http\Message\ResponseInterface $response
-     *
-     * @return bool
+     * @return array|mixed
      */
-    protected function parseBody(ResponseInterface $response)
+    private function getCategoriesCodes()
     {
-        if (200 === $response->getStatusCode()) {
-            $body = $response->getBody()->getContents();
+        try {
+            $categories_data = \GuzzleHttp\json_decode($this->_categories_codes, true);
+        } catch (\InvalidArgumentException $e) {
+            $categories_data = [];
+        }
 
-            $products_data = \GuzzleHttp\json_decode($body);
+        return $categories_data;
+    }
 
-            if (!empty($products_data)) {
-                $this->products_data[] = $products_data;
+    /**
+     * @return array|mixed
+     */
+    private function getShoeCodes()
+    {
+        try {
+            $shoe_codes_data = \GuzzleHttp\json_decode($this->_shoe_codes, true);
+        } catch (\InvalidArgumentException $e) {
+            $shoe_codes_data = [];
+        }
 
-                return true;
+        return $shoe_codes_data;
+    }
+
+    /**
+     * @return array|mixed
+     */
+    private function getBagsCodes()
+    {
+        try {
+            $bags_codes_data = \GuzzleHttp\json_decode($this->_bags_codes, true);
+        } catch (\InvalidArgumentException $e) {
+            $bags_codes_data = [];
+        }
+
+        return $bags_codes_data;
+    }
+
+    /**
+     * @return array
+     */
+    private function getAllCategories()
+    {
+        if (empty($this->all_categories)) {
+            $this->setAllCategories();
+        }
+
+        return $this->all_categories;
+    }
+
+    private function setAllCategories()
+    {
+        $category_table = $this->categoryResource->getTable('catalog_category_entity_varchar');
+
+        $select = $this->categoryResource
+            ->getConnection()
+            ->select()
+            ->from($category_table)
+            ->where('value IS NOT NULL')
+            ->where('store_id = ?', Store::DEFAULT_STORE_ID);
+
+        $this->all_categories = $this->categoryResource->getConnection()->fetchAll($select);
+    }
+
+    /**
+     * @return array
+     */
+    private function getColorCode()
+    {
+        return \GuzzleHttp\json_decode($this->_color_code, true);
+    }
+
+    /**
+     * @param int|string $size
+     *
+     * @return bool|\Magento\Eav\Model\Entity\Attribute\Option
+     */
+    private function createSizeOption($size)
+    {
+        /** @var \Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection $attributeOptionCollection */
+        $attributeOptionCollection = $this->objectManager
+            ->create(Collection::class);
+
+        $optionDataArray = $attributeOptionCollection
+            ->setAttributeFilter($this->size_attribute_id)
+            ->setStoreFilter(Store::DEFAULT_STORE_ID)
+            ->load()
+            ->getData();
+
+        $optionData = array_filter($optionDataArray, static function ($item) use ($size) {
+            return $item['value'] === (string) $size;
+        });
+
+        if (empty($optionData)) {
+            /** @var Option $option */
+            $option = $this->optionFactory->create();
+            $option->setLabel((string) $size);
+
+            try {
+                $this->attributeOptionManager->add(Product::ENTITY, $this->size_attribute_id, $option);
+
+                return $option;
+            } catch (InputException $e) {
+                dump($e->getMessage());
+            } catch (StateException $e) {
+                dump($e->getMessage());
             }
 
             return false;
