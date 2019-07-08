@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03cad4e49b46a19da47a6b05088880e3",
+    "content-hash": "8a782746d3da083b25f1e0ebb206008b",
     "packages": [
         {
             "name": "azuyalabs/yasumi",
@@ -1386,6 +1386,38 @@
                 "terminal"
             ],
             "time": "2015-01-18T14:31:58+00:00"
+        },
+        {
+            "name": "livechat/module-magento-livechat",
+            "version": "2.3.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.magento.com/archives/livechat/module-magento-livechat/livechat-module-magento-livechat-2.3.0.0.zip",
+                "shasum": "478832d004e081eb5dd3d3509d851f638fc82877"
+            },
+            "require": {
+                "magento/framework": "100.*|101.*|102.*",
+                "magento/module-backend": "100.*|101.*",
+                "magento/module-checkout": "100.*",
+                "magento/module-config": "100.*|101.*",
+                "magento/module-customer": "100.*|101.*|102.*",
+                "magento/module-sales": "100.*|101.*|102.*",
+                "magento/module-store": "100.*|101.*",
+                "php": "~5.5.0|~5.6.0|~7.0.0|~7.1.0|~7.2.0|~7.3.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "LiveChat\\LiveChat\\": ""
+                }
+            },
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ]
         },
         {
             "name": "magefan/module-blog",
