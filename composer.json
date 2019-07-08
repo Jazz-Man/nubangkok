@@ -12,6 +12,7 @@
         "use-include-path": true
     },
     "require": {
+        "code4business/freeproduct2": "^1.2",
         "dhl/module-shipping-m2": "^0.10.3",
         "eadesignro/romcity": "^1.1",
         "elgentos/regenerate-catalog-urls": "^0.2.0",
