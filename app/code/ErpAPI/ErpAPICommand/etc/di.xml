@@ -4,6 +4,7 @@
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="scrap" xsi:type="object">ErpAPI\ErpAPICommand\Console\Command\ScrapCommand</item>
+                <item name="colors" xsi:type="object">ErpAPI\ErpAPICommand\Console\Command\ColorsCommand</item>
             </argument>
         </arguments>
     </type>
