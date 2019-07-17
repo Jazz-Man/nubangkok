@@ -65,13 +65,14 @@ class SelectorRedeem extends Template
 
     /**
      * @return array
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getAvailableRedeemList()
     {
         $nuPoints = $this->getNupoints()->getNupointsToMoneyRates();
         $result = [];
         foreach ($nuPoints as $money => $rate) {
-            $product = (!empty($rate['related_product']))
+            $product = !empty($rate['related_product'])
                 ? $product = $this->_loadProductBySku($rate['related_product'])
                 : null;
             $result[] = [
@@ -119,7 +120,9 @@ class SelectorRedeem extends Template
 
     /**
      * @param $sku
+     *
      * @return bool|\Magento\Catalog\Api\Data\ProductInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     protected function _loadProductBySku($sku)
     {

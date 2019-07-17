@@ -2,10 +2,11 @@
 
 namespace Encomage\Nupoints\Controller\Index;
 
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 
-class Index extends \Magento\Framework\App\Action\Action
+class Index extends Action
 {
     /**
      * @var \Magento\Framework\View\Result\PageFactory

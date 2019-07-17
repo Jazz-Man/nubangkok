@@ -3,8 +3,10 @@
 namespace ErpAPI\ErpAPICommand\Console\Command;
 
 use ErpAPI\ErpAPICommand\Model\Erp\ErpProduct;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
+use InvalidArgumentException;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Visibility;
@@ -26,6 +28,8 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\State;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\ObjectManagerInterface;
@@ -34,6 +38,14 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
+use function array_key_exists;
+use function count;
+use function GuzzleHttp\json_decode;
+use function GuzzleHttp\json_decode as json_decodeAlias;
+use function GuzzleHttp\json_encode as json_encodeAlias;
+use function iter\filter;
+use function iter\map;
 
 /**
  * Class HelloWorldCommand.
@@ -272,18 +284,18 @@ class ScrapCommand extends Command
                 $configurable[$datum->getConfigSku()]['category_name'] = $datum->getCategoryName();
             }
 
-            if ($_product->getId() && \array_key_exists($datum->getConfigSku(), $configurable)) {
+            if ($_product->getId() && array_key_exists($datum->getConfigSku(), $configurable)) {
                 $configurable[$datum->getConfigSku()]['associate_ids'][$_product->getId()] = $_product->getId();
                 $configurable[$datum->getConfigSku()]['skus'][] = $_product->getSku();
             }
 
-            $configurable[$datum->getConfigSku()]['color'] = \array_key_exists('color',
+            $configurable[$datum->getConfigSku()]['color'] = array_key_exists('color',
                 $configurable[$datum->getConfigSku()]) ? $configurable[$datum->getConfigSku()]['color'] : '';
             if (null === $configurable[$datum->getConfigSku()]['color']) {
                 $configurable[$datum->getConfigSku()]['color'] = $_product->getColor() ?: null;
             }
 
-            $configurable[$datum->getConfigSku()]['size'] = \array_key_exists('size',
+            $configurable[$datum->getConfigSku()]['size'] = array_key_exists('size',
                 $configurable[$datum->getConfigSku()]) ? $configurable[$datum->getConfigSku()]['size'] : '';
             if (null === $configurable[$datum->getConfigSku()]['size']) {
                 $configurable[$datum->getConfigSku()]['size'] = $_product->getSize() ?: null;
@@ -389,7 +401,10 @@ class ScrapCommand extends Command
         $this->setName('erpapi:scrap')->setDescription('So much hello world.');
 
         $state = $this->objectManager->get(State::class);
-        $state->setAreaCode('crontab');
+        try {
+            $state->setAreaCode('crontab');
+        } catch (LocalizedException $e) {
+        }
 
         $this->_login = $this->_config->getValue('erp_etoday_settings/erp_authorization/login');
         $this->_password = $this->_config->getValue('erp_etoday_settings/erp_authorization/password');
@@ -404,7 +419,11 @@ class ScrapCommand extends Command
 
         $this->setAllCategories();
 
-        $this->size_attribute_id = $this->attributeRepository->get(Product::ENTITY, 'size')->getAttributeId();
+        try {
+            $this->size_attribute_id = $this->attributeRepository->get(Product::ENTITY, 'size')->getAttributeId();
+        } catch (NoSuchEntityException $e) {
+            $this->size_attribute_id = false;
+        }
 
         $this->request = new Client([
             'timeout' => 30,
@@ -417,6 +436,11 @@ class ScrapCommand extends Command
         parent::configure();
     }
 
+    /**
+     * @return \Magento\Eav\Api\Data\AttributeOptionInterface[]
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\StateException
+     */
     private function getAllSizes()
     {
         return $this->attributeOptionManager->getItems(Product::ENTITY, $this->size_attribute_id);
@@ -430,7 +454,7 @@ class ScrapCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Hello World!');
+        $output->writeln('Hello World! TEST');
 
         $CacheFile = $this->getCacheFile();
 
@@ -460,7 +484,7 @@ class ScrapCommand extends Command
                         'query' => $values,
                     ]);
                 } while ($this->parseBody($response) && $values['Page']++);
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 dump($e->getMessage());
             }
 
@@ -486,7 +510,7 @@ class ScrapCommand extends Command
         try {
             $data = $CACHE->readFile('erp/CacheFile.json');
 
-            return \GuzzleHttp\json_decode($data);
+            return json_decodeAlias($data);
         } catch (FileSystemException $e) {
         }
 
@@ -495,11 +519,14 @@ class ScrapCommand extends Command
 
     /**
      * @param array $products_data
+     *
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\StateException
      */
     public function dataProccesing(array $products_data)
     {
         /** @var \Generator|ErpProduct[] $data */
-        $data = \iter\map(static function ($value) {
+        $data = map(static function ($value) {
             return new ErpProduct($value);
         }, $products_data);
 
@@ -522,11 +549,29 @@ class ScrapCommand extends Command
                         ],
                     ]);
 
+                    if ($datum->getModelColor()){
+
+
+                        $colors = array_filter($this->getColorCode(), static function ($item) use ($datum){
+
+                            return in_array($item['erp_color_code'],$datum->getModelColor());
+                        });
+
+
+                        if (!empty($colors)){
+
+                            $colors = array_column($colors,'erp_color_value');
+
+                            $product->setColor(reset($colors));
+
+                        }
+                    }
+
                     try {
                         $this->productResource->save($product);
 
                         dump("Save : '{$product->getName()}'");
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         dump($e->getMessage());
                     }
                 } else {
@@ -548,31 +593,21 @@ class ScrapCommand extends Command
                         ],
                     ]);
 
-                    if ($datum->getModelColor()) {
-                        $colod_code = $datum->getModelColor();
+                    if ($datum->getModelColor()){
 
-                        $color_data = [];
 
-                        array_filter($this->getColorCode(), static function ($item) use (&$color_data, $colod_code) {
-                            if ($item['erp_color_code'] === $colod_code) {
-                                $color_data = $item;
+                        $colors = array_filter($this->getColorCode(), static function ($item) use ($datum){
 
-                                return true;
-                            }
-
-                            return false;
+                            return in_array($item['erp_color_code'],$datum->getModelColor());
                         });
 
-                        if (!empty($color_data)) {
-                            $color = array_filter($this->_attributesOptions['color'],
-                                static function ($item) use ($color_data) {
-                                    return $item['label'] === $color_data['color_name'];
-                                });
 
-                            if (!empty($color)) {
-                                $color = reset($color);
-                                $product->setColor($color['value']);
-                            }
+                        if (!empty($colors)){
+
+                            $colors = array_column($colors,'erp_color_value');
+
+                            $product->setColor(reset($colors));
+
                         }
                     }
 
@@ -604,7 +639,7 @@ class ScrapCommand extends Command
                         }
 
                         $this->buildConfigurableProduct($datum, $product, $CategoryId);
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         dump($e->getMessage());
                     }
                 }
@@ -670,7 +705,7 @@ class ScrapCommand extends Command
         if (200 === $response->getStatusCode()) {
             $body = $response->getBody()->getContents();
 
-            $products_data = \GuzzleHttp\json_decode($body);
+            $products_data = json_decodeAlias($body);
 
             if (!empty($products_data)) {
                 $this->products_data[] = $products_data;
@@ -691,7 +726,7 @@ class ScrapCommand extends Command
     {
         try {
             $CACHE = $this->filesystem->getDirectoryWrite($this->directoryList::CACHE);
-            $contents = \GuzzleHttp\json_encode($data, JSON_UNESCAPED_SLASHES);
+            $contents = json_encodeAlias($data, JSON_UNESCAPED_SLASHES);
 
             $CACHE->writeFile('erp/CacheFile.json', $contents);
         } catch (FileSystemException $e) {
@@ -710,7 +745,7 @@ class ScrapCommand extends Command
 
         $bytes = max($bytes, 0);
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-        $pow = min($pow, \count($units) - 1);
+        $pow = min($pow, count($units) - 1);
 
         $bytes /= (1 << (10 * $pow));
 
@@ -732,7 +767,7 @@ class ScrapCommand extends Command
         $erpSubCategoryCode = substr($bar_code, 2, 1);
 
         if (null !== $erpCategoryCode) {
-            $cat = \iter\filter(static function ($item) use ($erpCategoryCode) {
+            $cat = filter(static function ($item) use ($erpCategoryCode) {
                 return $item['erp_category_code'] === $erpCategoryCode;
             }, $this->getCategoriesCodes());
 
@@ -743,7 +778,7 @@ class ScrapCommand extends Command
 
         if (null !== $typeProduct) {
             if ('S' === $typeProduct) {
-                $cat = \iter\filter(static function ($item) use ($erpSubCategoryCode) {
+                $cat = filter(static function ($item) use ($erpSubCategoryCode) {
                     return $item['erp_shoe_code'] === $erpSubCategoryCode;
                 }, $this->getShoeCodes());
 
@@ -751,7 +786,7 @@ class ScrapCommand extends Command
                     $subCategory = $cat->current()['shoe_category_value'];
                 }
             } elseif ('B' === $typeProduct) {
-                $cat = \iter\filter(static function ($item) use ($erpSubCategoryCode) {
+                $cat = filter(static function ($item) use ($erpSubCategoryCode) {
                     return $item['erp_bags_code'] === $erpSubCategoryCode;
                 }, $this->getBagsCodes());
 
@@ -766,7 +801,7 @@ class ScrapCommand extends Command
                 $category .= "/{$subCategory}";
             }
 
-            $entity_id = \iter\filter(static function ($item) use ($category) {
+            $entity_id = filter(static function ($item) use ($category) {
                 if ($item['value'] === $category) {
                     return true;
                 }
@@ -801,8 +836,8 @@ class ScrapCommand extends Command
     private function getCategoriesCodes()
     {
         try {
-            $categories_data = \GuzzleHttp\json_decode($this->_categories_codes, true);
-        } catch (\InvalidArgumentException $e) {
+            $categories_data = json_decodeAlias($this->_categories_codes, true);
+        } catch (InvalidArgumentException $e) {
             $categories_data = [];
         }
 
@@ -815,8 +850,8 @@ class ScrapCommand extends Command
     private function getShoeCodes()
     {
         try {
-            $shoe_codes_data = \GuzzleHttp\json_decode($this->_shoe_codes, true);
-        } catch (\InvalidArgumentException $e) {
+            $shoe_codes_data = json_decodeAlias($this->_shoe_codes, true);
+        } catch (InvalidArgumentException $e) {
             $shoe_codes_data = [];
         }
 
@@ -829,8 +864,8 @@ class ScrapCommand extends Command
     private function getBagsCodes()
     {
         try {
-            $bags_codes_data = \GuzzleHttp\json_decode($this->_bags_codes, true);
-        } catch (\InvalidArgumentException $e) {
+            $bags_codes_data = json_decodeAlias($this->_bags_codes, true);
+        } catch (InvalidArgumentException $e) {
             $bags_codes_data = [];
         }
 
@@ -868,7 +903,9 @@ class ScrapCommand extends Command
      */
     private function getColorCode()
     {
-        return \GuzzleHttp\json_decode($this->_color_code, true);
+        $color_code = json_decodeAlias($this->_color_code, true);
+        $color_code = array_values($color_code);
+        return $color_code;
     }
 
     /**

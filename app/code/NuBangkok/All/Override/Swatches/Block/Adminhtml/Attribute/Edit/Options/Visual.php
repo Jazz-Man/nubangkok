@@ -2,9 +2,21 @@
 
 namespace NuBangkok\All\Override\Swatches\Block\Adminhtml\Attribute\Edit\Options;
 
-class Visual extends \Magento\Swatches\Block\Adminhtml\Attribute\Edit\Options\Visual
+use Magento\Swatches\Block\Adminhtml\Attribute\Edit\Options\Visual as VisualAlias;
+
+/**
+ * Class Visual
+ *
+ * @package NuBangkok\All\Override\Swatches\Block\Adminhtml\Attribute\Edit\Options
+ */
+class Visual extends VisualAlias
 {
 
+    /**
+     * @param null $swatchStoreValue
+     *
+     * @return array|string|void
+     */
     protected function reformatSwatchLabels($swatchStoreValue = null)
     {
         if ($swatchStoreValue === null) {

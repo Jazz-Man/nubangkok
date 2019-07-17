@@ -7,15 +7,15 @@ use Dhl\Shipping\Webservice\RequestType\CreateShipment\ShipmentOrder\PackageInte
 use Dhl\Shipping\Webservice\RequestType\CreateShipment\ShipmentOrder\Service\AbstractServiceFactory;
 use Dhl\Shipping\Webservice\RequestType\CreateShipment\ShipmentOrder\Service\ServiceCollectionInterface;
 use Dhl\Shipping\Webservice\RequestType\CreateShipment\ShipmentOrder\ShipmentDetails\ShipmentDetailsInterface;
-use Dhl\Shipping\Gla\Request\Type\PackageDetailsRequestType;
 use Dhl\Shipping\Webservice\RequestType;
 use Dhl\Shipping\Webservice\RequestType\CreateShipment\ShipmentOrder\Contact;
-use Dhl\Shipping\Gla\Request\Type\ConsigneeAddressRequestType;
-use Dhl\Shipping\Gla\Request\Type\CustomsDetailsRequestType;
-use Dhl\Shipping\Gla\Request\Type\PackageRequestType;
-use Dhl\Shipping\Gla\Request\Type\ReturnAddressRequestType;
-use Dhl\Shipping\Gla\Request\Type\ShipmentRequestType;
 use Dhl\Shipping\Webservice\RequestType\CreateShipment\ShipmentOrderInterface;
+use Dhl\Shipping\Webservice\Schema\Gla\Request\Type\ConsigneeAddressRequestType;
+use Dhl\Shipping\Webservice\Schema\Gla\Request\Type\CustomsDetailsRequestType;
+use Dhl\Shipping\Webservice\Schema\Gla\Request\Type\PackageDetailsRequestType;
+use Dhl\Shipping\Webservice\Schema\Gla\Request\Type\PackageRequestType;
+use Dhl\Shipping\Webservice\Schema\Gla\Request\Type\ReturnAddressRequestType;
+use Dhl\Shipping\Webservice\Schema\Gla\Request\Type\ShipmentRequestType;
 use Zend_Measure_Weight as Weight;
 use Zend_Measure_Length as Length;
 
@@ -58,24 +58,27 @@ class GlDataMapper extends ParentGlDataMapperClass
     {
         $packageTypes = [];
 
-        $receiverType = $this->getReceiver($shipmentOrder->getReceiver());
+        /** @var ConsigneeAddressRequestType $receiverType */
+        $receiverType       = $this->getReceiver($shipmentOrder->getReceiver());
+        /** @var ReturnAddressRequestType $returnReceiverType */
         $returnReceiverType = $this->getReturnReceiver($shipmentOrder->getReturnReceiver());
 
         foreach ($shipmentOrder->getPackages() as $package) {
             $customsDetailsType = $this->getExportDocument($package);
+            /** @var PackageDetailsRequestType $packageDetailsType */
             $packageDetailsType = $this->getPackageDetails(
                 $shipmentOrder->getShipmentDetails(),
                 $shipmentOrder->getServices(),
                 $package,
                 $shipmentOrder->getSequenceNumber()
             );
-            $packageType = new PackageRequestType(
+            $packageType        = new PackageRequestType(
                 $receiverType,
                 $packageDetailsType,
                 $returnReceiverType,
                 $customsDetailsType
             );
-            $packageTypes[] = $packageType;
+            $packageTypes[]     = $packageType;
         }
 
         $shipmentType = new ShipmentRequestType(
@@ -89,11 +92,12 @@ class GlDataMapper extends ParentGlDataMapperClass
     }
 
     /**
-     * @param ShipmentDetailsInterface $shipmentDetails
+     * @param ShipmentDetailsInterface   $shipmentDetails
      * @param ServiceCollectionInterface $services
-     * @param PackageInterface $package
-     * @param string $sequenceNumber
-     * @return \Dhl\Shipping\Gla\Request\Type\PackageDetailsRequestType|PackageDetailsRequestType
+     * @param PackageInterface           $package
+     * @param string                     $sequenceNumber
+     *
+     * @return \Dhl\Shipping\Webservice\Schema\Gla\Request\Type\PackageDetailsRequestType
      */
     private function getPackageDetails(
         ShipmentDetailsInterface $shipmentDetails,

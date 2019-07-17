@@ -1,7 +1,11 @@
 <?php
 namespace Encomage\ErpIntegration\Model\Api;
 
+use Magento\CatalogInventory\Model\Configuration;
+use Magento\Framework\DataObject;
 use Magento\Framework\Webapi\Exception;
+use Magento\Store\Model\Store;
+use RuntimeException;
 use Zend\Http\Request as HttpRequest;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
@@ -95,18 +99,20 @@ class Product extends Request
     /**
      * Product constructor.
      *
-     * @param ScopeConfigInterface $scopeConfig
-     * @param SerializerJson $serializerJson
-     * @param ProductRepositoryInterface $productRepository
-     * @param ProductFactory $productFactory
-     * @param Attribute $entityAttribute
-     * @param ProductResource $productResource
+     * @param ScopeConfigInterface            $scopeConfig
+     * @param SerializerJson                  $serializerJson
+     * @param ProductRepositoryInterface      $productRepository
+     * @param ProductFactory                  $productFactory
+     * @param Attribute                       $entityAttribute
+     * @param ProductResource                 $productResource
      * @param CategoryLinkManagementInterface $categoryLinkManagement
-     * @param CategoryResource $categoryResource
-     * @param TypeConfigurableProduct $typeConfigurableProduct
-     * @param Data $data
-     * @param LinkManagementInterfaceFactory $linkManagementFactory
-     * @param StockRegistryInterfaceFactory $stockRegistryFactory
+     * @param CategoryResource                $categoryResource
+     * @param TypeConfigurableProduct         $typeConfigurableProduct
+     * @param Data                            $data
+     * @param LinkManagementInterfaceFactory  $linkManagementFactory
+     * @param StockRegistryInterfaceFactory   $stockRegistryFactory
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -142,28 +148,38 @@ class Product extends Request
         $this->subCategoryCodesShoe = $this->serializerJson->unserialize($this->_getShoeCodes());
     }
 
+    /**
+     * @param $colorArray
+     *
+     * @return \Magento\Framework\DataObject
+     */
     protected function _prepareColorArray($colorArray)
     {
         $resultArray = [];
         foreach ($colorArray as $item) {
             $resultArray[$item['erp_color_code']] = $item;
         }
-        return new \Magento\Framework\DataObject($resultArray);
+        return new DataObject($resultArray);
     }
 
+    /**
+     * @param $page
+     *
+     * @return array|bool|float|int|mixed|string|null
+     */
     public function getDataFromApi($page)
     {
-        $this->setApiLastPoint('GetProductList');
-        $this->setApiMethod(HttpRequest::METHOD_GET);
+        $this->setApiLastPoint();
+        $this->setApiMethod();
         $this->setAdditionalDataUrl([
             'Branchpricedisplay'    => 1,
-            "CategoryDisplaySubCat" => 1,
-            "Page"                  => $page
+            'CategoryDisplaySubCat' => 1,
+            'Page'                  => $page
         ]);
         try {
             $apiData = $this->sendApiRequest();
         } catch (\Exception $e) {
-            throw new \Exception(__($e->getMessage()));
+            throw new RuntimeException(__($e->getMessage()));
         }
        return $apiData;
     }
@@ -175,7 +191,7 @@ class Product extends Request
         $colorsNotExist = '';
         $sizeNotExist = '';
         foreach ($result as $item) {
-            $item = (is_object($item)) ? get_object_vars($item) : $item;
+            $item = is_object($item) ? get_object_vars($item) : $item;
             if (strlen($item['IcProductCode']) > 18 || strlen($item['IcProductCode']) < 16) {
                 continue;
             }
@@ -187,6 +203,7 @@ class Product extends Request
 
             /** @var \Magento\Catalog\Model\Product $product */
             $product = $this->productFactory->create();
+
             if ($productId) {
                 $product->load($productId);
                 $product->setPrice(abs($item['SalesPrice']));
@@ -224,7 +241,7 @@ class Product extends Request
                 $product->setTypeId('simple');
                 $product->setPrice(abs($item['SalesPrice']));
                 $product->setWeight(null);
-                $product->setStoreId(\Magento\Store\Model\Store::DEFAULT_STORE_ID);
+                $product->setStoreId(Store::DEFAULT_STORE_ID);
                 $product->setWebsiteIds([1 => 1]);
                 $product->addData([
                     'quantity_and_stock_status' => [
@@ -257,13 +274,13 @@ class Product extends Request
                 $configurable[$confSku]['associate_ids'][$product->getId()] = $product->getId();
                 $configurable[$confSku]['skus'][] = $product->getSku();
             }
-            $configurable[$confSku]['color'] = (array_key_exists('color', $configurable[$confSku])) ? $configurable[$confSku]['color'] : '';
+            $configurable[$confSku]['color'] = array_key_exists('color', $configurable[$confSku]) ? $configurable[$confSku]['color'] : '';
             if ($configurable[$confSku]['color'] == null) {
-                $configurable[$confSku]['color'] = ($product->getColor()) ? $product->getColor() : null;
+                $configurable[$confSku]['color'] = $product->getColor() ? $product->getColor() : null;
             }
-            $configurable[$confSku]['size'] = (array_key_exists('size', $configurable[$confSku])) ? $configurable[$confSku]['size'] : '';
+            $configurable[$confSku]['size'] = array_key_exists('size', $configurable[$confSku]) ? $configurable[$confSku]['size'] : '';
             if ($configurable[$confSku]['size'] == null) {
-                $configurable[$confSku]['size'] = ($product->getSize()) ? $product->getSize() : null;
+                $configurable[$confSku]['size'] = $product->getSize() ? $product->getSize() : null;
             }
             unset($product);
         }
@@ -343,9 +360,9 @@ class Product extends Request
             $product->setCategoryIds([$settings['category_ids']]);
             $product->setColor(' ');
             $product->setSize(' ');
-            $product->setStoreId(\Magento\Store\Model\Store::DEFAULT_STORE_ID);
+            $product->setStoreId(Store::DEFAULT_STORE_ID);
             $product->setWebsiteIds([
-                \Magento\CatalogInventory\Model\Configuration::DEFAULT_WEBSITE_ID => \Magento\CatalogInventory\Model\Configuration::DEFAULT_WEBSITE_ID
+                Configuration::DEFAULT_WEBSITE_ID => Configuration::DEFAULT_WEBSITE_ID
             ]);
             if (substr($sku, 1, 1) == 'S') {
                 $product->setAskAboutShoeSize(1);
@@ -541,7 +558,7 @@ class Product extends Request
             }
         }
 
-        return ['label' => " ", 'value' => ""];
+        return ['label' => ' ', 'value' => ''];
     }
 
     /**

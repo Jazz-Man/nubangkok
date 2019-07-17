@@ -7,12 +7,18 @@ use Magento\Framework\Controller\ResultFactory;
 use Encomage\ErpIntegration\Model\Api\Product as ErpIntegrationProduct;
 use Encomage\ErpIntegration\Helper\Data;
 
+/**
+ * Class Manually
+ *
+ * @package Encomage\ErpIntegration\Controller\Adminhtml\Import
+ */
 class Manually extends Action
 {
     const ITERATION_PAGE_LIMIT = 3;
 
+
     /**
-     * @var Product
+     * @var \Encomage\ErpIntegration\Model\Api\Product
      */
     protected $erpIntegrationProduct;
 
