@@ -218,10 +218,18 @@ class ErpProduct
     }
 
     /**
-     * @return bool|string
+     * @return bool|array
      */
     public function getModelColor()
     {
+        if (!empty($this->ModelColor)){
+            $colors = str_split($this->ModelColor, 2);
+
+            return array_filter($colors, static function ($item){
+                return $item !== 'XX';
+            });
+        }
+
         return $this->ModelColor;
     }
 
