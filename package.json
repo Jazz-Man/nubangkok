@@ -8,7 +8,7 @@
     "url": "https://github.com/magento/magento2.git"
   },
   "scripts": {
-    "watch":"grunt watch:updater"
+    "watch": "grunt watch:updater"
   },
   "homepage": "http://magento.com/",
   "devDependencies": {
