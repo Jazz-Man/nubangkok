@@ -16,6 +16,7 @@
         "dhl/module-shipping-m2": "^0.10.3",
         "eadesignro/romcity": "^1.1",
         "elgentos/regenerate-catalog-urls": "^0.2.0",
+        "goeasyship/shipping": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "livechat/module-magento-livechat": "^2.3",
         "magefan/module-blog": "^2.8",
@@ -64,6 +65,10 @@
         {
             "type": "composer",
             "url": "https://repo.magento.com/"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/easyship/easyship-magento2-plugin"
         }
     ],
     "extra": {

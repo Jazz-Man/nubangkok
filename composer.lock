@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c1ae13cef55627c515c9c08d76e80d1",
+    "content-hash": "d00dd31b784d3c6fb998bc8aa7e2002d",
     "packages": [
         {
             "name": "azuyalabs/yasumi",
@@ -1029,6 +1029,36 @@
                 "sdk"
             ],
             "time": "2018-12-11T22:56:31+00:00"
+        },
+        {
+            "name": "goeasyship/shipping",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/easyship/easyship-magento2-plugin.git",
+                "reference": "5081f48ef9cab2a104ce21ed5f035bf0c12d0a4f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/easyship/easyship-magento2-plugin/zipball/5081f48ef9cab2a104ce21ed5f035bf0c12d0a4f",
+                "reference": "5081f48ef9cab2a104ce21ed5f035bf0c12d0a4f",
+                "shasum": ""
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Goeasyship\\Shipping\\": ""
+                }
+            },
+            "description": "Easyship shipping for Magento 2",
+            "support": {
+                "source": "https://github.com/easyship/easyship-magento2-plugin/tree/1.0.3",
+                "issues": "https://github.com/easyship/easyship-magento2-plugin/issues"
+            },
+            "time": "2019-01-15T06:38:19+00:00"
         },
         {
             "name": "google/recaptcha",
