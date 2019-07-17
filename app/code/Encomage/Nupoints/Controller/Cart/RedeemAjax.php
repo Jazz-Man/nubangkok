@@ -2,7 +2,12 @@
 
 namespace Encomage\Nupoints\Controller\Cart;
 
+use Encomage\Nupoints\Quote\ReCalculate;
+use Exception;
+use Magento\Checkout\Model\Session;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\Controller\Result\JsonFactory;
 use \Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Catalog\Api\ProductRepositoryInterfaceFactory;
@@ -12,7 +17,7 @@ use Magento\Quote\Api\CartRepositoryInterface as CartRepository;
  * Class RedeemAjax
  * @package Encomage\Nupoints\Controller\Cart
  */
-class RedeemAjax extends \Magento\Framework\App\Action\Action
+class RedeemAjax extends Action
 {
     /**
      * @var \Magento\Framework\Controller\Result\JsonFactory
@@ -56,10 +61,10 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
      */
     public function __construct(
         Context $context,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
+        JsonFactory $resultJsonFactory,
         \Magento\Customer\Model\Session $customerSession,
-        \Encomage\Nupoints\Quote\ReCalculate $reCalculateQuote,
-        \Magento\Checkout\Model\Session $checkoutSession,
+        ReCalculate $reCalculateQuote,
+        Session $checkoutSession,
         ProductRepositoryInterfaceFactory $productRepositoryFactory,
         CartRepository $cartRepository
     )
@@ -98,7 +103,7 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
                     $this->cartRepository->save($quote);
                 }
                 $this->reCalculateQuote->reCalculate();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->messageManager->addErrorMessage(__('Related product wasn\'t added to the cart.'));
             }
         }
@@ -106,8 +111,8 @@ class RedeemAjax extends \Magento\Framework\App\Action\Action
 
     /**
      * @param $nuData
+     *
      * @return \Magento\Catalog\Api\Data\ProductInterface|mixed
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     protected function _getProductBySku($nuData)
     {

@@ -5,6 +5,11 @@ use Psr\Log\LoggerInterface;
 use Encomage\ErpIntegration\Model\Api\Product;
 
 
+/**
+ * Class ImportProducts
+ *
+ * @package Encomage\ErpIntegration\Cron
+ */
 class ImportProducts
 {
     /**

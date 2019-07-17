@@ -79,7 +79,7 @@ class Nupoints extends AbstractModel implements NupointsInterface
      */
     protected function _construct()
     {
-        $this->_init(\Encomage\Nupoints\Model\ResourceModel\Nupoints::class);
+        $this->_init(ResourceModel\Nupoints::class);
     }
 
     /**
@@ -152,7 +152,7 @@ class Nupoints extends AbstractModel implements NupointsInterface
      */
     public function getConvertedMoneyToNupoints($baht)
     {
-        return (floor($baht / 100)) * 100;
+        return floor($baht / 100) * 100;
     }
 
     /**
@@ -190,11 +190,9 @@ class Nupoints extends AbstractModel implements NupointsInterface
                     $redeem = $rate['from'];
                     $money = $coast;
                 }
-            } else {
-                if ($nuPoints >= $rate['from']) {
-                    $redeem = $rate['from'];
-                    $money = $coast;
-                }
+            } elseif ($nuPoints >= $rate['from']) {
+                $redeem = $rate['from'];
+                $money = $coast;
             }
         }
         return (!$returnNupointsForRedeem) ? $money : $redeem;
@@ -267,11 +265,11 @@ class Nupoints extends AbstractModel implements NupointsInterface
         $nuPoints = $this->json->unserialize($this->scopeConfig->getValue(static::NUPOINT_SETTING_LIST));
         foreach ($nuPoints as $rate) {
             if (!empty($rate['money'])) {
-                $this->_nuPointsToMoneyRates[$rate['money']]['from'] = (!empty($rate['nupoints_from']))
+                $this->_nuPointsToMoneyRates[$rate['money']]['from'] = !empty($rate['nupoints_from'])
                     ? $rate['nupoints_from'] : null;
-                $this->_nuPointsToMoneyRates[$rate['money']]['to'] = (!empty($rate['nupoints_to']))
+                $this->_nuPointsToMoneyRates[$rate['money']]['to'] = !empty($rate['nupoints_to'])
                     ? $rate['nupoints_to'] : null;
-                $this->_nuPointsToMoneyRates[$rate['money']]['related_product'] = (!empty($rate['related_product']))
+                $this->_nuPointsToMoneyRates[$rate['money']]['related_product'] = !empty($rate['related_product'])
                     ? $rate['related_product'] : null;
             }
         }

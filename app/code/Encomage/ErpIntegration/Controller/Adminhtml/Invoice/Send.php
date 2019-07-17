@@ -6,6 +6,11 @@ use Encomage\ErpIntegration\Model\Api\Invoice as ApiInvoice;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
 
+/**
+ * Class Send
+ *
+ * @package Encomage\ErpIntegration\Controller\Adminhtml\Invoice
+ */
 class Send extends Action
 {
     /** @var ApiInvoice */
@@ -37,6 +42,7 @@ class Send extends Action
 
     /**
      * @return \Magento\Framework\Controller\ResultInterface
+     * @throws \Exception
      */
     public function execute()
     {
@@ -60,6 +66,9 @@ class Send extends Action
         return $resultRedirect;
     }
 
+    /**
+     * @return bool
+     */
     protected function _isAllowed()
     {
         return $this->_authorization->isAllowed('Encomage_ErpIntegration::invoice');

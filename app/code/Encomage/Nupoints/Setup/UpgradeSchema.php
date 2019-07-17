@@ -2,6 +2,7 @@
 
 namespace Encomage\Nupoints\Setup;
 
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\UpgradeSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
@@ -12,8 +13,11 @@ use Magento\Framework\Setup\SchemaSetupInterface;
  */
 class UpgradeSchema implements UpgradeSchemaInterface
 {
+
     /**
-     * {@inheritdoc}
+     * @param \Magento\Framework\Setup\SchemaSetupInterface   $setup
+     * @param \Magento\Framework\Setup\ModuleContextInterface $context
+     *
      */
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
@@ -24,7 +28,6 @@ class UpgradeSchema implements UpgradeSchemaInterface
 
     /**
      * @param SchemaSetupInterface $setup
-     * @throws \Zend_Db_Exception
      */
     private function installHistoryTable(SchemaSetupInterface $setup)
     {
@@ -32,7 +35,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $setup->getTable('sales_order'),
             'nupoints',
             [
-                'type' => \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                'type' => Table::TYPE_INTEGER,
                 'comment' => 'Numbers of nupoints'
             ]
         );

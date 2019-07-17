@@ -3,6 +3,11 @@ namespace Encomage\Nupoints\Block\Adminhtml\Form\Field;
 
 use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 
+/**
+ * Class NupointsRates
+ *
+ * @package Encomage\Nupoints\Block\Adminhtml\Form\Field
+ */
 class NupointsRates extends AbstractFieldArray
 {
     /**
@@ -15,8 +20,9 @@ class NupointsRates extends AbstractFieldArray
         $this->_addButtonLabel = __('Add rate');
     }
 
+
     /**
-     * @return $this
+     * @return $this|void
      */
     protected function _prepareToRender()
     {

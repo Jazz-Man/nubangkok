@@ -1,6 +1,7 @@
 <?php
 namespace Encomage\ErpIntegration\Model\Api;
 
+use Exception;
 use Zend\Http\Request as HttpRequest;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
@@ -49,11 +50,11 @@ class Points extends Request
         $this->setApiLastPoint('GetCustomerPoint');
         $this->setApiMethod(HttpRequest::METHOD_GET);
         $this->setAdditionalDataUrl([
-            "CustomerCode" => $customerCode
+            'CustomerCode' => $customerCode
         ]);
         $result = $this->sendApiRequest();
         if (empty($result) || !$result) {
-            throw new \Exception(__('The ERP system sent an empty response.'));
+            throw new Exception(__('The ERP system sent an empty response.'));
         }
         $options['customer_code'] = $customerCode;
         $options['nupoints'] = $result['RebatePoint'];
