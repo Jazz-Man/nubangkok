@@ -6,13 +6,17 @@ use Magento\Cms\Api\BlockRepositoryInterface;
 use Magento\Cms\Api\PageRepositoryInterface;
 use Magento\Cms\Model\BlockFactory;
 use Magento\Cms\Model\PageFactory;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Config\Model\ResourceModel\Config;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
+use Magento\Store\Model\ScopeInterface;
 
-
+/**
+ * Class UpgradeData.
+ */
 class UpgradeData implements UpgradeDataInterface
 {
     private $pageRepository;
@@ -22,6 +26,16 @@ class UpgradeData implements UpgradeDataInterface
     private $scopeConfig;
     private $configResource;
 
+    /**
+     * UpgradeData constructor.
+     *
+     * @param \Magento\Cms\Api\PageRepositoryInterface           $pageRepository
+     * @param \Magento\Cms\Api\BlockRepositoryInterface          $blockRepository
+     * @param \Magento\Cms\Model\BlockFactory                    $blockFactory
+     * @param \Magento\Cms\Model\PageFactory                     $pageFactory
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Config\Model\ResourceModel\Config         $configResource
+     */
     public function __construct(
         PageRepositoryInterface $pageRepository,
         BlockRepositoryInterface $blockRepository,
@@ -29,8 +43,7 @@ class UpgradeData implements UpgradeDataInterface
         PageFactory $pageFactory,
         ScopeConfigInterface $scopeConfig,
         Config $configResource
-    )
-    {
+    ) {
         $this->pageRepository = $pageRepository;
         $this->blockRepository = $blockRepository;
         $this->blockFactory = $blockFactory;
@@ -39,6 +52,10 @@ class UpgradeData implements UpgradeDataInterface
         $this->configResource = $configResource;
     }
 
+    /**
+     * @param \Magento\Framework\Setup\ModuleDataSetupInterface $setup
+     * @param \Magento\Framework\Setup\ModuleContextInterface   $context
+     */
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
         if (version_compare($context->getVersion(), '0.0.2', '<')) {
@@ -80,11 +97,11 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.1.1', '<')) {
             $this->updateContactUs();
         }
-        
+
         if (version_compare($context->getVersion(), '0.1.2', '<')) {
             $this->updateLeftLinksSidebarBlock012();
         }
-        
+
         if (version_compare($context->getVersion(), '0.1.2', '<')) {
             //$this->upgradeCmsPagesContactCustomerCareFaqPoliciesProductCare();
         }
@@ -107,7 +124,7 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.1.6', '<')) {
 //            $this->upgradeCmsBlockOurStories();
         }
-        
+
         if (version_compare($context->getVersion(), '0.1.7', '<')) {
             $this->upgradeLeftMenu017();
         }
@@ -125,48 +142,71 @@ class UpgradeData implements UpgradeDataInterface
         }
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function createBlockForRightImageOnRegisterForm()
     {
         $block = $this->blockFactory->create();
-        $block->addData(
-            [
-                'title' => 'Register Form right',
-                'identifier' => 'register-form-right',
-                'stores' => [0],
-                'is_active' => 1,
-                'content' => '<div class="register-form-right-image"><img src="{{view url=images/cms/sign-in.jpg}}" alt="sign-in"></div>'
-            ]
-        );
-        $this->blockRepository->save($block);
+
+        $cmsBlock = $block->load('register-form-right', 'identifier');
+
+        if (!$cmsBlock->getId()) {
+            $block->addData(
+                [
+                    'title' => 'Register Form right',
+                    'identifier' => 'register-form-right',
+                    'stores' => [0],
+                    'is_active' => 1,
+                    'content' => '<div class="register-form-right-image"><img src="{{view url=images/cms/sign-in.jpg}}" alt="sign-in"></div>',
+                ]
+            );
+            $this->blockRepository->save($block);
+        }
+
         return $this;
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function updateTitleAndPageLayoutForHomePage()
     {
         $homePage = $this->pageRepository->getById('home');
         $homePage->addData(
             [
                 'title' => 'nuBangkok Shop Shoes, Bags, Apparels Goods Handmade in Thailand',
-                'page_layout' => '2columns-left'
+                'page_layout' => '2columns-left',
             ]
         );
         $this->pageRepository->save($homePage);
+
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     private function modifyFooterCopyright()
     {
-        $this->configResource->saveConfig('design/footer/copyright',
+        $this->configResource->saveConfig(
+            'design/footer/copyright',
             'nu Bangkok Copyright ©2018. All Rights Reserved',
             'default',
             0
         );
 
-        $this->configResource->saveConfig('design/footer/copyright',
+        $this->configResource->saveConfig(
+            'design/footer/copyright',
             'nu Bangkok Copyright ©2018. All Rights Reserved',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORES,
+            ScopeInterface::SCOPE_STORES,
             1
         );
+
         return $this;
     }
 
@@ -224,6 +264,11 @@ EOD;
         $this->blockRepository->save($block);
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function comingSoonCategoryBlockWomenClothing()
     {
         $content = <<<EOD
@@ -237,19 +282,30 @@ EOD;
 </div>
 EOD;
         $block = $this->blockFactory->create();
-        $block->addData(
-            [
-                'title' => 'Coming Soon Category - Women Clothing',
-                'identifier' => 'coming_coon_category_women_clothing',
-                'stores' => [0],
-                'is_active' => 1,
-                'content' => $content
-            ]
-        );
-        $this->blockRepository->save($block);
+
+        $cmsBlock = $block->load('coming_coon_category_women_clothing', 'identifier');
+
+        if (!$cmsBlock->getId()) {
+            $block->addData(
+                [
+                    'title' => 'Coming Soon Category - Women Clothing',
+                    'identifier' => 'coming_coon_category_women_clothing',
+                    'stores' => [0],
+                    'is_active' => 1,
+                    'content' => $content,
+                ]
+            );
+            $this->blockRepository->save($block);
+        }
+
         return $this;
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function addCmsPagesWhyNuWhereToBuyTerms()
     {
         $pages = [
@@ -300,11 +356,11 @@ EOD;
 </div>
 <div style="margin-bottom: 10px;">
 <div class="numberCircle" style="display: inline-block;">2</div>
-<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
 </div>
 <div style="margin-bottom: 10px;">
 <div class="numberCircle" style="display: inline-block;">3</div>
-<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
 </div>
 </div>
 EOD
@@ -334,7 +390,6 @@ EOD
 </div>
 </div>
 EOD
-
             ],
 
             'terms-of-services' => [
@@ -357,18 +412,28 @@ EOD
 </ol>
 </div>
 EOD
-
-            ]
+            ],
         ];
 
         foreach ($pages as $pageData) {
             $pageObject = $this->pageFactory->create();
-            $pageObject->addData($pageData);
-            $this->pageRepository->save($pageObject);
+
+            $cmsBlock = $pageObject->load($pageData['identifier'], 'identifier');
+
+            if (!$cmsBlock->getId()) {
+                $pageObject->addData($pageData);
+                $this->pageRepository->save($pageObject);
+            }
         }
+
         return $this;
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function addCmsPagesContactCustomerCareFaqPoliciesProductCare()
     {
         $pages = [
@@ -546,36 +611,36 @@ EOD
 <h1 class="cms-heading">Customer Care</h1>
 <hr class="cms-heading-line" />
 <div class="accordion-container">
-<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
-<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url="wysiwyg/cms/arrow-right.png"}}" width="9" height="11" /></a></p>
+<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url="wysiwyg/cms/arrow-right.png"}}" width="9" height="11" /></a></p>
 </div>
 EOM
             ],
@@ -590,7 +655,7 @@ EOM
 <h1 class="cms-heading">Product Care</h1>
 <hr class="cms-heading-line" />
 <div class="accordion-container">
-<p class="accordion js-accordion">Shoes <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Shoes <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -606,16 +671,28 @@ EOM
 </div>
 </div>
 EOM
-            ]
+            ],
         ];
         foreach ($pages as $pageData) {
             $pageObject = $this->pageFactory->create();
-            $pageObject->addData($pageData);
-            $this->pageRepository->save($pageObject);
+
+            $cmsBlock = $pageObject->load($pageData['identifier'], 'identifier');
+
+            if (!$cmsBlock->getId()) {
+                $pageObject->addData($pageData);
+                $this->pageRepository->save($pageObject);
+            }
         }
+
         return $this;
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     private function modify404pageRemoveUnusedPages()
     {
         $pageNoRoute = $this->pageRepository->getById('no-route');
@@ -632,11 +709,25 @@ EOD;
         $pageNoRoute->setPageLayout('2columns-left');
         $this->pageRepository->save($pageNoRoute);
 
-        $this->pageRepository->deleteById('enable-cookies');
-        $this->pageRepository->deleteById('privacy-policy-cookie-restriction-mode');
+        $cookiesBlock = $this->pageFactory->create()->load('enable-cookies', 'identifier');
+        $privacyBlock = $this->pageFactory->create()->load('privacy-policy-cookie-restriction-mode', 'identifier');
+
+        if ($cookiesBlock->getId()) {
+            $this->pageRepository->delete($cookiesBlock);
+        }
+
+        if ($privacyBlock->getId()) {
+            $this->pageRepository->delete($privacyBlock);
+        }
+
         return $this;
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function updateContactUs()
     {
         $contactUs = $this->pageRepository->getById('contact-us');
@@ -753,9 +844,9 @@ EOD;
 EOD;
         $contactUs->setContent($content);
         $this->pageRepository->save($contactUs);
+
         return $this;
     }
-
 
     private function updateLeftLinksSidebarBlock012()
     {
@@ -783,7 +874,12 @@ EOD;
         $block->setContent($content);
         $this->blockRepository->save($block);
     }
-    
+
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function upgradeCmsPagesContactCustomerCareFaqPoliciesProductCare()
     {
         $pages = [
@@ -798,36 +894,36 @@ EOD;
 <h1 class="cms-heading">Customer Care</h1>
 <hr class="cms-heading-line" />
 <div class="accordion-container">
-<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
-<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url="wysiwyg/cms/arrow-right.svg"}}" width="9" height="11" /></a></p>
+<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url="wysiwyg/cms/arrow-right.svg"}}" width="9" height="11" /></a></p>
 </div>
 EOM
             ],
@@ -842,7 +938,7 @@ EOM
 <h1 class="cms-heading">Product Care</h1>
 <hr class="cms-heading-line" />
 <div class="accordion-container">
-<p class="accordion js-accordion">Shoes <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Shoes <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-dropdown.svg"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -858,15 +954,19 @@ EOM
 </div>
 </div>
 EOM
-            ]
+            ],
         ];
         foreach ($pages as $pageData) {
             $pageObject = $this->pageFactory->create();
-            $pageObject->addData($pageData);
-            $this->pageRepository->save($pageObject);
-        }
-        return $this;
+            $cmsBlock = $pageObject->load($pageData['identifier'], 'identifier');
 
+            if (!$cmsBlock->getId()) {
+                $pageObject->addData($pageData);
+                $this->pageRepository->save($pageObject);
+            }
+        }
+
+        return $this;
     }
 
     private function addCmsBlockOurStories()
@@ -906,13 +1006,23 @@ EOD;
             'identifier' => 'our_stories',
             'stores' => ['0'],
             'is_active' => 1,
-            'content' => $content
+            'content' => $content,
         ];
 
         $block = $this->blockFactory->create(['data' => $ourStoriesBlock]);
-        $this->blockRepository->save($block);
+
+        $cmsBlock = $block->load($ourStoriesBlock['identifier'], 'identifier');
+
+        if (!$cmsBlock->getId()) {
+            $this->blockRepository->save($block);
+        }
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function upgradeCmsPages()
     {
         $pages = [
@@ -964,11 +1074,11 @@ EOD
 </div>
 <div style="margin-bottom: 10px;">
 <div class="numberCircle" style="display: inline-block;">2</div>
-<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
 </div>
 <div style="margin-bottom: 10px;">
 <div class="numberCircle" style="display: inline-block;">3</div>
-<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
+<p style="display: inline-block; padding-left: 10px; width: 80%;">A refunds on earrings unless it is defective or a wrong item sent.</p>
 </div>
 </div>
 
@@ -1000,7 +1110,7 @@ EOD
 <h1 class="cms-heading">Product Care</h1>
 <hr class="cms-heading-line" />
 <div class="accordion-container">
-<p class="accordion js-accordion">Shoes <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Shoes <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url="wysiwyg/cms/arrow-up.png"}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -1022,36 +1132,36 @@ EOD
 <h1 class="cms-heading">Customer Care</h1>
 <hr class="cms-heading-line" />
 <div class="accordion-container">
-<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">How to order <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Shipping &amp; tracking <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Return &amp; Exchange <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">Size Guide <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
 <div class="accordion-container">
-<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
+<p class="accordion js-accordion">FAQ <img style="padding-left: 10px; padding-bottom: 1px;" src="{{media url='wysiwyg/cms/arrow-up.png'}}" width="12" height="10" /></p>
 <div class="panel">
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 </div>
 </div>
-<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url='wysiwyg/cms/arrow-right.png'}}" width="9" height="11" /></a></p>
+<p class="accordion"><a href="{{store url='product-care'}}" target="_self">Product Care <img style="padding-left: 10px;" src="{{media url='wysiwyg/cms/arrow-right.png'}}" width="9" height="11" /></a></p>
 </div>
 EOD
         ];
@@ -1061,9 +1171,15 @@ EOD
             $page->setContent($content);
             $this->pageRepository->save($page);
         }
+
         return $this;
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function upgradeLeftSidebarCmsBlock()
     {
         $content = <<<EOD
@@ -1084,9 +1200,15 @@ EOD;
         $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
         $block->setContent($content);
         $this->blockRepository->save($block);
+
         return $this;
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function upgradeComingSoon014()
     {
         $content = <<<EOD
@@ -1100,9 +1222,15 @@ EOD;
         $block = $this->blockRepository->getById('coming_coon_category_women_clothing');
         $block->setContent($content);
         $this->blockRepository->save($block);
+
         return $this;
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function upgradeLeftMenu014()
     {
         $content = <<<EOD
@@ -1122,9 +1250,15 @@ EOD;
         $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
         $block->setContent($content);
         $this->blockRepository->save($block);
+
         return $this;
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function upgradeLeftSidebar()
     {
         $content = <<<EOD
@@ -1144,10 +1278,15 @@ EOD;
         $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
         $block->setContent($content);
         $this->blockRepository->save($block);
+
         return $this;
     }
-    
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function upgradeLeftMenu017()
     {
         $content = <<<EOD
@@ -1161,9 +1300,15 @@ EOD;
         $block = $this->blockRepository->getById('left_sidebar_cms_static_block');
         $block->setContent($content);
         $this->blockRepository->save($block);
+
         return $this;
     }
 
+    /**
+     * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function upgradeCmsBlockOurStories()
     {
         $content = <<<EOD
@@ -1209,6 +1354,7 @@ EOD;
         $block = $this->blockRepository->getById('our_stories');
         $block->setContent($content);
         $this->blockRepository->save($block);
+
         return $this;
     }
 
@@ -1249,7 +1395,7 @@ EOD;
             'identifier' => 'our_stories',
             'stores' => ['0'],
             'is_active' => 1,
-            'content' => $content
+            'content' => $content,
         ];
         $oldBlock = $this->blockFactory->create()->load('our_stories', 'identifier');
         if (!$oldBlock->getId()) {
@@ -1258,6 +1404,9 @@ EOD;
         }
     }
 
+    /**
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     private function addCmsBlockRewardPointDetails()
     {
         $content = <<<EOD
@@ -1315,10 +1464,17 @@ EOD;
             'identifier' => 'reward_point_details',
             'stores' => ['0'],
             'is_active' => 1,
-            'content' => $content
+            'content' => $content,
         ];
-        $block = $this->blockFactory->create(['data' => $pointDetailsBlock]);
-        $this->blockRepository->save($block);
+        $block = $this->blockFactory->create();
+
+        $cmsBlock = $block->load($pointDetailsBlock['identifier'], 'identifier');
+
+        if (!$cmsBlock->getId()) {
+            $block->addData($pointDetailsBlock);
+
+            $this->blockRepository->save($block);
+        }
     }
 
     private function addCmsBlockThankYouPage()
@@ -1340,9 +1496,19 @@ EOD;
             'identifier' => 'image_thank_you_page',
             'stores' => ['0'],
             'is_active' => 1,
-            'content' => $content
+            'content' => $content,
         ];
-        $block = $this->blockFactory->create(['data' => $pointDetailsBlock]);
-        $this->blockRepository->save($block);
+
+        $block = $this->blockFactory->create();
+
+        $cmsBlock = $block->load($pointDetailsBlock['identifier'], 'identifier');
+
+        if (!$cmsBlock->getId()) {
+            $block->addData($pointDetailsBlock);
+            try {
+                $this->blockRepository->save($block);
+            } catch (LocalizedException $e) {
+            }
+        }
     }
 }

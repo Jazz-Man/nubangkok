@@ -2,29 +2,48 @@
 
 namespace Encomage\Cms\Setup;
 
-use Magento\Cms\Model\BlockRepository;
 use Magento\Cms\Model\BlockFactory;
+use Magento\Cms\Model\BlockRepository;
+use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
-use Magento\Framework\Setup\InstallDataInterface;
 
+/**
+ * Class InstallData.
+ */
 class InstallData implements InstallDataInterface
 {
     private $blockFactory;
     private $blockRepository;
 
+    /**
+     * InstallData constructor.
+     *
+     * @param \Magento\Cms\Model\BlockFactory    $blockFactory
+     * @param \Magento\Cms\Model\BlockRepository $blockRepository
+     */
     public function __construct(
         BlockFactory $blockFactory,
         BlockRepository $blockRepository
-    )
-    {
+    ) {
         $this->blockFactory = $blockFactory;
         $this->blockRepository = $blockRepository;
     }
 
+    /**
+     * @param \Magento\Framework\Setup\ModuleDataSetupInterface $setup
+     * @param \Magento\Framework\Setup\ModuleContextInterface   $context
+     *
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     */
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        $content = <<<EOD
+        $cmsBlock = $this->blockFactory->create();
+
+        $sidebarBlock = $cmsBlock->load('left_sidebar_cms_static_block', 'identifier');
+
+        if (!$sidebarBlock->getId()) {
+            $content = <<<EOD
           <div class="left-menu-big-margin "><a href="#">Inspiration</a></div>
 <div><a class="font-less" href="#">Customer care</a></div>
 <div><a class="font-less" href="#">Product care</a></div>
@@ -39,15 +58,17 @@ class InstallData implements InstallDataInterface
  
 EOD;
 
-        $sidebarLinksBlock = [
-            'title' => 'Left sidebar cms static block',
-            'identifier' => 'left_sidebar_cms_static_block',
-            'stores' => ['0'],
-            'is_active' => 1,
-            'content' => $content
-        ];
+            $sidebarLinksBlock = [
+                'title' => 'Left sidebar cms static block',
+                'identifier' => 'left_sidebar_cms_static_block',
+                'stores' => ['0'],
+                'is_active' => 1,
+                'content' => $content,
+            ];
 
-        $block = $this->blockFactory->create(['data' => $sidebarLinksBlock]);
-        $this->blockRepository->save($block);
+            $block = $this->blockFactory->create(['data' => $sidebarLinksBlock]);
+
+            $this->blockRepository->save($block);
+        }
     }
 }
