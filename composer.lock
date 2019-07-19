@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78e0fc65aa0cf67438df4e3e99672a0e",
+    "content-hash": "c715dcd95da23ffcf8c4d6739653f69f",
     "packages": [
         {
             "name": "amzn/amazon-pay-and-login-magento-2-module",
@@ -10918,47 +10918,6 @@
             ],
             "description": "Mageplaza Core for Magento 2",
             "time": "2019-05-24T11:15:09+00:00"
-        },
-        {
-            "name": "mageplaza/module-cron-schedule",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mageplaza/magento-2-cron-schedule.git",
-                "reference": "9c55fb7857769b0a02f939ae5b31b6db85932135"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mageplaza/magento-2-cron-schedule/zipball/9c55fb7857769b0a02f939ae5b31b6db85932135",
-                "reference": "9c55fb7857769b0a02f939ae5b31b6db85932135",
-                "shasum": ""
-            },
-            "require": {
-                "mageplaza/module-core": "^1.4.4"
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Mageplaza\\CronSchedule\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "proprietary"
-            ],
-            "authors": [
-                {
-                    "name": "Mageplaza",
-                    "email": "support@mageplaza.com",
-                    "homepage": "https://www.mageplaza.com",
-                    "role": "Technical Support"
-                }
-            ],
-            "description": "Magento 2 Cron Schedule Extension",
-            "time": "2019-07-09T01:43:47+00:00"
         },
         {
             "name": "mageplaza/module-google-recaptcha",

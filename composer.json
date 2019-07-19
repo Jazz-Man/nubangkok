@@ -24,7 +24,6 @@
         "magento/zendframework1": "^1.13",
         "mageplaza/magento-2-social-login": "^2.7",
         "mageplaza/module-banner-slider": "^2.0",
-        "mageplaza/module-cron-schedule": "^1.0",
         "nikic/iter": "^2.0",
         "olegkoval/magento2-regenerate-url-rewrites": "^1.4"
     },
