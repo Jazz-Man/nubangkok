@@ -4,7 +4,7 @@ namespace ErpAPI\ErpAPICommand\Console\Command;
 
 use ErpAPI\ErpAPICommand\Helper\ApiClient;
 use ErpAPI\ErpAPICommand\Helper\CacheFile;
-use ErpAPI\ErpAPICommand\Model\Erp\ErpProduct;
+use Encomage\ErpIntegration\Model\Api\ErpProduct;
 use Exception;
 use GuzzleHttp\Psr7\Response;
 use InvalidArgumentException;
