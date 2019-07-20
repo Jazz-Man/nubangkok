@@ -2,6 +2,7 @@
 
 namespace Encomage\Catalog\Model\Category;
 
+use Magento\Framework\App\Area;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
@@ -14,6 +15,11 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Translate\Inline\StateInterface;
 
+/**
+ * Class ComingSoonProduct
+ *
+ * @package Encomage\Catalog\Model\Category
+ */
 class ComingSoonProduct extends AbstractModel
 {
     private $_dataObject;
@@ -69,13 +75,17 @@ class ComingSoonProduct extends AbstractModel
      */
     protected function _construct()
     {
-        $this->_init('Encomage\Catalog\Model\ResourceModel\Category\ComingSoonProduct');
+        $this->_init(ComingSoonProductResource::class);
     }
 
     /**
      * @param array $senderData
-     * @param $recipientData
-     * @param $template
+     * @param       $recipientData
+     * @param       $template
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\MailException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function sendEmail(array $senderData, $recipientData, $template)
     {
@@ -86,13 +96,12 @@ class ComingSoonProduct extends AbstractModel
         ];
         $storeId = $this->_storeManager->getStore()->getId();
         $transporter =$this->_transportBuilder->setTemplateIdentifier($template)
-            ->setTemplateOptions(['area' => \Magento\Framework\App\Area::AREA_FRONTEND, 'store' => $storeId])
+            ->setTemplateOptions(['area' => Area::AREA_FRONTEND, 'store' => $storeId])
             ->setTemplateVars(['data' => $postObject])
             ->setFrom($sender)
             ->addTo($recipientData)
             ->getTransport();
         $transporter->sendMessage();
         $this->_inlineTranslation->resume();
-        return;
     }
 }

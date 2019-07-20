@@ -2,12 +2,19 @@
 
 namespace Encomage\Catalog\Setup;
 
-use Magento\Eav\Setup\EavSetup;
+use Magento\Catalog\Model\Product;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
+use Magento\Eav\Model\Entity\Attribute\Source\Boolean;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 
+/**
+ * Class InstallData
+ *
+ * @package Encomage\Catalog\Setup
+ */
 class InstallData implements InstallDataInterface
 {
     private $eavSetupFactory;
@@ -23,27 +30,30 @@ class InstallData implements InstallDataInterface
 
     /**
      * @param ModuleDataSetupInterface $setup
-     * @param ModuleContextInterface $context
+     * @param ModuleContextInterface   $context
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Zend_Validate_Exception
      */
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
         $installData = [
-            "popular" => "Popular",
-            "limited" => "Limited",
+            'popular' => 'Popular',
+            'limited' => 'Limited',
         ];
 
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
         foreach ($installData as $code => $label) {
             $eavSetup->addAttribute(
-                \Magento\Catalog\Model\Product::ENTITY,
+                Product::ENTITY,
                 $code,
                 [
                     'group' => 'General',
                     'type' => 'int',
                     'label' => $label,
                     'input' => 'boolean',
-                    'source' => 'Magento\Eav\Model\Entity\Attribute\Source\Boolean',
-                    'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+                    'source' => Boolean::class,
+                    'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
                     'visible' => true,
                     'required' => false,
                     'user_defined' => false,

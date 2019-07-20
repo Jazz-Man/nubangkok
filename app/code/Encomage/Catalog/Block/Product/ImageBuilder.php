@@ -54,7 +54,7 @@ class ImageBuilder extends \Magento\Catalog\Block\Product\ImageBuilder
             ]
         ];
 
-        return $this->imageFactory->create($data);
+        return $this->imageFactory->create($product,$imageId,$data);
     }
 
     /**

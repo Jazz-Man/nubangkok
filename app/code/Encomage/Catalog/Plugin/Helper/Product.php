@@ -126,12 +126,10 @@ class Product
                 } else {
                     $productId = array_shift($parentIdByChildIds);
                 }
-            } else {
-                if ($this->_getProductId()) {
-                    $product = $this->productRepository->getById((int)$this->_getProductId());
-                    $this->registry->register('simple_product', $product);
-                    $this->_unSetProductId();
-                }
+            } elseif ($this->_getProductId()) {
+                $product = $this->productRepository->getById((int)$this->_getProductId());
+                $this->registry->register('simple_product', $product);
+                $this->_unSetProductId();
             }
 
             $result = $proceed($productId, $controller, $params);
