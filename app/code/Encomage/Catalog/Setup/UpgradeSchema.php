@@ -7,8 +7,20 @@ use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\DB\Ddl\Table;
 
+/**
+ * Class UpgradeSchema
+ *
+ * @package Encomage\Catalog\Setup
+ */
 class UpgradeSchema implements UpgradeSchemaInterface
 {
+
+    /**
+     * @param \Magento\Framework\Setup\SchemaSetupInterface   $setup
+     * @param \Magento\Framework\Setup\ModuleContextInterface $context
+     *
+     * @throws \Zend_Db_Exception
+     */
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
         if (version_compare($context->getVersion(), '0.0.6', '<')) {

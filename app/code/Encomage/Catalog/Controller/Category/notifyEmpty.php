@@ -2,13 +2,19 @@
 
 namespace Encomage\Catalog\Controller\Category;
 
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Encomage\Catalog\Model\Category\ComingSoonProductFactory;
 use Encomage\Catalog\Model\ResourceModel\Category\ComingSoonProduct as Resource;
 use Magento\Framework\Controller\ResultFactory;
 
-class notifyEmpty extends \Magento\Framework\App\Action\Action
+/**
+ * Class notifyEmpty
+ *
+ * @package Encomage\Catalog\Controller\Category
+ */
+class notifyEmpty extends Action
 {
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -44,6 +50,14 @@ class notifyEmpty extends \Magento\Framework\App\Action\Action
         parent::__construct($context);
     }
 
+    /**
+     * Execute action based on request and return result
+     *
+     * Note: Request will be added as operation argument in future
+     *
+     * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     */
     public function execute()
     {
         $params = $this->getRequest()->getParams();

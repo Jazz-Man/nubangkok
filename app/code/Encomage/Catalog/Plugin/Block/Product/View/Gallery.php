@@ -2,6 +2,7 @@
 namespace Encomage\Catalog\Plugin\Block\Product\View;
 
 use Magento\Catalog\Helper\Image;
+use Magento\Framework\Data\Collection;
 use Magento\Framework\Registry;
 
 /**
@@ -48,32 +49,32 @@ class Gallery
     {
         $product = $object->getProduct();
         $simpleProduct = $this->_coreRegistry->registry('simple_product');
-        if ($product->getTypeId() !== 'configurable' || is_null($simpleProduct)) {
+        if ($simpleProduct === null || $product->getTypeId() !== 'configurable') {
             return $proceed();
-        } else {
-            $images = $simpleProduct->getMediaGalleryImages();
-            if ($images instanceof \Magento\Framework\Data\Collection) {
-                foreach ($images as $image) {
-                    /* @var \Magento\Framework\DataObject $image */
-                    $image->setData(
-                        'small_image_url',
-                        $this->_imageHelper->init($simpleProduct, 'product_page_image_small')
-                            ->setImageFile($image->getFile())
-                            ->getUrl()
-                    );
-                    $image->setData(
-                        'medium_image_url',
-                        $this->_imageHelper->init($simpleProduct, 'product_page_image_medium_no_frame')
-                            ->setImageFile($image->getFile())
-                            ->getUrl()
-                    );
-                    $image->setData(
-                        'large_image_url',
-                        $this->_imageHelper->init($simpleProduct, 'product_page_image_large_no_frame')
-                            ->setImageFile($image->getFile())
-                            ->getUrl()
-                    );
-                }
+        }
+
+        $images = $simpleProduct->getMediaGalleryImages();
+        if ($images instanceof Collection) {
+            foreach ($images as $image) {
+                /* @var \Magento\Framework\DataObject $image */
+                $image->setData(
+                    'small_image_url',
+                    $this->_imageHelper->init($simpleProduct, 'product_page_image_small')
+                        ->setImageFile($image->getFile())
+                        ->getUrl()
+                );
+                $image->setData(
+                    'medium_image_url',
+                    $this->_imageHelper->init($simpleProduct, 'product_page_image_medium_no_frame')
+                        ->setImageFile($image->getFile())
+                        ->getUrl()
+                );
+                $image->setData(
+                    'large_image_url',
+                    $this->_imageHelper->init($simpleProduct, 'product_page_image_large_no_frame')
+                        ->setImageFile($image->getFile())
+                        ->getUrl()
+                );
             }
         }
 

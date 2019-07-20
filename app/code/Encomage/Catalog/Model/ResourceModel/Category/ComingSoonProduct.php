@@ -2,7 +2,14 @@
 
 namespace Encomage\Catalog\Model\ResourceModel\Category;
 
-class ComingSoonProduct extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+/**
+ * Class ComingSoonProduct
+ *
+ * @package Encomage\Catalog\Model\ResourceModel\Category
+ */
+class ComingSoonProduct extends AbstractDb
 {
     /**
      * Define main table
