@@ -1,18 +1,21 @@
 <?php
 namespace Encomage\Blog\Block\Post\Product;
+use Magefan\Blog\Block\Post\View\RelatedProducts;
+use Magento\Store\Model\ScopeInterface;
+
 /**
  * Class Items
+ *
  * @package Encomage\Blog\Block\Post\Product
  */
-class Items extends \Magefan\Blog\Block\Post\View\RelatedProducts
+class Items extends RelatedProducts
 {
     /**
      * @return \Magento\Catalog\Model\ResourceModel\Product\Collection
      */
     public function getRelatedProducts()
     {
-        $_collection = $this->_prepareCollection()->getItems();
-        return $_collection;
+        return $this->_prepareCollection()->getItems();
     }
 
     /**
@@ -29,7 +32,7 @@ class Items extends \Magefan\Blog\Block\Post\View\RelatedProducts
         $this->_itemCollection->setPageSize(
             (int)$this->_scopeConfig->getValue(
                 'mfblog/post_view/related_products/number_of_products',
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+                ScopeInterface::SCOPE_STORE
             )
         );
         $this->_itemCollection->getSelect()->order('rl.position', 'ASC');
