@@ -1,6 +1,6 @@
 <?php
 
-namespace ErpAPI\ErpAPICommand\Model\Erp;
+namespace Encomage\ErpIntegration\Model\Api;
 
 use Magento\Framework\Stdlib\StringUtils;
 
