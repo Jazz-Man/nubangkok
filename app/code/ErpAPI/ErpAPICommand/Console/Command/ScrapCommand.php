@@ -2,9 +2,10 @@
 
 namespace ErpAPI\ErpAPICommand\Console\Command;
 
+use ErpAPI\ErpAPICommand\Helper\ApiClient;
+use ErpAPI\ErpAPICommand\Helper\CacheFile;
 use ErpAPI\ErpAPICommand\Model\Erp\ErpProduct;
 use Exception;
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use InvalidArgumentException;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
@@ -24,26 +25,18 @@ use Magento\Eav\Model\Entity\Attribute\Option;
 use Magento\Eav\Model\Entity\Attribute\OptionFactory;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\State;
-use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
-use Magento\Framework\Filesystem;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\Store;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Throwable;
-use function array_key_exists;
-use function count;
-use function GuzzleHttp\json_decode;
 use function GuzzleHttp\json_decode as json_decodeAlias;
-use function GuzzleHttp\json_encode as json_encodeAlias;
 use function iter\filter;
 use function iter\map;
 
@@ -60,18 +53,6 @@ class ScrapCommand extends Command
     /**
      * @var string
      */
-    private $_login;
-    /**
-     * @var string
-     */
-    private $_password;
-    /**
-     * @var string
-     */
-    private $_host_name;
-    /**
-     * @var string
-     */
     private $_categories_codes;
     /**
      * @var string
@@ -85,22 +66,6 @@ class ScrapCommand extends Command
      * @var string
      */
     private $_color_code;
-    /**
-     * @var string
-     */
-    private $_warehouse_code;
-    /**
-     * @var bool
-     */
-    private $_enabled_test_mode;
-    /**
-     * @var string
-     */
-    private $_compcode;
-    /**
-     * @var Client
-     */
-    private $request;
     /**
      * @var array
      */
@@ -132,14 +97,6 @@ class ScrapCommand extends Command
      * @var array
      */
     private $_attributesOptions;
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
-    /**
-     * @var DirectoryList
-     */
-    private $directoryList;
 
     /**
      * @var CategoryLinkManagementInterface
@@ -177,6 +134,14 @@ class ScrapCommand extends Command
      * @var int
      */
     private $size_attribute_id;
+    /**
+     * @var \ErpAPI\ErpAPICommand\Helper\ApiClient
+     */
+    private $apiClient;
+    /**
+     * @var \ErpAPI\ErpAPICommand\Helper\CacheFile
+     */
+    private $cacheFile;
 
     /**
      * ScrapCommand constructor.
@@ -187,8 +152,6 @@ class ScrapCommand extends Command
      * @param ObjectManagerInterface                                          $objectManager
      * @param \Magento\Catalog\Model\ProductFactory                           $productFactory
      * @param Attribute                                                       $entityAttribute
-     * @param Filesystem                                                      $filesystem
-     * @param \Magento\Framework\App\Filesystem\DirectoryList                 $directoryList
      * @param CategoryLinkManagementInterface                                 $categoryLinkManagement
      * @param TypeConfigurableProduct                                         $typeConfigurableProduct
      * @param StockRegistryInterfaceFactory                                   $stockRegistryFactory
@@ -206,8 +169,6 @@ class ScrapCommand extends Command
         ObjectManagerInterface $objectManager,
         ProductFactory $productFactory,
         Attribute $entityAttribute,
-        Filesystem $filesystem,
-        DirectoryList $directoryList,
         CategoryLinkManagementInterface $categoryLinkManagement,
         TypeConfigurableProduct $typeConfigurableProduct,
         StockRegistryInterfaceFactory $stockRegistryFactory,
@@ -221,8 +182,6 @@ class ScrapCommand extends Command
         $this->productResource = $productResource;
         $this->productFactory = $productFactory;
         $this->objectManager = $objectManager;
-        $this->filesystem = $filesystem;
-        $this->directoryList = $directoryList;
         $this->categoryLinkManagement = $categoryLinkManagement;
         $this->typeConfigurableProduct = $typeConfigurableProduct;
         $this->stockRegistryFactory = $stockRegistryFactory;
@@ -230,17 +189,19 @@ class ScrapCommand extends Command
         $this->optionFactory = $optionFactory;
         $this->attributeOptionManager = $attributeOptionManager;
         $this->attributeRepository = $attributeRepository;
+
         parent::__construct();
 
-        $this->_attributesOptions['color'] = $entityAttribute
-            ->loadByCode('catalog_product', 'color')
-            ->getSource()
-            ->getAllOptions(false, true);
+        $this->apiClient = new ApiClient($scopeConfig);
+        $this->cacheFile = new CacheFile($objectManager);
 
-        $this->_attributesOptions['size'] = $entityAttribute
-            ->loadByCode('catalog_product', 'size')
-            ->getSource()
-            ->getAllOptions(false, true);
+        $this->_attributesOptions['color'] = $entityAttribute->loadByCode('catalog_product', 'color')
+                                                             ->getSource()
+                                                             ->getAllOptions(false, true);
+
+        $this->_attributesOptions['size'] = $entityAttribute->loadByCode('catalog_product', 'size')
+                                                            ->getSource()
+                                                            ->getAllOptions(false, true);
     }
 
     /**
@@ -269,8 +230,7 @@ class ScrapCommand extends Command
      */
     public function buildConfigurableProduct($datum, $_product, $category_id)
     {
-        $ConfigurableProduct = $this->typeConfigurableProduct
-            ->getParentIdsByChild($_product->getId());
+        $ConfigurableProduct = $this->typeConfigurableProduct->getParentIdsByChild($_product->getId());
 
         $configurable = [];
 
@@ -284,18 +244,18 @@ class ScrapCommand extends Command
                 $configurable[$datum->getConfigSku()]['category_name'] = $datum->getCategoryName();
             }
 
-            if ($_product->getId() && array_key_exists($datum->getConfigSku(), $configurable)) {
+            if ($_product->getId() && \array_key_exists($datum->getConfigSku(), $configurable)) {
                 $configurable[$datum->getConfigSku()]['associate_ids'][$_product->getId()] = $_product->getId();
                 $configurable[$datum->getConfigSku()]['skus'][] = $_product->getSku();
             }
 
-            $configurable[$datum->getConfigSku()]['color'] = array_key_exists('color',
+            $configurable[$datum->getConfigSku()]['color'] = \array_key_exists('color',
                 $configurable[$datum->getConfigSku()]) ? $configurable[$datum->getConfigSku()]['color'] : '';
             if (null === $configurable[$datum->getConfigSku()]['color']) {
                 $configurable[$datum->getConfigSku()]['color'] = $_product->getColor() ?: null;
             }
 
-            $configurable[$datum->getConfigSku()]['size'] = array_key_exists('size',
+            $configurable[$datum->getConfigSku()]['size'] = \array_key_exists('size',
                 $configurable[$datum->getConfigSku()]) ? $configurable[$datum->getConfigSku()]['size'] : '';
             if (null === $configurable[$datum->getConfigSku()]['size']) {
                 $configurable[$datum->getConfigSku()]['size'] = $_product->getSize() ?: null;
@@ -406,12 +366,6 @@ class ScrapCommand extends Command
         } catch (LocalizedException $e) {
         }
 
-        $this->_login = $this->_config->getValue('erp_etoday_settings/erp_authorization/login');
-        $this->_password = $this->_config->getValue('erp_etoday_settings/erp_authorization/password');
-        $this->_host_name = $this->_config->getValue('erp_etoday_settings/erp_authorization/host_name');
-        $this->_compcode = $this->_config->getValue('erp_etoday_settings/erp_authorization/compcode');
-        $this->_enabled_test_mode = (bool) $this->_config->getValue('erp_etoday_settings/erp_authorization/enabled_test_mode');
-        $this->_warehouse_code = $this->_config->getValue('erp_etoday_settings/erp_authorization/warehouse_code');
         $this->_color_code = $this->_config->getValue('erp_etoday_settings/color_settings/color_code');
         $this->_bags_codes = $this->_config->getValue('erp_etoday_settings/category_type_bags/bags_codes');
         $this->_shoe_codes = $this->_config->getValue('erp_etoday_settings/category_type_shoe/shoe_codes');
@@ -425,19 +379,12 @@ class ScrapCommand extends Command
             $this->size_attribute_id = false;
         }
 
-        $this->request = new Client([
-            'timeout' => 30,
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ],
-        ]);
-
         parent::configure();
     }
 
     /**
      * @return \Magento\Eav\Api\Data\AttributeOptionInterface[]
+     *
      * @throws \Magento\Framework\Exception\InputException
      * @throws \Magento\Framework\Exception\StateException
      */
@@ -451,70 +398,42 @@ class ScrapCommand extends Command
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      *
      * @return int|void|null
+     *
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\StateException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Hello World! TEST');
+        $output->writeln('Hello World!');
 
-        $CacheFile = $this->getCacheFile();
+        $CacheFile = $this->cacheFile->getCacheFile();
 
         if ($CacheFile) {
             $this->dataProccesing($CacheFile);
         } else {
             $last_point = 'GetProductList';
 
-            $values = [
-                'userAccount' => $this->getLogin(),
-                'userPassword' => $this->getPassword(),
-                'compCode' => $this->getCompcode(),
-                'warehouseCode' => $this->getWarehouseCode(),
+            $query = [
                 'Branchpricedisplay' => 1,
                 'CategoryDisplaySubCat' => 1,
                 'Page' => 1,
             ];
 
-            if ($this->isEnabledTestMode()) {
-                $values['testmode'] = 1;
-            }
-
-            try {
-                do {
-                    /** @var Response $response */
-                    $response = $this->request->get("{$this->getHostName()}/{$last_point}", [
-                        'query' => $values,
-                    ]);
-                } while ($this->parseBody($response) && $values['Page']++);
-            } catch (Throwable $e) {
-                dump($e->getMessage());
-            }
+            do {
+                /** @var Response $response */
+                $response = $this->apiClient->getData($last_point, $query);
+            } while ($this->parseBody($response) && $query['Page']++);
 
             if (!empty($this->products_data)) {
                 $this->products_data = array_merge(...$this->products_data);
 
-                $this->saveCacheFile($this->products_data);
+                $this->cacheFile->saveCacheFile($this->products_data);
 
                 $this->dataProccesing($this->products_data);
             }
         }
 
         dump(self::testMemory());
-    }
-
-    /**
-     * @return bool|array
-     */
-    public function getCacheFile()
-    {
-        $CACHE = $this->filesystem->getDirectoryRead($this->directoryList::CACHE);
-
-        try {
-            $data = $CACHE->readFile('erp/CacheFile.json');
-
-            return json_decodeAlias($data);
-        } catch (FileSystemException $e) {
-        }
-
-        return false;
     }
 
     /**
@@ -549,21 +468,15 @@ class ScrapCommand extends Command
                         ],
                     ]);
 
-                    if ($datum->getModelColor()){
-
-
-                        $colors = array_filter($this->getColorCode(), static function ($item) use ($datum){
-
-                            return in_array($item['erp_color_code'],$datum->getModelColor());
+                    if ($datum->getModelColor()) {
+                        $colors = array_filter($this->getColorCode(), static function ($item) use ($datum) {
+                            return \in_array($item['erp_color_code'], $datum->getModelColor());
                         });
 
-
-                        if (!empty($colors)){
-
-                            $colors = array_column($colors,'erp_color_value');
+                        if (!empty($colors)) {
+                            $colors = array_column($colors, 'erp_color_value');
 
                             $product->setColor(reset($colors));
-
                         }
                     }
 
@@ -593,21 +506,15 @@ class ScrapCommand extends Command
                         ],
                     ]);
 
-                    if ($datum->getModelColor()){
-
-
-                        $colors = array_filter($this->getColorCode(), static function ($item) use ($datum){
-
-                            return in_array($item['erp_color_code'],$datum->getModelColor());
+                    if ($datum->getModelColor()) {
+                        $colors = array_filter($this->getColorCode(), static function ($item) use ($datum) {
+                            return \in_array($item['erp_color_code'], $datum->getModelColor());
                         });
 
-
-                        if (!empty($colors)){
-
-                            $colors = array_column($colors,'erp_color_value');
+                        if (!empty($colors)) {
+                            $colors = array_column($colors, 'erp_color_value');
 
                             $product->setColor(reset($colors));
-
                         }
                     }
 
@@ -648,89 +555,21 @@ class ScrapCommand extends Command
     }
 
     /**
-     * @return string
-     */
-    private function getLogin(): string
-    {
-        return $this->_login;
-    }
-
-    /**
-     * @return string
-     */
-    private function getPassword(): string
-    {
-        return $this->_password;
-    }
-
-    /**
-     * @return string
-     */
-    private function getCompcode(): string
-    {
-        return $this->_compcode;
-    }
-
-    /**
-     * @return string
-     */
-    private function getWarehouseCode(): string
-    {
-        return $this->_warehouse_code;
-    }
-
-    /**
-     * @return bool
-     */
-    private function isEnabledTestMode(): bool
-    {
-        return $this->_enabled_test_mode;
-    }
-
-    /**
-     * @return string
-     */
-    private function getHostName(): string
-    {
-        return $this->_host_name;
-    }
-
-    /**
      * @param \Psr\Http\Message\ResponseInterface $response
      *
      * @return bool
      */
     protected function parseBody(ResponseInterface $response)
     {
-        if (200 === $response->getStatusCode()) {
-            $body = $response->getBody()->getContents();
+        $products_data = $this->apiClient->parseBody($response);
 
-            $products_data = json_decodeAlias($body);
+        if (!empty($products_data)) {
+            $this->products_data[] = $products_data;
 
-            if (!empty($products_data)) {
-                $this->products_data[] = $products_data;
-
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         return false;
-    }
-
-    /**
-     * @param array $data
-     */
-    private function saveCacheFile(array $data)
-    {
-        try {
-            $CACHE = $this->filesystem->getDirectoryWrite($this->directoryList::CACHE);
-            $contents = json_encodeAlias($data, JSON_UNESCAPED_SLASHES);
-
-            $CACHE->writeFile('erp/CacheFile.json', $contents);
-        } catch (FileSystemException $e) {
-        }
     }
 
     /**
@@ -745,7 +584,7 @@ class ScrapCommand extends Command
 
         $bytes = max($bytes, 0);
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-        $pow = min($pow, count($units) - 1);
+        $pow = min($pow, \count($units) - 1);
 
         $bytes /= (1 << (10 * $pow));
 
@@ -888,12 +727,11 @@ class ScrapCommand extends Command
     {
         $category_table = $this->categoryResource->getTable('catalog_category_entity_varchar');
 
-        $select = $this->categoryResource
-            ->getConnection()
-            ->select()
-            ->from($category_table)
-            ->where('value IS NOT NULL')
-            ->where('store_id = ?', Store::DEFAULT_STORE_ID);
+        $select = $this->categoryResource->getConnection()
+                                         ->select()
+                                         ->from($category_table)
+                                         ->where('value IS NOT NULL')
+                                         ->where('store_id = ?', Store::DEFAULT_STORE_ID);
 
         $this->all_categories = $this->categoryResource->getConnection()->fetchAll($select);
     }
@@ -905,6 +743,7 @@ class ScrapCommand extends Command
     {
         $color_code = json_decodeAlias($this->_color_code, true);
         $color_code = array_values($color_code);
+
         return $color_code;
     }
 
@@ -916,14 +755,12 @@ class ScrapCommand extends Command
     private function createSizeOption($size)
     {
         /** @var \Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection $attributeOptionCollection */
-        $attributeOptionCollection = $this->objectManager
-            ->create(Collection::class);
+        $attributeOptionCollection = $this->objectManager->create(Collection::class);
 
-        $optionDataArray = $attributeOptionCollection
-            ->setAttributeFilter($this->size_attribute_id)
-            ->setStoreFilter(Store::DEFAULT_STORE_ID)
-            ->load()
-            ->getData();
+        $optionDataArray = $attributeOptionCollection->setAttributeFilter($this->size_attribute_id)
+                                                     ->setStoreFilter(Store::DEFAULT_STORE_ID)
+                                                     ->load()
+                                                     ->getData();
 
         $optionData = array_filter($optionDataArray, static function ($item) use ($size) {
             return $item['value'] === (string) $size;
