@@ -1,8 +1,15 @@
 <?php
 
 namespace Encomage\Slider\Model\Config\Source;
+use Magento\Framework\Data\OptionSourceInterface;
 use Mageplaza\BannerSlider\Model\ResourceModel\Slider\CollectionFactory as SliderCollection;
-class Params implements \Magento\Framework\Option\ArrayInterface
+
+/**
+ * Class Params
+ *
+ * @package Encomage\Slider\Model\Config\Source
+ */
+class Params implements OptionSourceInterface
 {
     /**
      * @var SliderCollection
@@ -26,11 +33,12 @@ class Params implements \Magento\Framework\Option\ArrayInterface
         $options =[];
         $collection = $this->_sliderCollection->create();
         $collection->addFieldToSelect(['name']);
-        foreach ($collection as $item )
-        $options[] = [
-            'value'=> $item->getId(),
-            'label' => $item->getName(),
-        ];
+        foreach ($collection as $item ) {
+            $options[] = [
+                'value' => $item->getId(),
+                'label' => $item->getName(),
+            ];
+        }
         return $options;
     }
 }

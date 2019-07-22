@@ -1,9 +1,14 @@
 <?php
 namespace Encomage\Careers\Model\ResourceModel;
 
-use Magento\Framework\Validator\Exception;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
-class Careers extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
+/**
+ * Class Careers
+ *
+ * @package Encomage\Careers\Model\ResourceModel
+ */
+class Careers extends AbstractDb
 {
     protected function _construct()
     {

@@ -1,0 +1,16 @@
+[02-May-2019 06:33:12 UTC] PHP Fatal error:  Uncaught Exception: Warning: SessionHandler::read(): open(127.0.0.1:20303/sess_67b686a305b561c6eef61c6dfc946f07, O_RDWR) failed: No such file or directory (2) in /home/nubangko/public_html/vendor/magento/framework/Session/SaveHandler/Native.php on line 22 in /home/nubangko/public_html/vendor/magento/framework/App/ErrorHandler.php:61
+Stack trace:
+#0 [internal function]: Magento\Framework\App\ErrorHandler->handler(2, 'SessionHandler:...', '/home/nubangko/...', 22, Array)
+#1 /home/nubangko/public_html/vendor/magento/framework/Session/SaveHandler/Native.php(22): SessionHandler->read('67b686a305b561c...')
+#2 /home/nubangko/public_html/vendor/magento/framework/Session/SaveHandler.php(93): Magento\Framework\Session\SaveHandler\Native->read('67b686a305b561c...')
+#3 [internal function]: Magento\Framework\Session\SaveHandler->read('67b686a305b561c...')
+#4 /home/nubangko/public_html/vendor/magento/framework/Session/SessionManager.php(189): session_start()
+#5 /home/nubangko/public_html/generated/code/Magento/Backend/Mode in /home/nubangko/public_html/vendor/magento/framework/App/ErrorHandler.php on line 61
+[02-May-2019 06:44:14 UTC] PHP Fatal error:  Uncaught Exception: Warning: SessionHandler::read(): open(127.0.0.1:20303/sess_2fcc0b2959497acbe6ed32f24bde0cb2, O_RDWR) failed: No such file or directory (2) in /home/nubangko/public_html/vendor/magento/framework/Session/SaveHandler/Native.php on line 22 in /home/nubangko/public_html/vendor/magento/framework/App/ErrorHandler.php:61
+Stack trace:
+#0 [internal function]: Magento\Framework\App\ErrorHandler->handler(2, 'SessionHandler:...', '/home/nubangko/...', 22, Array)
+#1 /home/nubangko/public_html/vendor/magento/framework/Session/SaveHandler/Native.php(22): SessionHandler->read('2fcc0b2959497ac...')
+#2 /home/nubangko/public_html/vendor/magento/framework/Session/SaveHandler.php(93): Magento\Framework\Session\SaveHandler\Native->read('2fcc0b2959497ac...')
+#3 [internal function]: Magento\Framework\Session\SaveHandler->read('2fcc0b2959497ac...')
+#4 /home/nubangko/public_html/vendor/magento/framework/Session/SessionManager.php(189): session_start()
+#5 /home/nubangko/public_html/generated/code/Magento/Backend/Mode in /home/nubangko/public_html/vendor/magento/framework/App/ErrorHandler.php on line 61

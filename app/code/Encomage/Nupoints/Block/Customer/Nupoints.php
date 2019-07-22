@@ -9,7 +9,7 @@ use Magento\Customer\Model\Session;
  * Class Nupoints
  * @package Encomage\Nupoints\Block\Customer
  */
-class Nupoints extends \Magento\Framework\View\Element\Template
+class Nupoints extends Template
 {
     /**
      * @var Session
@@ -33,7 +33,7 @@ class Nupoints extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @return \Encomage\Customer\Model\Customer
+     * @return \Encomage\Customer\Model\Customer|\Magento\Customer\Model\Customer
      */
     public function getCurrentCustomer()
     {

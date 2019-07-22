@@ -2,7 +2,16 @@
 
 namespace Encomage\Catalog\Model\ResourceModel\Category\ComingSoon;
 
-class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
+use Encomage\Catalog\Model\ResourceModel\Category\ComingSoonProduct as ComingSoonProductAlias;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+use Encomage\Catalog\Model\Category\ComingSoonProduct;
+
+/**
+ * Class Collection
+ *
+ * @package Encomage\Catalog\Model\ResourceModel\Category\ComingSoon
+ */
+class Collection extends AbstractCollection
 {
     /**
      * Define model & resource model
@@ -10,8 +19,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     protected function _construct()
     {
         $this->_init(
-            'Encomage\Catalog\Model\Category\ComingSoonProduct',
-            'Encomage\Catalog\Model\ResourceModel\Category\ComingSoonProduct'
+            ComingSoonProduct::class, ComingSoonProductAlias::class
         );
 
     }

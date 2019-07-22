@@ -4,6 +4,7 @@ namespace Encomage\Catalog\Block\Product;
 
 use Magento\Catalog\Block\Product\ImageFactory;
 use Magento\Catalog\Helper\ImageFactory as HelperFactory;
+use Magento\Catalog\Model\Product;
 
 class ImageBuilder extends \Magento\Catalog\Block\Product\ImageBuilder
 {
@@ -19,9 +20,13 @@ class ImageBuilder extends \Magento\Catalog\Block\Product\ImageBuilder
     }
 
     /**
+     * @param \Magento\Catalog\Model\Product|null $product
+     * @param string|null                         $imageId
+     * @param array|null                          $attributes
+     *
      * @return \Magento\Catalog\Block\Product\Image
      */
-    public function create()
+    public function create(Product $product = null, string $imageId = null, array $attributes = null)
     {
         /** @var \Magento\Catalog\Helper\Image $helper */
         $helper = $this->helperFactory->create()
@@ -49,7 +54,7 @@ class ImageBuilder extends \Magento\Catalog\Block\Product\ImageBuilder
             ]
         ];
 
-        return $this->imageFactory->create($data);
+        return $this->imageFactory->create($product,$imageId,$data);
     }
 
     /**

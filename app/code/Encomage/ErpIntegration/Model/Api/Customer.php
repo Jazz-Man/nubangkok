@@ -1,6 +1,7 @@
 <?php
 namespace Encomage\ErpIntegration\Model\Api;
 
+use Magento\Customer\Model\Customer as CustomerAlias;
 use Zend\Http\Request as HttpRequest;
 use Magento\Customer\Model\ResourceModel\Customer as CustomerResource;
 use Magento\Customer\Model\CustomerFactory;
@@ -68,19 +69,19 @@ class Customer extends Request
     /**
      * Method for create or update customer info in ERP system
      *
-     * @param $customerId
+     * @param int $customerId
      * @param null $phone
      * @return array|bool|float|int|mixed|null|string
      * @throws \Exception
      */
     public function createOrUpdateCustomer($customerId, $phone = null)
     {
-        /** @var \Magento\Customer\Model\Customer $customer */
+        /** @var CustomerAlias $customer */
         $customer = $this->customerFactory->create()->load($customerId);
         $customerCode = $customer->getErpCustomerCode();
-        $chooseMethod = ($customerCode) ? 'updatecustomer' : 'createcustomer';
+        $chooseMethod = $customerCode ? 'updatecustomer' : 'createcustomer';
         $data = $this->_prepareCustomerData($customer, $customerCode, $phone);
-        if (!$data || $data == null) {
+        if ($data === null || !$data) {
             throw new \Exception(__('Data is empty'));
         }
         $this->setApiLastPoint($chooseMethod);
@@ -91,7 +92,7 @@ class Customer extends Request
             $this->logger->addInfo('The ERP system sent an empty response.');
             //throw new \Exception(__('The ERP system sent an empty response.'));
         }
-        if ($customerCode == null && !empty($result['customerCode'])) {
+        if ($customerCode === null && !empty($result['customerCode'])) {
             $customerData = $customer->getDataModel();
             $customerData->setCustomAttribute('erp_customer_code', $result['customerCode']);
             $customer->updateData($customerData);
@@ -101,12 +102,13 @@ class Customer extends Request
     }
 
     /**
-     * @param $customer
-     * @param string $customerCode
-     * @param $phone
+     * @param CustomerAlias                    $customer
+     * @param string                           $customerCode
+     * @param                                  $phone
+     *
      * @return mixed
      */
-    protected function _prepareCustomerData($customer, $customerCode, $phone)
+    protected function _prepareCustomerData(CustomerAlias $customer, $customerCode, $phone)
     {
         $fieldName = 'Customer';
         $data[$fieldName] = [

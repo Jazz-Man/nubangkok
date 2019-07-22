@@ -2,6 +2,9 @@
 
 namespace Encomage\Careers\Model;
 
+use Encomage\Careers\Controller\View\SendEmail;
+use Exception;
+use Magento\Framework\App\Area;
 use \Magento\Framework\Model\Context;
 use \Magento\Framework\Model\AbstractModel;
 use \Encomage\Careers\Model\ResourceModel\Careers as CareersResource;
@@ -10,13 +13,21 @@ use \Magento\Framework\Translate\Inline\StateInterface;
 use \Magento\Framework\Mail\Template\TransportBuilder;
 use \Magento\Framework\Exception\LocalizedException;
 use \Encomage\Careers\Model\ResourceModel\Careers\Collection as CareersCollection;
+use Magento\Store\Model\ScopeInterface;
 use \Magento\Store\Model\StoreManagerInterface;
 use \Magento\Framework\DataObject;
 use \Magento\Framework\Registry;
 use \Magento\Framework\Escaper;
 use \Magento\Framework\App\RequestInterface;
+use Zend_Validate_EmailAddress;
+use Zend_Validate_NotEmpty;
 
 
+/**
+ * Class Careers
+ *
+ * @package Encomage\Careers\Model
+ */
 class Careers extends AbstractModel implements DataObject\IdentityInterface
 {
     const CACHE_TAG = 'encomage_careers';
@@ -108,11 +119,14 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
 
     /**
      * @param array $senderData
-     * @param $recipientData
-     * @param null $file
-     * @param null $image
+     * @param       $recipientData
+     * @param null  $file
+     * @param null  $image
+     *
      * @return $this
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\MailException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function sendMail(array $senderData, $recipientData, $file = null, $image = null)
     {
@@ -122,11 +136,11 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
             'email' => $this->_escaper->escapeHtml($senderData['email']),
         ];
         $storeId = $this->_storeManager->getStore()->getId();
-        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+        $storeScope = ScopeInterface::SCOPE_STORE;
         $this->_transportBuilder->setTemplateIdentifier(
-            $this->_scopeConfig->getValue(\Encomage\Careers\Controller\View\SendEmail::CAREERS_TEMPLATE_EMAIL, $storeScope, $storeId)
+            $this->_scopeConfig->getValue(SendEmail::CAREERS_TEMPLATE_EMAIL, $storeScope, $storeId)
         )
-            ->setTemplateOptions(['area' => \Magento\Framework\App\Area::AREA_FRONTEND, 'store' => $storeId,])
+            ->setTemplateOptions(['area' => Area::AREA_FRONTEND, 'store' => $storeId,])
             ->setTemplateVars(['data' => $postObject])
             ->setFrom($sender)
             ->addTo($recipientData);
@@ -150,7 +164,7 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
     public function validatedParams()
     {
         $request = $this->_request->getParam('customer');
-        $emptyValidator = new \Zend_Validate_NotEmpty();
+        $emptyValidator = new Zend_Validate_NotEmpty();
         if (!$emptyValidator->isValid($request['lastName'])) {
             throw new LocalizedException(__('Last Name is missing'));
         }
@@ -160,12 +174,12 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
         if (!$emptyValidator->isValid($request['message'])) {
             throw new LocalizedException(__('Message is missing'));
         }
-        $emailValidator = new \Zend_Validate_EmailAddress();
+        $emailValidator = new Zend_Validate_EmailAddress();
         if (false === $emailValidator->isValid($request['email'])) {
             throw new LocalizedException(__('Invalid email address'));
         }
         if (trim($this->_request->getParam('hideit')) !== '') {
-            throw new \Exception();
+            throw new Exception();
         }
         $result = [
             'name' => $request['firstName'] . ' ' . $request['lastName'],

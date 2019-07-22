@@ -2,20 +2,21 @@
 
 namespace Encomage\Catalog\Observer;
 
-use  Encomage\Catalog\Model\ResourceModel\Category\ComingSoon\CollectionFactory;
+use Encomage\Catalog\Model\ResourceModel\Category\ComingSoon\CollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Encomage\Catalog\Model\Category\ComingSoonProduct;
 use Encomage\Catalog\Model\ResourceModel\Category\ComingSoonProduct as ComingSoonResource;
 use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Store\Model\ScopeInterface;
+use Zend_Validate;
 
 /**
- * Class ChangeCategoryProducts
- * @package Encomage\Catalog\Observer
+ * Class ChangeCategoryProducts.
  */
-class ChangeCategoryProducts implements \Magento\Framework\Event\ObserverInterface
+class ChangeCategoryProducts implements ObserverInterface
 {
-
-    const COMING_SOON_PRODUCT_TEMPLATE_EMAIL = 'coming_soon_category_product';
+    public const COMING_SOON_PRODUCT_TEMPLATE_EMAIL = 'coming_soon_category_product';
 
     /**
      * @var CollectionFactory
@@ -39,18 +40,18 @@ class ChangeCategoryProducts implements \Magento\Framework\Event\ObserverInterfa
 
     /**
      * ChangeCategoryProducts constructor.
-     * @param ComingSoonResource $soonProductResource
-     * @param CollectionFactory $comingSoonProductCollection
+     *
+     * @param ComingSoonResource   $soonProductResource
+     * @param CollectionFactory    $comingSoonProductCollection
      * @param ScopeConfigInterface $scopeConfig
-     * @param ComingSoonProduct $comingSoonProduct
+     * @param ComingSoonProduct    $comingSoonProduct
      */
     public function __construct(
         ComingSoonResource $soonProductResource,
         CollectionFactory $comingSoonProductCollection,
         ScopeConfigInterface $scopeConfig,
         ComingSoonProduct $comingSoonProduct
-    )
-    {
+    ) {
         $this->_soonProductResource = $soonProductResource;
         $this->_scopeConfig = $scopeConfig;
         $this->_comingSoonProduct = $comingSoonProduct;
@@ -59,7 +60,9 @@ class ChangeCategoryProducts implements \Magento\Framework\Event\ObserverInterfa
 
     /**
      * @param Observer $observer
+     *
      * @return $this|void
+     *
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\MailException
      * @throws \Zend_Validate_Exception
@@ -71,21 +74,23 @@ class ChangeCategoryProducts implements \Magento\Framework\Event\ObserverInterfa
         $collection->addFieldToFilter('category_id', ['id' => $categoryIds]);
         $collection->getSelect()->group('email');
         if (!empty($collection->getItems())) {
-            $sender['email'] = $this->_scopeConfig->getValue('trans_email/ident_support/email', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-            $sender['name'] = $this->_scopeConfig->getValue('trans_email/ident_support/name', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+            $sender['email'] = $this->_scopeConfig->getValue('trans_email/ident_support/email',
+                ScopeInterface::SCOPE_STORE);
+            $sender['name'] = $this->_scopeConfig->getValue('trans_email/ident_support/name',
+                ScopeInterface::SCOPE_STORE);
             $categoryId = [];
             foreach ($collection as $item) {
-                if (!\Zend_Validate::is($item->getEmail(), 'EmailAddress')) {
+                if (!Zend_Validate::is($item->getEmail(), 'EmailAddress')) {
                     $categoryId[] = $item->getCategoryId();
                     continue;
                 }
-                $this->_comingSoonProduct->sendEmail($sender, $item->getEmail(), self::COMING_SOON_PRODUCT_TEMPLATE_EMAIL);
+                $this->_comingSoonProduct->sendEmail($sender, $item->getEmail(),
+                    self::COMING_SOON_PRODUCT_TEMPLATE_EMAIL);
                 $categoryId[] = $item->getCategoryId();
             }
-            if (count($categoryId)) {
+            if (\count($categoryId)) {
                 $this->_soonProductResource->deleteEmailsByCategoryIds($categoryIds);
             }
-
         }
 
         return $this;
