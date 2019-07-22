@@ -1,6 +1,8 @@
 <?php
 namespace Encomage\Careers\Controller\Adminhtml\Index;
 
+use Exception;
+use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Ui\Component\MassAction\Filter;
 use Encomage\Careers\Model\ResourceModel\Careers\CollectionFactory;
@@ -8,7 +10,12 @@ use Encomage\Careers\Model\ResourceModel\Careers as CareersResource;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 
-class MassDelete extends \Magento\Backend\App\Action
+/**
+ * Class MassDelete
+ *
+ * @package Encomage\Careers\Controller\Adminhtml\Index
+ */
+class MassDelete extends Action
 {
     /**
      * @var Filter
@@ -45,9 +52,10 @@ class MassDelete extends \Magento\Backend\App\Action
         parent::__construct($context);
     }
 
+
     /**
-     * @return $this
-     * @throws LocalizedException
+     * @return \Magento\Backend\Model\View\Result\Redirect|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute()
     {
@@ -56,7 +64,7 @@ class MassDelete extends \Magento\Backend\App\Action
         try {
             $this->careersResource->massDeleteById($collection->getAllIds());
             $this->messageManager->addSuccessMessage(__('A total of %1 element(s) have been deleted.', $collectionSize));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new LocalizedException(__($e));
         }
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */

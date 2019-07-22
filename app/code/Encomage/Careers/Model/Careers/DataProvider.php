@@ -5,6 +5,11 @@ namespace Encomage\Careers\Model\Careers;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 use Encomage\Careers\Model\ResourceModel\Careers\CollectionFactory;
 
+/**
+ * Class DataProvider
+ *
+ * @package Encomage\Careers\Model\Careers
+ */
 class DataProvider extends AbstractDataProvider
 {
     /**

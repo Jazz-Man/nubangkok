@@ -2,8 +2,20 @@
 
 namespace Encomage\Slider\Block\Adminhtml\Banner\Edit\Tab;
 
-class Banner extends \Mageplaza\BannerSlider\Block\Adminhtml\Banner\Edit\Tab\Banner
+use Mageplaza\BannerSlider\Block\Adminhtml\Banner\Edit\Tab\Banner as BannerAlias;
+
+/**
+ * Class Banner
+ *
+ * @package Encomage\Slider\Block\Adminhtml\Banner\Edit\Tab
+ */
+class Banner extends BannerAlias
 {
+
+    /**
+     * @return \Encomage\Slider\Block\Adminhtml\Banner\Edit\Tab\Banner
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     protected function _prepareForm()
     {
         /** @var \Mageplaza\BannerSlider\Model\Banner $banner */
@@ -70,10 +82,8 @@ class Banner extends \Mageplaza\BannerSlider\Block\Adminhtml\Banner\Edit\Tab\Ban
         $bannerData = $this->_session->getData('mageplaza_bannerslider_banner_data', true);
         if ($bannerData) {
             $banner->addData($bannerData);
-        } else {
-            if (!$banner->getId()) {
-                $banner->addData($banner->getDefaultValues());
-            }
+        } elseif (!$banner->getId()) {
+            $banner->addData($banner->getDefaultValues());
         }
         $form->addValues($banner->getData());
         $this->setForm($form);

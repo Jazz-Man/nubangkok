@@ -17,7 +17,7 @@ class Render
     public function afterRender($subject, $html, $priceType)
     {
         return (empty($html) && $priceType == 'final_price') 
-            ? "<div class=\"price-box\"><span class=\"product-out-of-stock\">" . __('Out of stock') . "</span></div>" 
+            ? '<div class="price-box"><span class="product-out-of-stock">' . __('Out of stock') . '</span></div>'
             : $html;
     }
 }

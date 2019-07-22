@@ -4,6 +4,11 @@ namespace Encomage\Careers\Model\Careers\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
 
+/**
+ * Class Status
+ *
+ * @package Encomage\Careers\Model\Careers\Source
+ */
 class Status implements OptionSourceInterface
 {
     const STATUS_ENABLED = 1;

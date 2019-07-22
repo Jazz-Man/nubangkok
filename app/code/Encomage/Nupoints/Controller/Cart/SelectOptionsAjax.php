@@ -1,6 +1,8 @@
 <?php
 namespace Encomage\Nupoints\Controller\Cart;
 
+use Encomage\Nupoints\Block\Nupoints\SelectorRedeem;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\NotFoundException;
@@ -11,7 +13,7 @@ use Magento\Framework\Serialize\Serializer\Json;
  * Class SelectOptionsAjax
  * @package Encomage\Nupoints\Controller\Cart
  */
-class SelectOptionsAjax extends \Magento\Framework\App\Action\Action
+class SelectOptionsAjax extends Action
 {
     /** @var CustomerSession  */
     protected $customerSession;
@@ -52,7 +54,7 @@ class SelectOptionsAjax extends \Magento\Framework\App\Action\Action
             return $this->getResponse()->setBody($this->json->serialize($responseData))->sendResponse();
         }
         $block = $this->_view->getLayout()
-            ->createBlock(\Encomage\Nupoints\Block\Nupoints\SelectorRedeem::class, 'checkout.select.nupoints')
+            ->createBlock(SelectorRedeem::class, 'checkout.select.nupoints')
             ->setTemplate('Encomage_Nupoints::nupoints/selector-redeem.phtml');
         $selectorHtml = $block->toHtml();
         return $this->getResponse()->setBody($this->json->serialize(['html' => $selectorHtml]))->sendResponse();

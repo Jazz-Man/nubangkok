@@ -2,6 +2,7 @@
 
 namespace Encomage\Nupoints\Setup;
 
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
@@ -11,9 +12,13 @@ use Magento\Framework\Setup\SchemaSetupInterface;
  */
 class InstallSchema implements InstallSchemaInterface
 {
+
     /**
-     * {@inheritdoc}
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @param \Magento\Framework\Setup\SchemaSetupInterface   $setup
+     * @param \Magento\Framework\Setup\ModuleContextInterface $context
+     *
+     * @throws \Zend_Db_Exception
      */
     public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
@@ -28,19 +33,19 @@ class InstallSchema implements InstallSchemaInterface
             $installer->getTable('encomage_customer_nupoints')
         )->addColumn(
             'id',
-            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+            Table::TYPE_INTEGER,
             null,
             ['identity' => true, 'nullable' => false, 'primary' => true],
             'Item ID'
         )->addColumn(
             'customer_id',
-            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+            Table::TYPE_INTEGER,
             null,
             ['unsigned' => true, 'nullable' => false],
             'Customer ID'
         )->addColumn(
             'nupoints',
-            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+            Table::TYPE_INTEGER,
             null,
             ['unsigned' => true, 'nullable' => false],
             'Nupoints Value'

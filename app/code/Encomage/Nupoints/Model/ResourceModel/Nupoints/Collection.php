@@ -2,6 +2,7 @@
 
 namespace Encomage\Nupoints\Model\ResourceModel\Nupoints;
 
+use Encomage\Nupoints\Model\ResourceModel\Nupoints;
 use \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
@@ -17,7 +18,7 @@ class Collection extends AbstractCollection
     {
         $this->_init(
             \Encomage\Nupoints\Model\Nupoints::class,
-            \Encomage\Nupoints\Model\ResourceModel\Nupoints::class
+            Nupoints::class
         );
     }
 }

@@ -2,7 +2,11 @@
 
 namespace Encomage\Nupoints\Controller\Cart;
 
+use Encomage\Nupoints\Quote\ReCalculate;
+use Exception;
+use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\Controller\Result\JsonFactory;
 use \Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Checkout\Model\Session;
@@ -12,7 +16,7 @@ use Magento\Quote\Model\ResourceModel\Quote;
  * Class RevertRedeemAjax
  * @package Encomage\Nupoints\Controller\Cart
  */
-class CancelRedeemAjax extends \Magento\Framework\App\Action\Action
+class CancelRedeemAjax extends Action
 {
     /**
      * @var \Magento\Framework\Controller\Result\JsonFactory
@@ -48,9 +52,9 @@ class CancelRedeemAjax extends \Magento\Framework\App\Action\Action
      */
     public function __construct(
         Context $context,
-        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
+        JsonFactory $resultJsonFactory,
         \Magento\Customer\Model\Session $customerSession,
-        \Encomage\Nupoints\Quote\ReCalculate $reCalculateQuote,
+        ReCalculate $reCalculateQuote,
         Session $checkoutSession,
         Quote $quoteResource
     )
@@ -94,7 +98,7 @@ class CancelRedeemAjax extends \Magento\Framework\App\Action\Action
             try {
                 $this->quoteResource->save($this->checkoutSession->getQuote()->deleteItem($itemToDelete));
                 $this->messageManager->addSuccessMessage(__('NuPoints and gift product are removed from the cart.'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->messageManager->addErrorMessage(__('Gift product is not removed from the cart.'));
             }
         }

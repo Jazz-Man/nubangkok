@@ -8,6 +8,8 @@
 namespace Encomage\StoreLocator\Plugin\View\Page\Config\Generator;
 
 //TODO:: NEED FIND BETTER SOLUTIONS
+use Encomage\StoreLocator\Helper\Config;
+use Magento\Framework\App\Request\Http;
 
 /**
  * Class Head
@@ -30,8 +32,8 @@ class Head
      * @param \Encomage\StoreLocator\Helper\Config $helperConfig
      */
     public function __construct(
-        \Magento\Framework\App\Request\Http $request,
-        \Encomage\StoreLocator\Helper\Config $helperConfig)
+        Http $request,
+        Config $helperConfig)
     {
         $this->_request = $request;
         $this->_helperConfig = $helperConfig;

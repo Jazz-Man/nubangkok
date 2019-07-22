@@ -35,8 +35,7 @@ class Config extends AbstractHelper
      */
     public function getGoogleMapApiJsUrl()
     {
-        return 'https://maps.googleapis.com/maps/api/js?v=' .
-        $this->scopeConfig->getValue(self::XML_PATH_GOOGLE_API_VERSION_PATH) . '&key=' .
+        return 'https://maps.googleapis.com/maps/api/js?key=' .
         $this->scopeConfig->getValue(self::XML_PATH_GOOGLE_API_KEY_PATH) . '&libraries=places';
     }
 }

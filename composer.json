@@ -2,46 +2,58 @@
     "name": "magento/project-community-edition",
     "description": "eCommerce Platform for Growth (Community Edition)",
     "type": "project",
-    "version": "2.2.2",
+    "version": "2.3.2",
     "license": [
         "OSL-3.0",
         "AFL-3.0"
     ],
     "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
         "sort-packages": true,
-        "apcu-autoloader": true
+        "use-include-path": true
     },
     "require": {
-        "composer/composer": "@alpha",
-        "dhl/module-shipping-m2": "^0.10.1",
+        "ext-json": "*",
+        "2c2p/2c2p-magento2": "^7.0",
+        "code4business/freeproduct2": "^1.2",
+        "dhl/module-shipping-m2": "^0.10.3",
         "eadesignro/romcity": "^1.1",
-        "magefan/module-blog": "^2.7",
-        "magento/product-community-edition": "^2.2",
-        "mageplaza/magento-2-social-login": "^2.4",
-        "mageplaza/module-banner-slider": "^2.0.1",
-        "php-curl-class/php-curl-class": "^8.6"
+        "elgentos/regenerate-catalog-urls": "^0.2.0",
+        "goeasyship/shipping": "^1.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "livechat/module-magento-livechat": "^2.3",
+        "magefan/module-blog": "^2.8",
+        "magento/product-community-edition": "2.3.2",
+        "magento/zendframework1": "^1.13",
+        "mageplaza/magento-2-social-login": "^2.7",
+        "mageplaza/module-banner-slider": "^2.0",
+        "mageplaza/module-cron-schedule": "^1.0",
+        "nikic/iter": "^2.0",
+        "olegkoval/magento2-regenerate-url-rewrites": "^1.4"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "~2.2.0",
+        "allure-framework/allure-phpunit": "~1.2.0",
+        "friendsofphp/php-cs-fixer": "~2.13.0",
         "lusitanian/oauth": "~0.8.10",
-        "pdepend/pdepend": "2.5.0",
-        "phpmd/phpmd": "@stable",
-        "phpunit/phpunit": "~6.2.0",
-        "sebastian/phpcpd": "2.0.4",
-        "squizlabs/php_codesniffer": "3.1.1",
-        "symfony/var-dumper": "^3"
+        "magento/magento-coding-standard": "~1.0.0",
+        "magento/magento2-functional-testing-framework": "~2.3.14",
+        "pdepend/pdepend": "2.5.2",
+        "phpunit/phpunit": "~6.5.0",
+        "sebastian/phpcpd": "~3.0.0",
+        "squizlabs/php_codesniffer": "3.3.1",
+        "symfony/var-dumper": "^3",
+        "yireo/magento2-whoops": "^0.0.11"
     },
     "autoload": {
         "psr-4": {
             "Magento\\Framework\\": "lib/internal/Magento/Framework/",
             "Magento\\Setup\\": "setup/src/Magento/Setup/",
-            "Magento\\": "app/code/Magento/"
+            "Magento\\": "app/code/Magento/",
+            "Zend\\Mvc\\Controller\\": "setup/src/Zend/Mvc/Controller/"
         },
         "psr-0": {
             "": [
-                "app/code/"
+                "app/code/",
+                "generated/code/"
             ]
         },
         "files": [
@@ -63,12 +75,34 @@
         }
     },
     "minimum-stability": "stable",
-    "repositories": [
-        {
+    "repositories": {
+        "0": {
             "type": "composer",
             "url": "https://repo.magento.com/"
+        },
+        "1": {
+            "type": "vcs",
+            "url": "https://github.com/easyship/easyship-magento2-plugin"
+        },
+        "2": {
+            "type": "package",
+            "package": {
+                "name": "2c2p/2c2p-magento2",
+                "version": "7.0.2",
+                "type": "magento2-module",
+                "autoload": {
+                    "files": [ "app/code/P2c2p/P2c2pPayment/registration.php" ],
+                    "psr-4": {
+                        "P2c2p\\P2c2pPayment\\": "app/code/P2c2p/P2c2pPayment"
+                    }
+                },
+                "dist": {
+                    "url": "https://github.com/2C2P/2c2p-magento2/archive/master.zip",
+                    "type": "zip"
+                }
+            }
         }
-    ],
+    },
     "extra": {
         "magento-force": "override"
     }
