@@ -1,6 +1,6 @@
 <?php
 
-namespace ErpAPI\ErpAPICommand\Helper;
+namespace Encomage\ErpIntegration\Helper;
 
 use GuzzleHttp\Client;
 use function GuzzleHttp\json_decode as json_decodeAlias;
