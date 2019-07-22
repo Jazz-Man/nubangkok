@@ -59,18 +59,18 @@ class Invoice extends Request
      * @return array|bool|float|int|mixed|null|string
      * @throws \Exception
      */
-    public function createInvoice($order)
+    public function createInvoice(Order $order)
     {
         $this->setApiLastPoint('createInvoice');
-        $this->setApiMethod(HttpRequest::METHOD_GET);
+        $this->setApiMethod();
         $data = $this->_prepareInvoiceData($order);
         $this->setAdditionalDataContent($data);
         $result = $this->sendApiRequest();
         if (array_key_exists('returnResult', $result) && $result['returnResult']) {
-            $order->addStatusHistoryComment(__("Sent invoice to ERP. DocNo: %1. RecId: %2", $result['DocNo'], $result['recId']), $order->getStatus());
+            $order->addCommentToStatusHistory(__('Sent invoice to ERP. DocNo: %1. RecId: %2', $result['DocNo'], $result['recId']), $order->getStatus());
             $this->orderResource->save($order);
         } else {
-            $order->addStatusHistoryComment(__("Invoice wasn't sent to ERP system. \n ERROR: ". $result['errorMessage']), parent::ORDER_STATUS_PENDING_NOT_SENT);
+            $order->addCommentToStatusHistory(__("Invoice wasn't sent to ERP system. \n ERROR: ". $result['errorMessage']), parent::ORDER_STATUS_PENDING_NOT_SENT);
             $this->orderResource->save($order);
         }
         return $result;
@@ -78,52 +78,65 @@ class Invoice extends Request
 
     /**
      * @param \Magento\Sales\Model\Order $order
+     *
      * @return mixed
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function _prepareInvoiceData(\Magento\Sales\Model\Order $order)
+    protected function _prepareInvoiceData(Order $order)
     {
         $fieldName = 'Order';
         $productsFieldName = 'lineItems';
 
         $shippingAddress = $order->getShippingAddress();
-        $street = implode(',', $shippingAddress->getStreet());
-        $customerCode = $this->_getCustomerCodeById($order->getCustomerId());
 
-        $data[$fieldName]['CustomerCode'] = $customerCode;
-        $data[$fieldName]['customerName'] = $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname();
-        $data[$fieldName]['customerAddress'] = $shippingAddress->getCity() . ' ' . trim($street, ' ') . ' ' . $shippingAddress->getPostcode();
-        $data[$fieldName]['customerTelephone'] = $shippingAddress->getTelephone();
-        $data[$fieldName]['customerTaxid'] = 'tax1';
-        $data[$fieldName]['customerBranchNo'] = 'Online';
-        $data[$fieldName]['salespersonCode'] = 'admin';
-        $iterator = 0;
-        
-        foreach ($order->getItems() as $item) {
-            if ($item->getProductType() == 'simple') {
-                $discount = $item->getParentItem()->getDiscountPercent();
-                $data[$fieldName][$productsFieldName][$iterator]['productCode'] = $item->getSku();
-                $data[$fieldName][$productsFieldName][$iterator]['quantity'] = $item->getQtyOrdered();
-                $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = $this->_getWarehouseCode();
-                $data[$fieldName][$productsFieldName][$iterator]['discountText'] = $discount . '%';
-                $iterator ++;
+        if ($shippingAddress !== null){
+            $street = implode(',', $shippingAddress->getStreet());
+            $customerCode = $this->_getCustomerCodeById($order->getCustomerId());
+
+            $data[$fieldName]['CustomerCode'] = $customerCode;
+            $data[$fieldName]['customerName'] = $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname();
+            $data[$fieldName]['customerAddress'] = $shippingAddress->getCity() . ' ' . trim($street, ' ') . ' ' . $shippingAddress->getPostcode();
+            $data[$fieldName]['customerTelephone'] = $shippingAddress->getTelephone();
+            $data[$fieldName]['customerTaxid'] = 'tax1';
+            $data[$fieldName]['customerBranchNo'] = 'Online';
+            $data[$fieldName]['salespersonCode'] = 'admin';
+            $iterator = 0;
+
+            foreach ($order->getItems() as $item) {
+                if ($item->getProductType() === 'simple') {
+
+                    $parentItem = $item->getParentItem();
+
+                    if ($parentItem !== null){
+                        $discount = $parentItem->getDiscountPercent();
+                        $data[$fieldName][$productsFieldName][$iterator]['productCode'] = $item->getSku();
+                        $data[$fieldName][$productsFieldName][$iterator]['quantity'] = $item->getQtyOrdered();
+                        $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = $this->_getWarehouseCode();
+                        $data[$fieldName][$productsFieldName][$iterator]['discountText'] = $discount . '%';
+                        $iterator ++;
+                    }
+                }
             }
-        }
-        if ($order->getRedeemAmount()) {
-            $data[$fieldName][$productsFieldName][$iterator]['productCode'] = 'Redeem'.$order->getRedeemAmount();
-            $data[$fieldName][$productsFieldName][$iterator]['quantity'] = 1;
-            $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = $this->_getWarehouseCode();
-        }
-        $paymentInfo = $this->_getPaymentInfo($order);
-        $data[$fieldName] = array_merge($data[$fieldName], $paymentInfo[$fieldName]);
+            if ($order->getRedeemAmount()) {
+                $data[$fieldName][$productsFieldName][$iterator]['productCode'] = 'Redeem'.$order->getRedeemAmount();
+                $data[$fieldName][$productsFieldName][$iterator]['quantity'] = 1;
+                $data[$fieldName][$productsFieldName][$iterator]['warehouseCode'] = $this->_getWarehouseCode();
+            }
+            $paymentInfo = $this->_getPaymentInfo($order);
+            $data[$fieldName] = array_merge($data[$fieldName], $paymentInfo[$fieldName]);
 
-        return $data;
+            return $data;
+        }
+
+        return false;
     }
 
     /**
      * @param \Magento\Sales\Model\Order $order
      * @return mixed
      */
-    protected function _getPaymentInfo(\Magento\Sales\Model\Order $order)
+    protected function _getPaymentInfo(Order $order)
     {
         $data['Order']['linePayments'][0]['paymentMethodCode'] = $order->getPayment()->getMethod();
         $data['Order']['linePayments'][0]['amount'] = $order->getBaseSubtotalInclTax() + $order->getBaseShippingAmount();
@@ -131,18 +144,25 @@ class Invoice extends Request
     }
 
     /**
-     * @param $customerId
+     * @param int $customerId
+     *
      * @return mixed
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Exception
      */
     protected function _getCustomerCodeById($customerId)
     {
         $customer = $this->customerRepository->getById($customerId);
         if ($customer->getId() && $customAttr = $customer->getCustomAttribute('erp_customer_code')) {
             return $customAttr->getValue();
-        } elseif ($customer->getId()) {
+        }
+
+        if ($customer->getId()) {
             $this->erpCustomer->createOrUpdateCustomer($customerId);
             $this->_getCustomerCodeById($customer->getId());
         }
+
         return null;
     }
 
