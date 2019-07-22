@@ -8,8 +8,13 @@
 namespace Encomage\StoreLocator\Plugin\Block;
 
 
+use Encomage\StoreLocator\Helper\Config;
+use Magento\Framework\Data\Tree\NodeFactory;
+use Magento\Framework\UrlInterface;
+
 /**
  * Class Topmenu
+ *
  * @package Encomage\StoreLocator\Plugin\Block
  */
 class Topmenu
@@ -34,9 +39,9 @@ class Topmenu
      * @param \Magento\Framework\Data\Tree\NodeFactory $nodeFactory
      */
     public function __construct(
-        \Magento\Framework\Data\Tree\NodeFactory $nodeFactory,
-        \Magento\Framework\UrlInterface $urlBuilder,
-        \Encomage\StoreLocator\Helper\Config $configHelper
+        NodeFactory $nodeFactory,
+        UrlInterface $urlBuilder,
+        Config $configHelper
     )
     {
         $this->_urlBuilder = $urlBuilder;

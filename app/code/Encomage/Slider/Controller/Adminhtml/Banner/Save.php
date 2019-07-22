@@ -2,8 +2,19 @@
 
 namespace Encomage\Slider\Controller\Adminhtml\Banner;
 
-class Save extends \Mageplaza\BannerSlider\Controller\Adminhtml\Banner\Save
+use Mageplaza\BannerSlider\Controller\Adminhtml\Banner\Save as SaveAlias;
+
+/**
+ * Class Save
+ *
+ * @package Encomage\Slider\Controller\Adminhtml\Banner
+ */
+class Save extends SaveAlias
 {
+
+    /**
+     * @return \Magento\Framework\Controller\Result\Redirect
+     */
     public function execute()
     {
         $data = $this->getRequest()->getPost('banner');

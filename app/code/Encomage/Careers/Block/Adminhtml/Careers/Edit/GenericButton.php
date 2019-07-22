@@ -1,7 +1,8 @@
 <?php
 namespace Encomage\Careers\Block\Adminhtml\Careers\Edit;
 
-use Magento\Search\Controller\RegistryConstants;
+use Magento\Backend\Block\Widget\Context;
+use Magento\Framework\Registry;
 
 /**
  * Class GenericButton
@@ -29,8 +30,8 @@ class GenericButton
      * @param \Magento\Framework\Registry $registry
      */
     public function __construct(
-        \Magento\Backend\Block\Widget\Context $context,
-        \Magento\Framework\Registry $registry
+        Context $context,
+        Registry $registry
     ) {
         $this->urlBuilder = $context->getUrlBuilder();
         $this->registry = $registry;

@@ -2,11 +2,17 @@
 
 namespace Encomage\Careers\Controller\Adminhtml\Index;
 
+use Magento\Backend\App\Action;
 use \Magento\Backend\App\Action\Context;
 use \Magento\Framework\Registry;
 use \Magento\Framework\View\Result\PageFactory;
 
-class Index extends \Magento\Backend\App\Action
+/**
+ * Class Index
+ *
+ * @package Encomage\Careers\Controller\Adminhtml\Index
+ */
+class Index extends Action
 {
     /**
      * @var Registry

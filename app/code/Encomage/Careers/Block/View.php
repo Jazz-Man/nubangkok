@@ -2,10 +2,16 @@
 namespace Encomage\Careers\Block;
 
 use \Encomage\Careers\Model\ResourceModel\Careers\CollectionFactory;
+use Magento\Framework\View\Element\Template;
 use \Magento\Framework\View\Element\Template\Context;
 use \Magento\Framework\Registry;
 
-class View extends \Magento\Framework\View\Element\Template
+/**
+ * Class View
+ *
+ * @package Encomage\Careers\Block
+ */
+class View extends Template
 {
     /**
      * @var CollectionFactory
