@@ -2,8 +2,8 @@
 
 namespace ErpAPI\ErpAPICommand\Console\Command;
 
-use ErpAPI\ErpAPICommand\Helper\ApiClient;
-use ErpAPI\ErpAPICommand\Helper\CacheFile;
+use Encomage\ErpIntegration\Helper\ApiClient;
+use Encomage\ErpIntegration\Helper\CacheFile;
 use Encomage\ErpIntegration\Model\Api\ErpProduct;
 use Exception;
 use GuzzleHttp\Psr7\Response;
@@ -135,11 +135,11 @@ class ScrapCommand extends Command
      */
     private $size_attribute_id;
     /**
-     * @var \ErpAPI\ErpAPICommand\Helper\ApiClient
+     * @var \Encomage\ErpIntegration\Helper\ApiClient
      */
     private $apiClient;
     /**
-     * @var \ErpAPI\ErpAPICommand\Helper\CacheFile
+     * @var \Encomage\ErpIntegration\Helper\CacheFile
      */
     private $cacheFile;
 

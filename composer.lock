@@ -4,8 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c715dcd95da23ffcf8c4d6739653f69f",
+    "content-hash": "f4b9ad14fd3c1acd702cb22200f8194c",
     "packages": [
+        {
+            "name": "2c2p/2c2p-magento2",
+            "version": "7.0.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/2C2P/2c2p-magento2/archive/master.zip"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "app/code/P2c2p/P2c2pPayment/registration.php"
+                ],
+                "psr-4": {
+                    "P2c2p\\P2c2pPayment\\": "app/code/P2c2p/P2c2pPayment"
+                }
+            }
+        },
         {
             "name": "amzn/amazon-pay-and-login-magento-2-module",
             "version": "3.2.9",
@@ -1372,16 +1389,16 @@
         },
         {
             "name": "elasticsearch/elasticsearch",
-            "version": "v6.7.1",
+            "version": "v6.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elastic/elasticsearch-php.git",
-                "reference": "7be453dd36d1b141b779f2cb956715f8e04ac2f4"
+                "reference": "9ba89f905ebf699e72dacffa410331c7fecc8255"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/7be453dd36d1b141b779f2cb956715f8e04ac2f4",
-                "reference": "7be453dd36d1b141b779f2cb956715f8e04ac2f4",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/9ba89f905ebf699e72dacffa410331c7fecc8255",
+                "reference": "9ba89f905ebf699e72dacffa410331c7fecc8255",
                 "shasum": ""
             },
             "require": {
@@ -1428,7 +1445,7 @@
                 "elasticsearch",
                 "search"
             ],
-            "time": "2019-05-20T14:15:55+00:00"
+            "time": "2019-07-19T14:48:24+00:00"
         },
         {
             "name": "elgentos/regenerate-catalog-urls",
@@ -10918,6 +10935,47 @@
             ],
             "description": "Mageplaza Core for Magento 2",
             "time": "2019-05-24T11:15:09+00:00"
+        },
+        {
+            "name": "mageplaza/module-cron-schedule",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mageplaza/magento-2-cron-schedule.git",
+                "reference": "9c55fb7857769b0a02f939ae5b31b6db85932135"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mageplaza/magento-2-cron-schedule/zipball/9c55fb7857769b0a02f939ae5b31b6db85932135",
+                "reference": "9c55fb7857769b0a02f939ae5b31b6db85932135",
+                "shasum": ""
+            },
+            "require": {
+                "mageplaza/module-core": "^1.4.4"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Mageplaza\\CronSchedule\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Mageplaza",
+                    "email": "support@mageplaza.com",
+                    "homepage": "https://www.mageplaza.com",
+                    "role": "Technical Support"
+                }
+            ],
+            "description": "Magento 2 Cron Schedule Extension",
+            "time": "2019-07-09T01:43:47+00:00"
         },
         {
             "name": "mageplaza/module-google-recaptcha",
@@ -20598,6 +20656,8 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-json": "*"
+    },
     "platform-dev": []
 }
