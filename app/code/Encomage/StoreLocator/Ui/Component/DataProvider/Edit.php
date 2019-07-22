@@ -6,11 +6,15 @@
  */
 namespace Encomage\StoreLocator\Ui\Component\DataProvider;
 
+use Encomage\StoreLocator\Model\ResourceModel\Marker\CollectionFactory;
+use Magento\Ui\DataProvider\AbstractDataProvider;
+
 /**
  * Class Edit
+ *
  * @package Encomage\StoreLocator\Ui\Component\DataProvider
  */
-class Edit extends \Magento\Ui\DataProvider\AbstractDataProvider
+class Edit extends AbstractDataProvider
 {
     /**
      * @var
@@ -30,7 +34,7 @@ class Edit extends \Magento\Ui\DataProvider\AbstractDataProvider
         $name,
         $primaryFieldName,
         $requestFieldName,
-        \Encomage\StoreLocator\Model\ResourceModel\Marker\CollectionFactory $markersCollectionFactory,
+        CollectionFactory $markersCollectionFactory,
         array $meta = [],
         array $data = []
     )

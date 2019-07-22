@@ -7,11 +7,16 @@
 
 namespace Encomage\StoreLocator\Controller\Adminhtml\Markers;
 
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\View\Result\PageFactory;
+
 /**
  * Class Grid
+ *
  * @package Encomage\StoreLocator\Controller\Adminhtml\Markers
  */
-class Grid extends \Magento\Backend\App\Action
+class Grid extends Action
 {
 
     /**
@@ -25,8 +30,8 @@ class Grid extends \Magento\Backend\App\Action
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
+        Context $context,
+        PageFactory $resultPageFactory
     )
     {
         parent::__construct($context);

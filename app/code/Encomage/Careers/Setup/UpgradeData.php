@@ -7,6 +7,11 @@ use Magento\Framework\Setup\UpgradeDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 
+/**
+ * Class UpgradeData
+ *
+ * @package Encomage\Careers\Setup
+ */
 class UpgradeData implements UpgradeDataInterface
 {
     /**

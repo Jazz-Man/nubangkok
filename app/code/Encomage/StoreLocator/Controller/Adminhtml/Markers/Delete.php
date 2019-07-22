@@ -7,11 +7,20 @@
 
 namespace Encomage\StoreLocator\Controller\Adminhtml\Markers;
 
+use Encomage\StoreLocator\Helper\Config;
+use Encomage\StoreLocator\Logger\Logger;
+use Encomage\StoreLocator\Model\MarkerFactory;
+use Exception;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\View\Result\PageFactory;
+
 /**
  * Class Delete
+ *
  * @package Encomage\StoreLocator\Controller\Adminhtml\Markers
  */
-class Delete extends \Magento\Backend\App\Action
+class Delete extends Action
 {
     /**
      * @var \Magento\Framework\View\Result\PageFactory
@@ -36,11 +45,11 @@ class Delete extends \Magento\Backend\App\Action
      * @param \Encomage\StoreLocator\Logger\Logger $logger
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Encomage\StoreLocator\Model\MarkerFactory $markerFactory,
-        \Encomage\StoreLocator\Helper\Config $config,
-        \Encomage\StoreLocator\Logger\Logger $logger
+        Context $context,
+        PageFactory $resultPageFactory,
+        MarkerFactory $markerFactory,
+        Config $config,
+        Logger $logger
     )
     {
         parent::__construct($context);
@@ -50,7 +59,7 @@ class Delete extends \Magento\Backend\App\Action
     }
 
     /**
-     * @return $this
+     * @return \Magento\Backend\Model\View\Result\Redirect
      */
     public function execute()
     {
@@ -61,7 +70,7 @@ class Delete extends \Magento\Backend\App\Action
             try {
                 $this->_markerObject->setEntityId($markerId)->deleteMarker();
                 $this->messageManager->addSuccessMessage(__('Store marker has been deleted'));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->messageManager->addErrorMessage(__('Something went wrong.'));
                 $this->_logger->logException($e);
             }

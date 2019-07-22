@@ -36,11 +36,12 @@ class RowActions extends Column
     /**
      * Constructor
      *
-     * @param ContextInterface $context
-     * @param UiComponentFactory $uiComponentFactory
-     * @param UrlInterface $urlBuilder
-     * @param array $components
-     * @param array $data
+     * @param ContextInterface           $context
+     * @param UiComponentFactory         $uiComponentFactory
+     * @param \Magento\Framework\Escaper $escaper
+     * @param UrlInterface               $urlBuilder
+     * @param array                      $components
+     * @param array                      $data
      */
     public function __construct(
         ContextInterface $context,

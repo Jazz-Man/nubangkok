@@ -5,6 +5,7 @@ namespace Encomage\ErpIntegration\Setup;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Setup\CustomerSetup;
 use Magento\Customer\Setup\CustomerSetupFactory;
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
@@ -57,7 +58,11 @@ class UpgradeData implements UpgradeDataInterface
 
     /**
      * @param ModuleDataSetupInterface $setup
-     * @param ModuleContextInterface $context
+     * @param ModuleContextInterface   $context
+     *
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Zend_Validate_Exception
      */
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
@@ -89,7 +94,7 @@ class UpgradeData implements UpgradeDataInterface
                     $setup->getTable('sales_order'),
                     'redeem_amount',
                     [
-                        'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                        'type' => Table::TYPE_TEXT,
                         'length' => 10,
                         'comment' => 'Redeem Amount'
                     ]

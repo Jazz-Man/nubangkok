@@ -27,6 +27,8 @@ class CustomerAddressSaveSuccess implements ObserverInterface
 
     /**
      * @param Observer $observer
+     *
+     * @throws \Exception
      */
     public function execute(Observer $observer)
     {

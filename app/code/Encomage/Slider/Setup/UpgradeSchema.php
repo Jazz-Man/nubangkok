@@ -2,10 +2,16 @@
 
 namespace Encomage\Slider\Setup;
 
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\UpgradeSchemaInterface;
 
+/**
+ * Class UpgradeSchema
+ *
+ * @package Encomage\Slider\Setup
+ */
 class UpgradeSchema implements UpgradeSchemaInterface
 {
     /**
@@ -19,7 +25,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 $setup->getTable('mageplaza_bannerslider_banner'),
                 'mobile_upload_file',
                 [
-                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    'type' => Table::TYPE_TEXT,
                     'nullable' => false,
                     'comment' => 'Banner upload mobile file',
                 ]

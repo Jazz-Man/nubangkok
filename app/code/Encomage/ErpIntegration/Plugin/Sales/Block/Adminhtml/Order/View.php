@@ -5,6 +5,11 @@ use Magento\Sales\Block\Adminhtml\Order\View as OrderView;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\AuthorizationInterface;
 
+/**
+ * Class View
+ *
+ * @package Encomage\ErpIntegration\Plugin\Sales\Block\Adminhtml\Order
+ */
 class View
 {
     /**
@@ -17,6 +22,12 @@ class View
      */
     protected $_authorization;
 
+    /**
+     * View constructor.
+     *
+     * @param \Magento\Framework\UrlInterface           $url
+     * @param \Magento\Framework\AuthorizationInterface $authorization
+     */
     public function __construct(
         UrlInterface $url,
         AuthorizationInterface $authorization
@@ -25,6 +36,9 @@ class View
         $this->_authorization = $authorization;
     }
 
+    /**
+     * @param \Magento\Sales\Block\Adminhtml\Order\View $subject
+     */
     public function beforeSetLayout(OrderView $subject) {
         $url = $this->_urlBuilder->getUrl('erp/invoice/send', ['id' => $subject->getOrderId()]);
 

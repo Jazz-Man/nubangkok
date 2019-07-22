@@ -8,6 +8,11 @@ use Encomage\Careers\Model\ResourceModel\Careers as CareersResource;
 use Magento\Framework\App\Cache\StateInterface;
 use Magento\Framework\App\Cache\TypeListInterface;
 
+/**
+ * Class Save
+ *
+ * @package Encomage\Careers\Controller\Adminhtml\Index
+ */
 class Save extends Action
 {
     /**

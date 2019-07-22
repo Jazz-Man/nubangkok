@@ -7,11 +7,17 @@
 
 namespace Encomage\StoreLocator\Ui\Component\Markers\Column;
 
+use Magento\Framework\UrlInterface;
+use Magento\Framework\View\Element\UiComponent\ContextInterface;
+use Magento\Framework\View\Element\UiComponentFactory;
+use Magento\Ui\Component\Listing\Columns\Column;
+
 /**
  * Class BlockActions
+ *
  * @package Encomage\StoreLocator\Ui\Component\Markers\Column
  */
-class BlockActions extends \Magento\Ui\Component\Listing\Columns\Column
+class BlockActions extends Column
 {
 
     const PATH_EDIT = 'storelocator/markers/edit';
@@ -31,9 +37,9 @@ class BlockActions extends \Magento\Ui\Component\Listing\Columns\Column
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\UiComponent\ContextInterface $context,
-        \Magento\Framework\View\Element\UiComponentFactory $uiComponentFactory,
-        \Magento\Framework\UrlInterface $urlBuilder,
+        ContextInterface $context,
+        UiComponentFactory $uiComponentFactory,
+        UrlInterface $urlBuilder,
         array $components = [],
         array $data = []
     )

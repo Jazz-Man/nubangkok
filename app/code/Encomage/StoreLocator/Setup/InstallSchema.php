@@ -8,6 +8,7 @@
 
 namespace Encomage\StoreLocator\Setup;
 
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
@@ -31,7 +32,7 @@ class InstallSchema implements InstallSchemaInterface
             $table = $installer->getConnection()->newTable($installer->getTable('encomage_storelocator'))
                 ->addColumn(
                     'entity_id',
-                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    Table::TYPE_INTEGER,
                     null,
                     [
                         'identity' => true,
@@ -43,7 +44,7 @@ class InstallSchema implements InstallSchemaInterface
                 )
                 ->addColumn(
                     'name',
-                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    Table::TYPE_TEXT,
                     null,
                     [
                         'nullable' => false,
@@ -52,7 +53,7 @@ class InstallSchema implements InstallSchemaInterface
                 )
                 ->addColumn(
                     'latitude',
-                    \Magento\Framework\DB\Ddl\Table::TYPE_FLOAT,
+                    Table::TYPE_FLOAT,
                     null,
                     [
                         'nullable' => false,
@@ -61,7 +62,7 @@ class InstallSchema implements InstallSchemaInterface
                 )
                 ->addColumn(
                     'longitude',
-                    \Magento\Framework\DB\Ddl\Table::TYPE_FLOAT,
+                    Table::TYPE_FLOAT,
                     null,
                     [
                         'nullable' => false,
@@ -70,7 +71,7 @@ class InstallSchema implements InstallSchemaInterface
                 )
                 ->addColumn(
                     'store_id',
-                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    Table::TYPE_TEXT,
                     50,
                     [
                         'nullable' => false,
@@ -79,7 +80,7 @@ class InstallSchema implements InstallSchemaInterface
                 )
                 ->addColumn(
                     'comment',
-                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    Table::TYPE_TEXT,
                     null,
                     [
                         'nullable' => false,
