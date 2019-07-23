@@ -42,8 +42,6 @@
     <type name="Magento\Customer\Block\Widget\Dob">
         <plugin name="encomage_customer_widged_dob" type="Encomage\Customer\Plugin\Block\Widget\Dob"/>
     </type>
-    <preference for="Magento\Customer\Block\Form\Edit"
-                type="Encomage\Customer\Block\Form\Edit"></preference>
-    <preference for="Magento\Customer\Controller\Account\EditPost"
-                type="Encomage\Customer\Controller\Account\EditPost"></preference>
+    <preference for="Magento\Customer\Block\Form\Edit" type="Encomage\Customer\Block\Form\Edit"/>
+    <preference for="Magento\Customer\Controller\Account\EditPost" type="Encomage\Customer\Controller\Account\EditPost"/>
 </config>
