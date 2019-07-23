@@ -18,8 +18,8 @@
         "dhl/module-shipping-m2": "^0.10.3",
         "eadesignro/romcity": "^1.1",
         "elgentos/regenerate-catalog-urls": "^0.2.0",
-        "goeasyship/shipping": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
+        "jazzman/easyship-magento2": "^1.0",
         "livechat/module-magento-livechat": "^2.3",
         "magefan/module-blog": "^2.8",
         "magento/product-community-edition": "2.3.2",
@@ -34,14 +34,11 @@
         "allure-framework/allure-phpunit": "~1.2.0",
         "friendsofphp/php-cs-fixer": "~2.13.0",
         "lusitanian/oauth": "~0.8.10",
-        "magento/inventory-composer-metapackage": "^1.1",
-        "magento/magento-coding-standard": "~1.0.0",
-        "magento/magento2-functional-testing-framework": "~2.3.14",
         "pdepend/pdepend": "2.5.2",
         "phpunit/phpunit": "~6.5.0",
         "sebastian/phpcpd": "~3.0.0",
         "squizlabs/php_codesniffer": "3.3.1",
-        "symfony/var-dumper": "^3",
+        "symfony/var-dumper": "^4.3",
         "yireo/magento2-whoops": "^0.0.11"
     },
     "autoload": {
@@ -82,10 +79,6 @@
             "url": "https://repo.magento.com/"
         },
         "1": {
-            "type": "vcs",
-            "url": "https://github.com/easyship/easyship-magento2-plugin"
-        },
-        "2": {
             "type": "package",
             "package": {
                 "name": "2c2p/2c2p-magento2",
@@ -102,9 +95,63 @@
                     "type": "zip"
                 }
             }
+        },"2": {
+            "type": "package",
+            "package": {
+                "name": "jazzman/easyship-magento2",
+                "version": "1.0.3",
+                "type": "magento2-module",
+                "autoload": {
+                    "files": [
+                        "registration.php"
+                    ],
+                    "psr-4": {
+                        "Goeasyship\\Shipping\\": ""
+                    }
+                },
+                "dist": {
+                    "url": "https://github.com/Jazz-Man/easyship-magento2-plugin/archive/master.zip",
+                    "type": "zip"
+                }
+            }
         }
     },
     "extra": {
         "magento-force": "override"
+    },
+    "scripts": {
+        "test": [
+            "php -v"
+        ],
+        "deploy": [
+            "@maintenance_enable",
+            "@clearCache",
+            "@upgrade_config",
+            "@deploy_content",
+            "@maintenance_disable"
+
+        ],
+        "deploy_content": [
+            "php bin/magento setup:static-content:deploy en_US th_TH --theme Bangkok/default --theme Magento/backend -f"
+        ],
+        "upgrade_config": [
+            "php bin/magento setup:upgrade",
+            "php bin/magento setup:di:compile"
+        ],
+        "clearCache": [
+            "php bin/magento cache:flush",
+            "rm -rf generation/*",
+            "rm -rf var/cache/*",
+            "rm -rf var/composer_home/*",
+            "rm -rf var/page_cache/*",
+            "rm -rf var/tmp/*",
+            "rm -rf var/view_preprocessed/*"
+        ],
+        "maintenance_enable": [
+            "php bin/magento maintenance:enable"
+        ],
+        "maintenance_disable": [
+            "php bin/magento maintenance:disable"
+        ]
     }
 }
