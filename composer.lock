@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4b9ad14fd3c1acd702cb22200f8194c",
+    "content-hash": "d5a942a60adc286bbdeca9e5b39fb32c",
     "packages": [
         {
             "name": "2c2p/2c2p-magento2",
