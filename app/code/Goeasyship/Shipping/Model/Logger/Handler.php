@@ -21,7 +21,14 @@
 
 namespace Goeasyship\Shipping\Model\Logger;
 
-class Handler extends \Magento\Framework\Logger\Handler\Base
+use Magento\Framework\Logger\Handler\Base;
+
+/**
+ * Class Handler
+ *
+ * @package Goeasyship\Shipping\Model\Logger
+ */
+class Handler extends Base
 {
     /**
      * Logging level

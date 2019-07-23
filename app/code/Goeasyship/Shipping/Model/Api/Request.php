@@ -21,6 +21,18 @@
 
 namespace Goeasyship\Shipping\Model\Api;
 
+use Goeasyship\Shipping\Model\Logger\Logger;
+use Magento\Config\Model\ResourceModel\Config;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Zend_Http_Client;
+
+/**
+ * Class Request
+ *
+ * @package Goeasyship\Shipping\Model\Api
+ */
 class Request
 {
 
@@ -38,11 +50,19 @@ class Request
 
     protected $logger;
 
+    /**
+     * Request constructor.
+     *
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Config\Model\ResourceModel\Config         $config
+     * @param \Magento\Store\Model\StoreManagerInterface         $storeManager
+     * @param \Goeasyship\Shipping\Model\Logger\Logger           $logger
+     */
     public function __construct(
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Config\Model\ResourceModel\Config $config,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Goeasyship\Shipping\Model\Logger\Logger $logger
+        ScopeConfigInterface $scopeConfig,
+        Config $config,
+        StoreManagerInterface $storeManager,
+        Logger $logger
     ) {
         $this->_scopeConfig = $scopeConfig;
         $this->_config = $config;
@@ -52,48 +72,54 @@ class Request
 
     /**
      * Registration app
+     *
      * @param $requestBody
+     *
      * @return bool|mixed
+     * @throws \Zend_Http_Client_Exception
      */
     public function registrationsRequest($requestBody)
     {
         $endpoint = self::BASE_ENDPOINT . 'api/v1/magento/registrations';
 
-        $result = $this->_doRequest($endpoint, $requestBody, null, false, 'POST');
-
-        return $result;
+        return $this->_doRequest($endpoint, $requestBody, null, false);
     }
 
     /**
      * Return rates
+     *
      * @param $requestBody
+     *
      * @return bool|mixed
+     * @throws \Zend_Http_Client_Exception
      */
     public function getQuotes($requestBody)
     {
         $endpoint = self::BASE_ENDPOINT . 'rate/v1/magento';
-        $result = $this->_doRequest($endpoint, $requestBody->getData(), null, true);
-        return $result;
+
+        return $this->_doRequest($endpoint, $requestBody->getData());
     }
 
     /**
      * @param string $endpoint
-     * @param array $requestBody
-     * @param null $headers
-     * @param bool $isAuth
+     * @param array  $requestBody
+     * @param null   $headers
+     * @param bool   $isAuth
      * @param string $method
+     *
      * @return bool|mixed
+     * @throws \Zend_Http_Client_Exception
      */
     protected function _doRequest($endpoint, array $requestBody, $headers = null, $isAuth = true, $method = 'POST')
     {
-        $client = new \Zend_Http_Client($endpoint);
+        $client = new Zend_Http_Client($endpoint);
         $client->setMethod($method);
 
         if ($isAuth) {
             $client->setHeaders('Authorization', 'Bearer ' . $this->getToken());
         }
 
-        if (is_null($headers)) {
+        if ($headers === null) {
             $client->setHeaders([
                 'Content-Type' => 'application/json'
             ]);
@@ -101,11 +127,11 @@ class Request
             $client->setHeaders($headers);
         }
 
-        $client->setRawData(json_encode($requestBody), null);
+        $client->setRawData(json_encode($requestBody));
 
         $response = $client->request($method);
 
-        if (empty($response) || !$response->isSuccessful()) {
+        if ($response === null || !$response->isSuccessful()) {
             $this->loggerRequest($endpoint, $response->getStatus());
             return false;
         }
@@ -125,7 +151,7 @@ class Request
         if (empty($this->_token)) {
             $this->_token = $this->_scopeConfig->getValue(
                 self::BASE_SETTINGS_PATH . 'token',
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+                ScopeInterface::SCOPE_STORE
             );
         }
 
@@ -140,7 +166,7 @@ class Request
      */
     protected function loggerRequest($endpoint, $status, $response = null)
     {
-        $this->logger->info($endpoint . " : " . $status);
+        $this->logger->info($endpoint . ' : ' . $status);
         if (is_array($response)) {
             $this->logger->info(json_encode($response));
         } elseif (!empty($response)) {

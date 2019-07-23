@@ -21,20 +21,41 @@
 
 namespace Goeasyship\Shipping\Model;
 
-class Register implements \Goeasyship\Shipping\Api\RegisterInterface
+use Goeasyship\Shipping\Api\RegisterInterface;
+use Magento\Config\Model\ResourceModel\Config;
+use Magento\Framework\App\Cache\TypeListInterface;
+
+/**
+ * Class Register
+ *
+ * @package Goeasyship\Shipping\Model
+ */
+class Register implements RegisterInterface
 {
     protected $_config;
     protected $_cacheTypeList;
 
+    /**
+     * Register constructor.
+     *
+     * @param \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
+     * @param \Magento\Config\Model\ResourceModel\Config     $config
+     */
     public function __construct(
-        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
-        \Magento\Config\Model\ResourceModel\Config $config
+        TypeListInterface $cacheTypeList,
+        Config $config
     ) {
 
         $this->_config = $config;
         $this->_cacheTypeList = $cacheTypeList;
     }
 
+    /**
+     * @param string $storeId
+     * @param string $token
+     *
+     * @return bool|mixed
+     */
     public function saveToken($storeId, $token)
     {
         if (!$storeId) {

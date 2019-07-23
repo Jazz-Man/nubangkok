@@ -14,23 +14,27 @@
  * version in the future.
  *
  * @category    Goeasyship
- * @package     Goeasyship_Shipping
+ *
  * @copyright   Copyright (c) 2018 Easyship (https://www.easyship.com/)
  * @license     https://www.apache.org/licenses/LICENSE-2.0
  */
 
 namespace Goeasyship\Shipping\Api;
 
+/**
+ * Interface ShipOrderInterface.
+ */
 interface ShipOrderInterface
 {
     /**
      * Creates new Shipment for given Order.
      *
-     * @param int $order_id
-     * @param mixed $items []
-     * @param mixed $track_data []
+     * @param int    $order_id
+     * @param mixed  $items      []
+     * @param mixed  $track_data []
      * @param string $comment
-     * @return int Id of created Shipment.
+     *
+     * @return int id of created Shipment
      */
     public function execute(
         $order_id,

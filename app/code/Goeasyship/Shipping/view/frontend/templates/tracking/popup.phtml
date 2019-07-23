@@ -38,7 +38,10 @@ $results = $block->getTrackingInfo();
                     <div class="table-wrapper">
                         <?php
                         $shipmentBlockIdentifier = $shipId . '.' . $counter;
-                        $block->addChild('shipping.tracking.details.' . $shipmentBlockIdentifier, Template::class, [
+                        $block->addChild(
+                            'shipping.tracking.details.' . $shipmentBlockIdentifier,
+                            Template::class,
+                            [
                                 'track' => $track,
                                 'template' => 'Goeasyship_Shipping::tracking/details.phtml',
                                 'storeSupportEmail' => $block->getStoreSupportEmail()
