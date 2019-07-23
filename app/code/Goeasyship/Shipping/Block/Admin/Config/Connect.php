@@ -21,26 +21,48 @@
 
 namespace Goeasyship\Shipping\Block\Admin\Config;
 
+use Magento\Backend\Block\Context;
+use Magento\Backend\Model\Auth\Session;
+use Magento\Config\Block\System\Config\Form\Fieldset;
 use Magento\Framework\Data\Form\Element\AbstractElement;
+use Magento\Framework\View\Helper\Js;
+use Magento\Integration\Model\ResourceModel\Integration\Collection;
+use Magento\Store\Model\StoreManagerInterface;
 
-class Connect extends \Magento\Config\Block\System\Config\Form\Fieldset
+/**
+ * Class Connect
+ *
+ * @package Goeasyship\Shipping\Block\Admin\Config
+ */
+class Connect extends Fieldset
 {
     protected $consumer;
     protected $integration;
     protected $fieldRenderer;
     protected $storeManager;
 
+    /**
+     * Connect constructor.
+     *
+     * @param \Magento\Backend\Block\Context                                     $context
+     * @param \Magento\Backend\Model\Auth\Session                                $authSession
+     * @param \Magento\Framework\View\Helper\Js                                  $jsHelper
+     * @param \Magento\Integration\Model\ResourceModel\Oauth\Consumer\Collection $consumer
+     * @param \Magento\Integration\Model\ResourceModel\Integration\Collection    $integration
+     * @param \Magento\Store\Model\StoreManagerInterface                         $storeManager
+     * @param \Goeasyship\Shipping\Block\Admin\Config\Generate                   $generate
+     * @param array                                                              $data
+     */
     public function __construct(
-        \Magento\Backend\Block\Context $context,
-        \Magento\Backend\Model\Auth\Session $authSession,
-        \Magento\Framework\View\Helper\Js $jsHelper,
+        Context $context,
+        Session $authSession,
+        Js $jsHelper,
         \Magento\Integration\Model\ResourceModel\Oauth\Consumer\Collection $consumer,
-        \Magento\Integration\Model\ResourceModel\Integration\Collection $integration,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        Collection $integration,
+        StoreManagerInterface $storeManager,
         Generate $generate,
         array $data = []
     ) {
-
         parent::__construct($context, $authSession, $jsHelper, $data);
 
         $this->consumer = $consumer;
@@ -49,8 +71,15 @@ class Connect extends \Magento\Config\Block\System\Config\Form\Fieldset
         $this->fieldRenderer = $generate;
     }
 
+    /**
+     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     *
+     * @return bool|string
+     */
     public function render(AbstractElement $element)
     {
+        $this->setElement($element);
+
         $integration = $this->integration
             ->addFieldToFilter('name', 'easyship')
             ->setPageSize(1)
@@ -81,13 +110,19 @@ class Connect extends \Magento\Config\Block\System\Config\Form\Fieldset
         return $html;
     }
 
+    /**
+     * @param $fieldset
+     * @param $store
+     *
+     * @return mixed
+     */
     protected function _getFieldHtml($fieldset, $store)
     {
         $field = $fieldset->addField(
             $store->getId(),
             'text',
             [
-                'name'  => 'groups[ec_shipping][fields][store_'.$store->getId().'][value]',
+                'name'  => 'groups[ec_shipping][fields][store_' . $store->getId() . '][value]',
                 'label' => $store->getFrontendName(),
                 'value' => '',
                 'inherit' => true,

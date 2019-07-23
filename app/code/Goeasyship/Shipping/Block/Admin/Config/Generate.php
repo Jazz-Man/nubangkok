@@ -21,11 +21,24 @@
 
 namespace Goeasyship\Shipping\Block\Admin\Config;
 
-class Generate extends \Magento\Config\Block\System\Config\Form\Field
+use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Framework\Data\Form\Element\AbstractElement;
+
+/**
+ * Class Generate
+ *
+ * @package Goeasyship\Shipping\Block\Admin\Config
+ */
+class Generate extends Field
 {
     protected $_template = 'Goeasyship_Shipping::system/config/generate.phtml';
 
-    public function render(\Magento\Framework\Data\Form\Element\AbstractElement $element)
+    /**
+     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     *
+     * @return string
+     */
+    public function render(AbstractElement $element)
     {
         $html = '<td class="value">';
         $html .= "<h3>" . __('Here are stores we found in your settings. Please select the store to integrate with Easyship.') . "</h3>";
@@ -35,7 +48,12 @@ class Generate extends \Magento\Config\Block\System\Config\Form\Field
         return $this->_decorateRowHtml($element, $html);
     }
 
-    protected function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
+    /**
+     * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
+     *
+     * @return string
+     */
+    protected function _getElementHtml(AbstractElement $element)
     {
         $id = $element->getStoreid();
         $isActived = $this->_scopeConfig->getValue('easyship_options/ec_shipping/token', 'default', $id);

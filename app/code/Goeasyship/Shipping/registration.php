@@ -1,7 +1,9 @@
 <?php
 
-\Magento\Framework\Component\ComponentRegistrar::register(
-    \Magento\Framework\Component\ComponentRegistrar::MODULE,
+use Magento\Framework\Component\ComponentRegistrar;
+
+ComponentRegistrar::register(
+    ComponentRegistrar::MODULE,
     'Goeasyship_Shipping',
     __DIR__
 );

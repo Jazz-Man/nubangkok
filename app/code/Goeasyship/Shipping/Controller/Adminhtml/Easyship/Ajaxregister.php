@@ -21,37 +21,103 @@
 
 namespace Goeasyship\Shipping\Controller\Adminhtml\Easyship;
 
+use Exception;
+use Goeasyship\Shipping\Model\Api\Request;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\Auth\Session;
+use Magento\Config\Model\ResourceModel\Config;
+use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\ProductMetadataInterface;
+use Magento\Framework\UrlInterface;
+use Magento\Integration\Model\ResourceModel\Oauth\Token\Collection;
 use Magento\Store\Model\Information as StoreInformation;
+use Magento\Store\Model\Store;
+use Magento\Store\Model\StoreManagerInterface;
 
-class Ajaxregister extends \Magento\Backend\App\Action
+/**
+ * Class Ajaxregister
+ *
+ * @package Goeasyship\Shipping\Controller\Adminhtml\Easyship
+ */
+class Ajaxregister extends Action
 {
+
+    /**
+     * @var \Magento\Integration\Model\ResourceModel\Integration\Collection
+     */
     protected $_integration;
+    /**
+     * @var \Magento\Integration\Model\ResourceModel\Oauth\Consumer\Collection
+     */
     protected $_consumer;
+    /**
+     * @var \Magento\Backend\Model\Auth\Session
+     */
     protected $_authSession;
+    /**
+     * @var \Magento\Store\Model\Information
+     */
     protected $_storeInfo;
+    /**
+     * @var \Magento\Store\Model\Store
+     */
     protected $_storeManager;
+    /**
+     * @var \Magento\Integration\Model\ResourceModel\Oauth\Token\Collection
+     */
     protected $_token;
+    /**
+     * @var \Magento\Framework\App\ProductMetadataInterface
+     */
     protected $_productMetadata;
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
     protected $_storeManagerInterface;
+    /**
+     * @var \Magento\Config\Model\ResourceModel\Config
+     */
     protected $_config;
+    /**
+     * @var \Magento\Framework\App\Cache\TypeListInterface
+     */
     protected $_cacheTypeList;
+    /**
+     * @var \Goeasyship\Shipping\Model\Api\Request
+     */
     protected $_easyshipApi;
 
+    /**
+     * Ajaxregister constructor.
+     *
+     * @param \Magento\Backend\App\Action\Context                                $context
+     * @param \Magento\Integration\Model\ResourceModel\Integration\Collection    $integration
+     * @param \Magento\Integration\Model\ResourceModel\Oauth\Consumer\Collection $consumer
+     * @param \Magento\Integration\Model\ResourceModel\Oauth\Token\Collection    $token
+     * @param \Magento\Backend\Model\Auth\Session                                $authSession
+     * @param \Magento\Store\Model\Information                                   $storeInfo
+     * @param \Magento\Store\Model\Store                                         $storeManager
+     * @param \Magento\Store\Model\StoreManagerInterface                         $storeManagerInterface
+     * @param \Magento\Config\Model\ResourceModel\Config                         $config
+     * @param \Magento\Framework\App\Cache\TypeListInterface                     $cacheTypeList
+     * @param \Magento\Framework\App\ProductMetadataInterface                    $productMetadata
+     * @param \Goeasyship\Shipping\Model\Api\Request                             $easyshipApi
+     */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
+        Context $context,
         \Magento\Integration\Model\ResourceModel\Integration\Collection $integration,
         \Magento\Integration\Model\ResourceModel\Oauth\Consumer\Collection $consumer,
-        \Magento\Integration\Model\ResourceModel\Oauth\Token\Collection $token,
-        \Magento\Backend\Model\Auth\Session $authSession,
-        \Magento\Store\Model\Information $storeInfo,
-        \Magento\Store\Model\Store $storeManager,
-        \Magento\Store\Model\StoreManagerInterface $storeManagerInterface,
-        \Magento\Config\Model\ResourceModel\Config $config,
-        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
-        \Magento\Framework\App\ProductMetadataInterface $productMetadata,
-        \Goeasyship\Shipping\Model\Api\Request $easyshipApi
+        Collection $token,
+        Session $authSession,
+        StoreInformation $storeInfo,
+        Store $storeManager,
+        StoreManagerInterface $storeManagerInterface,
+        Config $config,
+        TypeListInterface $cacheTypeList,
+        ProductMetadataInterface $productMetadata,
+        Request $easyshipApi
     ) {
-
         parent::__construct($context);
 
         $this->_integration = $integration;
@@ -67,6 +133,9 @@ class Ajaxregister extends \Magento\Backend\App\Action
         $this->_easyshipApi = $easyshipApi;
     }
 
+    /**
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     */
     public function execute()
     {
         $response = [];
@@ -85,9 +154,9 @@ class Ajaxregister extends \Magento\Backend\App\Action
                 $response = $this->_easyshipApi->registrationsRequest($request);
                 $this->getResponse()->setBody(json_encode($response));
             } else {
-                throw new \Exception('Method not supported');
+                throw new Exception('Method not supported');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response['error'] = $e->getMessage();
             $this->getResponse()->setBody(json_encode($response));
         }
@@ -112,8 +181,8 @@ class Ajaxregister extends \Magento\Backend\App\Action
             ->setCurPage(1)
             ->getLastItem();
 
-        if (empty($integration)) {
-            throw new \Exception('Something was wrong please create easyship integration and activated it');
+        if ($integration === null) {
+            throw new Exception('Something was wrong please create easyship integration and activated it');
         }
 
         $consumerId = $integration->getConsumerId();
@@ -154,11 +223,11 @@ class Ajaxregister extends \Magento\Backend\App\Action
         $response = [];
         $user = $this->_authSession->getUser();
         if (!$user->getId()) {
-            throw new \Exception('User session is not found');
+            throw new Exception('User session is not found');
         }
 
         $response['email'] = $user->getEmail();
-        ;
+
         $response['first_name'] = $user->getFirstname();
         $response['last_name'] = $user->getLastname();
         $response['mobile_phone'] = $this->_storeManager->getConfig(StoreInformation::XML_PATH_STORE_INFO_PHONE);
@@ -179,7 +248,7 @@ class Ajaxregister extends \Magento\Backend\App\Action
         $response['country_code'] = $this->_storeManager->getConfig(StoreInformation::XML_PATH_STORE_INFO_COUNTRY_CODE);
 
         if (empty($response['name']) || empty($response['country_code'])) {
-            throw new \Exception('Please, fill store name and store country code (System -> General -> Store Information)');
+            throw new Exception('Please, fill store name and store country code (System -> General -> Store Information)');
         }
 
         return $response;
@@ -194,13 +263,13 @@ class Ajaxregister extends \Magento\Backend\App\Action
     protected function _getStoreInfo($storeId)
     {
         if (!$storeId) {
-            throw new \Exception('store not found');
+            throw new Exception('store not found');
         }
 
         $response = [];
         $response['id'] = $storeId;
         $response['name'] = $this->_storeManager->getConfig(StoreInformation::XML_PATH_STORE_INFO_NAME);
-        $response['url'] = $this->_storeManagerInterface->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB);
+        $response['url'] = $this->_storeManagerInterface->getStore()->getBaseUrl(UrlInterface::URL_TYPE_WEB);
         $response['version'] = $this->_productMetadata->getVersion();
 
         return $response;

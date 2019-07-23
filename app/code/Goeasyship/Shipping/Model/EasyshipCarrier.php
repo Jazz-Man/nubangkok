@@ -21,38 +21,110 @@
 
 namespace Goeasyship\Shipping\Model;
 
+use Goeasyship\Shipping\Model\Api\Request;
+use Magento\Directory\Model\CountryFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\DataObject;
 use Magento\Quote\Model\Quote\Address\RateRequest;
-use Magento\Shipping\Model\Carrier\CarrierInterface;
+use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
+use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
+use Magento\Sales\Model\Order\Shipment;
+use Magento\Sales\Model\ResourceModel\Order\Shipment\Track\CollectionFactory;
 use Magento\Shipping\Model\Carrier\AbstractCarrier;
+use Magento\Shipping\Model\Carrier\CarrierInterface;
+use Magento\Shipping\Model\Tracking\Result;
+use Magento\Shipping\Model\Tracking\Result\StatusFactory;
+use Magento\Shipping\Model\Tracking\ResultFactory;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
+/**
+ * Class EasyshipCarrier
+ *
+ * @package Goeasyship\Shipping\Model
+ */
 class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
 {
+
+    /**
+     * @var string
+     */
     protected $_code = 'easyship';
-    protected $_request = null;
-    protected $_rawRequest = null;
+    /**
+     * @var \Magento\Quote\Model\Quote\Address\RateRequest
+     */
+    protected $_request;
+    /**
+     * @var DataObject
+     */
+    protected $_rawRequest;
+    /**
+     * @var \Goeasyship\Shipping\Model\Api\Request
+     */
     protected $_easyshipApi;
+    /**
+     * @var \Magento\Directory\Model\CountryFactory
+     */
     protected $_countryFactory;
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
     protected $_storeManager;
-    protected $storeId = null;
+    /**
+     * @var
+     */
+    protected $storeId;
+    /**
+     * @var \Magento\Shipping\Model\Rate\ResultFactory
+     */
 
     protected $_rateResultFactory;
+    /**
+     * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory
+     */
     protected $_rateMethodFactory;
+    /**
+     * @var \Magento\Shipping\Model\Tracking\Result\StatusFactory
+     */
     protected $_statusFactory;
+    /**
+     * @var \Magento\Shipping\Model\Tracking\ResultFactory
+     */
     protected $_trackFactory;
+    /**
+     * @var \Magento\Sales\Model\ResourceModel\Order\Shipment\Track\CollectionFactory
+     */
     protected $_trackCollectionFactory;
 
+    /**
+     * EasyshipCarrier constructor.
+     *
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface                        $scopeConfig
+     * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory                $rateErrorFactory
+     * @param \Magento\Shipping\Model\Rate\ResultFactory                                $rateResultFactory
+     * @param \Magento\Shipping\Model\Tracking\ResultFactory                            $trackingResultFactory
+     * @param \Magento\Shipping\Model\Tracking\Result\StatusFactory                     $statusFactory
+     * @param \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory               $rateMethodFactory
+     * @param \Magento\Sales\Model\ResourceModel\Order\Shipment\Track\CollectionFactory $trackCollectionFactory
+     * @param \Psr\Log\LoggerInterface                                                  $logger
+     * @param \Goeasyship\Shipping\Model\Api\Request                                    $easyshipApi
+     * @param \Magento\Directory\Model\CountryFactory                                   $countryFactory
+     * @param \Magento\Store\Model\StoreManagerInterface                                $storeManager
+     * @param array                                                                     $data
+     */
     public function __construct(
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
+        ScopeConfigInterface $scopeConfig,
+        ErrorFactory $rateErrorFactory,
         \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory,
-        \Magento\Shipping\Model\Tracking\ResultFactory $trackingResultFactory,
-        \Magento\Shipping\Model\Tracking\Result\StatusFactory $statusFactory,
-        \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory,
-        \Magento\Sales\Model\ResourceModel\Order\Shipment\Track\CollectionFactory $trackCollectionFactory,
-        \Psr\Log\LoggerInterface $logger,
-        \Goeasyship\Shipping\Model\Api\Request $easyshipApi,
-        \Magento\Directory\Model\CountryFactory $countryFactory,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        ResultFactory $trackingResultFactory,
+        StatusFactory $statusFactory,
+        MethodFactory $rateMethodFactory,
+        CollectionFactory $trackCollectionFactory,
+        LoggerInterface $logger,
+        Request $easyshipApi,
+        CountryFactory $countryFactory,
+        StoreManagerInterface $storeManager,
         array $data = []
     ) {
         $this->_easyshipApi = $easyshipApi;
@@ -67,12 +139,17 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
         parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
     }
 
-
+    /**
+     * @return array|null
+     */
     public function getAllowedMethods()
     {
         return null;
     }
 
+    /**
+     * @return bool
+     */
     public function isTrackingAvailable()
     {
         return true;
@@ -87,7 +164,7 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
     {
         $result = $this->getTracking($tracking);
 
-        if ($result instanceof \Magento\Shipping\Model\Tracking\Result) {
+        if ($result instanceof Result) {
             $trackings = $result->getAllTrackings();
             if ($trackings) {
                 return $trackings[0];
@@ -127,6 +204,13 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
         return $result;
     }
 
+    /**
+     * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
+     *
+     * @return bool|\Magento\Framework\DataObject|\Magento\Shipping\Model\Rate\Result|null
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Zend_Http_Client_Exception
+     */
     public function collectRates(RateRequest $request)
     {
         if (!$this->getConfigFlag('active')) {
@@ -135,9 +219,7 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
 
         $this->_createEasyShipRequest($request);
 
-        $result = $this->_getQuotes();
-
-        return $result;
+        return $this->_getQuotes();
     }
 
     /**
@@ -155,20 +237,25 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
         return $result;
     }
 
+    /**
+     * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
+     *
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     protected function _createEasyShipRequest(RateRequest $request)
     {
         $this->_request = $request;
 
         $currencyCode = $this->_storeManager->getStore()->getCurrentCurrencyCode();
 
-        $r = new \Magento\Framework\DataObject();
+        $r = new DataObject();
 
         if ($request->getOrigCountry()) {
             $origCountry = $request->getOrigCountry();
         } else {
             $origCountry = $this->_scopeConfig->getValue(
-                \Magento\Sales\Model\Order\Shipment::XML_PATH_STORE_COUNTRY_ID,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                Shipment::XML_PATH_STORE_COUNTRY_ID,
+                ScopeInterface::SCOPE_STORE,
                 $request->getStoreId()
             );
         }
@@ -179,8 +266,8 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
             $r->setOriginPostalCode($request->getOrigPostcode());
         } else {
             $r->setOriginPostalCode($this->_scopeConfig->getValue(
-                \Magento\Sales\Model\Order\Shipment::XML_PATH_STORE_ZIP,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                Shipment::XML_PATH_STORE_ZIP,
+                ScopeInterface::SCOPE_STORE,
                 $request->getStoreId()
             ));
         }
@@ -227,8 +314,9 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
 
     /**
      * Get weight
-     * @param $item
+     *
      * @return int
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     protected function getStoreId()
     {
@@ -255,8 +343,11 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
 
     /**
      * Get easyship category
+     *
      * @param $item
+     *
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     protected function getEasyshipCategory($item)
     {
@@ -266,7 +357,7 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
 
         $base_category = $this->_scopeConfig->getValue(
             'carriers/easyship/base_category',
-            \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE,
+            ScopeInterface::SCOPE_WEBSITE,
             $this->getStoreId()
         );
 
@@ -279,8 +370,11 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
 
     /**
      * Get easyship height
+     *
      * @param $item
+     *
      * @return int
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     protected function getEasyshipHeight($item)
     {
@@ -290,7 +384,7 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
 
         $base_height = $this->_scopeConfig->getValue(
             'carriers/easyship/base_height',
-            \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE,
+            ScopeInterface::SCOPE_WEBSITE,
             $this->getStoreId()
         );
 
@@ -305,7 +399,8 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
      * Get easyship width
      * @param $item
      * @return int
-     */
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+*/
     protected function getEasyshipWidth($item)
     {
         if ($item->hasEasyshipWidth() && !empty($item->getEasyshipWidth())) {
@@ -314,7 +409,7 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
 
         $base_width = $this->_scopeConfig->getValue(
             'carriers/easyship/base_width',
-            \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE,
+            ScopeInterface::SCOPE_WEBSITE,
             $this->getStoreId()
         );
 
@@ -329,7 +424,8 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
      * Get easyship length
      * @param $item
      * @return int
-     */
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+*/
     protected function getEasyshipLength($item)
     {
         if ($item->hasEasyshipLength() && !empty($item->getEasyshipLength())) {
@@ -338,7 +434,7 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
 
         $base_length = $this->_scopeConfig->getValue(
             'carriers/easyship/base_length',
-            \Magento\Store\Model\ScopeInterface::SCOPE_WEBSITE,
+            ScopeInterface::SCOPE_WEBSITE,
             $this->getStoreId()
         );
 
@@ -351,7 +447,8 @@ class EasyshipCarrier extends AbstractCarrier implements CarrierInterface
 
     /**
      * @return bool|\Magento\Shipping\Model\Rate\Result
-     */
+     * @throws \Zend_Http_Client_Exception
+*/
     protected function _getQuotes()
     {
         $rates = $this->_easyshipApi->getQuotes($this->_rawRequest);

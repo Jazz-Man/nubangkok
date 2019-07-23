@@ -21,19 +21,42 @@
 
 namespace Goeasyship\Shipping\Setup;
 
+use Goeasyship\Shipping\Model\Source\Categories;
+use Magento\Catalog\Model\Product;
+use Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
+use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 
+/**
+ * Class InstallData
+ *
+ * @package Goeasyship\Shipping\Setup
+ */
 class InstallData implements InstallDataInterface
 {
+
+    /**
+     * @var \Magento\Eav\Setup\EavSetupFactory
+     */
     protected $_eavSetupFactory;
 
-    public function __construct(\Magento\Eav\Setup\EavSetupFactory $eavSetupFactory)
+    /**
+     * InstallData constructor.
+     *
+     * @param \Magento\Eav\Setup\EavSetupFactory $eavSetupFactory
+     */
+    public function __construct(EavSetupFactory $eavSetupFactory)
     {
         $this->_eavSetupFactory = $eavSetupFactory;
     }
 
+    /**
+     * @param \Magento\Framework\Setup\ModuleDataSetupInterface $setup
+     * @param \Magento\Framework\Setup\ModuleContextInterface   $context
+     */
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
         $setup->startSetup();
@@ -47,7 +70,7 @@ class InstallData implements InstallDataInterface
             'input' => 'text',
             'class' => '',
             'source' => '',
-            'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_WEBSITE,
+            'global' => ScopedAttributeInterface::SCOPE_WEBSITE,
             'visible' => true,
             'required' => false,
             'user_defined' => false,
@@ -70,7 +93,7 @@ class InstallData implements InstallDataInterface
             'input' => 'text',
             'class' => '',
             'source' => '',
-            'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_WEBSITE,
+            'global' => ScopedAttributeInterface::SCOPE_WEBSITE,
             'visible' => true,
             'required' => false,
             'user_defined' => false,
@@ -93,7 +116,7 @@ class InstallData implements InstallDataInterface
             'input' => 'text',
             'class' => '',
             'source' => '',
-            'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_WEBSITE,
+            'global' => ScopedAttributeInterface::SCOPE_WEBSITE,
             'visible' => true,
             'required' => false,
             'user_defined' => false,
@@ -110,13 +133,13 @@ class InstallData implements InstallDataInterface
 
         $easyship_category_data = [
             'type' => 'text',
-            'backend' => 'Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend',
+            'backend' => ArrayBackend::class,
             'frontend' => '',
             'label' => 'Easyship Category',
             'input' => 'select',
             'class' => '',
-            'source' => 'Goeasyship\Shipping\Model\Source\Categories',
-            'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_WEBSITE,
+            'source' => Categories::class,
+            'global' => ScopedAttributeInterface::SCOPE_WEBSITE,
             'visible' => true,
             'required' => false,
             'user_defined' => false,
@@ -134,8 +157,13 @@ class InstallData implements InstallDataInterface
         $setup->endSetup();
     }
 
+    /**
+     * @param $eavSetup
+     * @param $code
+     * @param $data
+     */
     protected function createProductAttribute($eavSetup, $code, $data)
     {
-        $eavSetup->addAttribute(\Magento\Catalog\Model\Product::ENTITY, $code, $data);
+        $eavSetup->addAttribute(Product::ENTITY, $code, $data);
     }
 }

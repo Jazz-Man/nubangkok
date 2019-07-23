@@ -21,30 +21,64 @@
 
 namespace Goeasyship\Shipping\Setup;
 
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Integration\Model\AuthorizationService;
+use Magento\Integration\Model\IntegrationFactory;
+use Magento\Integration\Model\Oauth\Token;
+use Magento\Integration\Model\OauthService;
 
+/**
+ * Class InstallSchema
+ *
+ * @package Goeasyship\Shipping\Setup
+ */
 class InstallSchema implements InstallSchemaInterface
 {
+
+    /**
+     * @var \Magento\Integration\Model\IntegrationFactory
+     */
     protected $_integrationFactory;
+    /**
+     * @var \Magento\Integration\Model\OauthService
+     */
     protected $_oauthService;
+    /**
+     * @var \Magento\Integration\Model\AuthorizationService
+     */
     protected $_authorizationService;
+    /**
+     * @var \Magento\Integration\Model\Oauth\Token
+     */
     protected $_token;
 
+    /**
+     * InstallSchema constructor.
+     *
+     * @param \Magento\Integration\Model\IntegrationFactory   $integrationFactory
+     * @param \Magento\Integration\Model\OauthService         $oauthService
+     * @param \Magento\Integration\Model\AuthorizationService $authorizationService
+     * @param \Magento\Integration\Model\Oauth\Token          $token
+     */
     public function __construct(
-        \Magento\Integration\Model\IntegrationFactory $integrationFactory,
-        \Magento\Integration\Model\OauthService $oauthService,
-        \Magento\Integration\Model\AuthorizationService $authorizationService,
-        \Magento\Integration\Model\Oauth\Token $token
+        IntegrationFactory $integrationFactory,
+        OauthService $oauthService,
+        AuthorizationService $authorizationService,
+        Token $token
     ) {
-
         $this->_integrationFactory = $integrationFactory;
         $this->_oauthService = $oauthService;
         $this->_authorizationService = $authorizationService;
         $this->_token = $token;
     }
 
+    /**
+     * @param \Magento\Framework\Setup\SchemaSetupInterface   $setup
+     * @param \Magento\Framework\Setup\ModuleContextInterface $context
+     */
     public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
         $installer = $setup;
@@ -56,7 +90,7 @@ class InstallSchema implements InstallSchemaInterface
             $table,
             'tracking_page_url',
             [
-                'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                'type' => Table::TYPE_TEXT,
                 'size' => 255,
                 'nullable' => false,
                 'comment' => 'Tracking page url'
@@ -64,7 +98,6 @@ class InstallSchema implements InstallSchemaInterface
         );
 
         $this->createIntegration();
-
 
         $installer->endSetup();
     }
@@ -88,17 +121,14 @@ class InstallSchema implements InstallSchemaInterface
             $integrationId = $integration->getId();
             $consumerName = 'Integration' . $integrationId;
 
-
             // Code to create consumer
             $consumer = $this->_oauthService->createConsumer(['name' => $consumerName]);
             $consumerId = $consumer->getId();
             $integration->setConsumerId($consumer->getId());
             $integration->save();
 
-
             // Code to grant permission
             $this->_authorizationService->grantAllPermissions($integrationId);
-
 
             // Code to Activate and Authorize
             $this->_token->createVerifierToken($consumerId);

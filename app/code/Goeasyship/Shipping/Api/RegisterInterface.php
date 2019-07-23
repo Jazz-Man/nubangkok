@@ -21,6 +21,11 @@
 
 namespace Goeasyship\Shipping\Api;
 
+/**
+ * Interface RegisterInterface
+ *
+ * @package Goeasyship\Shipping\Api
+ */
 interface RegisterInterface
 {
     /**

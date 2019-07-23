@@ -21,6 +21,11 @@
 
 namespace Goeasyship\Shipping\Model\Logger;
 
+/**
+ * Class Logger
+ *
+ * @package Goeasyship\Shipping\Model\Logger
+ */
 class Logger extends \Monolog\Logger
 {
 

@@ -23,10 +23,20 @@ namespace Goeasyship\Shipping\Model\Source;
 
 use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
 
+/**
+ * Class Categories
+ *
+ * @package Goeasyship\Shipping\Model\Source
+ */
 class Categories extends AbstractSource
 {
     protected $_options;
 
+    /**
+     * Retrieve All options
+     *
+     * @return array
+     */
     public function getAllOptions()
     {
         if ($this->_options === null) {
