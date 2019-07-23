@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5a942a60adc286bbdeca9e5b39fb32c",
+    "content-hash": "683635856e78ac32352aee3ea302263e",
     "packages": [
         {
             "name": "2c2p/2c2p-magento2",
@@ -1615,36 +1615,6 @@
             "time": "2018-12-11T22:56:31+00:00"
         },
         {
-            "name": "goeasyship/shipping",
-            "version": "1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/easyship/easyship-magento2-plugin.git",
-                "reference": "5081f48ef9cab2a104ce21ed5f035bf0c12d0a4f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/easyship/easyship-magento2-plugin/zipball/5081f48ef9cab2a104ce21ed5f035bf0c12d0a4f",
-                "reference": "5081f48ef9cab2a104ce21ed5f035bf0c12d0a4f",
-                "shasum": ""
-            },
-            "type": "magento2-module",
-            "autoload": {
-                "files": [
-                    "registration.php"
-                ],
-                "psr-4": {
-                    "Goeasyship\\Shipping\\": ""
-                }
-            },
-            "description": "Easyship shipping for Magento 2",
-            "support": {
-                "source": "https://github.com/easyship/easyship-magento2-plugin/tree/1.0.3",
-                "issues": "https://github.com/easyship/easyship-magento2-plugin/issues"
-            },
-            "time": "2019-01-15T06:38:19+00:00"
-        },
-        {
             "name": "google/recaptcha",
             "version": "1.2.2",
             "source": {
@@ -2035,6 +2005,23 @@
                 "yahoo"
             ],
             "time": "2019-06-11T13:22:54+00:00"
+        },
+        {
+            "name": "jazzman/easyship-magento2",
+            "version": "1.0.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/Jazz-Man/easyship-magento2-plugin/archive/master.zip"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Goeasyship\\Shipping\\": ""
+                }
+            }
         },
         {
             "name": "justinrainbow/json-schema",
