@@ -1,0 +1,20 @@
+{
+    "name": "goeasyship/shipping",
+    "description": "Easyship shipping for Magento 2",
+    "version": "1.0.2",
+    "type": "magento2-module",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Goeasyship\\Shipping\\": ""
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/easyship/easyship-magento2-plugin"
+        }
+    ]
+}
