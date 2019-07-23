@@ -9,7 +9,6 @@ use function iter\filter;
 use function iter\map;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Tests\NamingConvention\true\string;
 
 /**
  * Class Data.
