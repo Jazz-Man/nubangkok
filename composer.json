@@ -28,7 +28,8 @@
         "mageplaza/module-banner-slider": "^2.0",
         "mageplaza/module-cron-schedule": "^1.0",
         "nikic/iter": "^2.0",
-        "olegkoval/magento2-regenerate-url-rewrites": "^1.4"
+        "olegkoval/magento2-regenerate-url-rewrites": "^1.4",
+        "ext-imagick": "*"
     },
     "require-dev": {
         "allure-framework/allure-phpunit": "~1.2.0",
