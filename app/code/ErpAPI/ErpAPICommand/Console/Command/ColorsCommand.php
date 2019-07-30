@@ -2,6 +2,7 @@
 
 namespace ErpAPI\ErpAPICommand\Console\Command;
 
+use function GuzzleHttp\json_decode;
 use Magento\Catalog\Api\Data\ProductAttributeInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
@@ -17,7 +18,6 @@ use Magento\Store\Model\Store;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use function GuzzleHttp\json_decode;
 
 /**
  * Class ColorsCommand.
@@ -69,7 +69,6 @@ class ColorsCommand extends Command
      */
     private $attributeFactory;
 
-
     /**
      * ColorsCommand constructor.
      *
@@ -90,7 +89,6 @@ class ColorsCommand extends Command
         AttributeFactory $attributeFactory,
         ModuleDataSetupInterface $setup
     ) {
-
         $this->scopeConfig               = $config;
         $this->state                     = $state;
         $this->eavConfig                 = $eavConfig;
@@ -101,18 +99,15 @@ class ColorsCommand extends Command
         parent::__construct();
     }
 
-
     protected function configure()
     {
         $this->setName('erpapi:colors');
-
 
         try {
             $this->state->getAreaCode();
         } catch (LocalizedException $e) {
             $this->state->setAreaCode('adminhtml');
         }
-
 
         $this->_color_code = $this->scopeConfig->getValue('erp_etoday_settings/color_settings/color_code');
 
@@ -122,7 +117,6 @@ class ColorsCommand extends Command
                                                    ->getAllOptions(false);
 
         $this->color_attribute_id = $this->attributeRepository->get(Product::ENTITY, 'color')->getAttributeId();
-
 
         parent::configure();
     }
@@ -141,12 +135,10 @@ class ColorsCommand extends Command
         $ColorsCodeValues = $this->getColorsCodeValues($this->getColorCode(), 'erp_color_value');
 
         $not_neaded_colors = array_filter($this->_color_attributes, static function ($item) use ($ColorsCodeValues) {
-
             return ! in_array($item['value'], $ColorsCodeValues);
         });
 
-
-        if ( ! empty($not_neaded_colors)) {
+        if (! empty($not_neaded_colors)) {
 
             /** @var \Magento\Eav\Setup\EavSetup $eavSetup */
             $eavSetup     = $this->eavSetupFactory->create(['setup' => $this->setup]);
@@ -159,31 +151,24 @@ class ColorsCommand extends Command
 
             $not_neaded_colors = $this->getColorsCodeValues($not_neaded_colors, 'value');
 
-
             $options = array_filter($options, static function (Option $item) use ($not_neaded_colors) {
-
-
                 return in_array($item->getValue(), $not_neaded_colors);
             });
 
             $optionsToRemove = [];
 
-            if (!empty($options)){
+            if (!empty($options)) {
                 foreach ($options as $option) {
-
-                    if (!empty($option['value'])){
+                    if (!empty($option['value'])) {
                         $optionsToRemove['delete'][$option['value']] = true;
                         $optionsToRemove['value'][$option['value']] = true;
                     }
-
                 }
             }
 
-            if (!empty($optionsToRemove)){
-
+            if (!empty($optionsToRemove)) {
                 $eavSetup->addAttributeOption($optionsToRemove);
             }
-
         }
     }
 
@@ -212,6 +197,4 @@ class ColorsCommand extends Command
 
         return array_filter($color_code_values);
     }
-
-
 }
