@@ -2,14 +2,24 @@
 
 namespace Encomage\ErpIntegration\Model\Api;
 
+use DateTime;
 use Magento\Framework\Stdlib\StringUtils;
+use stdClass;
 
 /**
  * Class Product.
  */
 class ErpProduct
 {
+
+    /**
+     * @var string
+     */
     private $LLLedTimeETodayyy;
+
+    /**
+     * @var string
+     */
 
     private $InfoUpdateDateAndTime;
     /**
@@ -27,12 +37,21 @@ class ErpProduct
      * @var int|float
      */
     private $SalesPrice;
+    /**
+     * @var string
+     */
     private $PropArtist;
+    /**
+     * @var string
+     */
     private $PropColor2;
     private $PropFormat;
     private $PropHeelHeight;
     private $PropHeelShape;
     private $PropLabel;
+    /**
+     * @var string
+     */
     private $PropModel;
     private $PropPrice1;
     private $PropVendorSUpplier;
@@ -59,7 +78,7 @@ class ErpProduct
     /**
      * @var bool|string
      */
-    private $Size = false;
+    public $Size = false;
     /**
      * @var StringUtils
      */
@@ -70,7 +89,7 @@ class ErpProduct
      *
      * @param \stdClass $obj
      */
-    public function __construct(\stdClass $obj)
+    public function __construct(stdClass $obj)
     {
         $this->string = new StringUtils();
         foreach ($obj as $property => $value) {
@@ -93,8 +112,8 @@ class ErpProduct
 
                     preg_match($regex, $bar_code, $matches);
 
-                    if (!empty($matches)) {
-                        $this->Size = $matches['Size'];
+                    if ( ! empty($matches)) {
+                        $this->Size       = $matches['Size'];
                         $this->ModelColor = $matches['ModelColor'];
                     }
 
@@ -104,17 +123,17 @@ class ErpProduct
 
                     preg_match($regex, $bar_code, $matches);
 
-                    if (!empty($matches['Size'])) {
-                        $this->Size = $matches['Size'];
+                    if ( ! empty($matches['Size'])) {
+                        $this->Size       = $matches['Size'];
                         $this->ModelColor = $matches['ModelColor'];
                     } else {
                         $regex = '/(?P<Category>[A-Z]{2})(?P<SomeData>[A-Z0-9]{5})(?P<Size>[\d]*)(?P<ModelColor>[A-Z]{4})/';
 
                         preg_match($regex, $bar_code, $matches);
 
-                        if (!empty($matches)) {
+                        if ( ! empty($matches)) {
                             $this->ModelColor = $matches['ModelColor'];
-                            $this->Size = $matches['Size'];
+                            $this->Size       = $matches['Size'];
                         }
                     }
 
@@ -124,9 +143,9 @@ class ErpProduct
 
                     preg_match($regex, $bar_code, $matches);
 
-                    if (!empty($matches)) {
+                    if ( ! empty($matches)) {
                         $this->ModelColor = $matches['ModelColor'];
-                        $this->Size = $matches['Size'];
+                        $this->Size       = $matches['Size'];
                     }
 
                     break;
@@ -134,9 +153,9 @@ class ErpProduct
                     $regex = '/(?P<Category>[A-Z]{2})(?P<SomeData>[A-Z0-9]{7})(?P<ModelColor>[A-Z]{4})(?P<Size>[\d]*)/';
 
                     preg_match($regex, $bar_code, $matches);
-                    if (!empty($matches)) {
+                    if ( ! empty($matches)) {
                         $this->ModelColor = $matches['ModelColor'];
-                        $this->Size = $matches['Size'];
+                        $this->Size       = $matches['Size'];
                     }
                     break;
                 case 14:
@@ -144,7 +163,7 @@ class ErpProduct
 
                     preg_match($regex, $bar_code, $matches);
 
-                    if (!empty($matches)) {
+                    if ( ! empty($matches)) {
                         $this->Size = $matches['Size'];
 
                         switch ($matches['ModelColor']) {
@@ -179,11 +198,11 @@ class ErpProduct
                 case 20:
                 default:
                     $this->ModelColor = false;
-                    $this->Size = false;
+                    $this->Size       = false;
                     break;
             }
 
-            if (!empty($this->Size) && 2 === $this->string->strlen($this->Size)) {
+            if ( ! empty($this->Size) && 2 === $this->string->strlen($this->Size)) {
                 $this->Size = "{$this->Size}0";
             }
         }
@@ -194,8 +213,8 @@ class ErpProduct
      */
     public function isValid()
     {
-        $rawString = mb_strtoupper($this->getIcProductCode(), 'UTF-8');
-        $has_space = !ctype_space($this->getIcProductCode());
+        $rawString    = mb_strtoupper($this->getIcProductCode(), 'UTF-8');
+        $has_space    = ! ctype_space($this->getIcProductCode());
         $is_uppercase = $this->getIcProductCode() === $rawString;
 
         return $has_space && $is_uppercase;
@@ -206,7 +225,7 @@ class ErpProduct
      */
     public function getBarCode()
     {
-        return $this->BarCode;
+        return $this->string->cleanString($this->BarCode);
     }
 
     /**
@@ -222,11 +241,11 @@ class ErpProduct
      */
     public function getModelColor()
     {
-        if (!empty($this->ModelColor)){
-            $colors = str_split($this->ModelColor, 2);
+        if ( ! empty($this->ModelColor)) {
+            $colors = $this->string->split($this->ModelColor, 2);
 
-            return array_filter($colors, static function ($item){
-                return $item !== 'XX';
+            return array_filter($colors, static function ($item) {
+                return 'XX' !== $item;
             });
         }
 
@@ -238,7 +257,30 @@ class ErpProduct
      */
     public function getSize()
     {
-        return $this->Size;
+        $size = filter_var($this->getName(), FILTER_SANITIZE_NUMBER_INT);
+
+        if (!empty($size)){
+            $strlen = $this->string->strlen($size);
+
+            switch ($strlen){
+
+                case $strlen > 4 && $this->string->strlen($this->getPropLabel()) === 2:
+
+                    $size = "{$this->getPropLabel()}0";
+
+                    break;
+                case 4:
+                    $size = $this->string->substr($size, 1);
+                    break;
+                case $strlen < 3:
+                    $size = $this->getPropLabel();
+                    break;
+            }
+
+        }
+
+
+        return $size;
     }
 
     /**
@@ -246,7 +288,7 @@ class ErpProduct
      */
     public function getStockStatus()
     {
-        return (int) $this->UnrestrictStock > 0 ? 1 : 0;
+        return (int)$this->UnrestrictStock > 0 ? 1 : 0;
     }
 
     /**
@@ -270,29 +312,36 @@ class ErpProduct
      */
     public function getConfigSku()
     {
-        if (!empty($this->BarCode)) {
-            if ((int) substr($this->BarCode, 3, 1) > 0) {
-                return substr($this->BarCode, 0, 10);
+        if ( ! empty($this->getBarCode())) {
+            if ((int)$this->string->substr($this->getBarCode(), 3, 1) > 0) {
+                return $this->string->substr($this->getBarCode(), 0, 10);
             }
 
-            return substr($this->BarCode, 0, 9);
+            return $this->string->substr($this->getBarCode(), 0, 9);
         }
 
         return null;
     }
 
+
     /**
-     * @return mixed|string
+     * @return bool|string
      */
     public function getConfigName()
     {
-        if (!empty($this->IcProductDescription0)) {
-            $result = explode(',', $this->IcProductDescription0);
+        $search = [
+            '',
+        ];
 
-            return array_shift($result);
+        if ( ! empty($this->getColor1())) {
+            $search[] = $this->getColor1();
         }
 
-        return ' ';
+        if ( ! empty($this->getSize())) {
+            $search[] = $this->getSize();
+        }
+
+        return $this->upperCaseWords($this->getName(), $search);
     }
 
     /**
@@ -340,21 +389,7 @@ class ErpProduct
      */
     public function getSalesPrice()
     {
-        return !empty($this->SalesPrice) ? abs($this->SalesPrice) : null;
-    }
-
-    /**
-     * @return bool|string
-     */
-    public function getUrlKey()
-    {
-        if (!empty($this->getName()) && !empty($this->getCategoryName())) {
-            $urlKey = "{$this->sanitizeKey($this->getCategoryName())}-{$this->sanitizeKey($this->getName())}";
-
-            return trim($urlKey);
-        }
-
-        return false;
+        return ! empty($this->SalesPrice) ? abs($this->SalesPrice) : null;
     }
 
     /**
@@ -362,16 +397,137 @@ class ErpProduct
      */
     public function getName(): string
     {
-        return $this->IcProductDescription0;
+        $name = $this->upperCaseWords($this->IcProductDescription0);
+
+        return $this->string->cleanString($name);
     }
 
     /**
-     * @param string $key
+     * @return string
+     */
+    public function getPropModel(): string
+    {
+
+        $model = str_replace('H.', 'Heel.', $this->PropModel);
+
+        $name = $this->upperCaseWords($model);
+
+        return $this->string->cleanString($name);
+    }
+
+
+    /**
+     * @return array|bool
+     */
+    public function getColor1()
+    {
+        return $this->buildColor($this->PropArtist);
+    }
+
+
+    /**
+     * @return array|bool
+     */
+    public function getColor2()
+    {
+        return $this->buildColor($this->PropColor2);
+    }
+
+
+    /**
+     * @return bool|\DateTime
+     */
+    public function getCreatedDate()
+    {
+        try {
+            $date = $this->getDate($this->LLLedTimeETodayyy);
+        } catch (\Exception $e) {
+            $date = false;
+        }
+
+        return $date;
+    }
+
+    /**
+     * @return bool|\DateTime
+     */
+    public function getUpdateDate()
+    {
+        try {
+            $date = $this->getDate($this->InfoUpdateDateAndTime);
+        } catch (\Exception $e) {
+            $date = false;
+        }
+
+        return $date;
+    }
+
+    /**
+     * @param string $color_name
+     *
+     * @return bool|string
+     */
+    private function buildColor($color_name)
+    {
+
+        $color_name = trim($color_name);
+
+        if (empty($color_name) || $color_name === '(no color)') {
+            return false;
+        }
+
+        return $this->upperCaseWords($color_name);
+    }
+
+    /**
+     * @param string $timestamp
+     *
+     * @return \DateTime
+     *
+     * @throws \Exception
+     */
+    private function getDate(string $timestamp): DateTime
+    {
+        $timestamp = str_replace(['/Date(', ')/'], '', $timestamp);
+
+        $date = new DateTime();
+        $date->setTimestamp($timestamp);
+
+        return $date;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @param array  $sourceSeparator
+     *
+     * @return bool|string
+     */
+    private function upperCaseWords(string $name, array $sourceSeparator = [])
+    {
+
+        $sourceSeparator = array_merge([',', '-', '.'], $sourceSeparator);
+
+        $sourceSeparator = array_map('strtolower', $sourceSeparator);
+
+        $name = $this->string->upperCaseWords(strtolower($name), $sourceSeparator, ' ');
+
+        $name = $this->trim($name);
+
+        if (empty($name)) {
+            return false;
+        }
+
+        return $name;
+    }
+
+    /**
+     * @param $value
      *
      * @return string
      */
-    private function sanitizeKey(string $key): string
+    private function trim($value)
     {
-        return str_replace([' ', ','], '-', strtolower($key));
+        return trim(preg_replace('/\s{2,}/siu', ' ', $value));
     }
 }

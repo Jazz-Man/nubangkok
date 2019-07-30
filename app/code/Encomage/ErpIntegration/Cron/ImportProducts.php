@@ -8,6 +8,7 @@ use Exception;
 use GuzzleHttp\Psr7\Response;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\ResourceModel\Category as CategoryResource;
@@ -18,7 +19,6 @@ use Magento\ConfigurableProduct\Api\LinkManagementInterfaceFactory;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as TypeConfigurableProduct;
 use Magento\Eav\Api\AttributeOptionManagementInterface;
 use Magento\Eav\Model\AttributeRepository;
-use Magento\Eav\Model\Entity\Attribute;
 use Magento\Eav\Model\Entity\Attribute\Option;
 use Magento\Eav\Model\Entity\Attribute\OptionFactory;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection;
@@ -27,6 +27,7 @@ use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
 use Magento\Framework\ObjectManagerInterface;
+use Magento\Framework\Stdlib\StringUtils;
 use Magento\Store\Model\Store;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -93,10 +94,6 @@ class ImportProducts
     private $apiClient;
 
     /**
-     * @var array
-     */
-    private $_attributesOptions;
-    /**
      * @var int|bool
      */
     private $size_attribute_id;
@@ -112,6 +109,10 @@ class ImportProducts
      * @var array
      */
     private $products_data = [[]];
+    /**
+     * @var \Magento\Framework\Stdlib\StringUtils
+     */
+    private $string;
 
     /**
      * ImportProducts constructor.
@@ -121,7 +122,6 @@ class ImportProducts
      * @param \Magento\Catalog\Model\ResourceModel\Product                    $productResource
      * @param \Magento\Framework\ObjectManagerInterface                       $objectManager
      * @param \Magento\Catalog\Model\ProductFactory                           $productFactory
-     * @param \Magento\Eav\Model\Entity\Attribute                             $entityAttribute
      * @param \Magento\Catalog\Api\CategoryLinkManagementInterface            $categoryLinkManagement
      * @param \Magento\ConfigurableProduct\Model\Product\Type\Configurable    $typeConfigurableProduct
      * @param \Magento\CatalogInventory\Api\StockRegistryInterfaceFactory     $stockRegistryFactory
@@ -133,7 +133,6 @@ class ImportProducts
      *
      * @param \Encomage\ErpIntegration\Helper\Data                            $helper
      *
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -141,7 +140,6 @@ class ImportProducts
         ProductResource $productResource,
         ObjectManagerInterface $objectManager,
         ProductFactory $productFactory,
-        Attribute $entityAttribute,
         CategoryLinkManagementInterface $categoryLinkManagement,
         TypeConfigurableProduct $typeConfigurableProduct,
         StockRegistryInterfaceFactory $stockRegistryFactory,
@@ -168,14 +166,8 @@ class ImportProducts
 
 
         $this->apiClient = new ApiClient($scopeConfig);
+        $this->string = new StringUtils();
 
-        $this->_attributesOptions['color'] = $entityAttribute->loadByCode('catalog_product', 'color')
-                                                             ->getSource()
-                                                             ->getAllOptions(false, true);
-
-        $this->_attributesOptions['size'] = $entityAttribute->loadByCode('catalog_product', 'size')
-                                                            ->getSource()
-                                                            ->getAllOptions(false, true);
 
         $this->setAllCategories();
 
@@ -372,7 +364,7 @@ class ImportProducts
      */
     public function execute()
     {
-        $this->logger->info('Finish Cron Import');
+        $this->logger->info('Start ERP Cron Import');
 
 
         $last_point = 'GetProductList';
@@ -393,6 +385,8 @@ class ImportProducts
 
             $this->dataProccesing($this->products_data);
         }
+
+        $this->logger->info('Finish ERP Cron Import');
 
     }
 
@@ -417,6 +411,7 @@ class ImportProducts
                 if ($productId) {
                     $product->load($productId);
                     $product->setPrice($datum->getSalesPrice());
+                    $product->setName($datum->getName());
 
                     $product->addData([
                         'quantity_and_stock_status' => [
@@ -425,17 +420,6 @@ class ImportProducts
                         ],
                     ]);
 
-                    if ($datum->getModelColor()) {
-
-                        $colors = $this->helper->getColorCode($datum->getModelColor());
-
-                        if (!empty($colors)) {
-                            $colors = array_column($colors, 'erp_color_value');
-
-                            $product->setColor(reset($colors));
-                        }
-                    }
-
                     try {
                         $this->productResource->save($product);
 
@@ -443,11 +427,11 @@ class ImportProducts
                         $this->logger->error($e->getMessage());
                     }
                 } else {
-                    $product->setSku($datum->getIcProductCode());
+                    $product->setSku($datum->getBarCode());
                     $product->setName($datum->getName());
                     $product->setAttributeSetId($product->getDefaultAttributeSetId());
                     $product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-                    $product->setTypeId('simple');
+                    $product->setTypeId(Type::TYPE_SIMPLE);
                     $product->setPrice($datum->getSalesPrice());
                     $product->setWeight(null);
                     $product->setStoreId(Store::DEFAULT_STORE_ID);
@@ -462,7 +446,6 @@ class ImportProducts
                     ]);
 
                     if ($datum->getModelColor()) {
-
                         $colors = $this->helper->getColorCode($datum->getModelColor());
 
                         if (!empty($colors)) {
@@ -489,14 +472,11 @@ class ImportProducts
                         }
                     }
 
-                    $product->setUrlKey($datum->getUrlKey());
-
                     try {
                         $this->productResource->save($product);
 
                         if (!empty($CategoryId)) {
-                            $this->categoryLinkManagement->assignProductToCategories($datum->getIcProductCode(),
-                                [$CategoryId]);
+                            $this->categoryLinkManagement->assignProductToCategories($datum->getBarCode(), [$CategoryId]);
                         }
 
                         $this->buildConfigurableProduct($datum, $product, $CategoryId);
@@ -522,31 +502,34 @@ class ImportProducts
 
         $configurable = [];
 
+        $config_sku = $datum->getConfigSku();
+
         if (!empty($ConfigurableProduct)) {
-            if (!empty($datum->getConfigSku()) && !empty($datum->getConfigName())) {
-                $configurable[$datum->getConfigSku()] = [
-                    'name' => $datum->getConfigName(),
+
+            if (!empty($config_sku) && !empty($datum->getPropModel())) {
+                $configurable[$config_sku] = [
+                    'name' => $datum->getPropModel(),
                     'category_ids' => $category_id,
                 ];
 
-                $configurable[$datum->getConfigSku()]['category_name'] = $datum->getCategoryName();
+                $configurable[$config_sku]['category_name'] = $datum->getCategoryName();
             }
 
-            if ($_product->getId() && \array_key_exists($datum->getConfigSku(), $configurable)) {
-                $configurable[$datum->getConfigSku()]['associate_ids'][$_product->getId()] = $_product->getId();
-                $configurable[$datum->getConfigSku()]['skus'][] = $_product->getSku();
+            if (array_key_exists($config_sku, $configurable) && $_product->getId()) {
+                $configurable[$config_sku]['associate_ids'][$_product->getId()] = $_product->getId();
+                $configurable[$config_sku]['skus'][] = $_product->getSku();
             }
 
-            $configurable[$datum->getConfigSku()]['color'] = \array_key_exists('color',
-                $configurable[$datum->getConfigSku()]) ? $configurable[$datum->getConfigSku()]['color'] : '';
-            if (null === $configurable[$datum->getConfigSku()]['color']) {
-                $configurable[$datum->getConfigSku()]['color'] = $_product->getColor() ?: null;
+            $configurable[$config_sku]['color'] = array_key_exists('color',
+                $configurable[$config_sku]) ? $configurable[$config_sku]['color'] : '';
+            if (null === $configurable[$config_sku]['color']) {
+                $configurable[$config_sku]['color'] = $_product->getColor() ?: null;
             }
 
-            $configurable[$datum->getConfigSku()]['size'] = \array_key_exists('size',
-                $configurable[$datum->getConfigSku()]) ? $configurable[$datum->getConfigSku()]['size'] : '';
-            if (null === $configurable[$datum->getConfigSku()]['size']) {
-                $configurable[$datum->getConfigSku()]['size'] = $_product->getSize() ?: null;
+            $configurable[$config_sku]['size'] = array_key_exists('size', $configurable[$config_sku]) ? $configurable[$config_sku]['size'] : '';
+
+            if (null === $configurable[$config_sku]['size']) {
+                $configurable[$config_sku]['size'] = $_product->getSize() ?: null;
             }
         }
 
@@ -569,7 +552,7 @@ class ImportProducts
                         Configuration::DEFAULT_WEBSITE_ID => Configuration::DEFAULT_WEBSITE_ID,
                     ]);
 
-                    if ('S' === substr($sku, 1, 1)) {
+                    if ('S' === $this->string->substr($sku, 1, 1)) {
                         $product->setAskAboutShoeSize(1);
                     }
 

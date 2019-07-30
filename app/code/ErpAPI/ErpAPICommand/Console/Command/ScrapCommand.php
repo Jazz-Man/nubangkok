@@ -4,13 +4,13 @@ namespace ErpAPI\ErpAPICommand\Console\Command;
 
 use Encomage\ErpIntegration\Helper\ApiClient;
 use Encomage\ErpIntegration\Helper\CacheFile;
+use Encomage\ErpIntegration\Helper\Data;
 use Encomage\ErpIntegration\Model\Api\ErpProduct;
 use Exception;
 use GuzzleHttp\Psr7\Response;
-use InvalidArgumentException;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Model\Product;
-use Magento\Catalog\Model\Product\Visibility;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\ResourceModel\Category as CategoryResource;
 use Magento\Catalog\Model\ResourceModel\Product as ProductResource;
@@ -20,7 +20,6 @@ use Magento\ConfigurableProduct\Api\LinkManagementInterfaceFactory;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as TypeConfigurableProduct;
 use Magento\Eav\Api\AttributeOptionManagementInterface;
 use Magento\Eav\Model\AttributeRepository;
-use Magento\Eav\Model\Entity\Attribute;
 use Magento\Eav\Model\Entity\Attribute\Option;
 use Magento\Eav\Model\Entity\Attribute\OptionFactory;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection;
@@ -31,41 +30,22 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
 use Magento\Framework\ObjectManagerInterface;
+use Magento\Framework\Stdlib\StringUtils;
 use Magento\Store\Model\Store;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Magento\Catalog\Model\Product\Visibility;
 use Symfony\Component\Console\Output\OutputInterface;
-use function GuzzleHttp\json_decode as json_decodeAlias;
+use function array_key_exists;
+use function count;
 use function iter\filter;
-use function iter\map;
 
 /**
  * Class HelloWorldCommand.
  */
 class ScrapCommand extends Command
 {
-    /**
-     * @var ScopeConfigInterface
-     */
-    private $_config;
-
-    /**
-     * @var string
-     */
-    private $_categories_codes;
-    /**
-     * @var string
-     */
-    private $_shoe_codes;
-    /**
-     * @var string
-     */
-    private $_bags_codes;
-    /**
-     * @var string
-     */
-    private $_color_code;
     /**
      * @var array
      */
@@ -93,10 +73,7 @@ class ScrapCommand extends Command
      * @var \Magento\Catalog\Model\ProductFactory
      */
     private $productFactory;
-    /**
-     * @var array
-     */
-    private $_attributesOptions;
+
 
     /**
      * @var CategoryLinkManagementInterface
@@ -142,6 +119,15 @@ class ScrapCommand extends Command
      * @var \Encomage\ErpIntegration\Helper\CacheFile
      */
     private $cacheFile;
+    /**
+     * @var \Encomage\ErpIntegration\Helper\Data
+     */
+    private $helper;
+    /**
+     * @var \Magento\Framework\Stdlib\StringUtils
+     */
+    private $string;
+
 
     /**
      * ScrapCommand constructor.
@@ -151,7 +137,6 @@ class ScrapCommand extends Command
      * @param ProductResource                                                 $productResource
      * @param ObjectManagerInterface                                          $objectManager
      * @param \Magento\Catalog\Model\ProductFactory                           $productFactory
-     * @param Attribute                                                       $entityAttribute
      * @param CategoryLinkManagementInterface                                 $categoryLinkManagement
      * @param TypeConfigurableProduct                                         $typeConfigurableProduct
      * @param StockRegistryInterfaceFactory                                   $stockRegistryFactory
@@ -160,7 +145,8 @@ class ScrapCommand extends Command
      * @param AttributeOptionManagementInterface                              $attributeOptionManager
      * @param \Magento\Eav\Model\AttributeRepository                          $attributeRepository
      *
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param \Encomage\ErpIntegration\Helper\Data                            $helper
+     *
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -168,16 +154,15 @@ class ScrapCommand extends Command
         ProductResource $productResource,
         ObjectManagerInterface $objectManager,
         ProductFactory $productFactory,
-        Attribute $entityAttribute,
         CategoryLinkManagementInterface $categoryLinkManagement,
         TypeConfigurableProduct $typeConfigurableProduct,
         StockRegistryInterfaceFactory $stockRegistryFactory,
         LinkManagementInterfaceFactory $linkManagementFactory,
         OptionFactory $optionFactory,
         AttributeOptionManagementInterface $attributeOptionManager,
-        AttributeRepository $attributeRepository
+        AttributeRepository $attributeRepository,
+        Data $helper
     ) {
-        $this->_config = $scopeConfig;
         $this->categoryResource = $categoryResource;
         $this->productResource = $productResource;
         $this->productFactory = $productFactory;
@@ -195,31 +180,12 @@ class ScrapCommand extends Command
         $this->apiClient = new ApiClient($scopeConfig);
         $this->cacheFile = new CacheFile($objectManager);
 
-        $this->_attributesOptions['color'] = $entityAttribute->loadByCode('catalog_product', 'color')
-                                                             ->getSource()
-                                                             ->getAllOptions(false, true);
+        $this->string = new StringUtils();
 
-        $this->_attributesOptions['size'] = $entityAttribute->loadByCode('catalog_product', 'size')
-                                                            ->getSource()
-                                                            ->getAllOptions(false, true);
+
+        $this->helper = $helper;
     }
 
-    /**
-     * @param mixed  $label
-     * @param string $attrName
-     *
-     * @return array
-     */
-    public function getAttributeIdByLabel($label, $attrName)
-    {
-        foreach ($this->_attributesOptions[$attrName] as $option) {
-            if ($option['label'] === $label) {
-                return $option;
-            }
-        }
-
-        return ['label' => '', 'value' => ''];
-    }
 
     /**
      * @param ErpProduct                     $datum
@@ -234,31 +200,34 @@ class ScrapCommand extends Command
 
         $configurable = [];
 
+        $config_sku = $datum->getConfigSku();
+
         if (!empty($ConfigurableProduct)) {
-            if (!empty($datum->getConfigSku()) && !empty($datum->getConfigName())) {
-                $configurable[$datum->getConfigSku()] = [
-                    'name' => $datum->getConfigName(),
+
+            if (!empty($config_sku) && !empty($datum->getPropModel())) {
+                $configurable[$config_sku] = [
+                    'name' => $datum->getPropModel(),
                     'category_ids' => $category_id,
                 ];
 
-                $configurable[$datum->getConfigSku()]['category_name'] = $datum->getCategoryName();
+                $configurable[$config_sku]['category_name'] = $datum->getCategoryName();
             }
 
-            if ($_product->getId() && \array_key_exists($datum->getConfigSku(), $configurable)) {
-                $configurable[$datum->getConfigSku()]['associate_ids'][$_product->getId()] = $_product->getId();
-                $configurable[$datum->getConfigSku()]['skus'][] = $_product->getSku();
+            if (array_key_exists($config_sku, $configurable) && $_product->getId()) {
+                $configurable[$config_sku]['associate_ids'][$_product->getId()] = $_product->getId();
+                $configurable[$config_sku]['skus'][] = $_product->getSku();
             }
 
-            $configurable[$datum->getConfigSku()]['color'] = \array_key_exists('color',
-                $configurable[$datum->getConfigSku()]) ? $configurable[$datum->getConfigSku()]['color'] : '';
-            if (null === $configurable[$datum->getConfigSku()]['color']) {
-                $configurable[$datum->getConfigSku()]['color'] = $_product->getColor() ?: null;
+            $configurable[$config_sku]['color'] = array_key_exists('color',
+                $configurable[$config_sku]) ? $configurable[$config_sku]['color'] : '';
+            if (null === $configurable[$config_sku]['color']) {
+                $configurable[$config_sku]['color'] = $_product->getColor() ?: null;
             }
 
-            $configurable[$datum->getConfigSku()]['size'] = \array_key_exists('size',
-                $configurable[$datum->getConfigSku()]) ? $configurable[$datum->getConfigSku()]['size'] : '';
-            if (null === $configurable[$datum->getConfigSku()]['size']) {
-                $configurable[$datum->getConfigSku()]['size'] = $_product->getSize() ?: null;
+            $configurable[$config_sku]['size'] = array_key_exists('size', $configurable[$config_sku]) ? $configurable[$config_sku]['size'] : '';
+
+            if (null === $configurable[$config_sku]['size']) {
+                $configurable[$config_sku]['size'] = $_product->getSize() ?: null;
             }
         }
 
@@ -281,11 +250,11 @@ class ScrapCommand extends Command
                         Configuration::DEFAULT_WEBSITE_ID => Configuration::DEFAULT_WEBSITE_ID,
                     ]);
 
-                    if ('S' === substr($sku, 1, 1)) {
+                    if ('S' === $this->string->substr($sku, 1, 1)) {
                         $product->setAskAboutShoeSize(1);
                     }
 
-                    $product->setUrlKey($this->getUrlKey($settings['name'], $settings['category_name']));
+                    $product->setUrlKey($this->helper->getUrlKey($settings['name'], $settings['category_name']));
 
                     $attributes = [];
 
@@ -307,6 +276,9 @@ class ScrapCommand extends Command
                     $product->setConfigurableProductsData($configurableProductsData);
 
                     $this->productResource->save($product);
+
+                    dump("Save ConfigurableProduct: '{$product->getName()}'");
+
                     $productId = $product->getId();
 
                     $this->categoryLinkManagement->assignProductToCategories($sku, [$settings['category_ids']]);
@@ -333,29 +305,6 @@ class ScrapCommand extends Command
         }
     }
 
-    /**
-     * @param string $name
-     * @param string $category_name
-     *
-     * @return string
-     */
-    private function getUrlKey($name, $category_name)
-    {
-        $urlKey = "{$this->sanitizeKey($category_name)}-{$this->sanitizeKey($name)}";
-
-        return trim($urlKey);
-    }
-
-    /**
-     * @param string $key
-     *
-     * @return string
-     */
-    private function sanitizeKey(string $key): string
-    {
-        return str_replace([' ', ','], '-', strtolower($key));
-    }
-
     protected function configure()
     {
         $this->setName('erpapi:scrap')->setDescription('So much hello world.');
@@ -366,10 +315,6 @@ class ScrapCommand extends Command
         } catch (LocalizedException $e) {
         }
 
-        $this->_color_code = $this->_config->getValue('erp_etoday_settings/color_settings/color_code');
-        $this->_bags_codes = $this->_config->getValue('erp_etoday_settings/category_type_bags/bags_codes');
-        $this->_shoe_codes = $this->_config->getValue('erp_etoday_settings/category_type_shoe/shoe_codes');
-        $this->_categories_codes = $this->_config->getValue('erp_etoday_settings/categories/categories_codes');
 
         $this->setAllCategories();
 
@@ -382,15 +327,17 @@ class ScrapCommand extends Command
         parent::configure();
     }
 
-    /**
-     * @return \Magento\Eav\Api\Data\AttributeOptionInterface[]
-     *
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\StateException
-     */
-    private function getAllSizes()
+    private function setAllCategories()
     {
-        return $this->attributeOptionManager->getItems(Product::ENTITY, $this->size_attribute_id);
+        $category_table = $this->categoryResource->getTable('catalog_category_entity_varchar');
+
+        $select = $this->categoryResource->getConnection()
+                                         ->select()
+                                         ->from($category_table)
+                                         ->where('value IS NOT NULL')
+                                         ->where('store_id = ?', Store::DEFAULT_STORE_ID);
+
+        $this->all_categories = $this->categoryResource->getConnection()->fetchAll($select);
     }
 
     /**
@@ -407,6 +354,7 @@ class ScrapCommand extends Command
         $output->writeln('Hello World!');
 
         $CacheFile = $this->cacheFile->getCacheFile();
+
 
         if ($CacheFile) {
             $this->dataProccesing($CacheFile);
@@ -429,7 +377,7 @@ class ScrapCommand extends Command
 
                 $this->cacheFile->saveCacheFile($this->products_data);
 
-                $this->dataProccesing($this->products_data);
+//                $this->dataProccesing($this->products_data);
             }
         }
 
@@ -444,15 +392,13 @@ class ScrapCommand extends Command
      */
     public function dataProccesing(array $products_data)
     {
-        /** @var \Generator|ErpProduct[] $data */
-        $data = map(static function ($value) {
-            return new ErpProduct($value);
-        }, $products_data);
+        $data = $this->helper->getErpProductsObjects($products_data);
 
         foreach ($data as $datum) {
             if ($datum->isValid()) {
-                $productId = $this->productResource->getIdBySku($datum->getIcProductCode());
+                $productId = $this->productResource->getIdBySku($datum->getBarCode());
                 $CategoryId = $this->getCategoryId($datum->getBarCode());
+
 
                 /** @var \Magento\Catalog\Model\Product $product */
                 $product = $this->productFactory->create();
@@ -460,6 +406,7 @@ class ScrapCommand extends Command
                 if ($productId) {
                     $product->load($productId);
                     $product->setPrice($datum->getSalesPrice());
+                    $product->setName($datum->getName());
 
                     $product->addData([
                         'quantity_and_stock_status' => [
@@ -467,18 +414,6 @@ class ScrapCommand extends Command
                             'qty' => $datum->getUnrestrictStock(),
                         ],
                     ]);
-
-                    if ($datum->getModelColor()) {
-                        $colors = array_filter($this->getColorCode(), static function ($item) use ($datum) {
-                            return \in_array($item['erp_color_code'], $datum->getModelColor());
-                        });
-
-                        if (!empty($colors)) {
-                            $colors = array_column($colors, 'erp_color_value');
-
-                            $product->setColor(reset($colors));
-                        }
-                    }
 
                     try {
                         $this->productResource->save($product);
@@ -488,11 +423,11 @@ class ScrapCommand extends Command
                         dump($e->getMessage());
                     }
                 } else {
-                    $product->setSku($datum->getIcProductCode());
+                    $product->setSku($datum->getBarCode());
                     $product->setName($datum->getName());
                     $product->setAttributeSetId($product->getDefaultAttributeSetId());
                     $product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-                    $product->setTypeId('simple');
+                    $product->setTypeId(Type::TYPE_SIMPLE);
                     $product->setPrice($datum->getSalesPrice());
                     $product->setWeight(null);
                     $product->setStoreId(Store::DEFAULT_STORE_ID);
@@ -507,9 +442,7 @@ class ScrapCommand extends Command
                     ]);
 
                     if ($datum->getModelColor()) {
-                        $colors = array_filter($this->getColorCode(), static function ($item) use ($datum) {
-                            return \in_array($item['erp_color_code'], $datum->getModelColor());
-                        });
+                        $colors = $this->helper->getColorCode($datum->getModelColor());
 
                         if (!empty($colors)) {
                             $colors = array_column($colors, 'erp_color_value');
@@ -535,14 +468,13 @@ class ScrapCommand extends Command
                         }
                     }
 
-                    $product->setUrlKey($datum->getUrlKey());
-
                     try {
                         $this->productResource->save($product);
 
+                        dump("Save New: '{$product->getName()}'");
+
                         if (!empty($CategoryId)) {
-                            $this->categoryLinkManagement->assignProductToCategories($datum->getIcProductCode(),
-                                [$CategoryId]);
+                            $this->categoryLinkManagement->assignProductToCategories($datum->getBarCode(), [$CategoryId]);
                         }
 
                         $this->buildConfigurableProduct($datum, $product, $CategoryId);
@@ -584,7 +516,7 @@ class ScrapCommand extends Command
 
         $bytes = max($bytes, 0);
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-        $pow = min($pow, \count($units) - 1);
+        $pow = min($pow, count($units) - 1);
 
         $bytes /= (1 << (10 * $pow));
 
@@ -606,9 +538,7 @@ class ScrapCommand extends Command
         $erpSubCategoryCode = substr($bar_code, 2, 1);
 
         if (null !== $erpCategoryCode) {
-            $cat = filter(static function ($item) use ($erpCategoryCode) {
-                return $item['erp_category_code'] === $erpCategoryCode;
-            }, $this->getCategoriesCodes());
+            $cat = $this->helper->getCategoriesCodes($erpCategoryCode);
 
             if ($cat->valid()) {
                 $category = $cat->current()['category_path'];
@@ -617,17 +547,13 @@ class ScrapCommand extends Command
 
         if (null !== $typeProduct) {
             if ('S' === $typeProduct) {
-                $cat = filter(static function ($item) use ($erpSubCategoryCode) {
-                    return $item['erp_shoe_code'] === $erpSubCategoryCode;
-                }, $this->getShoeCodes());
+                $cat = $this->helper->getShoeCodes($erpSubCategoryCode);
 
                 if ($cat->valid()) {
                     $subCategory = $cat->current()['shoe_category_value'];
                 }
             } elseif ('B' === $typeProduct) {
-                $cat = filter(static function ($item) use ($erpSubCategoryCode) {
-                    return $item['erp_bags_code'] === $erpSubCategoryCode;
-                }, $this->getBagsCodes());
+                $cat = $this->helper->getBagsCodes($erpSubCategoryCode);
 
                 if ($cat->valid()) {
                     $subCategory = $cat->current()['bags_category_value'];
@@ -670,48 +596,6 @@ class ScrapCommand extends Command
     }
 
     /**
-     * @return array|mixed
-     */
-    private function getCategoriesCodes()
-    {
-        try {
-            $categories_data = json_decodeAlias($this->_categories_codes, true);
-        } catch (InvalidArgumentException $e) {
-            $categories_data = [];
-        }
-
-        return $categories_data;
-    }
-
-    /**
-     * @return array|mixed
-     */
-    private function getShoeCodes()
-    {
-        try {
-            $shoe_codes_data = json_decodeAlias($this->_shoe_codes, true);
-        } catch (InvalidArgumentException $e) {
-            $shoe_codes_data = [];
-        }
-
-        return $shoe_codes_data;
-    }
-
-    /**
-     * @return array|mixed
-     */
-    private function getBagsCodes()
-    {
-        try {
-            $bags_codes_data = json_decodeAlias($this->_bags_codes, true);
-        } catch (InvalidArgumentException $e) {
-            $bags_codes_data = [];
-        }
-
-        return $bags_codes_data;
-    }
-
-    /**
      * @return array
      */
     private function getAllCategories()
@@ -723,28 +607,15 @@ class ScrapCommand extends Command
         return $this->all_categories;
     }
 
-    private function setAllCategories()
-    {
-        $category_table = $this->categoryResource->getTable('catalog_category_entity_varchar');
-
-        $select = $this->categoryResource->getConnection()
-                                         ->select()
-                                         ->from($category_table)
-                                         ->where('value IS NOT NULL')
-                                         ->where('store_id = ?', Store::DEFAULT_STORE_ID);
-
-        $this->all_categories = $this->categoryResource->getConnection()->fetchAll($select);
-    }
-
     /**
-     * @return array
+     * @return \Magento\Eav\Api\Data\AttributeOptionInterface[]
+     *
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\StateException
      */
-    private function getColorCode()
+    private function getAllSizes()
     {
-        $color_code = json_decodeAlias($this->_color_code, true);
-        $color_code = array_values($color_code);
-
-        return $color_code;
+        return $this->attributeOptionManager->getItems(Product::ENTITY, $this->size_attribute_id);
     }
 
     /**
