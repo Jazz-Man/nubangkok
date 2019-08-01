@@ -9,27 +9,26 @@
     ],
     "config": {
         "sort-packages": true,
-        "use-include-path": true
+        "use-include-path": true,
+        "apcu-autoloader": true
     },
     "require": {
+        "ext-imagick": "*",
         "ext-json": "*",
         "2c2p/2c2p-magento2": "^7.0",
         "code4business/freeproduct2": "^1.2",
         "dhl/module-shipping-m2": "^0.10.3",
         "eadesignro/romcity": "^1.1",
-        "elgentos/regenerate-catalog-urls": "^0.2.0",
         "guzzlehttp/guzzle": "^6.3",
         "jazzman/easyship-magento2": "^1.0",
         "livechat/module-magento-livechat": "^2.3",
         "magefan/module-blog": "^2.8",
         "magento/product-community-edition": "2.3.2",
-        "magento/zendframework1": "^1.13",
         "mageplaza/magento-2-social-login": "^2.7",
         "mageplaza/module-banner-slider": "^2.0",
         "mageplaza/module-cron-schedule": "^1.0",
-        "nikic/iter": "^2.0",
-        "olegkoval/magento2-regenerate-url-rewrites": "^1.4",
-        "ext-imagick": "*"
+        "mailchimp/mc-magento2": "^102.3",
+        "nikic/iter": "^2.0"
     },
     "require-dev": {
         "allure-framework/allure-phpunit": "~1.2.0",
