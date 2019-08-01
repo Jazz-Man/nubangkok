@@ -553,3 +553,67 @@ html:lang(th) .cms-button-small {
   line-height: 0.9;
   /*letter-spacing: 1px;*/
 }
+
+
+.desktop-footer > div:first-of-type{
+  width: 40%;
+}
+.desktop-footer div:first-of-type > a {
+  padding-left: 40px;
+}
+.desktop-footer > div:nth-child(4){
+  width: 40%;
+}
+.desktop-footer div:nth-child(4) > a {
+  padding-left: 40px;
+}
+.desktop-footer{
+  margin-top: 30px;
+}
+.desktop-footer span.copyright{
+  display: inline-block;
+  font-size: 12px;
+  text-transform: capitalize;
+  margin-top: 40px;
+  float: right;
+  margin-right: 20px;
+}
+.desktop-footer > div{
+  width: 30%;
+  display: inline-block;
+  float: left;
+  height: 36px;
+}
+.desktop-footer > div > a{
+  vertical-align: top;
+}
+.desktop-footer .social-links{
+  width: 40%;
+  display: inline-block;
+  margin-left: 5%;
+}
+.desktop-footer .social-links .social-acc-pic{
+  margin-left: 7%;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  padding-left: 0;
+}
+@media screen and (max-width: 1012px){
+  .desktop-footer .social-links .social-acc-pic {
+    margin-left: 0;
+  }
+}
+@media only screen and (max-width: 922px){
+  .desktop-footer > div:nth-child(2){
+    width: 35%;
+  }
+  .desktop-footer > div:nth-child(3){
+    width: 25%;
+  }
+}
+@media only screen and (max-width: 767px){
+  .desktop-footer{
+    display: none;
+  }
+}
