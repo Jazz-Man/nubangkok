@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <referenceContainer name="header.container">
+            <referenceBlock name="top.search" remove="true"/>
+        </referenceContainer>
         <referenceBlock name="top.links">
             <block class="Magento\Framework\View\Element\Html\Link" name="store.locator" after="my-account-link">
                 <arguments>
@@ -9,10 +13,9 @@
                     <argument name="path" xsi:type="string" translate="false">where-to-buy</argument>
                     <argument name="sortOrder" xsi:type="number">110</argument>
                 </arguments>
-        </block>
-            <block class="Magento\Framework\View\Element\Template" name="top.search"
-                   as="topSearch" template="Magento_Search::form.mini.phtml" after="my-account-link"/>
-            <block class="Magento\Checkout\Block\Cart\Sidebar" name="minicart" as="minicart" after="top.search"
+            </block>
+
+            <block class="Magento\Checkout\Block\Cart\Sidebar" name="minicart" as="minicart" after="store.locator"
                    template="Magento_Checkout::cart/minicart.phtml">
                 <arguments>
                     <argument name="jsLayout" xsi:type="array">
@@ -82,7 +85,8 @@
             <container name="left-sidebar-container" as="left-sidebar-container" label="Left sidebar container"
                        htmlTag="div"
                        htmlClass="left-sidebar-container js-sticky-sidebar">
-                <block class="Magento\Framework\View\Element\Template" name="sidebar-menu-container" as="sidebar-menu-container"
+                <block class="Magento\Framework\View\Element\Template" name="sidebar-menu-container"
+                       as="sidebar-menu-container"
                        template="Magento_Theme::html/page/sidebar-container.phtml">
                     <block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="sidebar_categories"
                            as="sidebar.categories"
@@ -103,13 +107,13 @@
                    template="Magento_Theme::html/container.phtml">
                 <block class="Magento\Framework\View\Element\Template" name="mobile.nav.container"
                        template="Magento_Theme::html/mobile/page/nav/container.phtml">
-                    <block class="Magento\Framework\View\Element\Template" name="mobile.nav.search"
-                           as="mobile.topSearch" template="Magento_Search::mobile/page/nav/form.mini.phtml" before="-"/>
                     <container name="mobile.nav.switch" as="mobile.nav.switch" label="Mobile nav switch" htmlTag="div"
-                               htmlClass="mobile-nav-switch" after="mobile.nav.search">
+                               htmlClass="mobile-nav-switch" before="-">
+
                         <block class="Magento\Store\Block\Switcher" name="mobile.nav.switch.languages"
                                as="mobile.nav.switch.languages"
                                template="Magento_Store::mobile/page/nav/languages.phtml" before="-"/>
+
                         <block class="Magento\Directory\Block\Currency" name="mobile.nav.switch.currency"
                                as="mobile.nav.switch.currency"
                                template="Magento_Directory::mobile/page/nav/currency.phtml"
@@ -117,7 +121,8 @@
                     </container>
 
 
-                    <block class="Magento\Framework\View\Element\Template" name="mobile-sidebar-menu-container" as="sidebar-menu-container"
+                    <block class="Magento\Framework\View\Element\Template" name="mobile-sidebar-menu-container"
+                           as="sidebar-menu-container"
                            template="Magento_Theme::html/page/sidebar-container.phtml"/>
                 </block>
             </block>
@@ -148,7 +153,7 @@
         <referenceBlock name="wish-list-link" remove="true"/>
         <referenceBlock name="register-link" remove="true"/>
         <referenceBlock name="catalog.compare.link" remove="true"/>
-        <referenceBlock name="authorization-link" remove="true" />
+        <referenceBlock name="authorization-link" remove="true"/>
         <referenceBlock name="currency" remove="true"/>
         <referenceBlock name="store_language" remove="true"/>
         <referenceBlock name="page.main.title" remove="true"/>
