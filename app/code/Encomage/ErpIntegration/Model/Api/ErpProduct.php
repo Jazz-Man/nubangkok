@@ -3,7 +3,7 @@
 namespace Encomage\ErpIntegration\Model\Api;
 
 use DateTime;
-use Magento\Framework\Stdlib\StringUtils;
+use Encomage\ErpIntegration\Helper\StringUtils;
 use stdClass;
 
 /**
@@ -259,10 +259,10 @@ class ErpProduct
     {
         $size = filter_var($this->getName(), FILTER_SANITIZE_NUMBER_INT);
 
-        if (!empty($size)){
+        if ( ! empty($size)) {
             $strlen = $this->string->strlen($size);
 
-            switch ($strlen){
+            switch ($strlen) {
 
                 case $strlen > 4 && $this->string->strlen($this->getPropLabel()) === 2:
 
@@ -277,6 +277,12 @@ class ErpProduct
                     break;
             }
 
+            switch ((int)$size) {
+                case 3:
+                    $size = 'XS';
+                    break;
+            }
+
         }
 
 
@@ -286,9 +292,9 @@ class ErpProduct
     /**
      * @return int
      */
-    public function getStockStatus()
+    public function getStockStatus():int
     {
-        return (int)$this->UnrestrictStock > 0 ? 1 : 0;
+        return $this->UnrestrictStock > 0 ? 1 : 0;
     }
 
     /**
@@ -344,20 +350,30 @@ class ErpProduct
         return $this->upperCaseWords($this->getName(), $search);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getICCategoryCode()
-    {
-        return $this->string->cleanString($this->ICCategoryCode);
-    }
 
     /**
-     * @return mixed
+     * @return string
+     */
+    public function getCategoryCode()
+    {
+        return $this->string->cleanString(strtoupper($this->ICCategoryCode));
+    }
+
+
+    /**
+     * @return bool|string
      */
     public function getPropFormat()
     {
-        return $this->string->cleanString($this->PropFormat);
+        $name = $this->string->cleanString($this->PropFormat);
+
+
+        $name = preg_replace('/(S6|S4)/', 'Essence', $name);
+        $name = preg_replace('/(Heel Fleet|Low Heel)/', 'Heel', $name);
+        $name = preg_replace('/(Flat,Ballet|Ballet, Flat|Ballet,flat|Flat|Ballet)/', 'Ballet Flat', $name);
+
+
+        return $this->upperCaseWords($name);
     }
 
     /**
@@ -381,7 +397,39 @@ class ErpProduct
      */
     public function getCategoryName(): string
     {
-        return $this->string->cleanString($this->IcCategoryName);
+
+        $name = $this->upperCaseWords($this->IcCategoryName);
+
+        return $this->string->cleanString($name);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRootCategoryName(): string
+    {
+        $name = $this->getCategoryName();
+
+        $name = explode(' ', $name);
+
+        return reset($name);
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getSubCategoryName(): string
+    {
+        $name = $this->getCategoryName();
+
+        $name = explode(' ', $name);
+
+        if (count($name) <= 1) {
+            return false;
+        }
+
+        return end($name);
     }
 
     /**
@@ -407,8 +455,17 @@ class ErpProduct
      */
     public function getPropModel(): string
     {
+        $replace = [
+            'H.'           => 'Heel.',
+            'ESN'          => 'Essence',
+            'slim21'       => 'Slim 21',
+            'pompom'       => 'POM POM',
+            'sw.ngoo'      => 'Swish Ngoo',
+            'sw.nangPraya' => 'Swish nangPraya',
+            'Simpicity'    => 'Simplicity',
+        ];
 
-        $model = str_replace('H.', 'Heel.', $this->PropModel);
+        $model = $this->string->strReplaceArray($replace, $this->PropModel);
 
         $name = $this->upperCaseWords($model);
 
@@ -506,13 +563,7 @@ class ErpProduct
     private function upperCaseWords(string $name, array $sourceSeparator = [])
     {
 
-        $sourceSeparator = array_merge([',', '-', '.'], $sourceSeparator);
-
-        $sourceSeparator = array_map('strtolower', $sourceSeparator);
-
-        $name = $this->string->upperCaseWords(strtolower($name), $sourceSeparator, ' ');
-
-        $name = $this->trim($name);
+        $name = $this->string->upperCaseWords($name, $sourceSeparator,' ');
 
         if (empty($name)) {
             return false;
@@ -521,13 +572,5 @@ class ErpProduct
         return $name;
     }
 
-    /**
-     * @param $value
-     *
-     * @return string
-     */
-    private function trim($value)
-    {
-        return trim(preg_replace('/\s{2,}/siu', ' ', $value));
-    }
+
 }
