@@ -40,10 +40,13 @@ class CacheFile
      */
     private $cacheWrite;
 
+
     /**
      * CacheFile constructor.
      *
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     *
+     * @throws \Magento\Framework\Exception\FileSystemException
      */
     public function __construct(ObjectManagerInterface $objectManager)
     {
@@ -54,8 +57,8 @@ class CacheFile
         $this->erpCacheFile = 'erp/ErpCacheFile.json';
 
 
-        $this->cacheRead = $this->filesystem->getDirectoryRead($this->directoryList::CACHE);
-        $this->cacheWrite = $this->filesystem->getDirectoryWrite($this->directoryList::CACHE);
+        $this->cacheRead = $this->filesystem->getDirectoryRead($this->directoryList::VAR_DIR);
+        $this->cacheWrite = $this->filesystem->getDirectoryWrite($this->directoryList::VAR_DIR);
     }
 
     /**
