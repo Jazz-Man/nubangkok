@@ -73,7 +73,7 @@ class ApiClient
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getData(string $point, array $query = [])
+    public function getData(string $point, array $query = []): ResponseInterface
     {
         $query = array_merge($this->defaults, $query);
 
