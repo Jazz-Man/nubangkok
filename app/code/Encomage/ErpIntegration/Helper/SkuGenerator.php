@@ -15,15 +15,8 @@ class SkuGenerator
 
     public const SKU_MAX_LENGTH = 255;
 
-    /**
-     * @var \Encomage\ErpIntegration\Helper\StringUtils
-     */
-    private $string;
+    public const ICONV_CHARSET = 'UTF-8';
 
-    public function __construct()
-    {
-        $this->string = new StringUtils();
-    }
 
     /**
      * @param       $name
@@ -33,7 +26,7 @@ class SkuGenerator
      */
     public function generateProductSku($name, array $attributes = []): string
     {
-        $name = $this->string->cleanString($name);
+        $name = $this->cleanString($name);
 
         $concreteSku = $this->generateConcreteSkuFromAttributes($attributes);
 
@@ -53,7 +46,7 @@ class SkuGenerator
         $sku = sprintf('%s%s%s', $abstractSku, static::SKU_ABSTRACT_SEPARATOR, $concreteSku);
 
         $formattedSku = $this->sanitizeSku($sku);
-        $formattedSku = $this->string->substr($formattedSku, 0, static::SKU_MAX_LENGTH);
+        $formattedSku = substr($formattedSku, 0, static::SKU_MAX_LENGTH);
 
         $formattedSku = rtrim($formattedSku, implode('', [
             static::SKU_TYPE_SEPARATOR,
@@ -68,7 +61,7 @@ class SkuGenerator
      *
      * @return string
      */
-    protected function generateConcreteSkuFromAttributes(array $attributes = [])
+    protected function generateConcreteSkuFromAttributes(array $attributes = []): string
     {
         $sku = '';
 
@@ -91,12 +84,32 @@ class SkuGenerator
      *
      * @return string
      */
-    protected function sanitizeSku($sku)
+    protected function sanitizeSku($sku): string
     {
-        $sku = preg_replace("/[^a-zA-Z0-9\.\-\_]/", '', $this->string->trim($sku));
+        $sku = preg_replace("/[^a-zA-Z0-9\.\-\_]/", '', $this->trim($sku));
         $sku = preg_replace('/\s+/', '-', $sku);
         $sku = preg_replace('/(\-)\1+/', '$1', $sku);
 
         return $sku;
+    }
+
+    /**
+     * @param $string
+     *
+     * @return false|string|string[]|null
+     */
+    protected function cleanString($string)
+    {
+        return mb_convert_encoding($string, self::ICONV_CHARSET);
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return string
+     */
+    protected function trim($string): string
+    {
+        return trim(preg_replace('/\s{2,}/siu', ' ', $string));
     }
 }
