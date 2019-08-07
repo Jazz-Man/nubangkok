@@ -3,180 +3,190 @@
 namespace Encomage\ErpIntegration\Helper;
 
 use Encomage\ErpIntegration\Model\Api\ErpProduct;
-use function GuzzleHttp\json_decode;
-use InvalidArgumentException;
-use function iter\filter;
-use function iter\map;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
-use Magento\Eav\Model\AttributeRepository;
+use Magento\Catalog\Model\ProductFactory;
+use Magento\Catalog\Model\ResourceModel\Category as CategoryResource;
+use Magento\Eav\Model\Config;
+use Magento\Framework\App\CacheInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\ObjectManagerInterface;
-use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection;
-use Magento\Framework\Stdlib\StringUtils;
 use Magento\Store\Model\Store;
-use Magento\Eav\Model\Entity\Attribute;
+use function iter\map;
 
 /**
  * Class Data.
  */
 class Data extends AbstractHelper
 {
-    const XML_PATH_PHP_TIME_LIMIT = 'erp_etoday_settings/erp_authorization/time_limit';
 
-    const COLOR_CODE = 'erp_etoday_settings/color_settings/color_code';
 
-    const BAGS_CODES = 'erp_etoday_settings/category_type_bags/bags_codes';
-
-    const SHOE_CODES = 'erp_etoday_settings/category_type_shoe/shoe_codes';
-
-    const CATEGORIES_CODES = 'erp_etoday_settings/categories/categories_codes';
-
-    private $color_code;
-    private $bags_codes;
-    private $shoe_codes;
-    private $categories_codes;
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var \Magento\Eav\Model\Entity\Attribute\AbstractAttribute
      */
-    private $objectManager;
-    /**
-     * @var \Magento\Eav\Model\AttributeRepository
-     */
-    private $attributeRepository;
-    /**
-     * @var int|null
-     */
-    private $size_attribute_id;
-    /**
-     * @var Collection
-     */
-    private $attributeOptionCollection;
+    private $colors;
 
     /**
-     * @param Context                                   $context
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
-     * @param \Magento\Eav\Model\AttributeRepository    $attributeRepository
+     * @var \Magento\Eav\Model\Entity\Attribute\AbstractAttribute
+     */
+    private $size;
+
+    /**
+     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     */
+    private $productRepository;
+    /**
+     * @var \Magento\Catalog\Model\ProductFactory
+     */
+    private $productFactory;
+    /**
+     * @var \Encomage\ErpIntegration\Helper\SkuGenerator
+     */
+    private $skuGenerator;
+
+    /**
+     * @var \Magento\Catalog\Model\ResourceModel\Category
+     */
+    private $categoryResource;
+    /**
+     * @var \Magento\Framework\App\CacheInterface
+     */
+    private $cache;
+
+    /**
+     * @param Context                                         $context
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     *
+     * @param \Magento\Catalog\Model\ResourceModel\Category   $categoryResource
+     * @param \Magento\Framework\App\CacheInterface           $cache
+     * @param \Magento\Eav\Model\Config                       $attributeConfig
+     * @param \Magento\Catalog\Model\ProductFactory           $productFactory
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function __construct(
         Context $context,
-        ObjectManagerInterface $objectManager,
-        AttributeRepository $attributeRepository
-    )
-    {
+        ProductRepositoryInterface $productRepository,
+        CategoryResource $categoryResource,
+        CacheInterface $cache,
+        Config $attributeConfig,
+        ProductFactory $productFactory
+    ) {
         parent::__construct($context);
 
-        $this->attributeOptionCollection = $objectManager->create(Collection::class);
+        $this->categoryResource = $categoryResource;
+        $this->cache            = $cache;
 
-        $this->color_code       = $this->scopeConfig->getValue(self::COLOR_CODE);
-        $this->bags_codes       = $this->scopeConfig->getValue(self::BAGS_CODES);
-        $this->shoe_codes       = $this->scopeConfig->getValue(self::SHOE_CODES);
-        $this->categories_codes = $this->scopeConfig->getValue(self::CATEGORIES_CODES);
+        $this->productRepository = $productRepository;
+        $this->productFactory    = $productFactory;
+
+        $this->colors = $attributeConfig->getAttribute(Product::ENTITY, 'color');
+        $this->size   = $attributeConfig->getAttribute(Product::ENTITY, 'size');
 
 
+        $this->skuGenerator = new SkuGenerator();
+    }
+
+    /**
+     * @param $sky
+     *
+     * @return \Magento\Catalog\Api\Data\ProductInterface|\Magento\Catalog\Model\Product
+     */
+    public function getProductBySky($sky)
+    {
         try {
-            $this->size_attribute_id = $attributeRepository->get(Product::ENTITY, 'size')->getAttributeId();
+            $_product = $this->productRepository->get($sky);
+
         } catch (NoSuchEntityException $e) {
-            $this->size_attribute_id = false;
+            $_product = $this->productFactory->create();
         }
 
+        return $_product;
     }
 
     /**
-     * @return mixed
-     */
-    public function getTimeLimit()
-    {
-        return $this->scopeConfig->getValue(self::XML_PATH_PHP_TIME_LIMIT);
-    }
-
-    /**
-     * @param array $codes
+     * @param string $name
      *
-     * @return array|bool
+     * @return string
      */
-    public function getColorCode(array $codes)
+    public function generateProductSku($name): string
     {
-        $color_code = $this->jsonDecode($this->color_code);
+        return $this->skuGenerator->generateProductSku($name, [
+            'erp' => 'configurable',
+        ]);
+    }
 
-        if (! empty($color_code)) {
-            $color_code = array_values($color_code);
-
-            $colors = array_filter($color_code, static function ($item) use ($codes) {
-                return in_array($item['erp_color_code'], $codes);
-            });
-
-            return $colors;
+    /**
+     * @param string $color_name
+     *
+     * @return bool|string|null
+     */
+    public function getColorIdByName($color_name)
+    {
+        if ($this->colors->usesSource()) {
+            try {
+                return $this->colors->getSource()->getOptionId($color_name);
+            } catch (LocalizedException $e) {
+                return false;
+            }
         }
 
         return false;
     }
 
     /**
-     * @param $code
+     * @param string $size
      *
-     * @return array|mixed
+     * @return bool|string|null
      */
-    public function getBagsCodes($code)
+    public function getSizeIdByName($size)
     {
-        $data = $this->jsonDecode($this->bags_codes);
-
-        return $this->filter($data, 'erp_bags_code', $code);
-    }
-
-    /**
-     * @param $code
-     *
-     * @return \Iterator
-     */
-    public function getShoeCodes($code)
-    {
-        $data = $this->jsonDecode($this->shoe_codes);
-
-        return $this->filter($data, 'erp_shoe_code', $code);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return \Iterator
-     */
-    public function getCategoriesCodes($code)
-    {
-        $categories_codes = $this->jsonDecode($this->categories_codes);
-
-        return $this->filter($categories_codes, 'erp_category_code', $code);
-    }
-
-    /**
-     * @param        $object
-     * @param string $key
-     * @param string $value
-     *
-     * @return \Iterator
-     */
-    private function filter($object, string $key, string $value)
-    {
-        return filter(static function ($item) use ($key, $value) {
-            return $item[$key] === $value;
-        }, $object);
-    }
-
-    /**
-     * @param string $json
-     *
-     * @return array|mixed
-     */
-    private function jsonDecode($json)
-    {
-        try {
-            $data = json_decode($json, true);
-        } catch (InvalidArgumentException $e) {
-            $data = [];
+        if ($this->size->usesSource()) {
+            try {
+                return $this->size->getSource()->getOptionId($size);
+            } catch (LocalizedException $e) {
+                return false;
+            }
         }
 
-        return $data;
+        return false;
+    }
+
+
+    /**
+     * @param string $category_name
+     *
+     * @return string|false
+     */
+    public function getCategoryByPath(string $category_name)
+    {
+        $identifier = "erp_cat_to_magento_{$category_name}";
+
+        $category_id = $this->cache->load($identifier);
+
+
+        if (empty($category_id)) {
+            $connection = $this->categoryResource->getConnection();
+
+            $category_table = $this->categoryResource->getTable('catalog_category_entity_varchar');
+
+            $select = $connection->select()
+                                 ->from($category_table, 'entity_id')
+                                 ->where('value = ?', $category_name)
+                                 ->where('store_id = ?', Store::DEFAULT_STORE_ID)
+                                 ->limit(1);
+
+            $category_id = $connection->fetchOne($select);
+
+            if ($category_id !== false) {
+                $this->cache->save($category_id, $identifier);
+            }
+
+        }
+
+        return $category_id;
     }
 
     /**
@@ -195,19 +205,6 @@ class Data extends AbstractHelper
     }
 
     /**
-     * @param string $name
-     * @param string $category_name
-     *
-     * @return string
-     */
-    public function getUrlKey($name, $category_name)
-    {
-        $urlKey = "{$this->sanitizeKey($category_name)}-{$this->sanitizeKey($name)}";
-
-        return trim($urlKey);
-    }
-
-    /**
      * @param string $key
      *
      * @return string
@@ -219,43 +216,21 @@ class Data extends AbstractHelper
 
 
     /**
-     * @param string $string
-     * @param null|string   $id
+     * @param int $precision
      *
      * @return string
      */
-    public function skuGen(string $string, $id = null){
-        $results = ''; // empty string
-        $vowels = ['a', 'e', 'i', 'o', 'u', 'y']; // vowels
-        preg_match_all('/[A-Z][a-z]*/', ucfirst($string), $m); // Match every word that begins with a capital letter, added ucfirst() in case there is no uppercase letter
-        foreach($m[0] as $substring){
-            $substring = str_replace($vowels, '', strtolower($substring)); // String to lower case and remove all vowels
-
-            $strlen = mb_strlen($substring, StringUtils::ICONV_CHARSET);
-
-            $results .= preg_replace('/([a-z]{'.$strlen.'})(.*)/', '$1', $substring); // Extract the first N letters.
-        }
-        $results .= '-'. str_pad($id, 4, 0, STR_PAD_LEFT); // Add the ID
-        return $results;
-    }
-
-    /**
-     * @return array
-     */
-    public function getSizeOptions(): array
+    public function testMemory($precision = 2): string
     {
-        return $this->attributeOptionCollection
-            ->setAttributeFilter($this->size_attribute_id)
-            ->setStoreFilter(Store::DEFAULT_STORE_ID)
-            ->load()
-            ->getData();
-    }
+        $bytes = memory_get_peak_usage();
+        $units = ['b', 'kb', 'mb', 'gb', 'tb'];
 
-    /**
-     * @return int|null
-     */
-    public function getSizeAttributeId(): ?int
-    {
-        return $this->size_attribute_id;
+        $bytes = max($bytes, 0);
+        $pow   = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow   = min($pow, count($units) - 1);
+
+        $bytes /= (1 << (10 * $pow));
+
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 }
