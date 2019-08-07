@@ -17,6 +17,11 @@ class SkuGenerator
 
     public const ICONV_CHARSET = 'UTF-8';
 
+    /**
+     * @var \Encomage\ErpIntegration\Helper\StringUtils
+     */
+    private $stringUtil;
+
 
     /**
      * @param       $name
@@ -26,7 +31,9 @@ class SkuGenerator
      */
     public function generateProductSku($name, array $attributes = []): string
     {
-        $name = $this->cleanString($name);
+        $this->stringUtil = new StringUtils();
+
+        $name = $this->stringUtil->cleanString($name);
 
         $concreteSku = $this->generateConcreteSkuFromAttributes($attributes);
 
@@ -46,7 +53,7 @@ class SkuGenerator
         $sku = sprintf('%s%s%s', $abstractSku, static::SKU_ABSTRACT_SEPARATOR, $concreteSku);
 
         $formattedSku = $this->sanitizeSku($sku);
-        $formattedSku = substr($formattedSku, 0, static::SKU_MAX_LENGTH);
+        $formattedSku = $this->stringUtil->substr($formattedSku, 0, static::SKU_MAX_LENGTH);
 
         $formattedSku = rtrim($formattedSku, implode('', [
             static::SKU_TYPE_SEPARATOR,
@@ -86,30 +93,11 @@ class SkuGenerator
      */
     protected function sanitizeSku($sku): string
     {
-        $sku = preg_replace("/[^a-zA-Z0-9\.\-\_]/", '', $this->trim($sku));
+        $sku = preg_replace("/[^a-zA-Z0-9\.\-\_]/", '', $this->stringUtil->trim($sku));
         $sku = preg_replace('/\s+/', '-', $sku);
         $sku = preg_replace('/(\-)\1+/', '$1', $sku);
 
         return $sku;
     }
 
-    /**
-     * @param $string
-     *
-     * @return false|string|string[]|null
-     */
-    protected function cleanString($string)
-    {
-        return mb_convert_encoding($string, self::ICONV_CHARSET);
-    }
-
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
-    protected function trim($string): string
-    {
-        return trim(preg_replace('/\s{2,}/siu', ' ', $string));
-    }
 }

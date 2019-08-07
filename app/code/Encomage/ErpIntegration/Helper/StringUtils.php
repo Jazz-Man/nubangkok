@@ -34,7 +34,7 @@ class StringUtils extends StringUtilsAlias
     {
         $result = [];
         $strLen = $this->strlen($value);
-        if ( ! $strLen || ! is_int($length) || $length <= 0) {
+        if ( ! $strLen || ! \is_int($length) || $length <= 0) {
             return $result;
         }
         if ($trim) {
@@ -119,10 +119,10 @@ class StringUtils extends StringUtilsAlias
      *
      * @return string
      */
-    public function upperCaseWords($str, $sourceSeparator = [], $destinationSeparator = '_')
+    public function upperCaseWords($str, $sourceSeparator = [], $destinationSeparator = '_'): string
     {
 
-        $sourceSeparator = array_merge([',', '-', '.', '_'], (array)$sourceSeparator);
+        $sourceSeparator = array_merge([',', '-', '.', '"', '_'], (array)$sourceSeparator);
         $sourceSeparator = array_map('strtolower', $sourceSeparator);
 
         $str = strtolower($str);
@@ -141,7 +141,7 @@ class StringUtils extends StringUtilsAlias
     public function sanitizeSku($sku): string
     {
 
-        if (function_exists('iconv')) {
+        if (\function_exists('iconv')) {
             $sku = iconv('UTF-8', 'ASCII//TRANSLIT', $sku);
         }
         $sku = preg_replace("/[^a-zA-Z0-9\.\-\_]/", '', $this->trim($sku));
@@ -158,7 +158,17 @@ class StringUtils extends StringUtilsAlias
      *
      * @return string
      */
-    public function trim($string)
+    public function stripAllCharacters(string $string):string
+    {
+        return preg_replace('/[^A-Za-z0-9\-]/', '', $string);
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return string
+     */
+    public function trim($string): string
     {
         return trim(preg_replace('/\s{2,}/siu', ' ', $string));
     }
