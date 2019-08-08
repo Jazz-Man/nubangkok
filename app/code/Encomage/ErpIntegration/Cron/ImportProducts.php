@@ -1,37 +1,28 @@
 <?php
+
 namespace Encomage\ErpIntegration\Cron;
 
 use Encomage\ErpIntegration\Helper\ApiClient;
 use Encomage\ErpIntegration\Helper\Data;
-use Encomage\ErpIntegration\Model\Api\ErpProduct;
 use Exception;
 use GuzzleHttp\Psr7\Response;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
+use Magento\Catalog\Model\Product\Type as TypeAlias;
 use Magento\Catalog\Model\Product\Visibility;
-use Magento\Catalog\Model\ProductFactory;
-use Magento\Catalog\Model\ResourceModel\Category as CategoryResource;
 use Magento\Catalog\Model\ResourceModel\Product as ProductResource;
 use Magento\CatalogInventory\Api\StockRegistryInterfaceFactory;
 use Magento\CatalogInventory\Model\Configuration;
+use Magento\CatalogInventory\Model\Stock\Item as StockItemAlias;
 use Magento\ConfigurableProduct\Api\LinkManagementInterfaceFactory;
+use Magento\ConfigurableProduct\Model\LinkManagement;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as TypeConfigurableProduct;
-use Magento\Eav\Api\AttributeOptionManagementInterface;
-use Magento\Eav\Model\AttributeRepository;
-use Magento\Eav\Model\Entity\Attribute\Option;
-use Magento\Eav\Model\Entity\Attribute\OptionFactory;
-use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Exception\StateException;
-use Magento\Framework\ObjectManagerInterface;
-use Magento\Framework\Stdlib\StringUtils;
 use Magento\Store\Model\Store;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use function iter\filter;
 
 
 /**
@@ -43,326 +34,108 @@ class ImportProducts
 {
 
     /**
-     * @var \Magento\Catalog\Model\ResourceModel\Category
+     * @var array
      */
-    private $categoryResource;
-    /**
-     * @var \Magento\Catalog\Model\ResourceModel\Product
-     */
-    private $productResource;
-    /**
-     * @var \Magento\Framework\ObjectManagerInterface
-     */
-    private $objectManager;
-    /**
-     * @var \Magento\Catalog\Model\ProductFactory
-     */
-    private $productFactory;
+    private $products_data = [[]];
 
     /**
-     * @var \Magento\Catalog\Api\CategoryLinkManagementInterface
+     * @var ProductResource
+     */
+    private $productResource;
+
+    /**
+     * @var CategoryLinkManagementInterface
      */
     private $categoryLinkManagement;
     /**
-     * @var \Magento\ConfigurableProduct\Model\Product\Type\Configurable
+     * @var TypeConfigurableProduct
      */
     private $typeConfigurableProduct;
     /**
-     * @var \Magento\CatalogInventory\Api\StockRegistryInterfaceFactory
+     * @var StockRegistryInterfaceFactory
      */
     private $stockRegistryFactory;
-    /**
-     * @var \Magento\ConfigurableProduct\Api\LinkManagementInterfaceFactory
-     */
-    private $linkManagementFactory;
-    /**
-     * @var \Magento\Eav\Model\Entity\Attribute\OptionFactory
-     */
-    private $optionFactory;
-    /**
-     * @var \Magento\Eav\Api\AttributeOptionManagementInterface
-     */
-    private $attributeOptionManager;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LinkManagementInterfaceFactory
      */
-    private $logger;
+    private $linkManagementFactory;
+
     /**
      * @var \Encomage\ErpIntegration\Helper\ApiClient
      */
     private $apiClient;
 
     /**
-     * @var int|bool
-     */
-    private $size_attribute_id;
-    /**
-     * @var array
-     */
-    private $all_categories;
-    /**
      * @var \Encomage\ErpIntegration\Helper\Data
      */
     private $helper;
+
+    /**
+     * @var int
+     */
+    private $color_option_id;
+    /**
+     * @var int
+     */
+    private $size_option_id;
     /**
      * @var array
      */
-    private $products_data = [[]];
+    private $configurableProductData = [];
+
+    private $configurableProductCategity = [];
     /**
-     * @var \Magento\Framework\Stdlib\StringUtils
+     * @var \Psr\Log\LoggerInterface
      */
-    private $string;
+    private $logger;
 
     /**
      * ImportProducts constructor.
      *
      * @param \Magento\Framework\App\Config\ScopeConfigInterface              $scopeConfig
-     * @param \Magento\Catalog\Model\ResourceModel\Category                   $categoryResource
      * @param \Magento\Catalog\Model\ResourceModel\Product                    $productResource
-     * @param \Magento\Framework\ObjectManagerInterface                       $objectManager
-     * @param \Magento\Catalog\Model\ProductFactory                           $productFactory
      * @param \Magento\Catalog\Api\CategoryLinkManagementInterface            $categoryLinkManagement
      * @param \Magento\ConfigurableProduct\Model\Product\Type\Configurable    $typeConfigurableProduct
      * @param \Magento\CatalogInventory\Api\StockRegistryInterfaceFactory     $stockRegistryFactory
      * @param \Magento\ConfigurableProduct\Api\LinkManagementInterfaceFactory $linkManagementFactory
-     * @param \Magento\Eav\Model\Entity\Attribute\OptionFactory               $optionFactory
-     * @param \Magento\Eav\Api\AttributeOptionManagementInterface             $attributeOptionManager
-     * @param \Magento\Eav\Model\AttributeRepository                          $attributeRepository
-     * @param LoggerInterface                                                 $logger
-     *
+     * @param \Psr\Log\LoggerInterface                                        $logger
      * @param \Encomage\ErpIntegration\Helper\Data                            $helper
-     *
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
-        CategoryResource $categoryResource,
         ProductResource $productResource,
-        ObjectManagerInterface $objectManager,
-        ProductFactory $productFactory,
         CategoryLinkManagementInterface $categoryLinkManagement,
         TypeConfigurableProduct $typeConfigurableProduct,
         StockRegistryInterfaceFactory $stockRegistryFactory,
         LinkManagementInterfaceFactory $linkManagementFactory,
-        OptionFactory $optionFactory,
-        AttributeOptionManagementInterface $attributeOptionManager,
-        AttributeRepository $attributeRepository,
         LoggerInterface $logger,
         Data $helper
-    )
-    {
+    ) {
 
-        $this->categoryResource = $categoryResource;
-        $this->productResource = $productResource;
-        $this->objectManager = $objectManager;
-        $this->productFactory = $productFactory;
-        $this->categoryLinkManagement = $categoryLinkManagement;
+        $this->productResource         = $productResource;
+        $this->categoryLinkManagement  = $categoryLinkManagement;
         $this->typeConfigurableProduct = $typeConfigurableProduct;
-        $this->stockRegistryFactory = $stockRegistryFactory;
-        $this->linkManagementFactory = $linkManagementFactory;
-        $this->optionFactory = $optionFactory;
-        $this->attributeOptionManager = $attributeOptionManager;
-        $this->logger = $logger;
+        $this->stockRegistryFactory    = $stockRegistryFactory;
+        $this->linkManagementFactory   = $linkManagementFactory;
 
 
         $this->apiClient = new ApiClient($scopeConfig);
-        $this->string = new StringUtils();
 
-
-        $this->setAllCategories();
-
-        try {
-            $this->size_attribute_id = $attributeRepository->get(Product::ENTITY, 'size')->getAttributeId();
-        } catch (NoSuchEntityException $e) {
-            $this->size_attribute_id = false;
-        }
 
         $this->helper = $helper;
-    }
 
-    private function setAllCategories()
-    {
-        $category_table = $this->categoryResource->getTable('catalog_category_entity_varchar');
-
-        $select = $this->categoryResource->getConnection()
-                                         ->select()
-                                         ->from($category_table)
-                                         ->where('value IS NOT NULL')
-                                         ->where('store_id = ?', Store::DEFAULT_STORE_ID);
-
-        $this->all_categories = $this->categoryResource->getConnection()->fetchAll($select);
-    }
-
-    /**
-     * @return \Magento\Eav\Api\Data\AttributeOptionInterface[]
-     *
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\StateException
-     */
-    private function getAllSizes()
-    {
-        return $this->attributeOptionManager->getItems(Product::ENTITY, $this->size_attribute_id);
-    }
-
-
-    /**
-     * @param \Psr\Http\Message\ResponseInterface $response
-     *
-     * @return bool
-     */
-    private function parseBody(ResponseInterface $response)
-    {
-        $products_data = $this->apiClient->parseBody($response);
-
-        if (!empty($products_data)) {
-            $this->products_data[] = $products_data;
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /**
-     * @param string $bar_code
-     *
-     * @return string
-     */
-    private function getCategoryId(string $bar_code)
-    {
-        $category = '';
-        $subCategory = '';
-
-        $erpCategoryCode = substr($bar_code, 0, 2);
-        $typeProduct = substr($bar_code, 1, 1);
-        $erpSubCategoryCode = substr($bar_code, 2, 1);
-
-        if (null !== $erpCategoryCode) {
-
-            $cat = $this->helper->getCategoriesCodes($erpCategoryCode);
-
-            if ($cat->valid()) {
-                $category = $cat->current()['category_path'];
-            }
-        }
-
-        if (null !== $typeProduct) {
-            if ('S' === $typeProduct) {
-
-                $cat = $this->helper->getShoeCodes($erpSubCategoryCode);
-
-
-                if ($cat->valid()) {
-                    $subCategory = $cat->current()['shoe_category_value'];
-                }
-            } elseif ('B' === $typeProduct) {
-                $cat = $this->helper->getBagsCodes($erpSubCategoryCode);
-
-                if ($cat->valid()) {
-                    $subCategory = $cat->current()['bags_category_value'];
-                }
-            }
-        }
-
-        if (!empty($category)) {
-            if (!empty($subCategory)) {
-                $category .= "/{$subCategory}";
-            }
-
-            $entity_id = filter(static function ($item) use ($category) {
-                if ($item['value'] === $category) {
-                    return true;
-                }
-
-                $arrCategory = explode('/', $category);
-                array_pop($arrCategory);
-
-                $category = implode('/', $arrCategory);
-
-                if ($item['value'] === $category) {
-                    return true;
-                }
-
-                if ('default-category' === $item['value']) {
-                    return true;
-                }
-
-                return false;
-            }, $this->getAllCategories());
-
-            if ($entity_id->valid()) {
-                return $entity_id->current()['entity_id'];
-            }
-        }
-
-        return false;
-    }
-
-
-
-    /**
-     * @return array
-     */
-    private function getAllCategories()
-    {
-        if (empty($this->all_categories)) {
-            $this->setAllCategories();
-        }
-
-        return $this->all_categories;
-    }
-
-
-    /**
-     * @param int|string $size
-     *
-     * @return bool|\Magento\Eav\Model\Entity\Attribute\Option
-     */
-    private function createSizeOption($size)
-    {
-        /** @var \Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\Collection $attributeOptionCollection */
-        $attributeOptionCollection = $this->objectManager->create(Collection::class);
-
-        $optionDataArray = $attributeOptionCollection->setAttributeFilter($this->size_attribute_id)
-                                                     ->setStoreFilter(Store::DEFAULT_STORE_ID)
-                                                     ->load()
-                                                     ->getData();
-
-        $optionData = array_filter($optionDataArray, static function ($item) use ($size) {
-            return $item['value'] === (string) $size;
-        });
-
-        if (empty($optionData)) {
-            /** @var Option $option */
-            $option = $this->optionFactory->create();
-            $option->setLabel((string) $size);
-
-            try {
-                $this->attributeOptionManager->add(Product::ENTITY, $this->size_attribute_id, $option);
-
-                return $option;
-            } catch (InputException $e) {
-                $this->logger->error($e->getMessage());
-
-            } catch (StateException $e) {
-                $this->logger->error($e->getMessage());
-            }
-
-            return false;
-        }
-
-        return false;
+        $this->color_option_id = $this->productResource->getAttribute('color')->getId();
+        $this->size_option_id  = $this->productResource->getAttribute('size')->getId();
+        $this->logger          = $logger;
     }
 
     /**
      * Write to system.log
      *
      * @return void
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\StateException
      */
-    public function execute()
+    public function execute(): void
     {
         $this->logger->info('Start ERP Cron Import');
 
@@ -370,9 +143,9 @@ class ImportProducts
         $last_point = 'GetProductList';
 
         $query = [
-            'Branchpricedisplay' => 1,
+            'Branchpricedisplay'    => 1,
             'CategoryDisplaySubCat' => 1,
-            'Page' => 1,
+            'Page'                  => 1,
         ];
 
         do {
@@ -380,7 +153,7 @@ class ImportProducts
             $response = $this->apiClient->getData($last_point, $query);
         } while ($this->parseBody($response) && $query['Page']++);
 
-        if (!empty($this->products_data)) {
+        if ( ! empty($this->products_data)) {
             $this->products_data = array_merge(...$this->products_data);
 
             $this->dataProccesing($this->products_data);
@@ -391,214 +164,248 @@ class ImportProducts
     }
 
     /**
-     * @param array $products_data
+     * @param \Psr\Http\Message\ResponseInterface $response
      *
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\StateException
+     * @return bool
      */
-    private function dataProccesing(array $products_data)
+    private function parseBody(ResponseInterface $response): bool
+    {
+        $products_data = $this->apiClient->parseBody($response);
+
+        if ( ! empty($products_data)) {
+            $this->products_data[] = $products_data;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $products_data
+     */
+    protected function dataProccesing(array $products_data): void
     {
         $data = $this->helper->getErpProductsObjects($products_data);
 
         foreach ($data as $datum) {
             if ($datum->isValid()) {
-                $productId = $this->productResource->getIdBySku($datum->getIcProductCode());
-                $CategoryId = $this->getCategoryId($datum->getBarCode());
+                $product = $this->helper->getProductBySky($datum->getBarCode());
+                $is_new  = null === $product->getId();
 
-                /** @var \Magento\Catalog\Model\Product $product */
-                $product = $this->productFactory->create();
+                $category_id = $this->getCategoryId($datum);
+                $color       = ! empty($datum->getColor1()) ? $this->helper->getColorIdByName($datum->getColor1()) : false;
 
-                if ($productId) {
-                    $product->load($productId);
-                    $product->setPrice($datum->getSalesPrice());
-                    $product->setName($datum->getName());
+                $size = ! empty($datum->getSize()) ? $this->helper->getSizeIdByName($datum->getSize()) : false;
 
-                    $product->addData([
-                        'quantity_and_stock_status' => [
-                            'is_in_stock' => $datum->getStockStatus(),
-                            'qty' => $datum->getUnrestrictStock(),
-                        ],
+                if ($is_new) {
+                    $product->setSku($datum->getBarCode())
+                            ->setWebsiteIds([
+                                Configuration::DEFAULT_WEBSITE_ID => Configuration::DEFAULT_WEBSITE_ID,
+                            ])
+                            ->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE)
+                            ->setStatus(Status::STATUS_ENABLED)
+                            ->setStoreId(Store::DEFAULT_STORE_ID)
+                            ->setTypeId(TypeAlias::TYPE_SIMPLE)
+                            ->setAttributeSetId($product->getDefaultAttributeSetId());
+                }
+
+                $product->setPrice($datum->getSalesPrice())->setName($datum->getName())->setQuantityAndStockStatus([
+                        StockItemAlias::IS_IN_STOCK => $datum->getStockStatus(),
+                        StockItemAlias::QTY         => $datum->getUnrestrictStock(),
                     ]);
+
+                if ( ! empty($color)) {
+                    $product->setColor($color);
+                }
+
+                if ( ! empty($size)) {
+                    $product->setSize($size);
+                }
+
+                $changed_data = [];
+
+                $compare_array = [Product::NAME, Product::PRICE, 'color', 'size', 'quantity_and_stock_status'];
+
+
+                foreach ($compare_array as $item) {
+                    if ($product->dataHasChangedFor($item)) {
+                        $changed_data[] = $item;
+                    }
+                }
+
+                $old_assignedCategories = $product->getCategoryIds();
+
+                if ((array)$category_id !== $old_assignedCategories) {
+                    $changed_data[] = 'category_ids';
+                }
+
+                $need_to_update_product = ! empty($changed_data);
+
+                if ($need_to_update_product) {
 
                     try {
                         $this->productResource->save($product);
 
+                        $this->logger->info("Save Product: '{$product->getName()}'");
+
+
+                        if ( ! empty($category_id) && $is_new) {
+                            $this->categoryLinkManagement->assignProductToCategories($datum->getBarCode(),
+                                [$category_id]);
+                        }
                     } catch (Exception $e) {
                         $this->logger->error($e->getMessage());
                     }
                 } else {
-                    $product->setSku($datum->getBarCode());
-                    $product->setName($datum->getName());
-                    $product->setAttributeSetId($product->getDefaultAttributeSetId());
-                    $product->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
-                    $product->setTypeId(Type::TYPE_SIMPLE);
-                    $product->setPrice($datum->getSalesPrice());
-                    $product->setWeight(null);
-                    $product->setStoreId(Store::DEFAULT_STORE_ID);
-                    $product->setWebsiteIds([
-                        Configuration::DEFAULT_WEBSITE_ID => Configuration::DEFAULT_WEBSITE_ID,
-                    ]);
-                    $product->addData([
-                        'quantity_and_stock_status' => [
-                            'is_in_stock' => $datum->getStockStatus(),
-                            'qty' => $datum->getUnrestrictStock(),
-                        ],
-                    ]);
+                    $this->logger->info("No Updates For Product: '{$product->getName()}'");
+                }
 
-                    if ($datum->getModelColor()) {
-                        $colors = $this->helper->getColorCode($datum->getModelColor());
 
-                        if (!empty($colors)) {
-                            $colors = array_column($colors, 'erp_color_value');
+                try {
 
-                            $product->setColor(reset($colors));
-                        }
-                    }
+                    /** @var \Magento\CatalogInventory\Model\Stock\Item $stockItem */
+                    $stockItem = $this->stockRegistryFactory->create()->getStockItem($product->getId());
+                    $stockItem->setProduct($product)
+                              ->setStoreId(Store::DEFAULT_STORE_ID)
+                              ->setIsInStock($datum->getStockStatus())
+                              ->setQty($datum->getUnrestrictStock())
+                              ->setIsQtyDecimal(false);
 
-                    if ($datum->getSize()) {
-                        $size = $datum->getSize() / 10;
 
-                        /** @var Option[] $option */
-                        $option = array_filter($this->getAllSizes(), static function (Option $item) use ($size) {
-                            return $item->getLabel() === (string) $size;
-                        });
+                    $stockItem->save();
 
-                        if (!empty($option)) {
-                            $option = reset($option);
 
-                            $product->setSize($option->getLabel());
-                        } elseif ($option = $this->createSizeOption($size)) {
-                            $product->setSize($option->getLabel());
-                        }
-                    }
+                    $this->logger->info("Save Product Stock Data: '{$product->getName()}'");
 
-                    try {
-                        $this->productResource->save($product);
 
-                        if (!empty($CategoryId)) {
-                            $this->categoryLinkManagement->assignProductToCategories($datum->getBarCode(), [$CategoryId]);
-                        }
+                } catch (Exception $exception) {
+                    $this->logger->error($exception->getMessage());
+                }
 
-                        $this->buildConfigurableProduct($datum, $product, $CategoryId);
-                    } catch (Exception $e) {
-                        $this->logger->error($e->getMessage());
-                    }
+
+                $this->configurableProductCategity[$datum->getPropModel()] = $category_id;
+
+                $has_parent = ! empty($this->typeConfigurableProduct->getParentIdsByChild($product->getId()));
+
+                if ( ! $has_parent) {
+                    $this->configurableProductData[$datum->getPropModel()][] = $product->getSku();
                 }
             }
         }
+
+        $this->buildConfigurable();
     }
 
-
     /**
-     * @param ErpProduct                     $datum
-     * @param \Magento\Catalog\Model\Product $_product
-     * @param int                            $category_id
+     * @param \Encomage\ErpIntegration\Model\Api\ErpProduct $erp_product
      *
-     * @throws \Exception
+     * @return bool|int
      */
-    private function buildConfigurableProduct($datum, $_product, $category_id)
+    private function getCategoryId($erp_product)
     {
-        $ConfigurableProduct = $this->typeConfigurableProduct->getParentIdsByChild($_product->getId());
+        $_category_path = [
+            $erp_product->getRootCategoryName(),
+        ];
 
-        $configurable = [];
-
-        $config_sku = $datum->getConfigSku();
-
-        if (!empty($ConfigurableProduct)) {
-
-            if (!empty($config_sku) && !empty($datum->getPropModel())) {
-                $configurable[$config_sku] = [
-                    'name' => $datum->getPropModel(),
-                    'category_ids' => $category_id,
-                ];
-
-                $configurable[$config_sku]['category_name'] = $datum->getCategoryName();
-            }
-
-            if (array_key_exists($config_sku, $configurable) && $_product->getId()) {
-                $configurable[$config_sku]['associate_ids'][$_product->getId()] = $_product->getId();
-                $configurable[$config_sku]['skus'][] = $_product->getSku();
-            }
-
-            $configurable[$config_sku]['color'] = array_key_exists('color',
-                $configurable[$config_sku]) ? $configurable[$config_sku]['color'] : '';
-            if (null === $configurable[$config_sku]['color']) {
-                $configurable[$config_sku]['color'] = $_product->getColor() ?: null;
-            }
-
-            $configurable[$config_sku]['size'] = array_key_exists('size', $configurable[$config_sku]) ? $configurable[$config_sku]['size'] : '';
-
-            if (null === $configurable[$config_sku]['size']) {
-                $configurable[$config_sku]['size'] = $_product->getSize() ?: null;
-            }
+        if ( ! empty($erp_product->getSubCategoryName())) {
+            $_category_path[] = $erp_product->getSubCategoryName();
         }
 
-        if (!empty($configurable)) {
-            foreach ($configurable as $sku => $settings) {
-                $productId = $this->productResource->getIdBySku($sku);
+        if ( ! empty($erp_product->getPropFormat())) {
+            $_category_path[] = $this->helper->sanitizeKey($erp_product->getPropFormat());
+        }
 
-                if (!empty($productId)) {
-                    /** @var \Magento\Catalog\Model\Product $product */
-                    $product = $this->productFactory->create();
-                    $product->setSku($sku);
-                    $product->setName($settings['name']);
-                    $product->setTypeId(TypeConfigurableProduct::TYPE_CODE);
-                    $product->setAttributeSetId($product->getDefaultAttributeSetId());
-                    $product->setCategoryIds([$settings['category_ids']]);
-                    $product->setColor(' ');
-                    $product->setSize(' ');
-                    $product->setStoreId(Store::DEFAULT_STORE_ID);
-                    $product->setWebsiteIds([
-                        Configuration::DEFAULT_WEBSITE_ID => Configuration::DEFAULT_WEBSITE_ID,
+        $_category = implode('/', $_category_path);
+
+        $_category = strtolower($_category);
+
+        return $this->helper->getCategoryByPath($_category);
+    }
+
+    protected function buildConfigurable(): void
+    {
+        if ( ! empty($this->configurableProductData)) {
+            foreach ($this->configurableProductData as $model => $children) {
+                $config_sku = $this->helper->generateProductSku($model);
+
+                $categoty_id = ! empty($this->configurableProductCategity[$model]) ? $this->configurableProductCategity[$model] : null;
+
+                $configurable_product = $this->helper->getProductBySky($config_sku);
+
+                $is_new = null === $configurable_product->getId();
+
+                if ($is_new) {
+                    $configurable_product->setSku($config_sku)
+                                         ->setName($model)
+                                         ->setTypeId(TypeConfigurableProduct::TYPE_CODE)
+                                         ->setAttributeSetId($configurable_product->getDefaultAttributeSetId())
+                                         ->setVisibility(Visibility::VISIBILITY_BOTH)
+                                         ->setStatus(Status::STATUS_ENABLED)
+                                         ->setStoreId(Store::DEFAULT_STORE_ID)
+                                         ->setWebsiteIds([
+                                             Configuration::DEFAULT_WEBSITE_ID => Configuration::DEFAULT_WEBSITE_ID,
+                                         ]);
+
+                    $this->typeConfigurableProduct->setUsedProductAttributes($configurable_product, [
+                        $this->color_option_id,
+                        $this->size_option_id,
                     ]);
 
-                    if ('S' === $this->string->substr($sku, 1, 1)) {
-                        $product->setAskAboutShoeSize(1);
+                    $configurableAttributesData = $this->typeConfigurableProduct->getConfigurableAttributesAsArray($configurable_product);
+
+                    $configurable_product->setCanSaveConfigurableAttributes(true)
+                                         ->setConfigurableAttributesData($configurableAttributesData)
+                                         ->setConfigurableProductsData([]);
+
+                    try {
+                        $this->productResource->save($configurable_product);
+
+                        $this->logger->info("Save Configurable Product: '{$configurable_product->getName()}'");
+                    } catch (Exception $exception) {
+                        $this->logger->error($exception->getMessage());
                     }
-
-                    $product->setUrlKey($this->helper->getUrlKey($settings['name'], $settings['category_name']));
-
-                    $attributes = [];
-
-                    if ($settings['color']) {
-                        $attributes[] = $this->productResource->getAttribute('color')->getId();
-                    }
-                    if ($settings['size']) {
-                        $attributes[] = $this->productResource->getAttribute('size')->getId();
-                    }
-
-                    $product->getTypeInstance()->setUsedProductAttributeIds($attributes, $product);
-
-                    $configurableAttributesData = $product->getTypeInstance()
-                                                          ->getConfigurableAttributesAsArray($product);
-
-                    $product->setCanSaveConfigurableAttributes(true);
-                    $product->setConfigurableAttributesData($configurableAttributesData);
-                    $configurableProductsData = [];
-                    $product->setConfigurableProductsData($configurableProductsData);
-
-                    $this->productResource->save($product);
-                    $productId = $product->getId();
-
-                    $this->categoryLinkManagement->assignProductToCategories($sku, [$settings['category_ids']]);
                 }
 
-                if ($settings['associate_ids']) {
-                    foreach ($settings['skus'] as $childSku) {
-                        /** @var \Magento\ConfigurableProduct\Api\LinkManagementInterface $linkManagement */
-                        $linkManagement = $this->linkManagementFactory->create();
-                        $linkManagement->addChild($sku, $childSku);
-                    }
-                    if ($productId) {
-                        /** @var \Magento\CatalogInventory\Model\Stock\Item $stockItem */
-                        $stockItem = $this->stockRegistryFactory->create()->getStockItem($productId);
-                        if ($stockItem->getItemId()) {
-                            $stockItem->setIsInStock(true);
-                            $stockItem->setStockStatusChangedAutomaticallyFlag(true);
-                            $stockItem->save();
+                if ( ! empty($categoty_id)) {
+                    $this->logger->info("Add Configurable Product categoty: '{$categoty_id}'");
+                    $this->categoryLinkManagement->assignProductToCategories($config_sku, [$categoty_id]);
+                }
+
+                if ( ! empty($children)) {
+                    foreach ($children as $child) {
+
+                        $child_product = $this->helper->getProductBySky($child);
+
+                        $has_parent = ! empty($this->typeConfigurableProduct->getParentIdsByChild($child_product->getId()));
+
+                        if ( ! $has_parent) {
+                            /** @var LinkManagement $linkManagement */
+                            $linkManagement = $this->linkManagementFactory->create();
+
+                            try {
+                                $linkManagement->addChild($config_sku, $child);
+
+                                $this->logger->info("Save Configurable Relation: '{$configurable_product->getName()} => {$child}'");
+                            } catch (Exception $exception) {
+                                $this->logger->error("Save Configurable Relation Exception: {$exception->getMessage()}");
+                            }
                         }
-                        unset($stockItem);
                     }
+
+                }
+
+                try {
+                    /** @var \Magento\CatalogInventory\Model\Stock\Item $stockItem */
+                    $stockItem = $this->stockRegistryFactory->create()->getStockItem($configurable_product->getId());
+                    $stockItem->setProduct($configurable_product);
+                    $stockItem->setIsInStock(true);
+                    $stockItem->setStockStatusChangedAutomaticallyFlag(true);
+                    $stockItem->save();
+
+
+                } catch (Exception $e) {
+                    $this->logger->error($e->getMessage());
                 }
             }
         }
