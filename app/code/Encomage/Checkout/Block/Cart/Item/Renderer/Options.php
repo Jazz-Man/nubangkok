@@ -11,7 +11,7 @@ use Magento\Swatches\Model\ResourceModel\Swatch\CollectionFactory as SwatchColle
  * Class Options
  * @package Encomage\Checkout\Block\Cart\Item\Renderer
  */
-class Options extends \Magento\Framework\View\Element\Template
+class Options extends Template
 {
     /**
      * @var EavAttributeResource
@@ -40,10 +40,12 @@ class Options extends \Magento\Framework\View\Element\Template
 
     /**
      * Options constructor.
-     * @param Template\Context $context
-     * @param EavAttributeResource $attributeResource
-     * @param AttributeFactory $attributeFactory
-     * @param array $data
+     *
+     * @param Template\Context                                               $context
+     * @param EavAttributeResource                                           $attributeResource
+     * @param AttributeFactory                                               $attributeFactory
+     * @param \Magento\Swatches\Model\ResourceModel\Swatch\CollectionFactory $swatchCollectionFactory
+     * @param array                                                          $data
      */
     public function __construct(
         Template\Context $context,
@@ -79,7 +81,7 @@ class Options extends \Magento\Framework\View\Element\Template
         $swatchCollection = $this->swatchCollectionFactory->create();
         $swatchCollection->addFilterByOptionsIds([$colorCodeId]);
         $item = $swatchCollection->getFirstItem();
-        return $item->getValue() ? $item->getValue() : null;
+        return $item->getValue() ?: null;
     }
 
     /**
@@ -91,11 +93,9 @@ class Options extends \Magento\Framework\View\Element\Template
         $result = [];
         foreach ($options as $index => $option) {
             $attribute = $this->_getAttribute($option['option_id']);
-            $key = (isset($this->attributeOrder[$attribute->getAttributeCode()]))
-                ? $this->attributeOrder[$attribute->getAttributeCode()]
-                : $this->attributeOrder[end(array_keys($this->attributeOrder))]++;
+            $key = $this->attributeOrder[$attribute->getAttributeCode()] ?? $this->attributeOrder[end(array_keys($this->attributeOrder))]++;
             $result[$key] = $options[$index];
-            $result[$key]['att_code'] = $attribute->getAttributeCode();;
+            $result[$key]['att_code'] = $attribute->getAttributeCode();
         }
         ksort($result);
         return $result;
