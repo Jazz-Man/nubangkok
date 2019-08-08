@@ -2,8 +2,12 @@
 
 namespace Encomage\ErpIntegration\Model\Api;
 
+use Exception;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
+use Encomage\ErpIntegration\Logger\Logger;
+
 /**
  * Class Request
  *
@@ -87,10 +91,10 @@ abstract class Request
     public function sendApiRequest()
     {
         $dataUrl = [
-            "userAccount"   => $this->_getLogin(),
-            "userPassword"  => $this->_getPassword(),
-            "compCode"      => $this->_getCompCode(),
-            "warehouseCode" => $this->_getWarehouseCode(),
+            'userAccount'   => $this->_getLogin(),
+            'userPassword'  => $this->_getPassword(),
+            'compCode'      => $this->_getCompCode(),
+            'warehouseCode' => $this->_getWarehouseCode(),
         ];
         if ($this->_isEnabledTestMode()) {
             $dataUrl['testmode'] = 1;
@@ -108,11 +112,11 @@ abstract class Request
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->_getApiMethod());
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "Content-Length: " . strlen($data_string)]);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Content-Length: ' . strlen($data_string)]);
             $response = $this->serializerJson->unserialize(curl_exec($ch));
-        } catch (\Exception $e) {
-            $objectManger = \Magento\Framework\App\ObjectManager::getInstance();
-            $logger = $objectManger->create('Encomage\ErpIntegration\Logger\Logger');
+        } catch (Exception $e) {
+            $objectManger = ObjectManager::getInstance();
+            $logger = $objectManger->create(Logger::class);
             $logger->addInfo($e->getMessage());
         }
 
@@ -124,7 +128,7 @@ abstract class Request
      *
      * @return string
      */
-    protected function _getLogin()
+    protected function _getLogin(): string
     {
         return $this->scopeConfig->getValue(self::ERP_LOGIN);
     }
@@ -134,7 +138,7 @@ abstract class Request
      *
      * @return string
      */
-    protected function _getPassword()
+    protected function _getPassword(): string
     {
         return $this->scopeConfig->getValue(self::ERP_PASSWORD);
     }
@@ -144,7 +148,7 @@ abstract class Request
      *
      * @return string
      */
-    protected function _getHostName()
+    protected function _getHostName(): string
     {
         return $this->scopeConfig->getValue(self::ERP_HOST_NAME);
     }
@@ -154,7 +158,7 @@ abstract class Request
      *
      * @return string
      */
-    protected function _getCompCode()
+    protected function _getCompCode(): string
     {
         return $this->scopeConfig->getValue(self::ERP_COMPCODE);
     }
@@ -210,7 +214,7 @@ abstract class Request
      * @param $data
      * @return string
      */
-    protected function _getAuthorization($data)
+    protected function _getAuthorization($data): string
     {
         $result = '?';
         foreach ($data as $kay => $value) {
@@ -224,7 +228,7 @@ abstract class Request
     /**
      * @return string
      */
-    protected function _getApiLastPoint()
+    protected function _getApiLastPoint(): string
     {
         return $this->apiLastPoint;
     }
@@ -232,7 +236,7 @@ abstract class Request
     /**
      * @return string
      */
-    protected function _getApiMethod()
+    protected function _getApiMethod(): string
     {
         return $this->apiMethod;
     }
@@ -240,7 +244,7 @@ abstract class Request
     /**
      * @return array
      */
-    protected function _getAdditionalDataUrl()
+    protected function _getAdditionalDataUrl(): array
     {
         return $this->additionalDataUrl;
     }
@@ -248,7 +252,7 @@ abstract class Request
     /**
      * @return array
      */
-    protected function _getAdditionalDataContent()
+    protected function _getAdditionalDataContent(): array
     {
         return $this->additionalDataContent;
     }

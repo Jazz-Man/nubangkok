@@ -5,10 +5,12 @@
         <add id="Encomage_Careers::careers" parent="Encomage_Theme::nubangkok" title="Careers" translate="title"
              module="Encomage_Careers" sortOrder="20"
              resource="Encomage_Careers::careers"/>
-        <add id="Encomage_Careers::careers_list" parent="Encomage_Careers::careers" title="Careers List" translate="title"
+        <add id="Encomage_Careers::careers_list" parent="Encomage_Careers::careers" title="Careers List"
+             translate="title"
              module="Encomage_Careers" sortOrder="10"
              resource="Encomage_Careers::careers" action="careers"/>
-        <add id="Encomage_Careers::careers_add" parent="Encomage_Careers::careers" title="Add New Vacancy" translate="title"
+        <add id="Encomage_Careers::careers_add" parent="Encomage_Careers::careers" title="Add New Vacancy"
+             translate="title"
              module="Encomage_Careers" sortOrder="20"
              resource="Encomage_Careers::careers_add" action="careers/index/create"/>
     </menu>

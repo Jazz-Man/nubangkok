@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="standard">
         <route id="nupoints" frontName="nupoints">
-            <module name="Encomage_Nupoints" />
+            <module name="Encomage_Nupoints"/>
         </route>
     </router>
 </config>

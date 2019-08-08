@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Magento\CatalogInventory\Model\StockManagement" type="Encomage\Catalog\Model\StockManagement"/>
     <type name="Magento\Framework\Pricing\Render">
         <plugin name="encomage_price_render" type="Encomage\Catalog\Plugin\Pricing\Render" sortOrder="1" />
     </type>
