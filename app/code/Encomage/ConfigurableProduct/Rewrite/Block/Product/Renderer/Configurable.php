@@ -4,23 +4,48 @@ namespace Encomage\ConfigurableProduct\Rewrite\Block\Product\Renderer;
 
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Helper\Product as CatalogProduct;
+use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\ConfigurableProduct\Helper\Data;
 use Magento\ConfigurableProduct\Model\ConfigurableAttributeData;
 use Magento\Customer\Helper\Session\CurrentCustomer;
 use Magento\Framework\Json\EncoderInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Stdlib\ArrayUtils;
+use Magento\Swatches\Block\Product\Renderer\Configurable as ConfigurableAlias;
 use Magento\Swatches\Helper\Data as SwatchData;
 use Magento\Swatches\Helper\Media;
 use Magento\Swatches\Model\SwatchAttributesProvider;
 use Magento\Framework\Locale\Format;
 
-class Configurable extends \Magento\Swatches\Block\Product\Renderer\Configurable
+/**
+ * Class Configurable
+ *
+ * @package Encomage\ConfigurableProduct\Rewrite\Block\Product\Renderer
+ */
+class Configurable extends ConfigurableAlias
 {
 
     protected $_localeFormat;
     protected $_stockRegistry;
 
+    /**
+     * Configurable constructor.
+     *
+     * @param \Magento\Catalog\Block\Product\Context                       $context
+     * @param \Magento\Framework\Stdlib\ArrayUtils                         $arrayUtils
+     * @param \Magento\Framework\Json\EncoderInterface                     $jsonEncoder
+     * @param \Magento\ConfigurableProduct\Helper\Data                     $helper
+     * @param \Magento\Catalog\Helper\Product                              $catalogProduct
+     * @param \Magento\Customer\Helper\Session\CurrentCustomer             $currentCustomer
+     * @param \Magento\Framework\Pricing\PriceCurrencyInterface            $priceCurrency
+     * @param \Magento\ConfigurableProduct\Model\ConfigurableAttributeData $configurableAttributeData
+     * @param \Magento\Swatches\Helper\Data                                $swatchHelper
+     * @param \Magento\Swatches\Helper\Media                               $swatchMediaHelper
+     * @param \Magento\CatalogInventory\Api\StockRegistryInterface         $stockRegistry
+     * @param \Magento\Framework\Locale\Format                             $localeFormat
+     * @param array                                                        $data
+     * @param \Magento\Swatches\Model\SwatchAttributesProvider|null        $swatchAttributesProvider
+     */
     public function __construct(
         Context $context,
         ArrayUtils $arrayUtils,
@@ -32,10 +57,10 @@ class Configurable extends \Magento\Swatches\Block\Product\Renderer\Configurable
         ConfigurableAttributeData $configurableAttributeData,
         SwatchData $swatchHelper,
         Media $swatchMediaHelper,
+        StockRegistryInterface $stockRegistry,
+        Format $localeFormat,
         array $data = [],
-        SwatchAttributesProvider $swatchAttributesProvider = null,
-        \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
-        Format $localeFormat
+        SwatchAttributesProvider $swatchAttributesProvider = null
     )
     {
         $this->_localeFormat = $localeFormat;
@@ -43,6 +68,10 @@ class Configurable extends \Magento\Swatches\Block\Product\Renderer\Configurable
         parent::__construct($context, $arrayUtils, $jsonEncoder, $helper, $catalogProduct, $currentCustomer, $priceCurrency, $configurableAttributeData, $swatchHelper, $swatchMediaHelper, $data, $swatchAttributesProvider);
     }
 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getJsonConfig()
     {
         $store = $this->getCurrentStore();
