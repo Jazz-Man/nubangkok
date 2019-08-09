@@ -1,6 +1,8 @@
 <?php
 
-namespace Encomage\Catalog\Model;
+
+namespace UpMedio\StockManagement\Rewrite\Magento\CatalogInventory\Model;
+
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\CatalogInventory\Api\Data\StockItemInterface;
@@ -15,11 +17,12 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\LocalizedException;
 
 /**
- * Class StockManagement.
+ * Class StockManagement
+ *
+ * @package UpMedio\StockManagement\Rewrite\Magento\CatalogInventory\Model
  */
 class StockManagement extends StockManagementAlias
 {
-
     /**
      * @var StockRegistryStorage
      */
@@ -111,4 +114,5 @@ class StockManagement extends StockManagementAlias
 
         return $fullSaveItems;
     }
+
 }
