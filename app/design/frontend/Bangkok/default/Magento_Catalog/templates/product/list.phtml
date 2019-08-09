@@ -1,6 +1,14 @@
 <?php
 
+use Magento\Catalog\Helper\Output;
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+use Magento\Catalog\Block\Product\ReviewRendererInterface;
 use Magento\Framework\App\Action\Action;
+
+// @codingStandardsIgnoreFile
 
 ?>
 <?php
@@ -12,122 +20,70 @@ use Magento\Framework\App\Action\Action;
 ?>
 <?php
 $_productCollection = $block->getLoadedProductCollection();
-$_helper = $this->helper('Magento\Catalog\Helper\Output');
-$_catalogHelper = $this->helper(Encomage\Catalog\Helper\Data::class);
+/** @var Output $_helper */
+$_helper = $this->helper(Output::class);
 ?>
 <?php if (!$_productCollection->count()): ?>
-    <?= $block->getChildHtml('category.empty'); ?>
+    <div class="message info empty"><div><?= /* @escapeNotVerified */ __('We can\'t find products matching the selection.') ?></div></div>
 <?php else: ?>
     <?= $block->getToolbarHtml() ?>
     <?= $block->getAdditionalHtml() ?>
     <?php
-    if ($block->getMode() == 'grid') {
+    if ($block->getMode() === 'grid') {
         $viewMode = 'grid';
-        $image = 'category_page_grid';
+        $imageDisplayArea = 'category_page_grid';
         $showDescription = false;
-        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+        $templateType = ReviewRendererInterface::SHORT_VIEW;
     } else {
         $viewMode = 'list';
-        $image = 'category_page_list';
+        $imageDisplayArea = 'category_page_list';
         $showDescription = true;
-        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+        $templateType = ReviewRendererInterface::FULL_VIEW;
     }
     /**
      * Position for actions regarding image size changing in vde if needed
      */
     $pos = $block->getPositioned();
     ?>
-    <div class="products wrapper <?= /* @escapeNotVerified */
-    $viewMode ?> products-<?= /* @escapeNotVerified */
-    $viewMode ?>">
-        <?php $iterator = 1; ?>
+    <div class="products wrapper <?= /* @escapeNotVerified */ $viewMode ?> products-<?= /* @escapeNotVerified */ $viewMode ?>">
         <ol class="products list items product-items">
             <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
             <?php foreach ($_productCollection as $_product): ?>
-                <?php
-                if (!$_product->getTypeInstance()->hasOptions($_product)) {
-                    continue;
-                }
-                $productChildren = $_product->getTypeInstance()->getUsedProducts($_product);
-                $checkProductConfig = [];
-                foreach ($productChildren as $productChild):?>
-                <?php
-                 $canRender = false;
-                    if (in_array($productChild->getColor(), $checkProductConfig)) {
-                        continue;
-                    } else {
-                        if($_catalogHelper->checkProductStockStatus($productChildren ,$productChild->getId())){
-                            $checkProductConfig[] = $productChild->getColor();
-                            $canRender= true;
-                        };
+            <li class="item product product-item">
+                <div class="product-item-info" data-container="product-<?= /* @escapeNotVerified */ $viewMode ?>">
+                    <?php
+                    $productImage = $block->getImage($_product, $imageDisplayArea);
+                    if ($pos !== null) {
+                        $position = ' style="left:' . $productImage->getWidth() . 'px;'
+                            . 'top:' . $productImage->getHeight() . 'px;"';
                     }
                     ?>
-                    <?php if ($canRender): ?>
-                        <?= /* @escapeNotVerified */
-                        ($iterator++ == 1) ? '<li class="item product product-item">' : '</li><li class="item product product-item">' ?>
-                        <div class="product-item-info" data-container="product-grid">
-                            <?php
-                            $productChild = $_catalogHelper->checkImageForStores($productChild);
-                            $productImage = $block->getImage($productChild, $image);
-                            if ($pos != null) {
-                                $position = ' style="left:' . $productImage->getWidth() . 'px;'
-                                    . 'top:' . $productImage->getHeight() . 'px;"';
-                            }
-                            ?>
-                            <?php // Product Image ?>
-                            <a href="<?= /* @escapeNotVerified */
-                            $productChild->getProductUrl() ?>" class="product photo product-item-photo"
-                               tabindex="-1"> <?= $productImage->toHtml() ?>
-                                <?php $isNew = $_catalogHelper->getIsNew(); ?>
-                                <?php if ($_product->getLimited()): ?>
-                                    <span class="product-note-info">Limited</span>
-                                <?php endif; ?>
-                                <?php if ($_product->getPopular()): ?>
-                                    <span class="popular-products <?= $_product->getLimited() ? 'second' : '';?>">Popular</span>
-                                <?php endif; ?>
-                                <?php if ($isNew): ?>
-                                    <?php if ($_product->getLimited() && $_product->getPopular()) :?>
-                                        <span class="product-note-status third">New</span>
-                                    <?php else:?>
-                                        <span class="product-note-status <?= $_product->getLimited() || $_product->getPopular()? 'second' : ''; ?>">New</span>
-                                    <?php endif;?>
-                                <?php endif; ?>
+                    <?php // Product Image ?>
+                    <a href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
+                        <?= $productImage->toHtml() ?>
+                    </a>
+                    <div class="product details product-item-details">
+                        <?php
+                            $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                        ?>
+                        <strong class="product name product-item-name">
+                            <a class="product-item-link"
+                               href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>">
+                                <?= /* @escapeNotVerified */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
                             </a>
-                            <div class="product details product-item-details">
-                                <?php echo $_productNameStripped = $block->stripTags($productChild->getName(), null, true);
-                                ?>
-                                <strong class="product name product-item-name">
-                                    <a class="product-item-link"
-                                       href="<?= /* @escapeNotVerified */
-                                       $productChild->getProductUrl() ?>">
-                                        <?= /* @escapeNotVerified */
-                                        $_helper->productAttribute($productChild, $productChild->getName(), 'name') ?>
-                                    </a>
-                                </strong>
-                                <?php if (!$_product->isAvailable()): ?>
-                                    <div class="product-price-row">
-                                        <div class="price-box">
-                                            <span class="product-out-of-stock"><?= /* @escapeNotVerified */
-                                                __('Out of stock') ?></span>
-                                        </div>
-                                    </div>
-                                <?php else: ?>
-                                    <div class="product-price-row">
-                                        <?= $block->getProductPrice($productChild) ?>
-                                        <?php if ($productChild->getClearance()): ?>
-                                            <div class="clearance-att"><?= __('Clearance'); ?></div>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endif; ?>
-                                <?= $block->getProductDetailsHtml($productChild) ?>
-                            </div>
-                        </div>
-                        <?= ($iterator == $_productCollection->count() + 1) ? '</li>' : '' ?>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+                        </strong>
+                        <?php if ($_product->isSaleable() && $_product->isAvailable()): ?>
+                        <?= /* @escapeNotVerified */ $block->getProductPrice($_product) ?>
+                        <?php else: ?>
+                        <div class="stock unavailable"><span><?= /* @escapeNotVerified */ __('Out of stock') ?></span></div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </li>
             <?php endforeach; ?>
         </ol>
     </div>
+    <?= $block->getToolbarHtml() ?>
     <?php if (!$block->isRedirectToCartEnabled()) : ?>
         <script type="text/x-magento-init">
         {
