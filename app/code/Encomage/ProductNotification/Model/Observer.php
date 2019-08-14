@@ -43,7 +43,7 @@ class Observer implements ObserverInterface
     protected $emailHelper;
 
     /**
-     * @var UrlInterface
+     * @var Url
      */
     protected $url;
 
@@ -81,8 +81,10 @@ class Observer implements ObserverInterface
      */
     public function execute(EventObserver $observer)
     {
+        /** @var \Magento\CatalogInventory\Model\Stock\Item $stockItem */
         $stockItem = $observer->getItem();
-        /** @var \Magento\Catalog\Product $product*/
+
+        /** @var \Magento\Catalog\Model\Product $product*/
         $product = $this->productRepository->getById($stockItem->getProductId());
         $isInStock = $stockItem->getIsInStock();
         $qty = $stockItem->getQty();
