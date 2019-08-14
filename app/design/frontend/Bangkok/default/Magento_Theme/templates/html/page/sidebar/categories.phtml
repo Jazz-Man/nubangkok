@@ -1,11 +1,19 @@
-<?php /** @var \Encomage\Theme\Block\Html\Page\Sidebar\Categories $block */ ?>
-<?php $categories = $block->getCategories(); ?>
+<?php
+
+
+use Magento\Catalog\Helper\Category;
+
+/** @var Category $_helper */
+$_helper = $this->helper(Category::class);
+
+/** @var \Encomage\Theme\Block\Html\Page\Sidebar\Categories $block */
+ $categories = $block->getCategories(); ?>
 <div class="sidebar-menu">
     <?php if (!empty($categories)): ?>
         <div class="js-sidebar-categories">
             <div class="main-categories">
                 <?php foreach ($categories as $category): ?>
-                    <span class="font-less <?php echo ($category->getId() == $block->getMainActiveCategoryId()) ? 'active' : ''?>">
+                    <span class="font-less <?php echo ((int)$category->getId() === $block->getMainActiveCategoryId()) ? 'active' : ''?>">
                          <a data-category-id="<?php echo $category->getId(); ?>"
                             class="js-sidebar-category js-no-link js-category-main"
                             href="#">
