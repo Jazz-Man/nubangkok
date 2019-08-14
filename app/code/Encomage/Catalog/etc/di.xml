@@ -2,13 +2,6 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
-    <preference for="Magento\CatalogInventory\Model\StockManagement" type="Encomage\Catalog\Model\StockManagement"/>
-    <type name="Magento\Framework\Pricing\Render">
-        <plugin name="encomage_price_render" type="Encomage\Catalog\Plugin\Pricing\Render" sortOrder="1" />
-    </type>
-    <type name="Magento\Catalog\Helper\Product">
-        <plugin name="encomage_catalog_product_init_before" type="Encomage\Catalog\Plugin\Helper\Product" />
-    </type>
     <type name="Magento\Swatches\Block\Product\Renderer\Configurable">
         <plugin name="encomage_catalog_product_visibility_after" type="Encomage\Catalog\Plugin\Block\Product\Renderer\Configurable" />
     </type>
