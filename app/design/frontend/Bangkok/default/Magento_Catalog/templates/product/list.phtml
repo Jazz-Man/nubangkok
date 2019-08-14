@@ -1,12 +1,12 @@
 <?php
 
+use Magento\Catalog\Block\Product\ReviewRendererInterface;
 use Magento\Catalog\Helper\Output;
+
 /**
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-use Magento\Catalog\Block\Product\ReviewRendererInterface;
-use Magento\Framework\App\Action\Action;
 
 // @codingStandardsIgnoreFile
 
@@ -24,7 +24,7 @@ $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper(Output::class);
 ?>
 <?php if (!$_productCollection->count()): ?>
-    <div class="message info empty"><div><?= /* @escapeNotVerified */ __('We can\'t find products matching the selection.') ?></div></div>
+    <?= $block->getChildHtml('category.empty') ?>
 <?php else: ?>
     <?= $block->getToolbarHtml() ?>
     <?= $block->getAdditionalHtml() ?>
