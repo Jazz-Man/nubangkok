@@ -138,7 +138,8 @@
         "amzn/login-with-amazon-module": "*",
         "amzn/amazon-pay-module": "*",
         "vertex/module-tax": "*",
-        "vertex/sdk": "*"
+        "vertex/sdk": "*",
+        "magento/module-fedex": "*"
     },
     "autoload": {
         "psr-4": {
