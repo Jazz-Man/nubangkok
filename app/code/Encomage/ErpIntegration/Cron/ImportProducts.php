@@ -247,8 +247,6 @@ class ImportProducts
                     try {
                         $this->productResource->save($product);
 
-                        $this->logger->info("Save Product: '{$product->getName()}'");
-
 
                         if ( ! empty($category_id) && $is_new) {
                             $this->categoryLinkManagement->assignProductToCategories($datum->getBarCode(),
@@ -257,8 +255,6 @@ class ImportProducts
                     } catch (Exception $e) {
                         $this->logger->error($e->getMessage());
                     }
-                } else {
-                    $this->logger->info("No Updates For Product: '{$product->getName()}'");
                 }
 
 
@@ -274,10 +270,6 @@ class ImportProducts
 
 
                     $stockItem->save();
-
-
-                    $this->logger->info("Save Product Stock Data: '{$product->getName()}'");
-
 
                 } catch (Exception $exception) {
                     $this->logger->error($exception->getMessage());
@@ -361,14 +353,12 @@ class ImportProducts
                     try {
                         $this->productResource->save($configurable_product);
 
-                        $this->logger->info("Save Configurable Product: '{$configurable_product->getName()}'");
                     } catch (Exception $exception) {
                         $this->logger->error($exception->getMessage());
                     }
                 }
 
                 if ( ! empty($categoty_id)) {
-                    $this->logger->info("Add Configurable Product categoty: '{$categoty_id}'");
                     $this->categoryLinkManagement->assignProductToCategories($config_sku, [$categoty_id]);
                 }
 
@@ -386,7 +376,6 @@ class ImportProducts
                             try {
                                 $linkManagement->addChild($config_sku, $child);
 
-                                $this->logger->info("Save Configurable Relation: '{$configurable_product->getName()} => {$child}'");
                             } catch (Exception $exception) {
                                 $this->logger->error("Save Configurable Relation Exception: {$exception->getMessage()}");
                             }
