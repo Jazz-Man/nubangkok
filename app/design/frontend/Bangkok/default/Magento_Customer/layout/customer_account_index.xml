@@ -14,7 +14,8 @@
                 <block class="Encomage\Customer\Block\Account\Dashboard\Info"
                        name="customer_account_dashboard_information"
                        template="Magento_Customer::account/dashboard/info.phtml"/>
-                <block class="Encomage\Customer\Block\Account\Dashboard\Address"
+
+                <block class="Magento\Customer\Block\Account\Dashboard\Address"
                        name="customer_account_dashboard_addresses"
                        template="Magento_Customer::account/dashboard/address.phtml"/>
             </block>
