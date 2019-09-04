@@ -2,5 +2,5 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\CatalogInventory\Model\StockManagement"
-                type="Encomage\StockManagement\Rewrite\Magento\CatalogInventory\Model\StockManagement"/>
+                type="UpMedio\StockManagement\Rewrite\Magento\CatalogInventory\Model\StockManagement"/>
 </config>
