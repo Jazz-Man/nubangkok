@@ -34,6 +34,8 @@ class ReCalculate
 
     /**
      * @return $this
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function reCalculate()
     {
