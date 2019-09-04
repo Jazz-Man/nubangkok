@@ -38,6 +38,9 @@ class Nupoints implements SectionSourceInterface
         ];
     }
 
+    /**
+     * @return int
+     */
     protected function _getRedeemValue()
     {
         if ($this->customerSession->isLoggedIn() && $this->_getNupointItem()->getCustomerNupointsCheckoutData()) {

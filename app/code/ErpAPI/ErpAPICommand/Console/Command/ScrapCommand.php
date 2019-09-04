@@ -5,6 +5,8 @@ namespace ErpAPI\ErpAPICommand\Console\Command;
 use Encomage\ErpIntegration\Helper\ApiClient;
 use Encomage\ErpIntegration\Helper\CacheFile;
 use Encomage\ErpIntegration\Helper\Data;
+use Encomage\ErpIntegration\Helper\StringUtils;
+use Encomage\ErpIntegration\Model\Api\ErpProduct;
 use Exception;
 use GuzzleHttp\Psr7\Response;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
@@ -35,6 +37,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ScrapCommand extends Command
 {
+
     /**
      * @var array
      */
@@ -103,7 +106,16 @@ class ScrapCommand extends Command
      */
     private $configurableProductData = [];
 
-    private $configurableProductCategity = [];
+    /**
+     * @var array
+     */
+    private $configurableProductCategory = [];
+
+    private $productsNamesValidate = [];
+    /**
+     * @var \Encomage\ErpIntegration\Helper\StringUtils
+     */
+    private $string;
 
     /**
      * ScrapCommand constructor.
@@ -129,12 +141,12 @@ class ScrapCommand extends Command
         StoreManagerInterface $storeManager,
         Data $helper
     ) {
-        $this->productResource = $productResource;
-        $this->objectManager = $objectManager;
-        $this->categoryLinkManagement = $categoryLinkManagement;
+        $this->productResource         = $productResource;
+        $this->objectManager           = $objectManager;
+        $this->categoryLinkManagement  = $categoryLinkManagement;
         $this->typeConfigurableProduct = $typeConfigurableProduct;
-        $this->stockRegistryFactory = $stockRegistryFactory;
-        $this->linkManagementFactory = $linkManagementFactory;
+        $this->stockRegistryFactory    = $stockRegistryFactory;
+        $this->linkManagementFactory   = $linkManagementFactory;
 
         parent::__construct();
 
@@ -145,8 +157,10 @@ class ScrapCommand extends Command
 
         $this->helper = $helper;
 
+        $this->string = new StringUtils();
+
         $this->color_option_id = $this->productResource->getAttribute('color')->getId();
-        $this->size_option_id = $this->productResource->getAttribute('size')->getId();
+        $this->size_option_id  = $this->productResource->getAttribute('size')->getId();
     }
 
     protected function configure()
@@ -184,9 +198,9 @@ class ScrapCommand extends Command
             $this->dataProccesing($CacheFile);
         } else {
             $query = [
-                'Branchpricedisplay' => 1,
+                'Branchpricedisplay'    => 1,
                 'CategoryDisplaySubCat' => 1,
-                'Page' => 1,
+                'Page'                  => 1,
             ];
 
             do {
@@ -194,7 +208,7 @@ class ScrapCommand extends Command
                 $response = $this->apiClient->getData('GetProductList', $query);
             } while ($this->parseBody($response) && $query['Page']++);
 
-            if (!empty($this->products_data)) {
+            if ( ! empty($this->products_data)) {
                 $this->products_data = array_merge(...$this->products_data);
 
                 $this->cacheFile->saveCacheFile($this->products_data);
@@ -215,113 +229,68 @@ class ScrapCommand extends Command
 
         foreach ($data as $datum) {
             if ($datum->isValid()) {
-                $product = $this->helper->getProductBySky($datum->getBarCode());
-                $is_new = null === $product->getId();
 
                 $category_id = $this->getCategoryId($datum);
-                $color = !empty($datum->getColor1()) ? $this->helper->getColorIdByName($datum->getColor1()) : false;
 
-                $size = !empty($datum->getSize()) ? $this->helper->getSizeIdByName($datum->getSize()) : false;
+                $size = ! empty($datum->getSize()) ? $this->helper->getSizeIdByName($datum->getSize()) : false;
 
-                if ($is_new) {
-                    $product->setSku($datum->getBarCode())
-                            ->setWebsiteIds([
-                                Configuration::DEFAULT_WEBSITE_ID => Configuration::DEFAULT_WEBSITE_ID,
-                            ])
-                            ->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE)
-                            ->setStatus(Status::STATUS_ENABLED)
-                            ->setStoreId(Store::DEFAULT_STORE_ID)
-                            ->setTypeId(TypeAlias::TYPE_SIMPLE)
-                            ->setAttributeSetId($product->getDefaultAttributeSetId());
+                $poduct_props = [
+                    'size'            => $size,
+                    'weight' =>$datum->getGrossWeight(),
+                    'salesPrice'      => $datum->getSalesPrice(),
+                    'model'           => $datum->getPropModel(),
+                    'stockStatus'     => $datum->getStockStatus(),
+                    'unrestrictStock' => $datum->getUnrestrictStock(),
+                    'isShoes'         => $datum->isShoes(),
+                    'category_id'     => $category_id,
+                ];
+
+                if ($datum->getColor1()) {
+                    $color1_name = "{$datum->getPropModel()} {$datum->getColor1()} {$datum->getSize()}";
+
+                    if (empty($this->productsNamesValidate[$color1_name])){
+
+                        $this->productsNamesValidate[$color1_name] = $datum->getBarCode();
+
+                        $color = $this->helper->getColorIdByName($datum->getColor1());
+
+
+                        $poduct_props = array_merge([
+                            'name'            => $color1_name,
+                            'sku'             => $datum->getBarCode(),
+                            'color'           => $color
+                        ], $poduct_props);
+
+                        $this->prepareSimpleProduct($poduct_props);
+                    }
                 }
 
-                $product->setPrice($datum->getSalesPrice())
-                        ->setName($datum->getName())
-                        ->setQuantityAndStockStatus([
-                            StockItemAlias::IS_IN_STOCK => $datum->getStockStatus(),
-                            StockItemAlias::QTY => $datum->getUnrestrictStock(),
+
+                if ($datum->getColor2()) {
+                    $color2_name = "{$datum->getPropModel()} {$datum->getColor2()} {$datum->getSize()}";
+
+                    if (empty($this->productsNamesValidate[$color2_name])){
+
+                        $color2_sku = $this->helper->generateProductSku($datum->getBarCode(), [
+                            'erp' => 'color',
                         ]);
 
-                if (!empty($color)) {
-                    $product->setColor($color);
-                }
+                        $this->productsNamesValidate[$color2_name] = $color2_sku;
 
-                if (!empty($size)) {
-                    $product->setSize($size);
-                }
+                        $color2 = $this->helper->getColorIdByName($datum->getColor2());
 
-                $changed_data = [];
+                        $poduct_props = array_merge([
+                            'name'            => $color2_name,
+                            'sku'             => $color2_sku,
+                            'color'           => $color2
+                        ], $poduct_props);
 
-                $compare_array = [Product::NAME, Product::PRICE, 'color', 'size','quantity_and_stock_status'];
+                        $this->prepareSimpleProduct($poduct_props);
 
-
-                foreach ($compare_array as $item) {
-                    if ($product->dataHasChangedFor($item)) {
-                        $changed_data[] = $item;
-                    }
-                }
-
-                $old_assignedCategories = $product->getCategoryIds();
-
-                if ((array) $category_id !== $old_assignedCategories) {
-                    $changed_data[] = 'category_ids';
-                }
-
-                $need_to_update_product = !empty($changed_data);
-
-                if ($need_to_update_product) {
-
-                    try {
-                        $this->productResource->save($product);
-
-                        $this->cliOutput->writeln("Save Product: '{$product->getName()}'");
-
-
-                        if (!empty($category_id) && $is_new) {
-                            $this->categoryLinkManagement->assignProductToCategories($datum->getBarCode(),
-                                [$category_id]);
-                        }
-                    } catch (Exception $e) {
-                        dump($e->getMessage());
-                    }
-                } else {
-                    $this->cliOutput->writeln("No Updates For Product: '{$product->getName()}'");
-                }
-
-
-                    try{
-
-                        /** @var \Magento\CatalogInventory\Model\Stock\Item $stockItem */
-                        $stockItem = $this->stockRegistryFactory->create()->getStockItem($product->getId());
-                        $stockItem->setProduct($product)
-                                  ->setStoreId(Store::DEFAULT_STORE_ID)
-                                  ->setIsInStock($datum->getStockStatus())
-                                  ->setQty($datum->getUnrestrictStock())
-                                  ->setIsQtyDecimal(false);
-
-
-                        $stockItem->save();
-
-
-                        $this->cliOutput->writeln("Save Product Stock Data: '{$product->getName()}'");
-
-
-                    }catch (Exception $exception){
-                        dump($exception->getMessage());
                     }
 
-
-
-
-
-
-                $this->configurableProductCategity[$datum->getPropModel()] = $category_id;
-
-                $has_parent = !empty($this->typeConfigurableProduct->getParentIdsByChild($product->getId()));
-
-                if (!$has_parent) {
-                    $this->configurableProductData[$datum->getPropModel()][] = $product->getSku();
                 }
+
             }
         }
 
@@ -337,7 +306,7 @@ class ScrapCommand extends Command
     {
         $products_data = $this->apiClient->parseBody($response);
 
-        if (!empty($products_data)) {
+        if ( ! empty($products_data)) {
             $this->products_data[] = $products_data;
 
             return true;
@@ -345,6 +314,7 @@ class ScrapCommand extends Command
 
         return false;
     }
+
 
     /**
      * @param \Encomage\ErpIntegration\Model\Api\ErpProduct $erp_product
@@ -357,12 +327,12 @@ class ScrapCommand extends Command
             $erp_product->getRootCategoryName(),
         ];
 
-        if (!empty($erp_product->getSubCategoryName())) {
+        if ( ! empty($erp_product->getSubCategoryName())) {
             $_category_path[] = $erp_product->getSubCategoryName();
         }
 
-        if (!empty($erp_product->getPropFormat())) {
-            $_category_path[] = $this->helper->sanitizeKey($erp_product->getPropFormat());
+        if ( ! empty($erp_product->getFormat())) {
+            $_category_path[] = $this->helper->sanitizeKey($erp_product->getFormat());
         }
 
         $_category = implode('/', $_category_path);
@@ -374,15 +344,16 @@ class ScrapCommand extends Command
 
     protected function buildConfigurable(): void
     {
-        if (!empty($this->configurableProductData)) {
+        if ( ! empty($this->configurableProductData)) {
             foreach ($this->configurableProductData as $model => $children) {
                 $config_sku = $this->helper->generateProductSku($model);
 
-                $categoty_id = !empty($this->configurableProductCategity[$model]) ? $this->configurableProductCategity[$model] : null;
+                $categoty_id = ! empty($this->configurableProductCategory[$model]) ? $this->configurableProductCategory[$model] : null;
 
                 $configurable_product = $this->helper->getProductBySky($config_sku);
 
-                $is_new = null === $configurable_product->getId();
+                $is_new = true;
+//                $is_new = null === $configurable_product->getId();
 
                 if ($is_new) {
                     $configurable_product->setSku($config_sku)
@@ -416,19 +387,20 @@ class ScrapCommand extends Command
                     }
                 }
 
-                if (!empty($categoty_id)) {
+
+                if ( ! empty($categoty_id)) {
                     $this->cliOutput->writeln("Add Configurable Product categoty: '{$categoty_id}'");
                     $this->categoryLinkManagement->assignProductToCategories($config_sku, [$categoty_id]);
                 }
 
-                if (!empty($children)) {
+                if ( ! empty($children)) {
                     foreach ($children as $child) {
 
                         $child_product = $this->helper->getProductBySky($child);
 
-                        $has_parent = !empty($this->typeConfigurableProduct->getParentIdsByChild($child_product->getId()));
+                        $has_parent = ! empty($this->typeConfigurableProduct->getParentIdsByChild($child_product->getId()));
 
-                        if (!$has_parent){
+                        if ( ! $has_parent) {
                             /** @var LinkManagement $linkManagement */
                             $linkManagement = $this->linkManagementFactory->create();
 
@@ -459,4 +431,122 @@ class ScrapCommand extends Command
             }
         }
     }
+
+    /**
+     * @param array $data
+     */
+    protected function prepareSimpleProduct(array $data)
+    {
+        list('name' => $name, 'sku' => $sku, 'color' => $color, 'size' => $size,'weight'=>$weight, 'salesPrice' => $salesPrice, 'model' => $model, 'stockStatus' => $stockStatus, 'unrestrictStock' => $unrestrictStock, 'isShoes' => $isShoes, 'category_id' => $category_id,) = $data;
+
+        $product = $this->helper->getProductBySky($sku);
+
+        $is_new = null === $product->getId();
+
+        if ($is_new) {
+            $product->setSku($sku)
+                    ->setWebsiteIds([
+                        Configuration::DEFAULT_WEBSITE_ID => Configuration::DEFAULT_WEBSITE_ID,
+                    ])
+                    ->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE)
+                    ->setStatus(Status::STATUS_ENABLED)
+                    ->setStoreId(Store::DEFAULT_STORE_ID)
+                    ->setTypeId(TypeAlias::TYPE_SIMPLE)
+                    ->setAttributeSetId($product->getDefaultAttributeSetId());
+        }
+
+        $product->setPrice($salesPrice)
+                ->setName($name)
+            ->setWeight($weight)
+                ->setQuantityAndStockStatus([
+                StockItemAlias::IS_IN_STOCK => $stockStatus,
+                StockItemAlias::QTY         => $unrestrictStock,
+            ])->setAskAboutShoeSize($isShoes);
+
+        if ( ! empty($color)) {
+            $product->setColor($color);
+        }
+
+        if ( ! empty($size)) {
+            $product->setSize($size);
+        }
+
+        $changed_data = [];
+
+        $compare_array = [
+            Product::NAME,
+            Product::PRICE,
+            Product::VISIBILITY,
+            Product::WEIGHT,
+            'color',
+            'size',
+            'quantity_and_stock_status',
+        ];
+
+
+        foreach ($compare_array as $item) {
+            if ($product->dataHasChangedFor($item)) {
+                $changed_data[] = $item;
+            }
+        }
+
+        $old_assignedCategories = $product->getCategoryIds();
+
+        if ((array)$category_id !== $old_assignedCategories) {
+            $changed_data[] = 'category_ids';
+        }
+
+        $need_to_update_product = true;
+//        $need_to_update_product = ! empty($changed_data);
+
+        if ($need_to_update_product) {
+
+            try {
+                $this->productResource->save($product);
+
+                $this->cliOutput->writeln("Save Product: '{$product->getName()}' '{$product->getSku()}'");
+
+
+                if ( ! empty($category_id) && $is_new) {
+                    $this->categoryLinkManagement->assignProductToCategories($sku, [$category_id]);
+                }
+            } catch (Exception $e) {
+                dump($e->getMessage());
+            }
+        } else {
+            $this->cliOutput->writeln("No Updates For Product: '{$product->getName()}'");
+        }
+
+
+        try {
+
+            /** @var \Magento\CatalogInventory\Model\Stock\Item $stockItem */
+            $stockItem = $this->stockRegistryFactory->create()->getStockItem($product->getId());
+            $stockItem->setProduct($product)
+                      ->setStoreId(Store::DEFAULT_STORE_ID)
+                      ->setIsInStock($stockStatus)
+                      ->setQty($unrestrictStock)
+                      ->setIsQtyDecimal(false);
+
+
+            $stockItem->save();
+
+            $this->cliOutput->writeln("Save Product Stock Data: '{$product->getName()}'");
+
+
+        } catch (Exception $exception) {
+            dump($exception->getMessage());
+        }
+
+        $this->configurableProductCategory[$model] = $category_id;
+
+        $has_parent = ! empty($this->typeConfigurableProduct->getParentIdsByChild($product->getId()));
+
+        if ( ! $has_parent) {
+
+            $this->configurableProductData[$model][] = $product->getSku();
+        }
+
+    }
+
 }

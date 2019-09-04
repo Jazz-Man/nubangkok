@@ -4,10 +4,15 @@ namespace ErpAPI\ErpAPICommand\Console\Command;
 
 use Encomage\ErpIntegration\Helper\CacheFile;
 use Encomage\ErpIntegration\Helper\Data;
+use Exception;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ResourceModel\Product as ProductResource;
+use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollectionAlias;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\App\State;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\ObjectManagerInterface;
+use Magento\Framework\Registry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -38,20 +43,29 @@ class ColorsCommand extends Command
      * @var \Magento\Catalog\Model\ResourceModel\Product
      */
     private $productResource;
+    /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
+    private $objectManager;
+    /**
+     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     */
+    private $productRepository;
 
     /**
      * ColorsCommand constructor.
      *
-     * @param \Magento\Framework\App\State                 $state
-     * @param \Magento\Framework\ObjectManagerInterface    $objectManager
+     * @param \Magento\Framework\App\State                    $state
+     * @param \Magento\Framework\ObjectManagerInterface       $objectManager
      *
-     * @param \Magento\Catalog\Model\ResourceModel\Product $productResource
-     * @param \Encomage\ErpIntegration\Helper\Data         $helper
-     *
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
+     * @param \Magento\Catalog\Model\ResourceModel\Product    $productResource
+     * @param \Encomage\ErpIntegration\Helper\Data            $helper
      */
     public function __construct(
         State $state,
         ObjectManagerInterface $objectManager,
+        ProductRepositoryInterface $productRepository,
         ProductResource $productResource,
         Data $helper
     ) {
@@ -62,6 +76,8 @@ class ColorsCommand extends Command
         $this->cacheFile = new CacheFile($objectManager);
         $this->helper = $helper;
         $this->productResource = $productResource;
+        $this->objectManager = $objectManager;
+        $this->productRepository = $productRepository;
     }
 
     protected function configure()
@@ -69,9 +85,9 @@ class ColorsCommand extends Command
         $this->setName('erpapi:colors');
 
         try {
-            $this->state->getAreaCode();
-        } catch (LocalizedException $e) {
             $this->state->setAreaCode('adminhtml');
+        } catch (LocalizedException $e) {
+//            $this->state->setAreaCode('adminhtml');
         }
 
 
@@ -86,31 +102,33 @@ class ColorsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->objectManager->get(Registry::class)->register('isSecureArea', true);
+
         $output->writeln('Setup colors!');
 
+        /** @var ProductCollectionAlias $collection */
 
-        $CacheFile = $this->cacheFile->getCacheFile();
+        $collection = $this->objectManager->create(CollectionFactory::class)->create();
+        $collection->addAttributeToSelect('*');
+        $collection->getProductTypeIds();
+        $collection->load();
 
-        $data = $this->helper->getErpProductsObjects($CacheFile);
 
-        $skus = [];
+        /** @var \Magento\Catalog\Model\Product $product */
+        foreach ($collection as $product){
 
-        foreach ($data as $datum){
-            $skus[] = $datum->getBarCode();
+            try {
+
+                if ($product->getTypeId() === 'simple'){
+                    dump("Delete Product: '{$product->getName()}'");
+                    $product->delete();
+                }
+            } catch (Exception $e) {
+                dump($e->getMessage());
+            }
         }
 
-        $connection = $this->productResource->getConnection();
-
-        $product_entity_table = $this->productResource->getTable('catalog_product_entity');
-
-        $select = $connection->select()
-                   ->from($product_entity_table,['sku', 'entity_id'])
-                   ->where('sku NOT IN (?)', $skus);
-
-        $result = $connection->fetchAll($select);
-
-
-        dump($result);
+//        dump($this->registry);
 
     }
 
