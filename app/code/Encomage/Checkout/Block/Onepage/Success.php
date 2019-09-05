@@ -8,6 +8,11 @@ use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Directory\Model\CountryFactory;
 
+/**
+ * Class Success
+ *
+ * @package Encomage\Checkout\Block\Onepage
+ */
 class Success extends \Magento\Checkout\Block\Onepage\Success
 {
     /**
