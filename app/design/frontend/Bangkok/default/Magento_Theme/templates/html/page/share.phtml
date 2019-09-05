@@ -1,7 +1,7 @@
 <?php
 /** @var  \Encomage\Theme\Block\Html\Page\FacebookShareLinkInterface $block */
 
-$css = $block->getCssClass() ? $block->getCssClass() : '';
+$css = $block->getCssClass() ?: '';
 ?>
 <div class="default-shared-link <?= $css; ?>">
     <a target="_blank" title="<?php echo __('Share on Facebook'); ?>"
