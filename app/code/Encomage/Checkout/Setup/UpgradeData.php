@@ -2,13 +2,13 @@
 
 namespace Encomage\Checkout\Setup;
 
+use Magento\Catalog\Model\Config\Source\Product\Thumbnail;
 use Magento\Checkout\Helper\Data;
 use Magento\Config\Model\ResourceModel\Config;
+use Magento\ConfigurableProduct\Model\Product\Configuration\Item\ItemProductResolver;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
-use Magento\ConfigurableProduct\Block\Cart\Item\Renderer\Configurable;
-use Magento\Catalog\Model\Config\Source\Product\Thumbnail;
 
 
 /**
@@ -57,7 +57,7 @@ class UpgradeData implements UpgradeDataInterface
     private function changeThumbnailInShoppingCart()
     {
         $this->configResource->saveConfig(
-            Configurable::CONFIG_THUMBNAIL_SOURCE,
+            ItemProductResolver::CONFIG_THUMBNAIL_SOURCE,
             Thumbnail::OPTION_USE_OWN_IMAGE,
             'default',
             0
