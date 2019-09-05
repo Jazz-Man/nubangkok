@@ -1,8 +1,9 @@
 <?php
 namespace Encomage\Careers\Model\ResourceModel\Careers;
 
+use Encomage\Careers\Model\Careers as CareersModel;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
-use Encomage\Careers\Model\ResourceModel\Careers;
+use Encomage\Careers\Model\ResourceModel\Careers as CareersResource;
 
 /**
  * Class Collection
@@ -22,6 +23,6 @@ class Collection extends AbstractCollection
      */
     protected function _construct()
     {
-        $this->_init(Careers::class, Careers::class);
+        $this->_init(CareersModel::class, CareersResource::class);
     }
 }
