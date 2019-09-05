@@ -10,6 +10,11 @@ use Magento\Framework\Locale\ResolverInterface;
 use Psr\Log\LoggerInterface;
 use Zend_Filter_LocalizedToNormalized;
 
+/**
+ * Class Add
+ *
+ * @package Encomage\Checkout\Controller\Cart
+ */
 class Add extends \Magento\Checkout\Controller\Cart\Add
 {
 
