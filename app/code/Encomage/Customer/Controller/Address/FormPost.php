@@ -1,72 +1,15 @@
 <?php
 namespace Encomage\Customer\Controller\Address;
 
-use Magento\Customer\Api\AddressRepositoryInterface;
-use Magento\Customer\Api\Data\AddressInterfaceFactory;
-use Magento\Customer\Api\Data\RegionInterfaceFactory;
-use Magento\Customer\Model\Metadata\FormFactory;
-use Magento\Customer\Model\Session;
-use Magento\Directory\Helper\Data as HelperData;
-use Magento\Directory\Model\RegionFactory;
-use Magento\Framework\Api\DataObjectHelper;
-use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Controller\Result\ForwardFactory;
-use Magento\Framework\Data\Form\FormKey\Validator as FormKeyValidator;
 use Magento\Framework\Exception\InputException;
-use Magento\Framework\Reflection\DataObjectProcessor;
-use Magento\Framework\View\Result\PageFactory;
 
+/**
+ * Class FormPost
+ *
+ * @package Encomage\Customer\Controller\Address
+ */
 class FormPost extends \Magento\Customer\Controller\Address\FormPost
 {
-    /**
-     * FormPost constructor.
-     * @param Context $context
-     * @param Session $customerSession
-     * @param FormKeyValidator $formKeyValidator
-     * @param FormFactory $formFactory
-     * @param AddressRepositoryInterface $addressRepository
-     * @param AddressInterfaceFactory $addressDataFactory
-     * @param RegionInterfaceFactory $regionDataFactory
-     * @param DataObjectProcessor $dataProcessor
-     * @param DataObjectHelper $dataObjectHelper
-     * @param ForwardFactory $resultForwardFactory
-     * @param PageFactory $resultPageFactory
-     * @param RegionFactory $regionFactory
-     * @param HelperData $helperData
-     */
-    public function __construct(
-        Context $context,
-        Session $customerSession,
-        FormKeyValidator $formKeyValidator,
-        FormFactory $formFactory,
-        AddressRepositoryInterface $addressRepository,
-        AddressInterfaceFactory $addressDataFactory,
-        RegionInterfaceFactory $regionDataFactory,
-        DataObjectProcessor $dataProcessor,
-        DataObjectHelper $dataObjectHelper,
-        ForwardFactory $resultForwardFactory,
-        PageFactory $resultPageFactory,
-        RegionFactory $regionFactory,
-        HelperData $helperData
-    )
-    {
-        parent::__construct(
-            $context,
-            $customerSession,
-            $formKeyValidator,
-            $formFactory,
-            $addressRepository,
-            $addressDataFactory,
-            $regionDataFactory,
-            $dataProcessor,
-            $dataObjectHelper,
-            $resultForwardFactory,
-            $resultPageFactory,
-            $regionFactory,
-            $helperData
-        );
-    }
 
     /**
      * Process address form save
