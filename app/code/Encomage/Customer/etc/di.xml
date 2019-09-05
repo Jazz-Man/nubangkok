@@ -5,7 +5,6 @@
                 type="Encomage\Customer\Controller\Account\CreatePost"/>
     <preference for="Magento\Customer\Controller\Address\FormPost"
                 type="Encomage\Customer\Controller\Address\FormPost"/>
-    <preference for="Magento\Customer\Model\Data\Customer" type="Encomage\Customer\Model\Data\Customer"/>
     <preference for="Magento\Customer\Model\Customer" type="Encomage\Customer\Model\Customer"/>
     <preference for="Magento\Customer\Block\Form\Register" type="Encomage\Customer\Block\Form\Register"/>
     <preference for="Magento\Framework\Data\Form\Filter\Date" type="Encomage\Customer\Data\Form\Filter\Date"/>
