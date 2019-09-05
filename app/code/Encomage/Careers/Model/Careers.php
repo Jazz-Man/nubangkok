@@ -106,7 +106,7 @@ class Careers extends AbstractModel implements DataObject\IdentityInterface
 
     protected function _construct()
     {
-        $this->_init('Encomage\Careers\Model\ResourceModel\Careers');
+        $this->_init(CareersResource::class);
     }
 
     /**
