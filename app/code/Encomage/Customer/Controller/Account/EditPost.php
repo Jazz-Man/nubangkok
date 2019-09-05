@@ -6,19 +6,24 @@
 
 namespace Encomage\Customer\Controller\Account;
 
+use Exception;
+use Magento\Customer\Api\AccountManagementInterface;
+use Magento\Customer\Api\AddressRepositoryInterface;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Customer\Controller\AbstractAccount;
 use Magento\Customer\Model\AuthenticationInterface;
 use Magento\Customer\Model\Customer\Mapper;
-use Magento\Customer\Model\EmailNotificationInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Data\Form\FormKey\Validator;
-use Magento\Customer\Api\AccountManagementInterface;
-use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\CustomerExtractor;
+use Magento\Customer\Model\EmailNotificationInterface;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\InvalidEmailOrPasswordException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\UserLockedException;
 
@@ -26,7 +31,7 @@ use Magento\Framework\Exception\State\UserLockedException;
  * Class EditPost
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class EditPost extends \Magento\Customer\Controller\AbstractAccount
+class EditPost extends AbstractAccount
 {
     /**
      * Form code for data extractor
@@ -96,7 +101,7 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
         CustomerRepositoryInterface $customerRepository,
         Validator $formKeyValidator,
         CustomerExtractor $customerExtractor,
-        \Magento\Customer\Api\AddressRepositoryInterface $addressRepository
+        AddressRepositoryInterface $addressRepository
     ) {
         parent::__construct($context);
         $this->session = $customerSession;
@@ -117,11 +122,11 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
 
         if (!($this->authentication instanceof AuthenticationInterface)) {
             return ObjectManager::getInstance()->get(
-                \Magento\Customer\Model\AuthenticationInterface::class
+                AuthenticationInterface::class
             );
-        } else {
-            return $this->authentication;
         }
+
+        return $this->authentication;
     }
 
     /**
@@ -136,15 +141,18 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
             return ObjectManager::getInstance()->get(
                 EmailNotificationInterface::class
             );
-        } else {
-            return $this->emailNotification;
         }
+
+        return $this->emailNotification;
     }
 
     /**
      * Change customer email or password action
      *
      * @return \Magento\Framework\Controller\Result\Redirect
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Magento\Framework\Exception\SessionException
      */
     public function execute()
     {
@@ -188,7 +196,7 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
                            $address->setTelephone($data['telephone']);
                        }
                        $this->addressRepository->save($address);
-                   }catch (\Magento\Framework\Exception\NoSuchEntityException $e){
+                   }catch (NoSuchEntityException $e){
 
                    }
                 }
@@ -213,9 +221,9 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
                 foreach ($e->getErrors() as $error) {
                     $this->messageManager->addError($error->getMessage());
                 }
-            } catch (\Magento\Framework\Exception\LocalizedException $e) {
+            } catch (LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->messageManager->addException($e, __('We can\'t save the customer.'));
             }
 
@@ -231,7 +239,7 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
      * @param \Magento\Customer\Api\Data\CustomerInterface $customerCandidateDataObject
      * @return void
      */
-    private function dispatchSuccessEvent(\Magento\Customer\Api\Data\CustomerInterface $customerCandidateDataObject)
+    private function dispatchSuccessEvent(CustomerInterface $customerCandidateDataObject)
     {
         $this->_eventManager->dispatch(
             'customer_account_edited',
@@ -243,7 +251,10 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
      * Get customer data object
      *
      * @param int $customerId
+     *
      * @return \Magento\Customer\Api\Data\CustomerInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     private function getCustomerDataObject($customerId)
     {
@@ -258,8 +269,8 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
      * @return \Magento\Customer\Api\Data\CustomerInterface
      */
     private function populateNewCustomerDataObject(
-        \Magento\Framework\App\RequestInterface $inputData,
-        \Magento\Customer\Api\Data\CustomerInterface $currentCustomerData
+        RequestInterface $inputData,
+        CustomerInterface $currentCustomerData
     ) {
         $attributeValues = $this->getCustomerMapper()->toFlatArray($currentCustomerData);
         $customerDto = $this->customerExtractor->extract(
@@ -282,8 +293,10 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
      * Change customer password
      *
      * @param string $email
+     *
      * @return boolean
-     * @throws InvalidEmailOrPasswordException|InputException
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function changeCustomerPassword($email)
     {
@@ -310,7 +323,7 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
      * @throws InvalidEmailOrPasswordException
      * @throws UserLockedException
      */
-    private function processChangeEmailRequest(\Magento\Customer\Api\Data\CustomerInterface $currentCustomerDataObject)
+    private function processChangeEmailRequest(CustomerInterface $currentCustomerDataObject)
     {
         if ($this->getRequest()->getParam('change_email')) {
             // authenticate user for changing email
@@ -334,7 +347,7 @@ class EditPost extends \Magento\Customer\Controller\AbstractAccount
     private function getCustomerMapper()
     {
         if ($this->customerMapper === null) {
-            $this->customerMapper = ObjectManager::getInstance()->get(\Magento\Customer\Model\Customer\Mapper::class);
+            $this->customerMapper = ObjectManager::getInstance()->get(Mapper::class);
         }
 
         return $this->customerMapper;
