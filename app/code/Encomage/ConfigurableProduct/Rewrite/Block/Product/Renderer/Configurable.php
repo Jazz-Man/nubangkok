@@ -7,7 +7,9 @@ use Magento\Catalog\Helper\Product as CatalogProduct;
 use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\ConfigurableProduct\Helper\Data;
 use Magento\ConfigurableProduct\Model\ConfigurableAttributeData;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable\Variations\Prices;
 use Magento\Customer\Helper\Session\CurrentCustomer;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Json\EncoderInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Stdlib\ArrayUtils;
@@ -27,24 +29,29 @@ class Configurable extends ConfigurableAlias
 
     protected $_localeFormat;
     protected $_stockRegistry;
+    /**
+     * @var \Magento\ConfigurableProduct\Model\Product\Type\Configurable\Variations\Prices
+     */
+    private $_variationPrices;
 
     /**
      * Configurable constructor.
      *
-     * @param \Magento\Catalog\Block\Product\Context                       $context
-     * @param \Magento\Framework\Stdlib\ArrayUtils                         $arrayUtils
-     * @param \Magento\Framework\Json\EncoderInterface                     $jsonEncoder
-     * @param \Magento\ConfigurableProduct\Helper\Data                     $helper
-     * @param \Magento\Catalog\Helper\Product                              $catalogProduct
-     * @param \Magento\Customer\Helper\Session\CurrentCustomer             $currentCustomer
-     * @param \Magento\Framework\Pricing\PriceCurrencyInterface            $priceCurrency
-     * @param \Magento\ConfigurableProduct\Model\ConfigurableAttributeData $configurableAttributeData
-     * @param \Magento\Swatches\Helper\Data                                $swatchHelper
-     * @param \Magento\Swatches\Helper\Media                               $swatchMediaHelper
-     * @param \Magento\CatalogInventory\Api\StockRegistryInterface         $stockRegistry
-     * @param \Magento\Framework\Locale\Format                             $localeFormat
-     * @param array                                                        $data
-     * @param \Magento\Swatches\Model\SwatchAttributesProvider|null        $swatchAttributesProvider
+     * @param \Magento\Catalog\Block\Product\Context                                              $context
+     * @param \Magento\Framework\Stdlib\ArrayUtils                                                $arrayUtils
+     * @param \Magento\Framework\Json\EncoderInterface                                            $jsonEncoder
+     * @param \Magento\ConfigurableProduct\Helper\Data                                            $helper
+     * @param \Magento\Catalog\Helper\Product                                                     $catalogProduct
+     * @param \Magento\Customer\Helper\Session\CurrentCustomer                                    $currentCustomer
+     * @param \Magento\Framework\Pricing\PriceCurrencyInterface                                   $priceCurrency
+     * @param \Magento\ConfigurableProduct\Model\ConfigurableAttributeData                        $configurableAttributeData
+     * @param \Magento\Swatches\Helper\Data                                                       $swatchHelper
+     * @param \Magento\Swatches\Helper\Media                                                      $swatchMediaHelper
+     * @param \Magento\CatalogInventory\Api\StockRegistryInterface                                $stockRegistry
+     * @param \Magento\Framework\Locale\Format                                                    $localeFormat
+     * @param array                                                                               $data
+     * @param \Magento\Swatches\Model\SwatchAttributesProvider|null                               $swatchAttributesProvider
+     * @param \Magento\ConfigurableProduct\Model\Product\Type\Configurable\Variations\Prices|null $variationPrices
      */
     public function __construct(
         Context $context,
@@ -60,11 +67,17 @@ class Configurable extends ConfigurableAlias
         StockRegistryInterface $stockRegistry,
         Format $localeFormat,
         array $data = [],
-        SwatchAttributesProvider $swatchAttributesProvider = null
+        SwatchAttributesProvider $swatchAttributesProvider = null,
+        Prices $variationPrices = null
     )
     {
         $this->_localeFormat = $localeFormat;
         $this->_stockRegistry = $stockRegistry;
+
+        $this->_variationPrices = $variationPrices ?: ObjectManager::getInstance()->get(
+            Prices::class
+        );
+
         parent::__construct($context, $arrayUtils, $jsonEncoder, $helper, $catalogProduct, $currentCustomer, $priceCurrency, $configurableAttributeData, $swatchHelper, $swatchMediaHelper, $data, $swatchAttributesProvider);
     }
 
@@ -76,8 +89,6 @@ class Configurable extends ConfigurableAlias
     {
         $store = $this->getCurrentStore();
         $currentProduct = $this->getProduct();
-        $regularPrice = $currentProduct->getPriceInfo()->getPrice('regular_price');
-        $finalPrice = $currentProduct->getPriceInfo()->getPrice('final_price');
         $options = $this->helper->getOptions($currentProduct, $this->getAllowProducts());
         $attributesData = $this->configurableAttributeData->getAttributesData($currentProduct, $options);
 
@@ -87,25 +98,15 @@ class Configurable extends ConfigurableAlias
             'currencyFormat' => $store->getCurrentCurrency()->getOutputFormat(),
             'optionPrices' => $this->getOptionPrices(),
             'priceFormat' => $this->_localeFormat->getPriceFormat(),
-            'prices' => [
-                'oldPrice' => [
-                    'amount' => $this->_localeFormat->getNumber($regularPrice->getAmount()->getValue()),
-                ],
-                'basePrice' => [
-                    'amount' => $this->_localeFormat->getNumber($finalPrice->getAmount()->getBaseAmount()),
-                ],
-                'finalPrice' => [
-                    'amount' => $this->_localeFormat->getNumber($finalPrice->getAmount()->getValue()),
-                ],
-            ],
+            'prices' => $this->_variationPrices->getFormattedPrices($this->getProduct()->getPriceInfo()),
             'productId' => $currentProduct->getId(),
             'chooseText' => __('Choose an Option...'),
             'images' => $this->getOptionImages(),
-            'index' => isset($options['index']) ? $options['index'] : [],
+            'index' => $options['index'] ?? [],
             'stockStatus' => $this->getStockStatus(),
         ];
 
-        if ($currentProduct->hasPreconfiguredValues() && !empty($attributesData['defaultValues'])) {
+        if ( !empty($attributesData['defaultValues']) && $currentProduct->hasPreconfiguredValues()) {
             $config['defaultValues'] = $attributesData['defaultValues'];
         }
         $config = array_merge($config, $this->_getAdditionalConfig());
@@ -121,10 +122,13 @@ class Configurable extends ConfigurableAlias
         $allProducts = $this->getProduct()->getTypeInstance()->getUsedProducts($this->getProduct(), null);
         foreach ($allProducts as $product) {
             if ($product->isSaleable()) {
+
+                $productColor = $product->getColor();
+
                 $stockItem = $this->_stockRegistry->getStockItem($product->getId());
-                $item[$product->getColor()]['size'] = $product->getSize();
-                $item[$product->getColor()]['stock'] = $stockItem->getIsInStock();
-                $item[$product->getColor()]['qty'] = $stockItem->getQty();
+                $item[$productColor]['size'] = $product->getSize();
+                $item[$productColor]['stock'] = $stockItem->getIsInStock();
+                $item[$productColor]['qty'] = $stockItem->getQty();
                 $stockStatus[] = $item;
                 unset ($item);
             }
