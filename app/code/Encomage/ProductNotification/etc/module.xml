@@ -3,8 +3,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
     <module name="Encomage_ProductNotification" setup_version="0.0.1">
         <sequence>
-            <module name="Encomage_Catalog"/>
-            <module name="Encomage_ConfigurableProduct"/>
+            <module name="Magento_CatalogInventory"/>
         </sequence>
     </module>
 </config>
