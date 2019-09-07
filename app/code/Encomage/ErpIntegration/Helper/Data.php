@@ -97,7 +97,7 @@ class Data extends AbstractHelper
     public function getProductBySky($sky)
     {
         try {
-            $_product = $this->productRepository->get($sky);
+            $_product = $this->productRepository->get($sky, true, Store::DEFAULT_STORE_ID);
 
         } catch (NoSuchEntityException $e) {
             $_product = $this->productFactory->create();
@@ -109,13 +109,18 @@ class Data extends AbstractHelper
     /**
      * @param string $name
      *
+     * @param array  $attributes
+     *
      * @return string
      */
-    public function generateProductSku($name): string
+    public function generateProductSku($name, array $attributes = []): string
     {
-        return $this->skuGenerator->generateProductSku($name, [
+
+        $attributes = array_merge([
             'erp' => 'configurable',
-        ]);
+        ], $attributes);
+
+        return $this->skuGenerator->generateProductSku($name, $attributes);
     }
 
     /**
