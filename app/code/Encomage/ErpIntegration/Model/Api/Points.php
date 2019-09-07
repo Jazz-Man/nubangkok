@@ -1,12 +1,11 @@
 <?php
 namespace Encomage\ErpIntegration\Model\Api;
 
+use Encomage\Nupoints\Model\NupointsRepository;
 use Exception;
-use Zend\Http\Request as HttpRequest;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
-use Magento\Directory\Model\CountryFactory;
-use Encomage\Nupoints\Model\NupointsRepository;
+use Zend\Http\Request as HttpRequest;
 
 /**
  * Class Customer

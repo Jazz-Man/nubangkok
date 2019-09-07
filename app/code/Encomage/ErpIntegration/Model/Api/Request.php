@@ -4,9 +4,7 @@ namespace Encomage\ErpIntegration\Model\Api;
 
 use Exception;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
-use Encomage\ErpIntegration\Logger\Logger;
 
 /**
  * Class Request
@@ -115,9 +113,9 @@ abstract class Request
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Content-Length: ' . strlen($data_string)]);
             $response = $this->serializerJson->unserialize(curl_exec($ch));
         } catch (Exception $e) {
-            $objectManger = ObjectManager::getInstance();
-            $logger = $objectManger->create(Logger::class);
-            $logger->addInfo($e->getMessage());
+//            $objectManger = ObjectManager::getInstance();
+//            $logger = $objectManger->create(Logger::class);
+//            $logger->addInfo($e->getMessage());
         }
 
         return $response;

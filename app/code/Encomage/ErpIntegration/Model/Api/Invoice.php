@@ -23,10 +23,6 @@ class Invoice extends Request
      */
     private $erpCustomer;
     /**
-     * @var SerializerJson
-     */
-    private $json;
-    /**
      * @var OrderResource
      */
     private $orderResource;
@@ -50,7 +46,6 @@ class Invoice extends Request
         parent::__construct($scopeConfig, $json);
         $this->customerRepository = $customerRepository;
         $this->erpCustomer = $erpCustomer;
-        $this->json = $json;
         $this->orderResource = $orderResource;
     }
 
