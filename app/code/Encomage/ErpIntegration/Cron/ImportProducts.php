@@ -276,12 +276,12 @@ class ImportProducts
                 }
 
 
-                $this->configurableProductCategity[$datum->getPropModel()] = $category_id;
+                $this->configurableProductCategity[$datum->getModel()] = $category_id;
 
                 $has_parent = ! empty($this->typeConfigurableProduct->getParentIdsByChild($product->getId()));
 
                 if ( ! $has_parent) {
-                    $this->configurableProductData[$datum->getPropModel()][] = $product->getSku();
+                    $this->configurableProductData[$datum->getModel()][] = $product->getSku();
                 }
             }
         }
@@ -304,8 +304,8 @@ class ImportProducts
             $_category_path[] = $erp_product->getSubCategoryName();
         }
 
-        if ( ! empty($erp_product->getPropFormat())) {
-            $_category_path[] = $this->helper->sanitizeKey($erp_product->getPropFormat());
+        if ( ! empty($erp_product->getFormat())) {
+            $_category_path[] = $this->helper->sanitizeKey($erp_product->getFormat());
         }
 
         $_category = implode('/', $_category_path);
