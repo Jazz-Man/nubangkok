@@ -8,8 +8,11 @@ use Magento\Quote\Api\CartTotalRepositoryInterface;
 use Magento\Catalog\Helper\Product\ConfigurationPool;
 use Magento\Framework\Api\DataObjectHelper;
 use Magento\Framework\Api\ExtensibleDataInterface;
+use Magento\Quote\Api\Data\TotalsInterface;
+use Magento\Quote\Api\Data\TotalsInterfaceFactory;
 use Magento\Quote\Model\Cart\Totals\ItemConverter;
 use Magento\Quote\Api\CouponManagementInterface;
+use Magento\Quote\Model\Cart\TotalsConverter;
 
 /**
  * Fir for magento issue magento/magento2#12993
@@ -44,9 +47,10 @@ class CartTotalRepository implements CartTotalRepositoryInterface
      */
     protected $couponService;
     /**
-     * @var TotalsConverter
+     * @var \Magento\Quote\Model\Cart\TotalsConverter
      */
-    protected $totalsConverter;
+    private $totalsConverter;
+
 
     /**
      * CartTotalRepository constructor.
@@ -58,11 +62,11 @@ class CartTotalRepository implements CartTotalRepositoryInterface
      * @param ItemConverter $converter
      */
     public function __construct(
-        \Magento\Quote\Api\Data\TotalsInterfaceFactory $totalsFactory,
+        TotalsInterfaceFactory $totalsFactory,
         CartRepositoryInterface $quoteRepository,
         DataObjectHelper $dataObjectHelper,
         CouponManagementInterface $couponService,
-        \Magento\Quote\Model\Cart\TotalsConverter $totalsConverter,
+        TotalsConverter $totalsConverter,
         ItemConverter $converter
     )
     {
@@ -70,15 +74,17 @@ class CartTotalRepository implements CartTotalRepositoryInterface
         $this->quoteRepository = $quoteRepository;
         $this->dataObjectHelper = $dataObjectHelper;
         $this->couponService = $couponService;
-        $this->totalsConverter = $totalsConverter;
         $this->itemConverter = $converter;
+        $this->totalsConverter = $totalsConverter;
     }
 
+
     /**
-     * {@inheritDoc}
+     * @param int $cartId
      *
-     * @param int $cartId The cart ID.
-     * @return Totals Quote totals data.
+     * @return \Magento\Quote\Api\Data\TotalsInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Exception
      */
     public function get($cartId)
     {
@@ -97,7 +103,7 @@ class CartTotalRepository implements CartTotalRepositoryInterface
         $this->dataObjectHelper->populateWithArray(
             $quoteTotals,
             $addressTotalsData,
-            \Magento\Quote\Api\Data\TotalsInterface::class
+            TotalsInterface::class
         );
         $items = [];
         foreach ($quote->getAllVisibleItems() as $index => $item) {
