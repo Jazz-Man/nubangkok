@@ -6,7 +6,21 @@ use Encomage\Nupoints\Api\NupointsRepositoryInterface;
 use Magento\Customer\Api\Data\CustomerInterfaceFactory;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Customer\Api\CustomerMetadataInterface;
+use Magento\Customer\Model\AddressFactory;
+use Magento\Customer\Model\Config\Share;
+use Magento\Customer\Model\ResourceModel\Address\CollectionFactory;
+use Magento\Eav\Model\Config;
+use Magento\Framework\Api\DataObjectHelper;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\Encryption\EncryptorInterface;
+use Magento\Framework\Indexer\IndexerRegistry;
+use Magento\Framework\Mail\Template\TransportBuilder;
+use Magento\Framework\Model\Context;
 use Magento\Framework\Reflection\DataObjectProcessor;
+use Magento\Framework\Registry;
+use Magento\Framework\Stdlib\DateTime;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Customer
@@ -41,26 +55,26 @@ class Customer extends \Magento\Customer\Model\Customer
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\Model\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Eav\Model\Config $config,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        Context $context,
+        Registry $registry,
+        StoreManagerInterface $storeManager,
+        Config $config,
+        ScopeConfigInterface $scopeConfig,
         \Magento\Customer\Model\ResourceModel\Customer $resource,
-        \Magento\Customer\Model\Config\Share $configShare,
-        \Magento\Customer\Model\AddressFactory $addressFactory,
-        \Magento\Customer\Model\ResourceModel\Address\CollectionFactory $addressesFactory,
-        \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
+        Share $configShare,
+        AddressFactory $addressFactory,
+        CollectionFactory $addressesFactory,
+        TransportBuilder $transportBuilder,
         GroupRepositoryInterface $groupRepository,
-        \Magento\Framework\Encryption\EncryptorInterface $encryptor,
-        \Magento\Framework\Stdlib\DateTime $dateTime,
+        EncryptorInterface $encryptor,
+        DateTime $dateTime,
         CustomerInterfaceFactory $customerDataFactory,
         DataObjectProcessor $dataObjectProcessor,
-        \Magento\Framework\Api\DataObjectHelper $dataObjectHelper,
+        DataObjectHelper $dataObjectHelper,
         CustomerMetadataInterface $metadataService,
-        \Magento\Framework\Indexer\IndexerRegistry $indexerRegistry,
+        IndexerRegistry $indexerRegistry,
         NupointsRepositoryInterface $nupointsRepository,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        AbstractDb $resourceCollection = null,
         array $data = []
     )
     {
@@ -101,11 +115,4 @@ class Customer extends \Magento\Customer\Model\Customer
         return $this->getData('nupoint_item');
     }
 
-    /**
-     * @return mixed
-     */
-    public function getLineId()
-    {
-        return $this->getDataModel()->getLineId();
-    }
 }
