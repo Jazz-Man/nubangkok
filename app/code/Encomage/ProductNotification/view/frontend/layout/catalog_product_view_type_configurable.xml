@@ -4,7 +4,7 @@
     <body>
         <referenceContainer name="product.info.main">
             <block class="Encomage\ProductNotification\Block\ProductNotification" name="product.outofstock.notify"
-                   template="Encomage_ProductNotification::product/view/element/form/notification.phtml" after="product.info"/>
+                   template="Encomage_ProductNotification::product/element/form/notification.phtml" after="product.info"/>
         </referenceContainer>
     </body>
 </page>
