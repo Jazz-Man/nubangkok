@@ -7,7 +7,7 @@
             <referenceBlock name="top.search" remove="true"/>
         </referenceContainer>
         <referenceBlock name="top.links">
-            <block class="Magento\Framework\View\Element\Html\Link" name="store.locator" after="my-account-link">
+            <block class="Magento\Framework\View\Element\Html\Link" name="store.locator" after="my-account-link" template="Magento_Theme::html/header/top-link-locate.phtml">
                 <arguments>
                     <argument name="class" xsi:type="string">top-link-locate</argument>
                     <argument name="path" xsi:type="string" translate="false">where-to-buy</argument>
