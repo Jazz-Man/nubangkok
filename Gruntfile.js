@@ -16,14 +16,19 @@ module.exports = function (grunt) {
         tasks = grunt.file.expand('./dev/tools/grunt/tasks/*'),
         themes;
 
-        filesRouter.set('themes', 'dev/tools/grunt/configs/themes');
+        filesRouter.set('themes', 'dev/tools/grunt/configs/local-themes');
         themes = filesRouter.get('themes');
 
+
+
     tasks = _.map(tasks, function(task){ return task.replace('.js', '') });
+
     tasks.push('time-grunt');
     tasks.forEach(function (task) {
         require(task)(grunt);
     });
+
+
 
     require('load-grunt-config')(grunt, {
         configPath: path.join(__dirname, configDir),
