@@ -19,16 +19,6 @@
  *
  */
 module.exports = {
-    bangkok: {
-        area: 'frontend',
-        name: 'Bangkok/default',
-        locale: 'en_US',
-        files: [
-            'css/styles-m',
-            'css/styles-l'
-        ],
-        dsl: 'less'
-    },
     blank: {
         area: 'frontend',
         name: 'Magento/blank',
