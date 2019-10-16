@@ -11,14 +11,11 @@ use stdClass;
  */
 class ErpProduct
 {
+
     /**
      * @var string
      */
     private $PropFormat;
-    /**
-     * @var string
-     */
-    private $PropColor2;
     /**
      * @var string
      */
@@ -49,11 +46,6 @@ class ErpProduct
      * @var int|float
      */
     private $Width;
-
-    /**
-     * @var int|float
-     */
-    private $Thick;
     /**
      * @var float|int
      */
@@ -97,7 +89,9 @@ class ErpProduct
     {
         $this->string = new StringUtils();
         foreach ($obj as $property => $value) {
-            $this->$property = $value;
+            if (property_exists($this, $property)) {
+                $this->$property = $value;
+            }
         }
 
         $this->is_shoes = 'Shoes' === $this->getSubCategoryName();
@@ -122,10 +116,10 @@ class ErpProduct
     /**
      * @return string|bool
      */
-    public function getCategoryName(): string
+    protected function getCategoryName(): string
     {
-        if (!empty($this->IcCategoryName)) {
-            return $this->filterStringProps($this->IcCategoryName);
+        if ( ! empty($this->IcCategoryName)) {
+            return $this->prepareStringProps($this->IcCategoryName);
         }
 
         return false;
@@ -133,18 +127,28 @@ class ErpProduct
 
     /**
      * @param mixed $prop
-     * @param bool  $upperCase
      *
      * @return bool|string
      */
-    private function filterStringProps($prop, $upperCase = true)
+    private function prepareStringProps($prop)
+    {
+        $prop = $this->cleanStringProp($prop);
+
+        return $this->upperCaseWords($prop);
+    }
+
+    /**
+     * @param mixed $prop
+     *
+     * @return string
+     */
+    private function cleanStringProp($prop): string
     {
         $prop = $this->string->cleanString($prop);
         $prop = $this->string->trim($prop);
-
         $prop = filter_var($prop, FILTER_SANITIZE_STRING);
 
-        return $upperCase ? $this->upperCaseWords($prop) : $prop;
+        return $prop;
     }
 
     /**
@@ -165,26 +169,14 @@ class ErpProduct
     }
 
     /**
-     * @return bool|string
-     */
-    public function getCategoryCode()
-    {
-        if (!empty($this->ICCategoryCode)) {
-            return $this->filterStringProps($this->ICCategoryCode, false);
-        }
-
-        return false;
-    }
-
-    /**
      * @return bool
      */
     public function isValid(): bool
     {
         $product_code = $this->getBarCode();
 
-        $rawString = mb_strtoupper($product_code, 'UTF-8');
-        $has_space = !ctype_space($product_code);
+        $rawString    = mb_strtoupper($product_code, 'UTF-8');
+        $has_space    = ! ctype_space($product_code);
         $is_uppercase = $product_code === $rawString;
 
         $not_allowed_sku = [
@@ -203,7 +195,7 @@ class ErpProduct
             'WB51MTTLAY1BLGNXXSML',
         ];
 
-        return $has_space && $is_uppercase && !\in_array($product_code, $not_allowed_sku, true);
+        return $has_space && $is_uppercase && ! \in_array($product_code, $not_allowed_sku, true);
     }
 
     /**
@@ -211,7 +203,7 @@ class ErpProduct
      */
     public function getBarCode(): string
     {
-        return $this->string->cleanString($this->BarCode);
+        return $this->cleanStringProp($this->BarCode);
     }
 
     /**
@@ -221,7 +213,7 @@ class ErpProduct
     {
         $prop = false;
 
-        if (!empty($this->PropLabel)) {
+        if ( ! empty($this->PropLabel)) {
             $prop = $this->string->cleanString($this->PropLabel);
 
             $prop = $this->string->trim($prop);
@@ -235,6 +227,14 @@ class ErpProduct
             $prop = filter_var($prop, $filter);
         }
 
+        /*
+         * filtering for "36 19/02"
+         */
+
+        if ( ! is_numeric($prop) && (bool)(int)$prop) {
+            $prop = (int)$prop;
+        }
+
         return $prop ?: 'no size';
     }
 
@@ -243,8 +243,8 @@ class ErpProduct
      */
     public function getName()
     {
-        if (!empty($this->IcProductDescription0)) {
-            return $this->filterStringProps($this->IcProductDescription0);
+        if ( ! empty($this->IcProductDescription0)) {
+            return $this->prepareStringProps($this->IcProductDescription0);
         }
 
         return false;
@@ -269,7 +269,7 @@ class ErpProduct
     /**
      * @param string|float|int $prop
      *
-     * @return string|integer
+     * @return string|int
      */
     private function filterNumericProps($prop)
     {
@@ -292,8 +292,8 @@ class ErpProduct
      */
     public function getFormat()
     {
-        if (!empty($this->PropFormat)) {
-            return $this->filterStringProps($this->PropFormat);
+        if ( ! empty($this->PropFormat)) {
+            return $this->prepareStringProps($this->PropFormat);
         }
 
         return false;
@@ -304,12 +304,10 @@ class ErpProduct
      */
     public function getGrossWeight()
     {
-        if (!empty($this->GrossWeight)) {
-
+        if ( ! empty($this->GrossWeight)) {
             $props = $this->filterNumericProps($this->GrossWeight);
 
-
-            return round($props,2);
+            return round($props, 2);
         }
 
         return false;
@@ -340,7 +338,7 @@ class ErpProduct
      */
     public function getSalesPrice()
     {
-        if (!empty($this->SalesPrice)) {
+        if ( ! empty($this->SalesPrice)) {
             $prop = $this->filterNumericProps($this->SalesPrice);
 
             return abs($prop);
@@ -354,10 +352,8 @@ class ErpProduct
      */
     public function getModel(): string
     {
-        if (!empty($this->PropModel)) {
-
-            $prop = $this->filterStringProps($this->PropModel);
-            return "{$prop} {$this->getCategoryCode()}";
+        if ( ! empty($this->PropModel)) {
+            return $this->prepareStringProps($this->PropModel);
         }
 
         return false;
@@ -366,10 +362,10 @@ class ErpProduct
     /**
      * @return bool|string
      */
-    public function getColor2()
+    public function getCategoryCode()
     {
-        if (!empty($this->PropColor2)) {
-            return $this->filterStringProps($this->PropColor2);
+        if ( ! empty($this->ICCategoryCode)) {
+            return $this->cleanStringProp($this->ICCategoryCode);
         }
 
         return false;
@@ -378,10 +374,10 @@ class ErpProduct
     /**
      * @return bool|string
      */
-    public function getColor1()
+    public function getColor()
     {
-        if (!empty($this->PropArtist)) {
-            return $this->filterStringProps($this->PropArtist);
+        if ( ! empty($this->PropArtist)) {
+            return $this->cleanStringProp($this->PropArtist);
         }
 
         return false;
@@ -400,7 +396,7 @@ class ErpProduct
      */
     public function getHeight()
     {
-        if (!empty($this->Height)) {
+        if ( ! empty($this->Height)) {
             return $this->filterNumericProps($this->Height);
         }
 
@@ -412,20 +408,8 @@ class ErpProduct
      */
     public function getWidth()
     {
-        if (!empty($this->Width)) {
+        if ( ! empty($this->Width)) {
             return $this->filterNumericProps($this->Width);
-        }
-
-        return false;
-    }
-
-    /**
-     * @return float|int
-     */
-    public function getThick()
-    {
-        if (!empty($this->Thick)) {
-            return $this->filterNumericProps($this->Thick);
         }
 
         return false;
