@@ -2,10 +2,11 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
-    <preference for="Magento\Checkout\Block\Onepage\Success" type="Encomage\Checkout\Block\Onepage\Success"/>
+    <preference for="Magento\Checkout\Block\Onepage\Success" type="Encomage\Checkout\Rewrite\Magento\Checkout\Block\Onepage\Success"/>
 
     <preference for="Magento\ConfigurableProduct\Block\Cart\Item\Renderer\Configurable"
-                type="Encomage\Checkout\Block\Cart\Item\Renderer"/>
+                type="Encomage\Checkout\Rewrite\Magento\ConfigurableProduct\Block\Cart\Item\Renderer\Configurable"/>
+
     <type name="Magento\Translation\Model\Js\Config">
         <arguments>
             <argument name="patterns" xsi:type="array">

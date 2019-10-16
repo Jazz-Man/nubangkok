@@ -1,15 +1,15 @@
 <?php
 
-namespace Encomage\Checkout\Block\Cart\Item;
+namespace Encomage\Checkout\Rewrite\Magento\ConfigurableProduct\Block\Cart\Item\Renderer;
 
-use Magento\ConfigurableProduct\Block\Cart\Item\Renderer\Configurable;
+use Magento\ConfigurableProduct\Block\Cart\Item\Renderer\Configurable as ConfigurableAlias;
 use Magento\Framework\App\ObjectManager;
 use Magento\Swatches\Model\ResourceModel\Swatch\Collection;
 
 /**
  * Class Renderer.
  */
-class Renderer extends Configurable
+class Configurable extends ConfigurableAlias
 {
     /**
      * @return array

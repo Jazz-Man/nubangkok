@@ -1,6 +1,6 @@
 <?php
 
-namespace Encomage\Checkout\Block\Onepage;
+namespace Encomage\Checkout\Rewrite\Magento\Checkout\Block\Onepage;
 
 use Magento\Sales\Model\Order\Config;
 use Magento\Framework\View\Element\Template\Context;
