@@ -39,7 +39,6 @@
         "lusitanian/oauth": "~0.8.10",
         "pdepend/pdepend": "2.5.2",
         "phpunit/phpunit": "~6.5.0",
-        "roave/security-advisories": "dev-master",
         "sebastian/phpcpd": "~3.0.0",
         "squizlabs/php_codesniffer": "3.3.1",
         "symfony/var-dumper": "^4.3",
@@ -72,6 +71,11 @@
         "magento/module-vault-graph-ql": "*",
         "magento/module-wishlist-graph-ql": "*",
         "magento/module-graph-ql-cache": "*",
+        "magento/module-authorizenet-graph-ql": "*",
+        "magento/module-braintree-graph-ql": "*",
+        "magento/module-checkout-agreements-graph-ql": "*",
+        "magento/module-paypal-graph-ql": "*",
+        "magento/module-related-product-graph-ql": "*",
         "magento/module-braintree": "*",
         "magento/module-elasticsearch": "*",
         "magento/module-elasticsearch-6": "*",
@@ -140,7 +144,13 @@
         "amzn/amazon-pay-module": "*",
         "vertex/module-tax": "*",
         "vertex/sdk": "*",
-        "magento/module-fedex": "*"
+        "magento/module-fedex": "*",
+        "magento/language-zh_hans_cn": "*",
+        "magento/language-es_es": "*",
+        "magento/language-fr_fr": "*",
+        "magento/language-nl_nl": "*",
+        "magento/language-pt_br": "*",
+        "magento/language-de_de": "*"
     },
     "autoload": {
         "psr-4": {
