@@ -5,13 +5,23 @@
                 type="Encomage\Customer\Controller\Account\CreatePost"/>
     <preference for="Magento\Customer\Controller\Address\FormPost"
                 type="Encomage\Customer\Controller\Address\FormPost"/>
+
     <preference for="Magento\Customer\Model\Customer" type="Encomage\Customer\Model\Customer"/>
     <preference for="Magento\Customer\Block\Form\Register" type="Encomage\Customer\Block\Form\Register"/>
     <preference for="Magento\Framework\Data\Form\Filter\Date" type="Encomage\Customer\Data\Form\Filter\Date"/>
+    <preference for="Magento\Customer\Block\Form\Edit" type="Encomage\Customer\Block\Form\Edit"/>
+    <preference for="Magento\Customer\Controller\Account\EditPost"
+                type="Encomage\Customer\Controller\Account\EditPost"/>
+
 
     <type name="Magento\Customer\CustomerData\Customer">
         <plugin name="encomage_customer" type="Encomage\Customer\Plugin\CustomerData\Customer" sortOrder="1"/>
     </type>
+
+    <type name="Magento\Customer\Block\Widget\Dob">
+        <plugin name="encomage_customer_widged_dob" type="Encomage\Customer\Plugin\Block\Widget\Dob"/>
+    </type>
+
     <type name="Encomage\Customer\Plugin\CustomerData\Customer">
         <arguments>
             <argument name="data" xsi:type="array">
@@ -41,10 +51,4 @@
             </argument>
         </arguments>
     </type>
-    <type name="Magento\Customer\Block\Widget\Dob">
-        <plugin name="encomage_customer_widged_dob" type="Encomage\Customer\Plugin\Block\Widget\Dob"/>
-    </type>
-    <preference for="Magento\Customer\Block\Form\Edit" type="Encomage\Customer\Block\Form\Edit"/>
-    <preference for="Magento\Customer\Controller\Account\EditPost"
-                type="Encomage\Customer\Controller\Account\EditPost"/>
 </config>
