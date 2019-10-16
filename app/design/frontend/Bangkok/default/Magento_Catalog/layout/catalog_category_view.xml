@@ -5,6 +5,10 @@
             <block class="Magento\Catalog\Block\Category\View" name="category.empty"
                    as="category.empty"
                    template="Magento_Catalog::category/empty-container.phtml">
+                <arguments>
+                    <argument name="placeholder" xsi:type="string" translate="true">Email</argument>
+                    <argument name="label" xsi:type="string" translate="true">Please notify me</argument>
+                </arguments>
                 <container name="category.empty.cms.block" htmlTag="div" htmlClass="catalog-category-empty-cms-block"/>
             </block>
         </referenceBlock>

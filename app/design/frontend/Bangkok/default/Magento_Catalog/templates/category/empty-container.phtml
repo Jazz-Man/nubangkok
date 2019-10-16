@@ -4,16 +4,17 @@
 $helper = $this->helper('Encomage\Catalog\Helper\Data');
 /** @var  $categoryViewBlock \Magento\Catalog\Block\Category\View */
 $categoryViewBlock = $block->getLayout()->getBlock('category.products');
+
 ?>
 <?php if ($categoryViewBlock->getCurrentCategory()): ?>
     <div class="catalog-category-empty cms-coming-soon-category">
-        <?= $block->getChildHtml(); ?>
+        <?= $block->getChildHtml() ?>
         <div class="notify-input-container">
-            <form action="<?= $helper->getNotifyMeEmptyCategoryUrl($categoryViewBlock->getCurrentCategory()); ?>"
+            <form action="<?= $helper->getNotifyMeEmptyCategoryUrl($categoryViewBlock->getCurrentCategory()) ?>"
                   method="post">
                 <input class="input-notify-email"
-                       name="notify-email" type="email" required="required" placeholder="<?= __('Email'); ?>"/>
-                <button type="submit" class="cms-button-small" type="button"><?= __('Please notify me'); ?></button>
+                       name="notify-email" type="email" required="required" placeholder="<?= $block->getPlaceholder() ?>"/>
+                <button type="submit" class="cms-button-small" type="button"><?= $block->getLabel() ?></button>
             </form>
         </div>
     </div>
