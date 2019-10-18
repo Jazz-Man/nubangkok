@@ -1,0 +1,22 @@
+{
+    "name": "upmedio/module-registry",
+    "description": "A sample module that show what and how to use instead of deprecated Registry class since Magento 2.3",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Mage2Gen",
+            "email": "info@mage2gen.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "UpMedio\\Registry\\": ""
+        }
+    }
+}
