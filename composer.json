@@ -31,7 +31,8 @@
     "mageplaza/module-banner-slider": "^2.0",
     "mageplaza/module-cron-schedule": "^1.0",
     "mailchimp/mc-magento2": "^102.3",
-    "nikic/iter": "^2.0"
+    "nikic/iter": "^2.0",
+    "upmedio/module-registry": "^1.1"
   },
   "require-dev": {
     "allure-framework/allure-phpunit": "~1.2.0",
