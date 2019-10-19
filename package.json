@@ -9,6 +9,7 @@
   },
   "scripts": {
     "watch-frontend": "grunt clean:bangkok && grunt exec:bangkok && grunt less:bangkok && grunt watch",
+    "deploy-frontend": "grunt clean:bangkok && grunt exec:bangkok && grunt less:bangkok",
     "clean-frontend": "grunt clean:bangkok",
     "exec-frontend": "grunt exec:bangkok",
     "less-frontend": "grunt less:bangkok",
