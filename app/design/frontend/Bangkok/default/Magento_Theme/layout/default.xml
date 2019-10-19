@@ -7,65 +7,36 @@
             <referenceBlock name="top.search" remove="true"/>
         </referenceContainer>
         <referenceBlock name="top.links">
-            <block class="Magento\Framework\View\Element\Html\Link" name="store.locator" after="my-account-link" template="Magento_Theme::html/header/top-link-locate.phtml">
-                <arguments>
-                    <argument name="class" xsi:type="string">top-link-locate</argument>
-                    <argument name="path" xsi:type="string" translate="false">where-to-buy</argument>
-                    <argument name="sortOrder" xsi:type="number">110</argument>
-                </arguments>
-            </block>
-
-            <block class="Magento\Checkout\Block\Cart\Sidebar" name="minicart" as="minicart" after="store.locator"
-                   template="Magento_Checkout::cart/minicart.phtml">
+            <block class="Encomage\Customer\Block\Account\TopLinks"
+                   name="my-account-link"
+                   template="Magento_Customer::topLinks/link.phtml" before="-">
                 <arguments>
                     <argument name="jsLayout" xsi:type="array">
                         <item name="types" xsi:type="array"/>
                         <item name="components" xsi:type="array">
-                            <item name="minicart_content" xsi:type="array">
-                                <item name="component" xsi:type="string">Magento_Checkout/js/view/minicart</item>
+                            <item name="customer_top_link_content" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Customer/js/view/top-link</item>
                                 <item name="config" xsi:type="array">
-                                    <item name="template" xsi:type="string">Magento_Checkout/minicart/content</item>
-                                </item>
-                                <item name="children" xsi:type="array">
-                                    <item name="subtotal.container" xsi:type="array">
-                                        <item name="component" xsi:type="string">uiComponent</item>
-                                        <item name="config" xsi:type="array">
-                                            <item name="displayArea" xsi:type="string">subtotalContainer</item>
-                                        </item>
-                                        <item name="children" xsi:type="array">
-                                            <item name="subtotal" xsi:type="array">
-                                                <item name="component" xsi:type="string">uiComponent</item>
-                                                <item name="config" xsi:type="array">
-                                                    <item name="template" xsi:type="string">
-                                                        Magento_Checkout/minicart/subtotal
-                                                    </item>
-                                                </item>
-                                            </item>
-                                        </item>
-                                    </item>
-                                    <item name="extra_info" xsi:type="array">
-                                        <item name="component" xsi:type="string">uiComponent</item>
-                                        <item name="config" xsi:type="array">
-                                            <item name="displayArea" xsi:type="string">extraInfo</item>
-                                        </item>
-                                    </item>
-                                    <item name="promotion" xsi:type="array">
-                                        <item name="component" xsi:type="string">uiComponent</item>
-                                        <item name="config" xsi:type="array">
-                                            <item name="displayArea" xsi:type="string">promotion</item>
-                                        </item>
-                                    </item>
+                                    <item name="template" xsi:type="string">Magento_Customer/top-link/content</item>
                                 </item>
                             </item>
                         </item>
                     </argument>
                 </arguments>
-                <container name="minicart.addons" label="Mini-cart promotion block"/>
             </block>
-            <block class="Magento\Directory\Block\Currency" name="select-currency" after="select_store_language"
-                   template="Magento_Directory::currency.phtml"/>
-            <block class="Magento\Store\Block\Switcher" name="select_store_language" as="select_store_language"
-                   after="minicart" template="Magento_Store::switch/languages.phtml"/>
+            <block class="Encomage\Theme\Block\Html\Link\Current" name="store-locator" after="my-account-link">
+                <arguments>
+                    <argument name="path" xsi:type="string" translate="false">where-to-buy</argument>
+                    <argument name="sortOrder" xsi:type="number">110</argument>
+                    <argument name="currentCssClass" xsi:type="string" translate="false">current</argument>
+                    <argument name="item_attributes" xsi:type="array">
+                        <item name="class" xsi:type="string">store-locator</item>
+                    </argument>
+                    <argument name="link_attributes" xsi:type="array">
+                        <item name="class" xsi:type="string">top-link-locate</item>
+                    </argument>
+                </arguments>
+            </block>
         </referenceBlock>
 
         <referenceBlock name="my-account-link">
@@ -141,6 +112,9 @@
 
 
         <move element="logo" destination="left-sidebar-container" before="-"/>
+        <move element="minicart" destination="top.links" after="store-locator"/>
+        <move element="store_language" destination="top.links"/>
+        <move element="currency" destination="top.links"/>
 
         <referenceBlock name="store.links" remove="true"/>
         <referenceBlock name="store.settings" remove="true"/>
@@ -154,8 +128,6 @@
         <referenceBlock name="register-link" remove="true"/>
         <referenceBlock name="catalog.compare.link" remove="true"/>
         <referenceBlock name="authorization-link" remove="true"/>
-        <referenceBlock name="currency" remove="true"/>
-        <referenceBlock name="store_language" remove="true"/>
         <referenceBlock name="page.main.title" remove="true"/>
         <referenceBlock name="sale.reorder.sidebar" remove="true"/>
         <referenceBlock name="copyright" remove="true"/>
