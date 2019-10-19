@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e845a1684dc2c99f930aac8bce0960a9",
+    "content-hash": "166c20d50bf58990a13f16b22db19bcb",
     "packages": [
         {
             "name": "2c2p-magento2/2c2p-magento2",
@@ -10013,6 +10013,40 @@
                 "yui"
             ],
             "time": "2018-01-15T15:26:51+00:00"
+        },
+        {
+            "name": "upmedio/module-registry",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Jazz-Man/module-registry.git",
+                "reference": "707b17c3b4420258ae4dda6f626ddfe312154acb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Jazz-Man/module-registry/zipball/707b17c3b4420258ae4dda6f626ddfe312154acb",
+                "reference": "707b17c3b4420258ae4dda6f626ddfe312154acb",
+                "shasum": ""
+            },
+            "require-dev": {
+                "roave/security-advisories": "dev-master"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "UpMedio\\Registry\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "description": "A sample module that show what and how to use instead of deprecated Registry class since Magento 2.3",
+            "time": "2019-10-18T13:26:53+00:00"
         },
         {
             "name": "vertex/product-magento-module",
