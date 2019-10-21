@@ -2,19 +2,17 @@
 
 namespace Encomage\Theme\Block\Html\Page\Sidebar;
 
+use Encomage\Theme\Helper\HtmlAttributes;
 use Magento\Catalog\Helper\Category as CategoryHelper;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
 use UpMedio\Registry\Service\GetCurrentCategoryService;
 
 /**
- * Class Categories
- *
- * @package Encomage\Theme\Block\Html\Page\Sidebar
+ * Class Categories.
  */
 class Categories extends Template
 {
-
     protected $_categoryHelper;
     /**
      * @var \Magento\Catalog\Model\Category[]
@@ -39,6 +37,10 @@ class Categories extends Template
      * @var \Magento\Catalog\Api\Data\CategoryInterface|null
      */
     private $currentCategory;
+    /**
+     * @var \Encomage\Theme\Helper\HtmlAttributes
+     */
+    private $htmlAttributes;
 
     /**
      * Categories constructor.
@@ -46,6 +48,7 @@ class Categories extends Template
      * @param \Magento\Framework\View\Element\Template\Context    $context
      * @param \Magento\Catalog\Helper\Category                    $categoryHelper
      * @param \UpMedio\Registry\Service\GetCurrentCategoryService $currentCategoryService
+     * @param \Encomage\Theme\Helper\HtmlAttributes               $htmlAttributes
      * @param \Magento\Framework\Serialize\Serializer\Json        $json
      * @param array                                               $data
      */
@@ -53,27 +56,26 @@ class Categories extends Template
         Template\Context $context,
         CategoryHelper $categoryHelper,
         GetCurrentCategoryService $currentCategoryService,
+        HtmlAttributes $htmlAttributes,
         Json $json,
         array $data = []
     ) {
-        $this->_categoryHelper        = $categoryHelper;
-        $this->_json                  = $json;
+        $this->_categoryHelper = $categoryHelper;
+        $this->_json = $json;
 
         $this->currentCategory = $currentCategoryService->getCategory();
+        $this->htmlAttributes = $htmlAttributes;
 
         parent::__construct($context, $data);
     }
-
 
     /**
      * @return \Magento\Catalog\Model\Category[]
      */
     public function getCategories(): array
     {
-
         return $this->_categories;
     }
-
 
     /**
      * @return int
@@ -90,8 +92,8 @@ class Categories extends Template
     {
         return $this->_json->serialize([
             'activeMainCategoryId' => $this->_mainActiveCategoryId,
-            'activeCategoryPath'   => $this->activeCategoryPath,
-            'currentCategoryId'    => $this->currentCategoryId,
+            'activeCategoryPath' => $this->activeCategoryPath,
+            'currentCategoryId' => $this->currentCategoryId,
         ]);
     }
 
@@ -103,37 +105,62 @@ class Categories extends Template
      */
     public function getSubCategoriesHtml($childCat, bool $addLinkToParentCat = true): string
     {
-
         $_children = $childCat->getChildrenCategories();
 
+        $addLinkToAll = $addLinkToParentCat && $childCat->hasChildren();
 
         $html = "<ul style='display: none;' data-parent-id='{$childCat->getId()}'>";
-        /** If not top category */
+        /* If not top category */
 
-        if ($this->currentCategory !== null && ($addLinkToParentCat && $childCat->hasChildren())) {
+        if ($addLinkToAll) {
+            $active_class = '';
 
-            $active_class = $this->_isActiveMenuItem($childCat->getId()) && $childCat->getId() === $this->currentCategory->getId() ? 'class="active"' : '';
+            if (null !== $this->currentCategory) {
+                $active_class = $this->_isActiveMenuItem($childCat->getId()) && $childCat->getId() === $this->currentCategory->getId() ? 'active' : '';
+            }
 
-            $html .= "<li data-category-id='{$childCat->getId()}' {$active_class}>";
+            $itemAttibutes = [
+                'data-category-id' => $childCat->getId(),
+                'class' => $active_class,
+            ];
 
-            $html .= "<a data-category-id='{$childCat->getId()}' href='{$this->_categoryHelper->getCategoryUrl($childCat)}'>";
+            $linkAttibutes = [
+                'data-category-id' => $childCat->getId(),
+                'href' => $this->_categoryHelper->getCategoryUrl($childCat),
+            ];
+
+            $html .= "<li {$this->htmlAttributes->getAttributesHtml($itemAttibutes)}>";
+
+            $html .= "<a {$this->htmlAttributes->getAttributesHtml($linkAttibutes)}>";
             $html .= __('All');
             $html .= '</a>';
+
             $html .= '</li>';
         }
 
-
         foreach ($_children as $category) {
-            $active_class = $this->_isActiveMenuItem($category->getId()) ? 'class="active"' : '';
             $has_children = $category->hasChildren();
 
-            $html        .= "<li data-category-id='{$category->getId()}' {$active_class}>";
-            $linkClasses = 'js-sidebar-category';
+            $itemAttibutes = [
+                'data-category-id' => $category->getId(),
+                'class' => $this->_isActiveMenuItem($category->getId()) ? 'active' : '',
+            ];
+
+            $html .= "<li {$this->htmlAttributes->getAttributesHtml($itemAttibutes)}>";
+
+            $linkAttibutes = [
+                'data-category-id' => $category->getId(),
+                'href' => $this->_categoryHelper->getCategoryUrl($category),
+                'class' => [
+                    'js-sidebar-category',
+                ],
+            ];
+
             if ($has_children) {
-                $linkClasses .= ' js-no-link';
+                $linkAttibutes['class'][] = 'js-no-link';
             }
 
-            $html .= "<a data-category-id='{$category->getId()}' class='{$linkClasses}' href='{$this->_categoryHelper->getCategoryUrl($category)}'>{$category->getName()}</a>";
+            $html .= "<a {$this->htmlAttributes->getAttributesHtml($linkAttibutes)}>{$category->getName()}</a>";
 
             if ($has_children) {
                 $html .= $this->getSubCategoriesHtml($category);
@@ -154,9 +181,8 @@ class Categories extends Template
      */
     protected function _isActiveMenuItem(int $catId): bool
     {
-        return ($this->activeCategoryPath && in_array($catId, $this->activeCategoryPath));
+        return $this->activeCategoryPath && \in_array($catId, $this->activeCategoryPath);
     }
-
 
     /**
      * @return $this
@@ -165,38 +191,33 @@ class Categories extends Template
     {
         $categories = $this->_categoryHelper->getStoreCategories();
         /** @var \Magento\Framework\Data\Tree\Node $categoryNode */
-
         foreach ($categories as $categoryNode) {
             if ($categoryNode->hasChildren()) {
                 $this->_categories[] = $categoryNode;
             }
         }
 
-
-        if ( ! empty($this->_categories)) {
-            if ($this->currentCategory !== null) {
+        if (!empty($this->_categories)) {
+            if (null !== $this->currentCategory) {
                 $path = explode('/', $this->currentCategory->getPath());
 
                 unset($path[0], $path[1]);
 
                 $mainActiveCategoryId = $path[2];
-                if ( ! empty($path)) {
-
+                if (!empty($path)) {
                     $this->activeCategoryPath = $path;
                 }
 
                 $this->_mainActiveCategoryId = $mainActiveCategoryId;
-                $this->currentCategoryId     = $this->currentCategory->getId();
+                $this->currentCategoryId = $this->currentCategory->getId();
             } else {
-                $category                    = $this->_categories[0];
+                $category = $this->_categories[0];
                 $this->_mainActiveCategoryId = $category->getId();
-
             }
         }
 
         return $this;
     }
-
 
     /**
      * @return \Magento\Framework\View\Element\Template
