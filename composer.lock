@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3af900f9350730043ae1a4ce35d97873",
+    "content-hash": "23bd9b1e20fce4f0802bfb44a6fd14fc",
     "packages": [
         {
             "name": "2c2p-magento2/2c2p-magento2",
@@ -15355,16 +15355,16 @@
         },
         {
             "name": "yireo/magento2-whoops",
-            "version": "0.0.11",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yireo/Yireo_Whoops.git",
-                "reference": "50ff3f619c4f264f0995080c2a04b86a313138e3"
+                "reference": "9b73a3405193153ec470a6284985a685f8364520"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yireo/Yireo_Whoops/zipball/50ff3f619c4f264f0995080c2a04b86a313138e3",
-                "reference": "50ff3f619c4f264f0995080c2a04b86a313138e3",
+                "url": "https://api.github.com/repos/yireo/Yireo_Whoops/zipball/9b73a3405193153ec470a6284985a685f8364520",
+                "reference": "9b73a3405193153ec470a6284985a685f8364520",
                 "shasum": ""
             },
             "require": {
@@ -15406,7 +15406,7 @@
                 "magento 2",
                 "whoops"
             ],
-            "time": "2019-04-05T17:42:03+00:00"
+            "time": "2019-10-14T14:56:21+00:00"
         }
     ],
     "aliases": [],
