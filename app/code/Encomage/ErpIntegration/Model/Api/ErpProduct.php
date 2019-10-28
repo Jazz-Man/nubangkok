@@ -221,6 +221,12 @@ class ErpProduct
             $filter = FILTER_SANITIZE_STRING;
 
             if (is_numeric($prop)) {
+                $prop_strlen = $this->string->strlen($prop);
+
+                if ($prop_strlen > 2){
+                    $prop = (int)$prop / 10;
+                }
+
                 $filter = FILTER_SANITIZE_NUMBER_INT;
             }
 
