@@ -1,6 +1,7 @@
 <?php
 namespace Encomage\Careers\Model\ResourceModel;
 
+use Exception;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 /**
@@ -23,7 +24,7 @@ class Careers extends AbstractDb
     public function massDeleteById(array $ids)
     {
         if (!is_array($ids)) {
-            throw new \Exception("Invalid param.");
+            throw new Exception("Invalid param.");
         }
         $where['id IN (?)'] = $ids;
         $this->getConnection()->delete($this->getMainTable(), $where);

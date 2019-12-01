@@ -14,7 +14,6 @@ atlassian*
 /sitemap.xml
 /pub/sitemap
 /pub/sitemap.xml
-/.idea
 /.gitattributes
 /app/config_sandbox
 /app/etc/env.php
@@ -31,8 +30,6 @@ atlassian*
 /.grunt
 /.php_cs
 /.php_cs.cache
-/grunt-config.json
-/dev/tools/grunt/configs/local-themes.js
 
 /pub/media/*.*
 !/pub/media/.htaccess

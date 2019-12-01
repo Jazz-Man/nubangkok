@@ -2,131 +2,230 @@
 
 namespace Encomage\Theme\Block\Html\Page\Sidebar;
 
+use Encomage\Theme\Helper\HtmlAttributes;
+use Magento\Catalog\Helper\Category as CategoryHelper;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
+use UpMedio\Registry\Service\GetCurrentCategoryService;
 
-class Categories extends \Magento\Framework\View\Element\Template
+/**
+ * Class Categories.
+ */
+class Categories extends Template
 {
     protected $_categoryHelper;
-    protected $_categories = null;
+    /**
+     * @var \Magento\Catalog\Model\Category[]
+     */
+    protected $_categories = [];
+    /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
     protected $_json;
-    protected $_registry;
-    protected $_mainActiveCategoryId = null;
-    protected $_activeCategoryPath = null;
-    protected $_currentCategory = null;
+    /**
+     * @var int
+     */
+    protected $_mainActiveCategoryId;
+    protected $activeCategoryPath;
 
+    /**
+     * @var int|null
+     */
+    protected $currentCategoryId;
+
+    /**
+     * @var \Magento\Catalog\Api\Data\CategoryInterface|null
+     */
+    private $currentCategory;
+    /**
+     * @var \Encomage\Theme\Helper\HtmlAttributes
+     */
+    private $htmlAttributes;
+
+    /**
+     * Categories constructor.
+     *
+     * @param \Magento\Framework\View\Element\Template\Context    $context
+     * @param \Magento\Catalog\Helper\Category                    $categoryHelper
+     * @param \UpMedio\Registry\Service\GetCurrentCategoryService $currentCategoryService
+     * @param \Encomage\Theme\Helper\HtmlAttributes               $htmlAttributes
+     * @param \Magento\Framework\Serialize\Serializer\Json        $json
+     * @param array                                               $data
+     */
     public function __construct(
         Template\Context $context,
-        \Magento\Catalog\Helper\Category $categoryHelper,
-        \Magento\Framework\Serialize\Serializer\Json $json,
-        \Magento\Framework\Registry $registry,
+        CategoryHelper $categoryHelper,
+        GetCurrentCategoryService $currentCategoryService,
+        HtmlAttributes $htmlAttributes,
+        Json $json,
         array $data = []
-    )
-    {
+    ) {
         $this->_categoryHelper = $categoryHelper;
         $this->_json = $json;
-        $this->_registry = $registry;
+
+        $this->currentCategory = $currentCategoryService->getCategory();
+        $this->htmlAttributes = $htmlAttributes;
+
         parent::__construct($context, $data);
     }
 
-    public function getCategories()
+    /**
+     * @return \Magento\Catalog\Model\Category[]
+     */
+    public function getCategories(): array
     {
         return $this->_categories;
     }
 
-    public function getCurrentCategory()
-    {
-        return $this->_registry->registry('current_category');
-    }
-
-    public function getMainActiveCategoryId()
+    /**
+     * @return int
+     */
+    public function getMainActiveCategoryId(): ?int
     {
         return $this->_mainActiveCategoryId;
     }
 
+    /**
+     * @return bool|false|string
+     */
     public function getJsConfig()
     {
-        return $this->_json->serialize(
-            [
-                'activeMainCategoryId' => $this->_mainActiveCategoryId,
-                'activeCategoryPath' => $this->_activeCategoryPath,
-                'currentCategoryId' => $this->_currentCategory
-            ]
-        );
+        return $this->_json->serialize([
+            'activeMainCategoryId' => $this->_mainActiveCategoryId,
+            'activeCategoryPath' => $this->activeCategoryPath,
+            'currentCategoryId' => $this->currentCategoryId,
+        ]);
     }
 
-    public function getSubCategoriesHtml(\Magento\Framework\Data\Tree\Node $childCat, bool $addLinkToParentCat = true)
+    /**
+     * @param \Magento\Catalog\Model\Category $childCat
+     * @param bool                            $addLinkToParentCat
+     *
+     * @return string
+     */
+    public function getSubCategoriesHtml($childCat, bool $addLinkToParentCat = true): string
     {
-        $children = $childCat->getChildren();
-        $html = '';
-        $html .= '<ul style="display: none;" data-parent-id="' . $childCat->getId() . '">';
-        /** If not top category */
-        if ($childCat->hasChildren() && $addLinkToParentCat) {
-            $liClass = $this->_isActiveMenuItem($childCat->getId())
-            && $childCat->getId() == $this->getCurrentCategory()->getId() ? 'class="active"' : '';
-            $html .= '<li data-category-id="' . $childCat->getId() . '" ' . $liClass . '>';
-            $html .= '<a data-category-id="' . $childCat->getId()
-                . '" href="' . $this->_categoryHelper->getCategoryUrl($childCat) . '">'
-                . __('All')
-                . '</a>';
+        $_children = $childCat->getChildrenCategories();
+
+        $addLinkToAll = $addLinkToParentCat && $childCat->hasChildren();
+
+        $html = "<ul style='display: none;' data-parent-id='{$childCat->getId()}'>";
+        /* If not top category */
+
+        if ($addLinkToAll) {
+            $active_class = '';
+
+            if (null !== $this->currentCategory) {
+                $active_class = $this->_isActiveMenuItem($childCat->getId()) && $childCat->getId() === $this->currentCategory->getId() ? 'active' : '';
+            }
+
+            $itemAttibutes = [
+                'data-category-id' => $childCat->getId(),
+                'class' => $active_class,
+            ];
+
+            $linkAttibutes = [
+                'data-category-id' => $childCat->getId(),
+                'href' => $this->_categoryHelper->getCategoryUrl($childCat),
+            ];
+
+            $html .= "<li {$this->htmlAttributes->getAttributesHtml($itemAttibutes)}>";
+
+            $html .= "<a {$this->htmlAttributes->getAttributesHtml($linkAttibutes)}>";
+            $html .= __('All');
+            $html .= '</a>';
+
             $html .= '</li>';
         }
-        foreach ($children as $item) {
-            $liClass = $this->_isActiveMenuItem($item->getId()) ? 'class="active"' : '';
-            $html .= '<li data-category-id="' . $item->getId() . '" ' . $liClass . '>';
-            $linkClasses = 'js-sidebar-category';
-            if ($item->hasChildren()) {
-                $linkClasses .= ' js-no-link';
+
+        foreach ($_children as $category) {
+            $has_children = $category->hasChildren();
+
+            $itemAttibutes = [
+                'data-category-id' => $category->getId(),
+                'class' => $this->_isActiveMenuItem($category->getId()) ? 'active' : '',
+            ];
+
+            $html .= "<li {$this->htmlAttributes->getAttributesHtml($itemAttibutes)}>";
+
+            $linkAttibutes = [
+                'data-category-id' => $category->getId(),
+                'href' => $this->_categoryHelper->getCategoryUrl($category),
+                'class' => [
+                    'js-sidebar-category',
+                ],
+            ];
+
+            if ($has_children) {
+                $linkAttibutes['class'][] = 'js-no-link';
             }
-            $html .= '<a data-category-id="' . $item->getId()
-                . '" class="' . $linkClasses
-                . '" href="'
-                . $this->_categoryHelper->getCategoryUrl($item) . '">'
-                . $item->getName() . '</a>';
-            if ($item->hasChildren()) {
-                $html .= $this->getSubCategoriesHtml($item);
+
+            $html .= "<a {$this->htmlAttributes->getAttributesHtml($linkAttibutes)}>{$category->getName()}</a>";
+
+            if ($has_children) {
+                $html .= $this->getSubCategoriesHtml($category);
             }
+
             $html .= '</li>';
         }
+
         $html .= '</ul>';
+
         return $html;
     }
 
-    protected function _isActiveMenuItem(int $catId)
+    /**
+     * @param int $catId
+     *
+     * @return bool
+     */
+    protected function _isActiveMenuItem(int $catId): bool
     {
-        return ($this->_activeCategoryPath && in_array($catId, $this->_activeCategoryPath));
+        return $this->activeCategoryPath && \in_array($catId, $this->activeCategoryPath);
     }
 
-    protected function _prepareCategories()
+    /**
+     * @return $this
+     */
+    protected function _prepareCategories(): ?self
     {
-        $categories = $this->_categoryHelper->getStoreCategories(false, false, true);
+        $categories = $this->_categoryHelper->getStoreCategories();
         /** @var \Magento\Framework\Data\Tree\Node $categoryNode */
         foreach ($categories as $categoryNode) {
             if ($categoryNode->hasChildren()) {
                 $this->_categories[] = $categoryNode;
             }
         }
-        if ($this->_categories) {
-            if (!$this->getCurrentCategory()) {
-                $category = $this->_categories[0];
-                $this->_mainActiveCategoryId = $category->getId();
-            } else {
-                $path = explode('/', $this->getCurrentCategory()->getPath());
-                unset($path[0]);
-                unset($path[1]);
+
+        if (!empty($this->_categories)) {
+            if (null !== $this->currentCategory) {
+                $path = explode('/', $this->currentCategory->getPath());
+
+                unset($path[0], $path[1]);
+
                 $mainActiveCategoryId = $path[2];
                 if (!empty($path)) {
-                    $this->_activeCategoryPath = $path;
+                    $this->activeCategoryPath = $path;
                 }
+
                 $this->_mainActiveCategoryId = $mainActiveCategoryId;
-                $this->_currentCategory = $this->getCurrentCategory()->getId();
+                $this->currentCategoryId = $this->currentCategory->getId();
+            } else {
+                $category = $this->_categories[0];
+                $this->_mainActiveCategoryId = $category->getId();
             }
         }
+
         return $this;
     }
 
+    /**
+     * @return \Magento\Framework\View\Element\Template
+     */
     protected function _beforeToHtml()
     {
         $this->_prepareCategories();
+
         return parent::_beforeToHtml();
     }
 }

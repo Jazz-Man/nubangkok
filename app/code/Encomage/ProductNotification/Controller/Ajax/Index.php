@@ -8,8 +8,7 @@ use Encomage\ProductNotification\Model\ProductNotificationFactory;
 use Magento\Framework\Controller\Result\JsonFactory;
 
 /**
- * Class Index
- * @package Encomage\ProductNotification\Controller\Ajax
+ * Class Index.
  */
 class Index extends Action
 {
@@ -25,16 +24,16 @@ class Index extends Action
 
     /**
      * Index constructor.
-     * @param Context $context
-     * @param JsonFactory $resultJsonFactory
+     *
+     * @param Context                    $context
+     * @param JsonFactory                $resultJsonFactory
      * @param ProductNotificationFactory $productNotificationFactory
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
         ProductNotificationFactory $productNotificationFactory
-    )
-    {
+    ) {
         $this->resultJsonFactory = $resultJsonFactory;
         $this->productNotificationFactory = $productNotificationFactory;
         parent::__construct($context);
@@ -42,16 +41,18 @@ class Index extends Action
 
     /**
      * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface
+     *
+     * @throws \Exception
      */
     public function execute()
     {
         $result = $this->resultJsonFactory->create();
         if ($this->getRequest()->isAjax()) {
-            $params =$this->getRequest()->getParams();
-            $model =$this->productNotificationFactory->create();
+            $params = $this->getRequest()->getParams();
+            $model = $this->productNotificationFactory->create();
             $model->setData($params)->save();
+
             return $result->setData($params);
         }
     }
-
 }

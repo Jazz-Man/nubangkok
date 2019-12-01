@@ -78,6 +78,7 @@ class Email extends AbstractHelper
 
     /**
      * @return \Magento\Store\Api\Data\StoreInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getStore()
     {
@@ -86,7 +87,9 @@ class Email extends AbstractHelper
 
     /**
      * @param string $xmlPath
+     *
      * @return mixed
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getTemplateId(string $xmlPath)
     {
@@ -94,10 +97,13 @@ class Email extends AbstractHelper
     }
 
     /**
-     * @param array $emailTemplateVariables
+     * @param array  $emailTemplateVariables
      * @param string $senderInfo
-     * @param array $receiverInfo
+     * @param array  $receiverInfo
+     *
      * @return $this
+     * @throws \Magento\Framework\Exception\MailException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function generateTemplate(array $emailTemplateVariables, string $senderInfo, array $receiverInfo)
     {
@@ -109,16 +115,19 @@ class Email extends AbstractHelper
                 ]
             )
             ->setTemplateVars($emailTemplateVariables)
-            ->setFrom($senderInfo)
+            ->setFromByScope($senderInfo)
             ->addTo($receiverInfo['email']);
         return $this;
     }
 
     /**
-     * @param array $receiverInfo
+     * @param array  $receiverInfo
      * @param string $senderInfo
-     * @param array $emailTemplateVariables
+     * @param array  $emailTemplateVariables
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\MailException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function sendEmail(array $receiverInfo, string $senderInfo, array $emailTemplateVariables)
     {

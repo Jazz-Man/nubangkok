@@ -1,68 +1,42 @@
 <?xml version="1.0"?>
 
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <referenceContainer name="header.container">
+            <referenceBlock name="top.search" remove="true"/>
+        </referenceContainer>
         <referenceBlock name="top.links">
-            <block class="Magento\Framework\View\Element\Html\Link" name="store.locator" after="my-account-link">
-                <arguments>
-                    <argument name="class" xsi:type="string">top-link-locate</argument>
-                    <argument name="path" xsi:type="string" translate="false">where-to-buy</argument>
-                    <argument name="sortOrder" xsi:type="number">110</argument>
-                </arguments>
-        </block>
-            <block class="Magento\Framework\View\Element\Template" name="top.search"
-                   as="topSearch" template="Magento_Search::form.mini.phtml" after="my-account-link"/>
-            <block class="Magento\Checkout\Block\Cart\Sidebar" name="minicart" as="minicart" after="top.search"
-                   template="Magento_Checkout::cart/minicart.phtml">
+            <block class="Encomage\Customer\Block\Account\TopLinks"
+                   name="my-account-link"
+                   template="Magento_Customer::topLinks/link.phtml" before="-">
                 <arguments>
                     <argument name="jsLayout" xsi:type="array">
                         <item name="types" xsi:type="array"/>
                         <item name="components" xsi:type="array">
-                            <item name="minicart_content" xsi:type="array">
-                                <item name="component" xsi:type="string">Magento_Checkout/js/view/minicart</item>
+                            <item name="customer_top_link_content" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Customer/js/view/top-link</item>
                                 <item name="config" xsi:type="array">
-                                    <item name="template" xsi:type="string">Magento_Checkout/minicart/content</item>
-                                </item>
-                                <item name="children" xsi:type="array">
-                                    <item name="subtotal.container" xsi:type="array">
-                                        <item name="component" xsi:type="string">uiComponent</item>
-                                        <item name="config" xsi:type="array">
-                                            <item name="displayArea" xsi:type="string">subtotalContainer</item>
-                                        </item>
-                                        <item name="children" xsi:type="array">
-                                            <item name="subtotal" xsi:type="array">
-                                                <item name="component" xsi:type="string">uiComponent</item>
-                                                <item name="config" xsi:type="array">
-                                                    <item name="template" xsi:type="string">
-                                                        Magento_Checkout/minicart/subtotal
-                                                    </item>
-                                                </item>
-                                            </item>
-                                        </item>
-                                    </item>
-                                    <item name="extra_info" xsi:type="array">
-                                        <item name="component" xsi:type="string">uiComponent</item>
-                                        <item name="config" xsi:type="array">
-                                            <item name="displayArea" xsi:type="string">extraInfo</item>
-                                        </item>
-                                    </item>
-                                    <item name="promotion" xsi:type="array">
-                                        <item name="component" xsi:type="string">uiComponent</item>
-                                        <item name="config" xsi:type="array">
-                                            <item name="displayArea" xsi:type="string">promotion</item>
-                                        </item>
-                                    </item>
+                                    <item name="template" xsi:type="string">Magento_Customer/top-link/content</item>
                                 </item>
                             </item>
                         </item>
                     </argument>
                 </arguments>
-                <container name="minicart.addons" label="Mini-cart promotion block"/>
             </block>
-            <block class="Magento\Directory\Block\Currency" name="select-currency" after="select_store_language"
-                   template="Magento_Directory::currency.phtml"/>
-            <block class="Magento\Store\Block\Switcher" name="select_store_language" as="select_store_language"
-                   after="minicart" template="Magento_Store::switch/languages.phtml"/>
+            <block class="Encomage\Theme\Block\Html\Link\Current" name="store-locator" after="my-account-link">
+                <arguments>
+                    <argument name="path" xsi:type="string" translate="false">where-to-buy</argument>
+                    <argument name="sortOrder" xsi:type="number">110</argument>
+                    <argument name="currentCssClass" xsi:type="string" translate="false">current</argument>
+                    <argument name="item_attributes" xsi:type="array">
+                        <item name="class" xsi:type="string">store-locator</item>
+                    </argument>
+                    <argument name="link_attributes" xsi:type="array">
+                        <item name="class" xsi:type="string">top-link-locate</item>
+                    </argument>
+                </arguments>
+            </block>
         </referenceBlock>
 
         <referenceBlock name="my-account-link">
@@ -82,7 +56,8 @@
             <container name="left-sidebar-container" as="left-sidebar-container" label="Left sidebar container"
                        htmlTag="div"
                        htmlClass="left-sidebar-container js-sticky-sidebar">
-                <block class="Magento\Framework\View\Element\Template" name="sidebar-menu-container" as="sidebar-menu-container"
+                <block class="Magento\Framework\View\Element\Template" name="sidebar-menu-container"
+                       as="sidebar-menu-container"
                        template="Magento_Theme::html/page/sidebar-container.phtml">
                     <block class="Encomage\Theme\Block\Html\Page\Sidebar\Categories" name="sidebar_categories"
                            as="sidebar.categories"
@@ -103,13 +78,13 @@
                    template="Magento_Theme::html/container.phtml">
                 <block class="Magento\Framework\View\Element\Template" name="mobile.nav.container"
                        template="Magento_Theme::html/mobile/page/nav/container.phtml">
-                    <block class="Magento\Framework\View\Element\Template" name="mobile.nav.search"
-                           as="mobile.topSearch" template="Magento_Search::mobile/page/nav/form.mini.phtml" before="-"/>
                     <container name="mobile.nav.switch" as="mobile.nav.switch" label="Mobile nav switch" htmlTag="div"
-                               htmlClass="mobile-nav-switch" after="mobile.nav.search">
+                               htmlClass="mobile-nav-switch" before="-">
+
                         <block class="Magento\Store\Block\Switcher" name="mobile.nav.switch.languages"
                                as="mobile.nav.switch.languages"
                                template="Magento_Store::mobile/page/nav/languages.phtml" before="-"/>
+
                         <block class="Magento\Directory\Block\Currency" name="mobile.nav.switch.currency"
                                as="mobile.nav.switch.currency"
                                template="Magento_Directory::mobile/page/nav/currency.phtml"
@@ -117,7 +92,8 @@
                     </container>
 
 
-                    <block class="Magento\Framework\View\Element\Template" name="mobile-sidebar-menu-container" as="sidebar-menu-container"
+                    <block class="Magento\Framework\View\Element\Template" name="mobile-sidebar-menu-container"
+                           as="sidebar-menu-container"
                            template="Magento_Theme::html/page/sidebar-container.phtml"/>
                 </block>
             </block>
@@ -136,6 +112,9 @@
 
 
         <move element="logo" destination="left-sidebar-container" before="-"/>
+        <move element="minicart" destination="top.links" after="store-locator"/>
+        <move element="store_language" destination="top.links"/>
+        <move element="currency" destination="top.links"/>
 
         <referenceBlock name="store.links" remove="true"/>
         <referenceBlock name="store.settings" remove="true"/>
@@ -148,12 +127,11 @@
         <referenceBlock name="wish-list-link" remove="true"/>
         <referenceBlock name="register-link" remove="true"/>
         <referenceBlock name="catalog.compare.link" remove="true"/>
-        <referenceBlock name="authorization-link" remove="true" />
-        <referenceBlock name="currency" remove="true"/>
-        <referenceBlock name="store_language" remove="true"/>
+        <referenceBlock name="authorization-link" remove="true"/>
         <referenceBlock name="page.main.title" remove="true"/>
         <referenceBlock name="sale.reorder.sidebar" remove="true"/>
         <referenceBlock name="copyright" remove="true"/>
+        <referenceContainer name="page.messages" remove="true"/>
 
         <referenceContainer name="footer">
             <block class="Magento\Cms\Block\Block" name="mobile_footer">

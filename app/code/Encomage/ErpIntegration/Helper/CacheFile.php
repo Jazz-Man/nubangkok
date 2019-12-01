@@ -20,14 +20,6 @@ class CacheFile
 {
 
     /**
-     * @var \Magento\Framework\Filesystem
-     */
-    private $filesystem;
-    /**
-     * @var \Magento\Framework\App\Filesystem\DirectoryList
-     */
-    private $directoryList;
-    /**
      * @var \Magento\Framework\Filesystem\Directory\ReadInterface
      */
     private $cacheRead;
@@ -39,23 +31,44 @@ class CacheFile
      * @var \Magento\Framework\Filesystem\Directory\WriteInterface
      */
     private $cacheWrite;
+    /**
+     * @var string
+     */
+    private $erpConfigProductFile;
+
 
     /**
      * CacheFile constructor.
      *
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     *
      */
     public function __construct(ObjectManagerInterface $objectManager)
     {
 
-        $this->filesystem    = $objectManager->get(Filesystem::class);
-        $this->directoryList = $objectManager->get(DirectoryList::class);
+        $filesystem    = $objectManager->get(Filesystem::class);
+        $directoryList = $objectManager->get(DirectoryList::class);
 
         $this->erpCacheFile = 'erp/ErpCacheFile.json';
 
+        $this->erpConfigProductFile = 'erp/ErpConfigProductFile.json';
 
-        $this->cacheRead = $this->filesystem->getDirectoryRead($this->directoryList::CACHE);
-        $this->cacheWrite = $this->filesystem->getDirectoryWrite($this->directoryList::CACHE);
+
+        $this->cacheRead  = $filesystem->getDirectoryRead($directoryList::VAR_DIR);
+
+        try {
+            $this->cacheWrite = $filesystem->getDirectoryWrite($directoryList::VAR_DIR);
+        } catch (FileSystemException $e) {
+            $this->cacheWrite = false;
+        }
+    }
+
+    /**
+     * @return bool|mixed
+     */
+    public function getConfigProduct()
+    {
+        return $this->getFileData($this->erpConfigProductFile);
     }
 
     /**
@@ -63,9 +76,36 @@ class CacheFile
      */
     public function getCacheFile()
     {
+        return $this->getFileData($this->erpCacheFile);
+    }
+
+    /**
+     * @param array $data
+     */
+    public function saveConfigProduct(array $data): void
+    {
+        $this->saveFileData($this->erpConfigProductFile, $data);
+    }
+
+    /**
+     * @param array $data
+     */
+    public function saveCacheFile(array $data): void
+    {
+        $this->saveFileData($this->erpCacheFile, $data);
+    }
+
+
+    /**
+     * @param string $file
+     *
+     * @return bool|mixed
+     */
+    private function getFileData(string $file)
+    {
         try {
 
-            $data = $this->cacheRead->isExist($this->erpCacheFile) ? $this->cacheRead->readFile($this->erpCacheFile) : false;
+            $data = $this->cacheRead->isExist($file) ? $this->cacheRead->readFile($file) : false;
 
             return $data ? json_decodeAlias($data) : false;
         } catch (FileSystemException $e) {
@@ -75,16 +115,21 @@ class CacheFile
         return false;
     }
 
-    /**
-     * @param array $data
-     */
-    public function saveCacheFile(array $data){
-        try {
-            $contents = json_encodeAlias($data, JSON_UNESCAPED_SLASHES);
 
-            $this->cacheWrite->writeFile($this->erpCacheFile, $contents);
-        } catch (FileSystemException $e) {
-            dump($e->getMessage());
+    /**
+     * @param string $file
+     * @param mixed  $data
+     */
+    private function saveFileData(string $file, $data): void
+    {
+        if ($this->cacheWrite){
+            try {
+                $contents = json_encodeAlias($data, JSON_UNESCAPED_SLASHES);
+
+                $this->cacheWrite->writeFile($file, $contents);
+            } catch (FileSystemException $e) {
+                dump($e->getMessage());
+            }
         }
     }
 

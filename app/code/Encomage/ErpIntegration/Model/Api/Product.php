@@ -6,6 +6,7 @@ use Magento\Framework\DataObject;
 use Magento\Framework\Webapi\Exception;
 use Magento\Store\Model\Store;
 use RuntimeException;
+use function strlen;
 use Zend\Http\Request as HttpRequest;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
@@ -39,10 +40,6 @@ class Product extends Request
      * @var ProductInterface
      */
     private $productFactory;
-    /**
-     * @var Attribute
-     */
-    private $entityAttribute;
     /**
      * @var ProductResource
      */
@@ -131,7 +128,6 @@ class Product extends Request
         parent::__construct($scopeConfig, $serializerJson);
         $this->productRepository = $productRepository;
         $this->productFactory = $productFactory;
-        $this->entityAttribute = $entityAttribute;
         $this->productResource = $productResource;
         $this->categoryLinkManagement = $categoryLinkManagement;
         $this->categoryResource = $categoryResource;
@@ -140,8 +136,8 @@ class Product extends Request
         $this->stockRegistryFactory = $stockRegistryFactory;
         $this->_helper = $data;
 
-        $this->_attributesOptions['size'] = $this->entityAttribute->loadByCode('catalog_product', 'size')->getSource()->getAllOptions(false, true);
-        $this->_attributesOptions['color'] = $this->entityAttribute->loadByCode('catalog_product', 'color')->getSource()->getAllOptions(false, true);
+        $this->_attributesOptions['size'] = $entityAttribute->loadByCode('catalog_product', 'size')->getSource()->getAllOptions(false, true);
+        $this->_attributesOptions['color'] = $entityAttribute->loadByCode('catalog_product', 'color')->getSource()->getAllOptions(false, true);
         $this->_colorCodes = $this->_prepareColorArray($this->serializerJson->unserialize($this->scopeConfig->getValue(parent::ERP_COLOR_CODES)));
         $this->categoryCodes = $this->serializerJson->unserialize($this->_getCategoryCodes());
         $this->subCategoryCodesBags = $this->serializerJson->unserialize($this->_getBagsCodes());
@@ -191,7 +187,7 @@ class Product extends Request
         $colorsNotExist = '';
         $sizeNotExist = '';
         foreach ($result as $item) {
-            $item = is_object($item) ? get_object_vars($item) : $item;
+            $item = \is_object($item) ? get_object_vars($item) : $item;
             if (strlen($item['IcProductCode']) > 18 || strlen($item['IcProductCode']) < 16) {
                 continue;
             }
@@ -266,25 +262,25 @@ class Product extends Request
             if (count($this->typeConfigurableProduct->getParentIdsByChild($product->getId()))) {
                 continue;
             }
-            if (!empty($confSku) && !empty($confName) && !array_key_exists($confSku, $configurable)) {
+            if (!empty($confSku) && !empty($confName) && ! \array_key_exists($confSku, $configurable)) {
                 $configurable[$confSku] = ['name' => $confName, 'category_ids' => $categoryIds];
                 $configurable[$confSku]['category_name'] = $item['IcCategoryName'];
             }
-            if ($product->getId() && array_key_exists($confSku, $configurable)) {
+            if ($product->getId() && \array_key_exists($confSku, $configurable)) {
                 $configurable[$confSku]['associate_ids'][$product->getId()] = $product->getId();
                 $configurable[$confSku]['skus'][] = $product->getSku();
             }
-            $configurable[$confSku]['color'] = array_key_exists('color', $configurable[$confSku]) ? $configurable[$confSku]['color'] : '';
+            $configurable[$confSku]['color'] = \array_key_exists('color', $configurable[$confSku]) ? $configurable[$confSku]['color'] : '';
             if ($configurable[$confSku]['color'] == null) {
                 $configurable[$confSku]['color'] = $product->getColor() ? $product->getColor() : null;
             }
-            $configurable[$confSku]['size'] = array_key_exists('size', $configurable[$confSku]) ? $configurable[$confSku]['size'] : '';
+            $configurable[$confSku]['size'] = \array_key_exists('size', $configurable[$confSku]) ? $configurable[$confSku]['size'] : '';
             if ($configurable[$confSku]['size'] == null) {
                 $configurable[$confSku]['size'] = $product->getSize() ? $product->getSize() : null;
             }
             unset($product);
         }
-        unset($result);
+
         if (count($configurable) > 0) {
             foreach ($configurable as $sku => $settings) {
                 try {

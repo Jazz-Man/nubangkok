@@ -12,11 +12,15 @@ define([
          * @override
          */
         initialize: function () {
-            var customer = customerData.get('customer'), self = this;
+            var customer = customerData.get('customer')();
+            var self = this;
+
+
             $('.customer-links').hide();
-            if (customer()['website_id'] !== window.checkout.websiteId) {
+            if (customer['website_id'] !== window.checkout.websiteId) {
                 customerData.reload(['customer'], false);
             }
+
             mediaCheck({
                 media: '(max-width: 768px)',
                 entry: $.proxy(function () {
@@ -30,8 +34,10 @@ define([
             return this._super();
         },
         getLinks: function () {
+
             var customer = customerData.get('customer')(),
-                links = customerData.get('customer')().customerTopLinks;
+                links = customer.customerTopLinks;
+
             if (links) {
                 $('.customer-links').show();
 
@@ -53,11 +59,11 @@ define([
         },
         targetMobile: function () {
 
-            $(document).on('click', 'a.js-customer-top-link', function () {
+            $(document).on('click', 'a.js-customer-top-link', function (event) {
                 $('html').addClass('mobile-account-top-links');
                 event.preventDefault();
             });
-            $(document).on('click', '.close-account-links-js', function () {
+            $(document).on('click', '.close-account-links-js', function (event) {
                 $('html').removeClass('mobile-account-top-links');
                 event.preventDefault();
             })

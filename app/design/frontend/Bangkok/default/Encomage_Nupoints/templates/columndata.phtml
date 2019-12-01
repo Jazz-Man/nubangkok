@@ -1,0 +1,10 @@
+<?php
+
+/** @var \Magento\Framework\View\Element\Template $block */
+
+/** @var \Magento\Sales\Model\Order $order */
+$order = $block->getOrder();
+
+?>
+
+<td data-th="<?= $block->escapeHtml(__('nuPoints')) ?>" class="col points">+ <?= (int)$order->getNupoints() ?></td>

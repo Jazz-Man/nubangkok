@@ -3,25 +3,45 @@
 
 namespace Encomage\Customer\Block\Form;
 use Magento\Customer\Api\AccountManagementInterface;
+use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Encomage\Customer\Block\Address\Edit as AddressEdit;
+use Magento\Customer\Model\Session;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Newsletter\Model\SubscriberFactory;
 
 class Edit extends \Magento\Customer\Block\Form\Edit
 {
 
+    /**
+     * @var \Magento\Customer\Api\AddressRepositoryInterface
+     */
     protected $addressRepository;
 
-    protected $billingAddress = null;
+
+    protected $billingAddress;
 
     protected $addressEditBlock;
 
+    /**
+     * Edit constructor.
+     *
+     * @param \Magento\Framework\View\Element\Template\Context  $context
+     * @param \Magento\Customer\Model\Session                   $customerSession
+     * @param \Magento\Newsletter\Model\SubscriberFactory       $subscriberFactory
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Customer\Api\AccountManagementInterface  $customerAccountManagement
+     * @param \Magento\Customer\Api\AddressRepositoryInterface  $addressRepository
+     * @param \Encomage\Customer\Block\Address\Edit             $addressEditBlock
+     * @param array                                             $data
+     */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Customer\Model\Session $customerSession,
-        \Magento\Newsletter\Model\SubscriberFactory $subscriberFactory,
+        Context $context,
+        Session $customerSession,
+        SubscriberFactory $subscriberFactory,
         CustomerRepositoryInterface $customerRepository,
         AccountManagementInterface $customerAccountManagement,
-        \Magento\Customer\Api\AddressRepositoryInterface $addressRepository,
+        AddressRepositoryInterface $addressRepository,
         AddressEdit $addressEditBlock,
         array $data = []
     ) {
@@ -45,7 +65,7 @@ class Edit extends \Magento\Customer\Block\Form\Edit
             if(!$addressId){
                 $addressId = $this->getCustomer()->getDefaultShipping();
             }
-            $this->billingAddress = ($addressId)
+            $this->billingAddress = $addressId
                 ? $this->addressRepository->getById($addressId) : false;
         }
 

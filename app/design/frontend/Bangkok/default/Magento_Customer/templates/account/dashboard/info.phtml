@@ -1,15 +1,36 @@
 <?php
-/** @var \Encomage\Customer\Block\Account\Dashboard\Info $block */
+
+use Magento\Customer\Block\Widget\Gender;
+use Magento\Customer\Model\Data\Option;
+
 
 /** @var \Encomage\Customer\Model\Data\Customer $customer */
 $customer = $block->getCustomer();
+
+$LineId = $customer->getCustomAttribute('line_id');
+
+
+/** @var Gender $_gender */
+$_gender = $block->getLayout()->createBlock(Gender::class);
+
+$genderCodeId = $customer->getGender();
+
+$options = $_gender->getGenderOptions();
+
+/** @var Option[] $customerGender */
+$customerGender = array_filter($options, static function (Option $item) use ($genderCodeId) {
+    return $item->getValue() === $genderCodeId;
+});
+
+if ( ! empty($customerGender)) {
+    $customerGender = reset($customerGender);
+}
+
+
 ?>
 <div class="block block-dashboard-info">
     <div class="block-content">
         <div class="box box-information">
-<!--            <strong class="box-title">-->
-<!--                <span>--><?php //echo $block->escapeHtml(__('Contact Information')) ?><!--</span>-->
-<!--            </strong>-->
             <div class="box-content">
                 <table>
                     <tr>
@@ -24,26 +45,20 @@ $customer = $block->getCustomer();
                         <th><?= __('Email') ?></th>
                         <td><?= $customer->getEmail() ?></td>
                     </tr>
-                   <!-- <tr>
-                        <th><?/*= __('Country') */?></th>
-                        <td><?/*= __($block->getCountryName()) */?></td>
-                    </tr>
                     <tr>
-                        <th><?/*= __('Mobile') */?></th>
-                        <td><?/*= $block->getTelephone() */?></td>
-                    </tr>-->
-                    <tr>
-                        <th><?= __('Line Id') ?></th>
-                        <td><?= $customer->getLineId() ?></td>
+                        <th class="line-id"><?= __('Line Id') ?></th>
+                        <td><?= $LineId ? $LineId->getValue() : '' ?></td>
                     </tr>
                     <tr>
                         <th><?= __('Date of Birth') ?></th>
-                        <td><?= $customer->getDob() ?></td>
+                        <td><?= $block->escapeHtml($customer->getDob()) ?></td>
                     </tr>
-                    <tr>
-                        <th><?= __('Gender') ?></th>
-                        <td><?= __($customer->getGenderLabel()) ?></td>
-                    </tr>
+                    <?php if ($_gender->isEnabled()): ?>
+                        <tr>
+                            <th><?= __('Gender') ?></th>
+                            <td><?= $customerGender ? $block->escapeHtml(__($customerGender->getLabel())) : '' ?></td>
+                        </tr>
+                    <?php endif; ?>
                 </table>
             </div>
         </div>
@@ -73,8 +88,5 @@ $customer = $block->getCustomer();
         <a class="action edit" href="<?= $block->escapeUrl($block->getUrl('customer/account/edit')) ?>">
             <span><?= $block->escapeHtml(__('Edit Profile')) ?></span>
         </a>
-        <!--                <a href="--><?php //echo $block->escapeUrl($block->getChangePasswordUrl()) ?><!--" class="action change-password">-->
-        <!--                    --><?php //echo $block->escapeHtml(__('Change Password')) ?>
-        <!--                </a>-->
     </div>
 </div>
