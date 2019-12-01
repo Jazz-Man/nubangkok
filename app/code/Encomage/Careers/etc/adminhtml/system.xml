@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <section id="careers_email_settings" showInDefault="1" showInStore="1" showInWebsite="1" translate="label" type="text">
+        <section id="careers_email_settings" showInDefault="1" showInStore="1" showInWebsite="1" translate="label"
+                 type="text">
             <label>Careers Email Settings</label>
             <tab>nubangkok</tab>
             <resource>Encomage_Careers::careers</resource>
             <group id="email" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="1" type="text">
                 <label>Email Settings</label>
-                <field id="career_send_email" showInDefault="1" showInStore="1" showInWebsite="1" translate="label" type="select">
+                <field id="career_send_email" showInDefault="1" showInStore="1" showInWebsite="1" translate="label"
+                       type="select">
                     <label>Careers Email Template</label>
                     <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
                 </field>

@@ -2,35 +2,29 @@
 
 namespace Encomage\Customer\Block\Account;
 
-use Magento\Framework\UrlInterface;
+use Magento\Customer\Block\Account\Link;
 use Magento\Framework\Serialize\Serializer\Json;
 
-class TopLinks extends \Magento\Customer\Block\Account\Link
+/**
+ * Class TopLinks
+ *
+ * @package Encomage\Customer\Block\Account
+ */
+class TopLinks extends Link
 {
 
-    private $urlBuilder;
-    private $json;
 
-    public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Customer\Model\Url $customerUrl,
-        array $data = [],
-        UrlInterface $urlBuilder,
-        Json $json
-
-    )
-    {
-        parent::__construct($context, $customerUrl, $data);
-        $this->urlBuilder = $urlBuilder;
-        $this->json = $json;
-    }
-
+    /**
+     * @return bool|false|string
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getConfig()
     {
-        return $this->json->serialize(
-            [
-                'websiteId' => $this->_storeManager->getWebsite()->getId()
-            ]
-        );
+
+        $json = new Json();
+
+        return $json->serialize([
+            'websiteId' => $this->_storeManager->getWebsite()->getId(),
+        ]);
     }
 }

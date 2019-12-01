@@ -25,6 +25,11 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Customer\Api\Data\AddressInterfaceFactory as CustomerAddressFactory;
 
+/**
+ * Class CreatePost
+ *
+ * @package Encomage\Customer\Controller\Account
+ */
 class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
 {
     private $cookieMetadataFactory;
@@ -38,6 +43,31 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
     protected $formKeyValidator;
 
 
+    /**
+     * CreatePost constructor.
+     *
+     * @param \Magento\Framework\App\Action\Context               $context
+     * @param \Magento\Customer\Model\Session                     $customerSession
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface  $scopeConfig
+     * @param \Magento\Store\Model\StoreManagerInterface          $storeManager
+     * @param \Magento\Customer\Api\AccountManagementInterface    $accountManagement
+     * @param \Magento\Customer\Helper\Address                    $addressHelper
+     * @param \Magento\Framework\UrlFactory                       $urlFactory
+     * @param \Magento\Customer\Model\Metadata\FormFactory        $formFactory
+     * @param \Magento\Newsletter\Model\SubscriberFactory         $subscriberFactory
+     * @param \Magento\Customer\Api\Data\RegionInterfaceFactory   $regionDataFactory
+     * @param \Magento\Customer\Api\Data\AddressInterfaceFactory  $addressDataFactory
+     * @param \Magento\Customer\Api\Data\CustomerInterfaceFactory $customerDataFactory
+     * @param \Magento\Customer\Model\Url                         $customerUrl
+     * @param \Magento\Customer\Model\Registration                $registration
+     * @param \Magento\Framework\Escaper                          $escaper
+     * @param \Magento\Customer\Model\CustomerExtractor           $customerExtractor
+     * @param \Magento\Framework\Api\DataObjectHelper             $dataObjectHelper
+     * @param \Magento\Customer\Model\Account\Redirect            $accountRedirect
+     * @param \Magento\Framework\Data\Form\FormKey\Validator|null $formKeyValidator
+     * @param \Magento\Customer\Api\Data\AddressInterfaceFactory  $addressFactory
+     * @param \Magento\Customer\Api\AddressRepositoryInterface    $addressRepository
+     */
     public function __construct(
         Context $context,
         Session $customerSession,
@@ -223,6 +253,12 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
     }
 
 
+    /**
+     * @param $id
+     * @param $request
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     protected function addDefaultBillingAddress($id, $request)
     {
         $address = $this->addressFactory->create();

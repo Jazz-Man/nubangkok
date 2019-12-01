@@ -1,9 +1,10 @@
 <?php
 /** @var $block \Encomage\Catalog\Block\Product\View\QuestionAboutSize */
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 
 ?>
 <?php if ($block->isShowQuestion()): ?>
-    <div class="message js-message" <?= ($block->getProduct()->getTypeId() == 'configurable') ? 'style="display:none;"' : ''; ?>>
+    <div class="message js-message" <?= ($block->getProduct()->getTypeId() === Configurable::TYPE_CODE) ? 'style="display:none;"' : ''; ?>>
         <p><?php echo __('Have you worn these shoes before?'); ?></p>
         <div class="radio-box">
             <label for="yes">

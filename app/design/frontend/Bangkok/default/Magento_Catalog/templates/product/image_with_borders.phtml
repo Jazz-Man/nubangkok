@@ -1,13 +1,9 @@
 <?php /** @var $block \Magento\Catalog\Block\Product\Image */ ?>
 <?php $product = $block->getProduct(); ?>
-<span class="product-image-container"
-      style="width:<?= /* @escapeNotVerified */
-      $block->getWidth() ?>px;">
-    <span class="product-image-wrapper"
-          style="padding-bottom: <?= /* @escapeNotVerified */
-          ($block->getRatio() * 100) ?>%;">
+<div class="product-image-container">
+    <div class="product-image-wrapper">
         <div class="image-block">
-        <img class="product-image-photo"
+            <img class="product-image-photo"
             <?= /* @escapeNotVerified */
             $block->getCustomAttributes() ?>
              src="<?= /* @escapeNotVerified */
@@ -18,6 +14,6 @@
              $block->getResizedImageHeight() ?>"
              alt="<?= /* @escapeNotVerified */
              $block->stripTags($block->getLabel(), null, true) ?>"/>
-    </span>
     </div>
-</span>
+        </div>
+</div>

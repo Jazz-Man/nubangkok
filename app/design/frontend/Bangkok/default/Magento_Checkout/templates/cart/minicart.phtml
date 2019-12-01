@@ -1,9 +1,7 @@
 <li data-block="minicart" class="minicart-wrapper">
     <a class="action showcart" href="<?= /* @escapeNotVerified */
     $block->getShoppingCartUrl() ?>"
-       data-bind="scope: 'minicart_content'">
-        <span class="text"><?= /* @escapeNotVerified */ __('My Cart') ?></span>
-
+       data-bind="scope: 'minicart_content'" title="<?= /* @escapeNotVerified */ __('My Cart') ?>">
         <span class="count-bag"
               data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
             <span class="counter-number js-counter-number"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>

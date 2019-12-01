@@ -76,17 +76,6 @@
 
       &:extend(.abs-add-box-sizing all);
 
-      &-name {
-        display: none;
-        &:extend(.abs-product-link all);
-        -moz-hyphens: auto;
-        -ms-hyphens: auto;
-        -webkit-hyphens: auto;
-        hyphens: auto;
-        margin: @indent__xs 0;
-        word-wrap: break-word;
-      }
-
       &-info {
         max-width: 100%;
         position: relative;
@@ -133,8 +122,19 @@
         }
       }
 
-      .price-box {
+      .price-box,
+      .stock{
         margin: @indent__s 0 @indent__m;
+      }
+
+      .stock{
+
+        &.unavailable{
+          color: @color-red9;
+        }
+      }
+
+      .price-box {
 
         .price {
           .lib-font-size(14);

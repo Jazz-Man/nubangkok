@@ -6,6 +6,7 @@
             <module name="Eadesigndev_Eacore"/>
             <module name="Eadesigndev_RomCity"/>
             <module name="Encomage_Checkout"/>
+            <module name="Magento_Checkout"/>
         </sequence>
     </module>
 </config>

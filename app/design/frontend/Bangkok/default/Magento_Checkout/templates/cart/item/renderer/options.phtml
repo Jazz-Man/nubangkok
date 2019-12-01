@@ -11,7 +11,7 @@ $qtyHtml = $block->getQtyHtml();
         <?php $attributeCode = $_option['att_code']; ?>
         <div class="option-<?= $attributeCode ?>">
             <?php if ($attributeCode == 'size'): ?>
-                <div class="qty-block"><?= $qtyHtml; ?></div>
+                <div class="qty-block"><?= $qtyHtml ?></div>
             <?php endif; ?>
             <div>
                 <?php $_formatedOptionValue = $rendererBlock->getFormatedOptionValue($_option); ?>

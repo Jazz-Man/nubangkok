@@ -8,7 +8,6 @@ use Magento\Customer\Model\CustomerFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
-use Encomage\ErpIntegration\Logger\Logger;
 
 /**
  * Class Customer
@@ -20,10 +19,6 @@ class Customer extends Request
      * @var CustomerResource
      */
     private $customerResource;
-    /**
-     * @var SerializerJson
-     */
-    private $json;
     
     /**
      * @var CountryFactory
@@ -35,35 +30,27 @@ class Customer extends Request
      */
     private $customerFactory;
 
-    /**
-     * @var Logger
-     */
-    private $logger;
 
     /**
      * Customer constructor.
      *
      * @param ScopeConfigInterface $scopeConfig
-     * @param CustomerResource $customerResource
-     * @param CustomerFactory $customerFactory
-     * @param SerializerJson $json
-     * @param CountryFactory $countryFactory
-     * @param Logger $logger
+     * @param CustomerResource     $customerResource
+     * @param CustomerFactory      $customerFactory
+     * @param SerializerJson       $json
+     * @param CountryFactory       $countryFactory
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         CustomerResource $customerResource,
         CustomerFactory $customerFactory,
         SerializerJson $json,
-        CountryFactory $countryFactory,
-        Logger $logger
+        CountryFactory $countryFactory
     ) {
         parent::__construct($scopeConfig, $json);
         $this->customerResource = $customerResource;
         $this->customerFactory = $customerFactory;
         $this->countryFactory = $countryFactory;
-        $this->json = $json;
-        $this->logger = $logger;
     }
 
     /**
@@ -89,8 +76,7 @@ class Customer extends Request
         $this->setApiMethod(HttpRequest::METHOD_POST);
         $result = $this->sendApiRequest();
         if (empty($result) || !$result) {
-            $this->logger->addInfo('The ERP system sent an empty response.');
-            //throw new \Exception(__('The ERP system sent an empty response.'));
+            throw new \Exception(__('The ERP system sent an empty response.'));
         }
         if ($customerCode === null && !empty($result['customerCode'])) {
             $customerData = $customer->getDataModel();

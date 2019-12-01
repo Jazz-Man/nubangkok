@@ -1,5 +1,7 @@
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
-    <preference for="\Magento\Framework\Mail\Template\TransportBuilder" type="\Encomage\Careers\Mail\Template\TransportBuilder"/>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="\Magento\Framework\Mail\Template\TransportBuilder"
+                type="\Encomage\Careers\Mail\Template\TransportBuilder"/>
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
@@ -7,7 +9,8 @@
             </argument>
         </arguments>
     </type>
-    <virtualType name="EncomageCareersGridCollection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+    <virtualType name="EncomageCareersGridCollection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">encomage_careers</argument>
             <argument name="resourceModel" xsi:type="string">Encomage\Careers\Model\ResourceModel\Careers</argument>

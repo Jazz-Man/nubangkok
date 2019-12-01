@@ -74,6 +74,17 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+
+  .page-header{
+    li{
+      &.store-locator,
+      &.switcher-language,
+      &.switcher-currency{
+        display: none !important;
+      }
+    }
+  }
+
   .columns .column.main{
     padding-bottom: 20px;
   }

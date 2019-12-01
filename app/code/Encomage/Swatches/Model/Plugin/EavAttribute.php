@@ -4,7 +4,10 @@ namespace Encomage\Swatches\Model\Plugin;
 
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Swatches\Helper\Data;
+use Magento\Swatches\Model\ResourceModel\Swatch\CollectionFactory;
 use Magento\Swatches\Model\Swatch;
+use Magento\Swatches\Model\SwatchFactory;
 
 /**
  * Class EavAttribute
@@ -31,11 +34,11 @@ class EavAttribute extends \Magento\Swatches\Model\Plugin\EavAttribute
      * @param \Magento\Swatches\Model\ResourceModel\Swatch $swatchResource
      */
     public function __construct(
-        \Magento\Swatches\Model\ResourceModel\Swatch\CollectionFactory $collectionFactory,
-        \Magento\Swatches\Model\SwatchFactory $swatchFactory,
-        \Magento\Swatches\Helper\Data $swatchHelper,
-        Json $serializer = null,
-        \Magento\Swatches\Model\ResourceModel\Swatch $swatchResource
+        CollectionFactory $collectionFactory,
+        SwatchFactory $swatchFactory,
+        Data $swatchHelper,
+        \Magento\Swatches\Model\ResourceModel\Swatch $swatchResource,
+        Json $serializer = null
     )
     {
         parent::__construct($collectionFactory, $swatchFactory, $swatchHelper, $serializer);
@@ -45,6 +48,8 @@ class EavAttribute extends \Magento\Swatches\Model\Plugin\EavAttribute
 
     /**
      * @param Attribute $attribute
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function convertSwatchToDropdown(Attribute $attribute)
     {
@@ -62,8 +67,10 @@ class EavAttribute extends \Magento\Swatches\Model\Plugin\EavAttribute
     }
 
     /**
-     * @param $attributeOptions
+     * @param      $attributeOptions
      * @param null $swatchType
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     private function cleanEavAttributeOptionSwatchValues($attributeOptions, $swatchType = null)
     {
@@ -75,6 +82,8 @@ class EavAttribute extends \Magento\Swatches\Model\Plugin\EavAttribute
 
     /**
      * @param $attributeOptions
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     private function cleanTextSwatchValuesAfterSwitch($attributeOptions)
     {

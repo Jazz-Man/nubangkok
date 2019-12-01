@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Eadesigndev\RomCity\Helper\CitiesJsonRomCity" type="Encomage\DropdownFields\Override\Helper\CitiesJsonRomCity"/>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Eadesigndev\RomCity\Helper\CitiesJsonRomCity"
+                type="Encomage\DropdownFields\Override\Helper\CitiesJsonRomCity"/>
     <type name="Magento\Checkout\Block\Checkout\LayoutProcessor">
-        <plugin name="encomage_checkout_address_fields_order" type="Encomage\DropdownFields\Plugin\Checkout\Block\LayoutProcessor" />
+        <plugin name="encomage_checkout_address_fields_order"
+                type="Encomage\DropdownFields\Plugin\Checkout\Block\LayoutProcessor"/>
     </type>
 </config>

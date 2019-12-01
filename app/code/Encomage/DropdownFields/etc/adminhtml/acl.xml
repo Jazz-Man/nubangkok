@@ -7,7 +7,8 @@
                 <resource id="Magento_Adminhtml::stores">
                     <resource id="Magento_Adminhtml::stores_settings">
                         <resource id="Magento_Adminhtml::config">
-                            <resource id="Encomage_DropdownFields::dropdown_fields_config" title="Encomage Dropdown Fields"/>
+                            <resource id="Encomage_DropdownFields::dropdown_fields_config"
+                                      title="Encomage Dropdown Fields"/>
                         </resource>
                     </resource>
                 </resource>
