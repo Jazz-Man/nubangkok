@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23bd9b1e20fce4f0802bfb44a6fd14fc",
+    "content-hash": "22b14ef909fe0d5744ff43353285d6cf",
     "packages": [
         {
             "name": "2c2p-magento2/2c2p-magento2",
@@ -824,6 +824,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
+            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
@@ -9977,6 +9978,45 @@
             "time": "2018-01-15T15:26:51+00:00"
         },
         {
+            "name": "upmedio/module-productexport",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Jazz-Man/module-productexport.git",
+                "reference": "b5685307a8bb025cda9fe79c150fa945447270bf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Jazz-Man/module-productexport/zipball/b5685307a8bb025cda9fe79c150fa945447270bf",
+                "reference": "b5685307a8bb025cda9fe79c150fa945447270bf",
+                "shasum": ""
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "psr-4": {
+                    "UpMedio\\ProductExport\\": ""
+                },
+                "files": [
+                    "registration.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Mage2Gen",
+                    "email": "info@mage2gen.com"
+                },
+                {
+                    "name": "Vasyl Sokolyk",
+                    "email": "vasyl@upmedio.com"
+                }
+            ],
+            "time": "2019-12-02T16:19:09+00:00"
+        },
+        {
             "name": "upmedio/module-registry",
             "version": "1.1.1",
             "source": {
@@ -10009,6 +10049,46 @@
             ],
             "description": "A sample module that show what and how to use instead of deprecated Registry class since Magento 2.3",
             "time": "2019-10-18T13:26:53+00:00"
+        },
+        {
+            "name": "upmedio/module-stockmanagement",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Jazz-Man/module-stockmanagement.git",
+                "reference": "12b249477a6cbf47da65dca7077eec43109e7988"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Jazz-Man/module-stockmanagement/zipball/12b249477a6cbf47da65dca7077eec43109e7988",
+                "reference": "12b249477a6cbf47da65dca7077eec43109e7988",
+                "shasum": ""
+            },
+            "require-dev": {
+                "roave/security-advisories": "dev-master"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "UpMedio\\StockManagement\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OSL-3.0",
+                "AFL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Mage2Gen",
+                    "email": "info@mage2gen.com"
+                }
+            ],
+            "description": "hotfix for \"main.CRITICAL: Notice: Undefined index: product_id /vendor/magento/module-catalog-inventory/Model/StockManagement.php\"",
+            "time": "2019-12-02T15:07:52+00:00"
         },
         {
             "name": "vertex/product-magento-module",

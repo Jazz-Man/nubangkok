@@ -31,7 +31,9 @@
     "mageplaza/module-cron-schedule": "^1.0",
     "mailchimp/mc-magento2": "^102.3",
     "nikic/iter": "^2.0",
-    "upmedio/module-registry": "^1.1"
+    "upmedio/module-productexport": "^1.0",
+    "upmedio/module-registry": "^1.1",
+    "upmedio/module-stockmanagement": "^1.0"
   },
   "require-dev": {
     "allure-framework/allure-phpunit": "~1.2.0",
