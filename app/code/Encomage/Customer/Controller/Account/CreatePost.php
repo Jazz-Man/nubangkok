@@ -2,8 +2,12 @@
 
 namespace Encomage\Customer\Controller\Account;
 
+use Exception;
 use Magento\Customer\Api\AccountManagementInterface;
+use Magento\Customer\Api\AddressRepositoryInterface;
+use Magento\Customer\Api\CustomerRepositoryInterface as CustomerRepository;
 use Magento\Customer\Api\Data\AddressInterfaceFactory;
+use Magento\Customer\Api\Data\AddressInterfaceFactory as CustomerAddressFactory;
 use Magento\Customer\Api\Data\CustomerInterfaceFactory;
 use Magento\Customer\Api\Data\RegionInterfaceFactory;
 use Magento\Customer\Helper\Address;
@@ -16,22 +20,24 @@ use Magento\Customer\Model\Url as CustomerUrl;
 use Magento\Framework\Api\DataObjectHelper;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Framework\Escaper;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\StateException;
+use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
+use Magento\Framework\Stdlib\Cookie\PhpCookieManager;
 use Magento\Framework\UrlFactory;
 use Magento\Newsletter\Model\SubscriberFactory;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Framework\App\ObjectManager;
-use Magento\Customer\Api\AddressRepositoryInterface;
-use Magento\Customer\Api\Data\AddressInterfaceFactory as CustomerAddressFactory;
 
 /**
- * Class CreatePost
- *
- * @package Encomage\Customer\Controller\Account
+ * Class CreatePost.
  */
 class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
 {
+
     private $cookieMetadataFactory;
 
     private $cookieMetadataManager;
@@ -42,10 +48,11 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
 
     protected $formKeyValidator;
 
-
     /**
      * CreatePost constructor.
      *
+     * @param \Magento\Customer\Api\Data\AddressInterfaceFactory  $addressFactory
+     * @param \Magento\Customer\Api\AddressRepositoryInterface    $addressRepository
      * @param \Magento\Framework\App\Action\Context               $context
      * @param \Magento\Customer\Model\Session                     $customerSession
      * @param \Magento\Framework\App\Config\ScopeConfigInterface  $scopeConfig
@@ -64,11 +71,12 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
      * @param \Magento\Customer\Model\CustomerExtractor           $customerExtractor
      * @param \Magento\Framework\Api\DataObjectHelper             $dataObjectHelper
      * @param \Magento\Customer\Model\Account\Redirect            $accountRedirect
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface   $customerRepository
      * @param \Magento\Framework\Data\Form\FormKey\Validator|null $formKeyValidator
-     * @param \Magento\Customer\Api\Data\AddressInterfaceFactory  $addressFactory
-     * @param \Magento\Customer\Api\AddressRepositoryInterface    $addressRepository
      */
     public function __construct(
+        CustomerAddressFactory $addressFactory,
+        AddressRepositoryInterface $addressRepository,
         Context $context,
         Session $customerSession,
         ScopeConfigInterface $scopeConfig,
@@ -87,108 +95,88 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
         CustomerExtractor $customerExtractor,
         DataObjectHelper $dataObjectHelper,
         AccountRedirect $accountRedirect,
-        Validator $formKeyValidator = null,
-        CustomerAddressFactory $addressFactory,
-        AddressRepositoryInterface $addressRepository
-    )
-    {
-        $this->formKeyValidator = $formKeyValidator ?: ObjectManager::getInstance()->get(Validator::class);
-        parent::__construct(
-            $context,
-            $customerSession,
-            $scopeConfig,
-            $storeManager,
-            $accountManagement,
-            $addressHelper,
-            $urlFactory,
-            $formFactory,
-            $subscriberFactory,
-            $regionDataFactory,
-            $addressDataFactory,
-            $customerDataFactory,
-            $customerUrl,
-            $registration,
-            $escaper,
-            $customerExtractor,
-            $dataObjectHelper,
-            $accountRedirect
-        );
-
-        $this->addressFactory = $addressFactory;
+        CustomerRepository $customerRepository,
+        Validator $formKeyValidator = null
+    ) {
+        $this->formKeyValidator  = $formKeyValidator ?: ObjectManager::getInstance()->get(Validator::class);
+        $this->addressFactory    = $addressFactory;
         $this->addressRepository = $addressRepository;
+
+        parent::__construct($context, $customerSession, $scopeConfig, $storeManager, $accountManagement, $addressHelper,
+            $urlFactory, $formFactory, $subscriberFactory, $regionDataFactory, $addressDataFactory,
+            $customerDataFactory, $customerUrl, $registration, $escaper, $customerExtractor, $dataObjectHelper,
+            $accountRedirect, $customerRepository, $formKeyValidator);
     }
 
+    /**
+     * @return \Magento\Framework\Stdlib\Cookie\PhpCookieManager|mixed
+     */
     private function getCookieManager()
     {
-        if (!$this->cookieMetadataManager) {
-            $this->cookieMetadataManager = ObjectManager::getInstance()->get(
-                \Magento\Framework\Stdlib\Cookie\PhpCookieManager::class
-            );
+        if ( ! $this->cookieMetadataManager) {
+            $this->cookieMetadataManager = ObjectManager::getInstance()
+                                                        ->get(PhpCookieManager::class);
         }
+
         return $this->cookieMetadataManager;
     }
-
 
     public function execute()
     {
         /** @var \Magento\Framework\Controller\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
-        if ($this->session->isLoggedIn() || !$this->registration->isAllowed()) {
+        if ($this->session->isLoggedIn() || ! $this->registration->isAllowed()) {
             $resultRedirect->setPath('*/*/');
+
             return $resultRedirect;
         }
 
-        if (!$this->getRequest()->isPost() || !$this->formKeyValidator->validate($this->getRequest())) {
+        if ( ! $this->getRequest()->isPost() || ! $this->formKeyValidator->validate($this->getRequest())) {
             $url = $this->urlModel->getUrl('*/*/create', ['_secure' => true]);
             $resultRedirect->setUrl($this->_redirect->error($url));
+
             return $resultRedirect;
         }
 
         $this->session->regenerateId();
 
         try {
-            $address = $this->extractAddress();
-            $addresses = $address === null ? [] : [$address];
+            $address   = $this->extractAddress();
+            $addresses = null === $address ? [] : [$address];
 
             $customer = $this->customerExtractor->extract('customer_account_create', $this->_request);
             $customer->setAddresses($addresses);
 
-            $password = $this->getRequest()->getParam('password');
+            $password     = $this->getRequest()->getParam('password');
             $confirmation = $this->getRequest()->getParam('password_confirmation');
-            $redirectUrl = $this->urlModel->getUrl('/');
+            $redirectUrl  = $this->urlModel->getUrl('/');
 
             $this->checkPasswordConfirmation($password, $confirmation);
 
-            $customer = $this->accountManagement
-                ->createAccount($customer, $password, $redirectUrl);
+            $customer = $this->accountManagement->createAccount($customer, $password, $redirectUrl);
 
             if ($this->getRequest()->getParam('is_subscribed', false)) {
                 $this->subscriberFactory->create()->subscribeCustomerById($customer->getId());
             }
 
-            $this->_eventManager->dispatch(
-                'customer_register_success',
-                ['account_controller' => $this, 'customer' => $customer]
-            );
+            $this->_eventManager->dispatch('customer_register_success',
+                ['account_controller' => $this, 'customer' => $customer]);
 
             $confirmationStatus = $this->accountManagement->getConfirmationStatus($customer->getId());
-            if ($confirmationStatus === AccountManagementInterface::ACCOUNT_CONFIRMATION_REQUIRED) {
+            if (AccountManagementInterface::ACCOUNT_CONFIRMATION_REQUIRED === $confirmationStatus) {
                 $email = $this->customerUrl->getEmailConfirmationUrl($customer->getEmail());
-                $this->messageManager->addSuccess(
-                    __(
-                        'You must confirm your account. Please check your email for the confirmation link or <a href="%1">click here</a> for a new link.',
-                        $email
-                    )
-                );
+                $this->messageManager->addSuccessMessage(__('You must confirm your account. Please check your email for the confirmation link or <a href="%1">click here</a> for a new link.',
+                        $email));
                 $url = $this->urlModel->getUrl('*/*/index', ['_secure' => true]);
                 $resultRedirect->setUrl($this->_redirect->success($url));
             } else {
                 $this->session->setCustomerDataAsLoggedIn($customer);
 
                 $this->addDefaultBillingAddress($customer->getId(), $this->getRequest()->getParams());
-                $this->messageManager->addSuccess($this->getSuccessMessage());
+                $this->messageManager->addSuccessMessage($this->getSuccessMessage());
                 $requestedRedirect = $redirectUrl = $this->urlModel->getUrl('/');
                 $resultRedirect->setUrl($this->_redirect->success($requestedRedirect));
+
                 return $resultRedirect;
             }
             if ($this->getCookieManager()->getCookie('mage-cache-sessid')) {
@@ -199,78 +187,77 @@ class CreatePost extends \Magento\Customer\Controller\Account\CreatePost
 
             return $resultRedirect;
         } catch (StateException $e) {
-            $url = $this->urlModel->getUrl('customer/account/forgotpassword');
-            $message = __(
-                'There is already an account with this email address. If you are sure that it is your email address, <a href="%1">click here</a> to get your password and access your account.',
-                $url
-            );
-            $this->messageManager->addError($message);
+            $url     = $this->urlModel->getUrl('customer/account/forgotpassword');
+            $message = __('There is already an account with this email address. If you are sure that it is your email address, <a href="%1">click here</a> to get your password and access your account.',
+                $url);
+            $this->messageManager->addErrorMessage($message);
         } catch (InputException $e) {
-            $this->messageManager->addError($this->escaper->escapeHtml($e->getMessage()));
+            $this->messageManager->addErrorMessage($this->escaper->escapeHtml($e->getMessage()));
             foreach ($e->getErrors() as $error) {
-                $this->messageManager->addError($this->escaper->escapeHtml($error->getMessage()));
+                $this->messageManager->addErrorMessage($this->escaper->escapeHtml($error->getMessage()));
             }
         } catch (LocalizedException $e) {
-            $this->messageManager->addError($this->escaper->escapeHtml($e->getMessage()));
-        } catch (\Exception $e) {
-            $this->messageManager->addException($e, __($e->getMessage()));
+            $this->messageManager->addErrorMessage($this->escaper->escapeHtml($e->getMessage()));
+        } catch (Exception $e) {
+            $this->messageManager->addExceptionMessage($e, __($e->getMessage()));
         }
 
         $this->session->setCustomerFormData($this->getRequest()->getPostValue());
         $defaultUrl = $this->urlModel->getUrl('*/*/create', ['_secure' => true]);
         $resultRedirect->setUrl($this->_redirect->error($defaultUrl));
+
         return $resultRedirect;
     }
 
     private function getCookieMetadataFactory()
     {
-        if (!$this->cookieMetadataFactory) {
-            $this->cookieMetadataFactory = ObjectManager::getInstance()->get(
-                \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory::class
-            );
+        if ( ! $this->cookieMetadataFactory) {
+            $this->cookieMetadataFactory = ObjectManager::getInstance()
+                                                        ->get(CookieMetadataFactory::class);
         }
+
         return $this->cookieMetadataFactory;
     }
 
+    /**
+     * Retrieve success message
+     *
+     * @return string
+     */
     protected function getSuccessMessage()
     {
         if ($this->addressHelper->isVatValidationEnabled()) {
-            if ($this->addressHelper->getTaxCalculationAddressType() == Address::TYPE_SHIPPING) {
-                $message = __(
-                    'If you are a registered VAT customer, please <a href="%1">click here</a> to enter your shipping address for proper VAT calculation.',
-                    $this->urlModel->getUrl('customer/address/edit')
-                );
+            if (Address::TYPE_SHIPPING == $this->addressHelper->getTaxCalculationAddressType()) {
+                $message = __('If you are a registered VAT customer, please <a href="%1">click here</a> to enter your shipping address for proper VAT calculation.',
+                    $this->urlModel->getUrl('customer/address/edit'));
             } else {
-                $message = __(
-                    'If you are a registered VAT customer, please <a href="%1">click here</a> to enter your billing address for proper VAT calculation.',
-                    $this->urlModel->getUrl('customer/address/edit')
-                );
+                $message = __('If you are a registered VAT customer, please <a href="%1">click here</a> to enter your billing address for proper VAT calculation.',
+                    $this->urlModel->getUrl('customer/address/edit'));
             }
         } else {
             $message = __('Account created. Welcome to NU bangkok!');
         }
+
         return $message;
     }
-
 
     /**
      * @param $id
      * @param $request
      *
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function addDefaultBillingAddress($id, $request)
     {
         $address = $this->addressFactory->create();
         $address->setCustomerId($id)
-            ->setFirstname($request['firstname'])
-            ->setLastname($request['lastname'])
-            ->setCountryId($request['country_id'])
-            ->setPostcode('10110')
-            ->setStreet(['street'])
-            ->setCity('bangkok')
-            ->setTelephone($request['telephone'])
-            ->setIsDefaultBilling(true);
+                ->setFirstname($request['firstname'])
+                ->setLastname($request['lastname'])
+                ->setCountryId($request['country_id'])
+                ->setPostcode('10110')
+                ->setStreet(['street'])
+                ->setCity('bangkok')
+                ->setTelephone($request['telephone'])
+                ->setIsDefaultBilling(true);
         try {
             $this->addressRepository->save($address);
         } catch (LocalizedException $e) {

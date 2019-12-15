@@ -2,6 +2,9 @@
 
 namespace Encomage\ErpIntegration\Helper;
 
+use Encomage\ErpIntegration\Logger\Logger;
+use Encomage\ErpIntegration\Model\Api\ErpCreateCustomerResponse;
+use Exception;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use Magento\Customer\Model\Address\Mapper as AddressMapper;
@@ -36,13 +39,13 @@ class ErpApiCustomer extends AbstractHelper
     private $customerResource;
 
     /**
-     * @var \Encomage\ErpIntegration\Helper\StringUtils
-     */
-    private $string;
-    /**
      * @var \Magento\Customer\Model\CustomerFactory
      */
     private $customerFactory;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * ErpApiCustomer constructor.
@@ -52,6 +55,7 @@ class ErpApiCustomer extends AbstractHelper
      * @param \Magento\Customer\Model\CustomerFactory                  $customerFactory
      * @param \Magento\Customer\Model\Address\Mapper                   $addressMapper
      * @param \Magento\Customer\Model\ResourceModel\Customer           $customerResource
+     * @param \Encomage\ErpIntegration\Logger\Logger                   $logger
      * @param \Encomage\ErpIntegration\Helper\ErpApiClient             $erpApiClient
      */
     public function __construct(
@@ -60,6 +64,7 @@ class ErpApiCustomer extends AbstractHelper
         CustomerFactory $customerFactory,
         AddressMapper $addressMapper,
         CustomerResource $customerResource,
+        Logger $logger,
         ErpApiClient $erpApiClient
     ) {
         $this->customerRepository = $customerRepository;
@@ -67,7 +72,7 @@ class ErpApiCustomer extends AbstractHelper
         $this->erpApiClient       = $erpApiClient;
         $this->customerResource   = $customerResource;
         $this->customerFactory    = $customerFactory;
-        $this->string             = new StringUtils();
+        $this->logger = $logger;
 
         parent::__construct($context);
     }
@@ -86,59 +91,74 @@ class ErpApiCustomer extends AbstractHelper
                 $customer = $this->customerRepository->getById($customer);
             }
 
-            if ($code = $this->hasErpCustomerCode($customer)) {
-                return $code;
-            }
+            if ($customer !== null){
 
-            $clientHandler = $this->erpApiClient->getClient()->getConfig('handler');
-
-            $self = $this;
-
-            $tapMiddleware = Middleware::tap(static function (Request $request) use ($self) {
-
-                /** @var \GuzzleHttp\Psr7\Uri $uri */
-                $uri = $request->getUri();
-
-                dump($uri);
-                dump($self->erpApiClient->jsonDecode($request->getBody()));
-            });
-
-
-            $response = $this->erpApiClient->postJsonData('CreateCustomer', $this->prepareCustomerPostData($customer), [
-                'handler' => $tapMiddleware($clientHandler),
-            ])->then(static function (ResponseInterface $res) use ($self, $customer) {
-
-                $result = $self->erpApiClient->parseBody($res);
-
-                if ( ! empty($result) && $result->returnResult && ! empty($result->customerCode) && ! empty($self->string->trim($result->errorMessage))) {
-
-                    $customerCode = $self->string->cleanString($result->customerCode);
-
-                    $self->updateErpCustomerCode($customer, $customerCode);
-
-                    return $customerCode;
+                if ($code = $this->hasErpCustomerCode($customer)) {
+                    return $code;
                 }
 
-                return false;
+                $this->logger->info('Start ERP CreateCustomer');
 
-            });
+                $clientHandler = $this->erpApiClient->getClient()->getConfig('handler');
 
-            return $response->wait();
+                $self = $this;
 
-        } catch (\Exception $e) {
+                $tapMiddleware = Middleware::tap(static function (Request $request) use ($self) {
+
+                    /** @var \GuzzleHttp\Psr7\Uri $uri */
+                    $uri = $request->getUri();
+
+                    $Body = $self->erpApiClient->jsonDecode($request->getBody(), true);
+
+                    $self->logger->info('CreateCustomer Request Uri:', [(string) $uri]);
+                    $self->logger->info('CreateCustomer Request Body:', $Body);
+                });
+
+
+                $response = $this->erpApiClient->postJsonData('CreateCustomer', $this->prepareCustomerPostData($customer), [
+                    'handler' => $tapMiddleware($clientHandler),
+                ])->then(static function (ResponseInterface $res) use ($self, $customer) {
+
+                    try{
+                        $result = $self->erpApiClient->parseBody($res);
+
+                        $self->logger->info('CreateCustomer Response', (array) $result);
+
+                        $erpCustomer = new ErpCreateCustomerResponse($result);
+
+                        if ( $erpCustomer->isValid()) {
+
+                            $self->updateErpCustomerCode($customer, $erpCustomer->getCustomerCode());
+
+                            return $erpCustomer->getCustomerCode();
+                        }
+
+                    }catch (Exception $exception){
+
+                    }
+
+                    return false;
+
+                });
+
+                return $response->wait();
+            }
+
+        } catch (Exception $e) {
         }
 
         return $result;
     }
 
     /**
-     * @param \Magento\Customer\Api\Data\CustomerInterface $customer
+     * @param \Magento\Customer\Api\Data\CustomerInterface|null $customer
      *
      * @return bool|string
      */
     private function hasErpCustomerCode($customer)
     {
-        if ($customer->getId() && $customAttr = $customer->getCustomAttribute('erp_customer_code')) {
+
+        if (($customer !== null) && $customAttr = $customer->getCustomAttribute('erp_customer_code')) {
             return (string)$customAttr->getValue();
         }
 
@@ -213,7 +233,8 @@ class ErpApiCustomer extends AbstractHelper
             $customerData['customerEmail'] = $customer->getEmail();
 
             $result = ['Customer' => $customerData];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            $this->logger->error("CreateCustomer ERROR: {$e->getMessage()}");
         }
 
         return $result;
@@ -236,8 +257,8 @@ class ErpApiCustomer extends AbstractHelper
 
         try {
             $this->customerResource->save($_customer);
-        } catch (\Exception $e) {
-            dump($e->getMessage());
+        } catch (Exception $e) {
+            $this->logger->error("CreateCustomer ERROR: {$e->getMessage()}");
         }
 
     }

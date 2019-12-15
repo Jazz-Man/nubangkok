@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<!--    <preference for="Magento\CatalogUrlRewrite\Observer\CategoryUrlPathAutogeneratorObserver" type="ErpAPI\ErpAPICommand\Rewrite\Magento\CatalogUrlRewrite\Observer\CategoryUrlPathAutogeneratorObserver"/>-->
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="scrap" xsi:type="object">ErpAPI\ErpAPICommand\Console\Command\ScrapCommand</item>
                 <item name="colors" xsi:type="object">ErpAPI\ErpAPICommand\Console\Command\ColorsCommand</item>
+                <item name="invoice" xsi:type="object">ErpAPI\ErpAPICommand\Console\Command\InvoiceCommand</item>
             </argument>
         </arguments>
     </type>

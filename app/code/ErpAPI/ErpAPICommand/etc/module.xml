@@ -4,6 +4,7 @@
     <module name="ErpAPI_ErpAPICommand" setup_version="1.0.0">
         <sequence>
             <module name="Magento_Store" />
+            <module name="Magento_CatalogUrlRewrite"/>
         </sequence>
     </module>
 </config>

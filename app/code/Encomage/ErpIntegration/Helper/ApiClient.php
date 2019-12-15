@@ -48,7 +48,8 @@ class ApiClient
         $this->_host_name = $scopeConfig->getValue(self::HOST_NAME);
 
         $this->client = new Client([
-            'timeout' => 30,
+            'timeout' => 600,
+            'base_uri'=>"{$this->_host_name}/",
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -62,9 +63,6 @@ class ApiClient
             'warehouseCode' => $scopeConfig->getValue(self::WAREHOUSE_CODE),
         ];
 
-        if ((bool) $scopeConfig->getValue(self::TEST_MODE)) {
-            $this->defaults['testmode'] = 1;
-        }
     }
 
     /**
@@ -77,7 +75,7 @@ class ApiClient
     {
         $query = array_merge($this->defaults, $query);
 
-        return $this->client->get("{$this->_host_name}/{$point}", [
+        return $this->client->get($point, [
             'query' => $query,
         ]);
     }

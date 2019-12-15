@@ -2,16 +2,14 @@
 
 namespace Encomage\ErpIntegration\Model\Api;
 
-use Encomage\ErpIntegration\Helper\StringUtils;
 use Magento\CatalogInventory\Model\Stock;
 use stdClass;
 
 /**
  * Class Product.
  */
-class ErpProduct
+class ErpProduct extends Filter
 {
-
     /**
      * @var string
      */
@@ -71,10 +69,7 @@ class ErpProduct
      * @var int
      */
     private $UnrestrictStock;
-    /**
-     * @var StringUtils
-     */
-    private $string;
+
     /**
      * @var bool
      */
@@ -87,12 +82,7 @@ class ErpProduct
      */
     public function __construct(stdClass $obj)
     {
-        $this->string = new StringUtils();
-        foreach ($obj as $property => $value) {
-            if (property_exists($this, $property)) {
-                $this->$property = $value;
-            }
-        }
+        parent::__construct($obj);
 
         $this->is_shoes = 'Shoes' === $this->getSubCategoryName();
     }
@@ -118,7 +108,7 @@ class ErpProduct
      */
     protected function getCategoryName(): string
     {
-        if ( ! empty($this->IcCategoryName)) {
+        if (!empty($this->IcCategoryName)) {
             return $this->prepareStringProps($this->IcCategoryName);
         }
 
@@ -138,23 +128,6 @@ class ErpProduct
     }
 
     /**
-     * @param mixed $prop
-     *
-     * @return string
-     */
-    private function cleanStringProp($prop): string
-    {
-        $prop = $this->string->cleanString($prop);
-        $prop = $this->string->trim($prop);
-        $prop = filter_var($prop, FILTER_SANITIZE_STRING);
-
-        return $prop;
-    }
-
-    /**
-     * @param string $name
-     * @param array  $sourceSeparator
-     *
      * @return bool|string
      */
     private function upperCaseWords(string $name, array $sourceSeparator = [])
@@ -168,15 +141,12 @@ class ErpProduct
         return $name;
     }
 
-    /**
-     * @return bool
-     */
     public function isValid(): bool
     {
         $product_code = $this->getBarCode();
 
-        $rawString    = mb_strtoupper($product_code, 'UTF-8');
-        $has_space    = ! ctype_space($product_code);
+        $rawString = mb_strtoupper($product_code, 'UTF-8');
+        $has_space = !ctype_space($product_code);
         $is_uppercase = $product_code === $rawString;
 
         $not_allowed_sku = [
@@ -195,12 +165,9 @@ class ErpProduct
             'WB51MTTLAY1BLGNXXSML',
         ];
 
-        return $has_space && $is_uppercase && ! \in_array($product_code, $not_allowed_sku, true);
+        return $has_space && $is_uppercase && !\in_array($product_code, $not_allowed_sku, true);
     }
 
-    /**
-     * @return string
-     */
     public function getBarCode(): string
     {
         return $this->cleanStringProp($this->BarCode);
@@ -213,7 +180,7 @@ class ErpProduct
     {
         $prop = false;
 
-        if ( ! empty($this->PropLabel)) {
+        if (!empty($this->PropLabel)) {
             $prop = $this->string->cleanString($this->PropLabel);
 
             $prop = $this->string->trim($prop);
@@ -223,8 +190,8 @@ class ErpProduct
             if (is_numeric($prop)) {
                 $prop_strlen = $this->string->strlen($prop);
 
-                if ($prop_strlen > 2){
-                    $prop = (int)$prop / 10;
+                if ($prop_strlen > 2) {
+                    $prop = (int) $prop / 10;
                 }
 
                 $filter = FILTER_SANITIZE_NUMBER_INT;
@@ -237,8 +204,8 @@ class ErpProduct
          * filtering for "36 19/02"
          */
 
-        if ( ! is_numeric($prop) && (bool)(int)$prop) {
-            $prop = (int)$prop;
+        if (!is_numeric($prop) && (bool) (int) $prop) {
+            $prop = (int) $prop;
         }
 
         return $prop ?: 'no size';
@@ -249,48 +216,21 @@ class ErpProduct
      */
     public function getName()
     {
-        if ( ! empty($this->IcProductDescription0)) {
+        if (!empty($this->IcProductDescription0)) {
             return $this->prepareStringProps($this->IcProductDescription0);
         }
 
         return false;
     }
 
-    /**
-     * @return int
-     */
     public function getStockStatus(): int
     {
         return $this->UnrestrictStock > 0 ? Stock::STOCK_IN_STOCK : 0;
     }
 
-    /**
-     * @return int
-     */
     public function getUnrestrictStock(): int
     {
         return $this->filterNumericProps($this->UnrestrictStock);
-    }
-
-    /**
-     * @param string|float|int $prop
-     *
-     * @return string|int
-     */
-    private function filterNumericProps($prop)
-    {
-        $prop = $this->string->cleanString($prop);
-        $prop = $this->string->trim($prop);
-
-        if (\is_float($prop)) {
-            $filter = FILTER_SANITIZE_NUMBER_FLOAT;
-        } elseif (\is_int($prop)) {
-            $filter = FILTER_SANITIZE_NUMBER_INT;
-        } else {
-            $filter = FILTER_DEFAULT;
-        }
-
-        return filter_var($prop, $filter);
     }
 
     /**
@@ -298,7 +238,7 @@ class ErpProduct
      */
     public function getFormat()
     {
-        if ( ! empty($this->PropFormat)) {
+        if (!empty($this->PropFormat)) {
             return $this->prepareStringProps($this->PropFormat);
         }
 
@@ -310,7 +250,7 @@ class ErpProduct
      */
     public function getGrossWeight()
     {
-        if ( ! empty($this->GrossWeight)) {
+        if (!empty($this->GrossWeight)) {
             $props = $this->filterNumericProps($this->GrossWeight);
 
             return round($props, 2);
@@ -319,9 +259,6 @@ class ErpProduct
         return false;
     }
 
-    /**
-     * @return string
-     */
     public function getNetWeight(): string
     {
         return $this->filterNumericProps($this->NetWeight);
@@ -344,7 +281,7 @@ class ErpProduct
      */
     public function getSalesPrice()
     {
-        if ( ! empty($this->SalesPrice)) {
+        if (!empty($this->SalesPrice)) {
             $prop = $this->filterNumericProps($this->SalesPrice);
 
             return abs($prop);
@@ -353,12 +290,9 @@ class ErpProduct
         return null;
     }
 
-    /**
-     * @return string
-     */
     public function getModel(): string
     {
-        if ( ! empty($this->PropModel)) {
+        if (!empty($this->PropModel)) {
             return $this->prepareStringProps($this->PropModel);
         }
 
@@ -370,7 +304,7 @@ class ErpProduct
      */
     public function getCategoryCode()
     {
-        if ( ! empty($this->ICCategoryCode)) {
+        if (!empty($this->ICCategoryCode)) {
             return $this->cleanStringProp($this->ICCategoryCode);
         }
 
@@ -382,16 +316,13 @@ class ErpProduct
      */
     public function getColor()
     {
-        if ( ! empty($this->PropArtist)) {
+        if (!empty($this->PropArtist)) {
             return $this->cleanStringProp($this->PropArtist);
         }
 
         return false;
     }
 
-    /**
-     * @return bool
-     */
     public function isShoes(): bool
     {
         return $this->is_shoes;
@@ -402,7 +333,7 @@ class ErpProduct
      */
     public function getHeight()
     {
-        if ( ! empty($this->Height)) {
+        if (!empty($this->Height)) {
             return $this->filterNumericProps($this->Height);
         }
 
@@ -414,7 +345,7 @@ class ErpProduct
      */
     public function getWidth()
     {
-        if ( ! empty($this->Width)) {
+        if (!empty($this->Width)) {
             return $this->filterNumericProps($this->Width);
         }
 

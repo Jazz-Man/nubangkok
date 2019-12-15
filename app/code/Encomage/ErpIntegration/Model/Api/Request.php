@@ -94,9 +94,11 @@ abstract class Request
             'compCode'      => $this->_getCompCode(),
             'warehouseCode' => $this->_getWarehouseCode(),
         ];
-        if ($this->_isEnabledTestMode()) {
-            $dataUrl['testmode'] = 1;
-        }
+//        if ($this->_isEnabledTestMode()) {
+//            $dataUrl['testmode'] = 1;
+//        }
+
+        $dataUrl['testmode'] = 1;
         $response = [];
         try {
             if (!empty($this->additionalDataUrl)) {
@@ -106,12 +108,30 @@ abstract class Request
             $apiURL = $this->_getHostName() . '/' . $this->_getApiLastPoint() . $this->_getAuthorization($dataUrl);
 
             $data_string = $this->serializerJson->serialize($this->_getAdditionalDataContent());
+
+
+            $is_createcustomer = $this->_getApiLastPoint() === 'createcustomer';
+
+
+//            if ($is_createcustomer){
+                dump($this->_getAdditionalDataContent());
+//            }
+
+
+
+
             $ch = curl_init($apiURL);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->_getApiMethod());
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Content-Length: ' . strlen($data_string)]);
             $response = $this->serializerJson->unserialize(curl_exec($ch));
+//            if ($is_createcustomer){
+//                dump($response);
+//            }
+
+            dump($response);
+
         } catch (Exception $e) {
 //            $objectManger = ObjectManager::getInstance();
 //            $logger = $objectManger->create(Logger::class);

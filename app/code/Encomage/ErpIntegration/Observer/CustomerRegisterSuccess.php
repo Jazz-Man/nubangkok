@@ -1,9 +1,9 @@
 <?php
 namespace Encomage\ErpIntegration\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
+use Encomage\ErpIntegration\Helper\ErpApiCustomer;
 use Magento\Framework\Event\Observer;
-use Encomage\ErpIntegration\Model\Api\Customer as ApiCustomer;
+use Magento\Framework\Event\ObserverInterface;
 
 /**
  * Class CustomerRegisterSuccess
@@ -11,18 +11,22 @@ use Encomage\ErpIntegration\Model\Api\Customer as ApiCustomer;
  */
 class CustomerRegisterSuccess implements ObserverInterface
 {
+
     /**
-     * @var ApiCustomer
+     * @var \Encomage\ErpIntegration\Helper\ErpApiCustomer
      */
-    private $apiCustomer;
+    private $erpApiCustomer;
 
     /**
      * CustomerRegisterSuccess constructor.
-     * @param ApiCustomer $apiCustomer
+     *
+     * @param \Encomage\ErpIntegration\Helper\ErpApiCustomer $erpApiCustomer
      */
-    public function __construct(ApiCustomer $apiCustomer)
+    public function __construct(
+        ErpApiCustomer $erpApiCustomer
+    )
     {
-        $this->apiCustomer = $apiCustomer;
+        $this->erpApiCustomer = $erpApiCustomer;
     }
 
     /**
@@ -33,11 +37,8 @@ class CustomerRegisterSuccess implements ObserverInterface
     public function execute(Observer $observer)
     {
         $customerId = $observer->getCustomer()->getId();
-        $phone = null;
-        if ($observer->getAccountController()) {
-            $params = $observer->getAccountController()->getRequest()->getParams();
-            $phone = $params['telephone'];
-        }
-        $this->apiCustomer->createOrUpdateCustomer($customerId, $phone);
+
+
+        $this->erpApiCustomer->getCustomerErpCode($customerId);
     }
 }

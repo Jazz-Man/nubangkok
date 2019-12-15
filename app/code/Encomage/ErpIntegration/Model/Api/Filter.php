@@ -5,9 +5,9 @@ namespace Encomage\ErpIntegration\Model\Api;
 
 
 use Encomage\ErpIntegration\Helper\StringUtils;
+use stdClass;
 use function is_float;
 use function is_int;
-use stdClass;
 
 /**
  * Class Filter
@@ -16,6 +16,16 @@ use stdClass;
  */
 abstract class Filter
 {
+
+    /**
+     * @var bool
+     */
+    public $returnResult = false;
+
+    /**
+     * @var string
+     */
+    public $errorMessage;
 
     /**
      * @var \Encomage\ErpIntegration\Helper\StringUtils
@@ -36,6 +46,22 @@ abstract class Filter
                 $this->$property = $value;
             }
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReturnResult(): bool
+    {
+        return $this->returnResult;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorMessage(): string
+    {
+        return $this->cleanStringProp($this->errorMessage);
     }
 
     /**

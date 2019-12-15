@@ -1,69 +1,42 @@
 <?php
 
 
-namespace Encomage\ErpIntegration\Model\Api\Customer;
+namespace Encomage\ErpIntegration\Model\Api;
 
-
-use Encomage\ErpIntegration\Model\Api\Filter;
 
 /**
  * Class CreateCustomerResponse
  *
  * @package Encomage\ErpIntegration\Model\Api\Customer
  */
-class CreateCustomerResponse extends Filter
+class ErpCreateCustomerResponse extends Filter
 {
-
-    /**
-     * @var bool
-     */
-    private $returnResult = false;
     /**
      * @var string
      */
-    private $errorMessage;
-    /**
-     * @var string
-     */
-    private $customerCode;
+    public $customerCode;
     /**
      * @var string
      */
 
-    private $customerName;
+    public $customerName;
     /**
      * @var string
      */
-    private $customerInvoiceAddress;
+    public $customerInvoiceAddress;
     /**
      * @var string
      */
-    private $infoLastUpdate;
+    public $infoLastUpdate;
     /**
      * @var string
      */
-    private $infoLastUpdateTime;
+    public $infoLastUpdateTime;
     /**
      * @var string
      */
-    private $infoLastUpdateBy;
+    public $infoLastUpdateBy;
 
-
-    /**
-     * @return bool
-     */
-    public function isReturnResult(): bool
-    {
-        return $this->returnResult;
-    }
-
-    /**
-     * @return string
-     */
-    public function getErrorMessage(): string
-    {
-        return $this->cleanStringProp($this->errorMessage);
-    }
 
     /**
      * @return string

@@ -1,9 +1,9 @@
 <?php
 namespace Encomage\ErpIntegration\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
+use Encomage\ErpIntegration\Helper\ErpApiInvoice;
 use Magento\Framework\Event\Observer;
-use Encomage\ErpIntegration\Model\Api\Invoice as ApiInvoice;
+use Magento\Framework\Event\ObserverInterface;
 
 /**
  * Class QuoteSubmitSuccess
@@ -12,27 +12,30 @@ use Encomage\ErpIntegration\Model\Api\Invoice as ApiInvoice;
 class QuoteSubmitSuccess implements ObserverInterface
 {
     /**
-     * @var ApiInvoice
+     * @var \Encomage\ErpIntegration\Helper\ErpApiInvoice
      */
-    private $apiInvoice;
+    private $erpApiInvoice;
 
     /**
      * QuoteSubmitSuccess constructor.
-     * @param ApiInvoice $apiInvoice
+     *
+     * @param \Encomage\ErpIntegration\Helper\ErpApiInvoice $erpApiInvoice
      */
     public function __construct(
-        ApiInvoice $apiInvoice
+        ErpApiInvoice $erpApiInvoice
     )
     {
-        $this->apiInvoice = $apiInvoice;
+        $this->erpApiInvoice = $erpApiInvoice;
     }
 
     /**
      * @param Observer $observer
-     * @return $this
+     *
+     * @return void
+     * @throws \Exception
      */
     public function execute(Observer $observer)
     {
-        $this->apiInvoice->createInvoice($observer->getEvent()->getOrder());
+        $this->erpApiInvoice->createInvoice($observer->getEvent()->getOrder());
     }
 }

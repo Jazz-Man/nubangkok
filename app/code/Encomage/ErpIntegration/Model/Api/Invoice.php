@@ -61,13 +61,15 @@ class Invoice extends Request
         $data = $this->_prepareInvoiceData($order);
         $this->setAdditionalDataContent($data);
         $result = $this->sendApiRequest();
-        if (array_key_exists('returnResult', $result) && $result['returnResult']) {
-            $order->addCommentToStatusHistory(__('Sent invoice to ERP. DocNo: %1. RecId: %2', $result['DocNo'], $result['recId']), $order->getStatus());
-            $this->orderResource->save($order);
-        } else {
-            $order->addCommentToStatusHistory(__("Invoice wasn't sent to ERP system. \n ERROR: ". $result['errorMessage']), parent::ORDER_STATUS_PENDING_NOT_SENT);
-            $this->orderResource->save($order);
-        }
+
+        dump($result);
+//        if (array_key_exists('returnResult', $result) && $result['returnResult']) {
+//            $order->addCommentToStatusHistory(__('Sent invoice to ERP. DocNo: %1. RecId: %2', $result['DocNo'], $result['recId']), $order->getStatus());
+//            $this->orderResource->save($order);
+//        } else {
+//            $order->addCommentToStatusHistory(__("Invoice wasn't sent to ERP system. \n ERROR: ". $result['errorMessage']), parent::ORDER_STATUS_PENDING_NOT_SENT);
+//            $this->orderResource->save($order);
+//        }
         return $result;
     }
 
@@ -78,7 +80,7 @@ class Invoice extends Request
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    protected function _prepareInvoiceData(Order $order)
+    public function _prepareInvoiceData(Order $order)
     {
         $fieldName = 'Order';
         $productsFieldName = 'lineItems';
@@ -87,9 +89,11 @@ class Invoice extends Request
 
         if ($shippingAddress !== null){
             $street = implode(',', $shippingAddress->getStreet());
-            $customerCode = $this->_getCustomerCodeById($order->getCustomerId());
+//            $customerCode = $this->_getCustomerCodeById($order->getCustomerId());
 
-            $data[$fieldName]['CustomerCode'] = $customerCode;
+
+//            $data[$fieldName]['CustomerCode'] = $customerCode;
+
             $data[$fieldName]['customerName'] = $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname();
             $data[$fieldName]['customerAddress'] = $shippingAddress->getCity() . ' ' . trim($street, ' ') . ' ' . $shippingAddress->getPostcode();
             $data[$fieldName]['customerTelephone'] = $shippingAddress->getTelephone();
