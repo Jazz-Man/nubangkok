@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="customer_register_success">
+        <observer name="encomage_erpIntegration_customer_register_success" instance="Encomage\ErpIntegration\Observer\CustomerRegisterSuccess" />
+    </event>
+<!--    <event name="customer_change_address_save_after">-->
+<!--        <observer name="encomage_erpIntegration_customer_change_address_save_success" instance="Encomage\ErpIntegration\Observer\CustomerAddressSaveSuccess"/>-->
+<!--    </event>-->
+    <event name="sales_model_service_quote_submit_success">
+        <observer name="encomage_erpIntegration_sales_model_service_quote_submit_success" instance="Encomage\ErpIntegration\Observer\QuoteSubmitSuccess" />
+    </event>
+</config>
