@@ -62,7 +62,7 @@ class Invoice extends Request
         $this->setAdditionalDataContent($data);
         $result = $this->sendApiRequest();
 
-        dump($result);
+//        dump($result);
 //        if (array_key_exists('returnResult', $result) && $result['returnResult']) {
 //            $order->addCommentToStatusHistory(__('Sent invoice to ERP. DocNo: %1. RecId: %2', $result['DocNo'], $result['recId']), $order->getStatus());
 //            $this->orderResource->save($order);
