@@ -4,8 +4,6 @@ namespace Encomage\ErpIntegration\Helper;
 
 use Encomage\ErpIntegration\Logger\Logger;
 use Encomage\ErpIntegration\Model\Api\ErpCreateInvoiceResponse;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Request;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Sales\Model\OrderRepository;
@@ -17,6 +15,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ErpApiInvoice extends AbstractHelper
 {
+
     /**
      * @var \Magento\Sales\Model\OrderRepository
      */
@@ -63,12 +62,12 @@ class ErpApiInvoice extends AbstractHelper
         ErpApiClient $erpApiClient,
         ErpApiCustomer $erpApiCustomer
     ) {
-        $this->orderRepository = $orderRepository;
-        $this->orderResource = $orderResource;
-        $this->erpApiClient = $erpApiClient;
-        $this->erpApiCustomer = $erpApiCustomer;
+        $this->orderRepository      = $orderRepository;
+        $this->orderResource        = $orderResource;
+        $this->erpApiClient         = $erpApiClient;
+        $this->erpApiCustomer       = $erpApiCustomer;
         $this->erpApiInvoiceAddress = $erpApiInvoiceAddress;
-        $this->logger = $logger;
+        $this->logger               = $logger;
         parent::__construct($context);
     }
 
@@ -79,26 +78,13 @@ class ErpApiInvoice extends AbstractHelper
     {
         $invoiceData = $this->prepareInvoicePostData($order);
 
-        if (!empty($invoiceData)) {
+        if ( ! empty($invoiceData)) {
             $this->logger->info('Start ERP CreateInvoice');
-
-            $clientHandler = $this->erpApiClient->getClient()->getConfig('handler');
 
             $self = $this;
 
-            $tapMiddleware = Middleware::tap(static function (Request $request) use ($self) {
-                /** @var \GuzzleHttp\Psr7\Uri $uri */
-                $uri = $request->getUri();
 
-                $Body = $self->erpApiClient->jsonDecode($request->getBody(), true);
-
-                $self->logger->info('CreateInvoice Request Uri:', [(string) $uri]);
-                $self->logger->info('CreateInvoice Request Body:', $Body);
-            });
-
-            $promise = $this->erpApiClient->postJsonData('CreateInvoice', $invoiceData, [
-                'handler' => $tapMiddleware($clientHandler),
-            ])->then(static function (
+            $promise = $this->erpApiClient->postJsonData('CreateInvoice', $invoiceData)->then(static function (
                 ResponseInterface $res
             ) use ($self, $order) {
                 try {
@@ -106,7 +92,7 @@ class ErpApiInvoice extends AbstractHelper
 
                     $erpInvoice = new ErpCreateInvoiceResponse($result);
 
-                    $self->logger->info('CreateInvoice Response', (array) $result);
+                    $self->logger->info('CreateInvoice Response', (array)$result);
                     if ($erpInvoice->isValid()) {
                         $self->updateOrderData($order, $erpInvoice);
                     }
@@ -141,21 +127,21 @@ class ErpApiInvoice extends AbstractHelper
             $CustomerCode = $this->erpApiCustomer->getCustomerErpCode($order->getCustomerId());
 
             $order_data = [
-                'CustomerCode' => $CustomerCode,
-                'customerTaxid' => 'tax1',
+                'CustomerCode'     => $CustomerCode,
+                'customerTaxid'    => 'tax1',
                 'customerBranchno' => 'Online',
-                'branchCode' => 'ON',
-                'salespersonCode' => 'admin',
-                'currency' => 'THB',
+                'branchCode'       => 'ON',
+                'salespersonCode'  => 'admin',
+                'currency'         => 'THB',
             ];
 
             /** @var \Magento\Sales\Model\Order\Address $shippingAddress */
             $shippingAddress = $order->getShippingAddress();
 
             if (null !== $shippingAddress) {
-                $order_data['customerAddress'] = $this->erpApiInvoiceAddress->prepareAddress($shippingAddress);
+                $order_data['customerAddress']   = $this->erpApiInvoiceAddress->prepareAddress($shippingAddress);
                 $order_data['customerTelephone'] = $shippingAddress->getTelephone();
-                $order_data['customerName'] = $shippingAddress->getName();
+                $order_data['customerName']      = $shippingAddress->getName();
             }
 
             $items = [];
@@ -173,19 +159,19 @@ class ErpApiInvoice extends AbstractHelper
                     $discount = number_format($discount);
 
                     $items[] = [
-                        'productCode' => $item->getSku(),
-                        'barcode' => $item->getSku(),
-                        'quantity' => (string) abs($item->getQtyOrdered()),
+                        'productCode'   => $item->getSku(),
+                        'barcode'       => $item->getSku(),
+                        'quantity'      => (string)abs($item->getQtyOrdered()),
                         'warehouseCode' => $this->erpApiClient->getWarehouseCode(),
-                        'discountText' => "{$discount}%",
+                        'discountText'  => "{$discount}%",
                     ];
                 }
             }
 
             if ($order->getRedeemAmount()) {
                 $items[] = [
-                    'productCode' => "Redeem {$order->getRedeemAmount()}",
-                    'quantity' => 1,
+                    'productCode'   => "Redeem {$order->getRedeemAmount()}",
+                    'quantity'      => 1,
                     'warehouseCode' => $this->erpApiClient->getWarehouseCode(),
                 ];
             }
@@ -199,7 +185,7 @@ class ErpApiInvoice extends AbstractHelper
 
             $paymentInfo[] = [
                 'paymentMethodCode' => $payment->getMethod(),
-                'amount' => number_format($order->getGrandTotal(), 2, '.', ''),
+                'amount'            => number_format($order->getGrandTotal(), 2, '.', ''),
             ];
 
             $order_data['linePayments'] = $paymentInfo;
