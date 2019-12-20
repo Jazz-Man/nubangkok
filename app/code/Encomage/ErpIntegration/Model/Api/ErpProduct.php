@@ -13,67 +13,67 @@ class ErpProduct extends Filter
     /**
      * @var string
      */
-    private $PropFormat;
+    public $PropFormat;
     /**
      * @var string
      */
-    private $BarCode;
+    public $BarCode;
     /**
      * @var string
      */
-    private $IcProductDescription0;
+    public $IcProductDescription0;
     /**
      * @var int|float
      */
-    private $SalesPrice;
+    public $SalesPrice;
     /**
      * @var string
      */
-    private $PropArtist;
+    public $PropArtist;
     /**
      * @var float|int
      */
-    private $GrossWeight;
+    public $GrossWeight;
 
     /**
      * @var int|float
      */
-    private $Height;
+    public $Height;
 
     /**
      * @var int|float
      */
-    private $Width;
+    public $Width;
     /**
      * @var float|int
      */
-    private $NetWeight;
+    public $NetWeight;
     /**
      * @var string
      */
-    private $PropLabel;
+    public $PropLabel;
     /**
      * @var string
      */
-    private $PropModel;
+    public $PropModel;
     /**
      * @var string
      */
-    private $IcCategoryName;
+    public $IcCategoryName;
 
     /**
      * @var string
      */
-    private $ICCategoryCode;
+    public $ICCategoryCode;
     /**
      * @var int
      */
-    private $UnrestrictStock;
+    public $UnrestrictStock;
 
     /**
      * @var bool
      */
-    private $is_shoes;
+    public $is_shoes;
 
     /**
      * Product constructor.
@@ -128,6 +128,9 @@ class ErpProduct extends Filter
     }
 
     /**
+     * @param string $name
+     * @param array  $sourceSeparator
+     *
      * @return bool|string
      */
     private function upperCaseWords(string $name, array $sourceSeparator = [])
@@ -141,6 +144,9 @@ class ErpProduct extends Filter
         return $name;
     }
 
+    /**
+     * @return bool
+     */
     public function isValid(): bool
     {
         $product_code = $this->getBarCode();
@@ -168,6 +174,9 @@ class ErpProduct extends Filter
         return $has_space && $is_uppercase && !\in_array($product_code, $not_allowed_sku, true);
     }
 
+    /**
+     * @return string
+     */
     public function getBarCode(): string
     {
         return $this->cleanStringProp($this->BarCode);
@@ -223,11 +232,17 @@ class ErpProduct extends Filter
         return false;
     }
 
+    /**
+     * @return int
+     */
     public function getStockStatus(): int
     {
         return $this->UnrestrictStock > 0 ? Stock::STOCK_IN_STOCK : 0;
     }
 
+    /**
+     * @return int
+     */
     public function getUnrestrictStock(): int
     {
         return $this->filterNumericProps($this->UnrestrictStock);
@@ -259,6 +274,9 @@ class ErpProduct extends Filter
         return false;
     }
 
+    /**
+     * @return string
+     */
     public function getNetWeight(): string
     {
         return $this->filterNumericProps($this->NetWeight);
@@ -290,6 +308,9 @@ class ErpProduct extends Filter
         return null;
     }
 
+    /**
+     * @return string
+     */
     public function getModel(): string
     {
         if (!empty($this->PropModel)) {
@@ -323,6 +344,9 @@ class ErpProduct extends Filter
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public function isShoes(): bool
     {
         return $this->is_shoes;
