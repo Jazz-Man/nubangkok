@@ -10,8 +10,6 @@ use Encomage\ErpIntegration\Helper\ErpApiInvoice;
 use Encomage\ErpIntegration\Helper\StringUtils;
 use Encomage\ErpIntegration\Model\Api\Invoice as ApiInvoice;
 use Exception;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Request;
 use Magento\Framework\App\State;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Sales\Model\OrderRepository;
@@ -21,7 +19,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use function GuzzleHttp\json_decode as json_decodeAlias;
 
 /**
  * Class InvoiceCommand
@@ -156,12 +153,12 @@ class InvoiceCommand extends Command
 
 
             } catch (Exception $e) {
-                dump($e->getMessage());
+//                dump($e->getMessage());
             }
 
 
         } catch (Exception $e) {
-            dump($e->getMessage());
+//            dump($e->getMessage());
         }
 
         $output->writeln('Hello ' . $name);
@@ -169,7 +166,7 @@ class InvoiceCommand extends Command
 
 
     public function testResponse(ResponseInterface $res){
-        dump($this->erpApiClient->parseBody($res));
+//        dump($this->erpApiClient->parseBody($res));
     }
 
 }

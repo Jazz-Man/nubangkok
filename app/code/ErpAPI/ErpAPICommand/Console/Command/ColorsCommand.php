@@ -97,11 +97,11 @@ class ColorsCommand extends Command
 
 
             try {
-                dump("Delete Product: '{$product->getName()}'");
+//                dump("Delete Product: '{$product->getName()}'");
 //                $product->delete();
                 $this->productRepository->delete($product);
             } catch (Exception $e) {
-                dump($e->getMessage());
+//                dump($e->getMessage());
             }
         }
     }
