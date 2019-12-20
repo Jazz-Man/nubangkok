@@ -2,10 +2,13 @@
 
 namespace Encomage\ErpIntegration\Helper;
 
+use Encomage\ErpIntegration\Logger\Logger;
 use Exception;
 use GuzzleHttp\Client;
 use function GuzzleHttp\json_decode as json_decodeAlias;
+use GuzzleHttp\Middleware;
 use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Psr7\Request;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Psr\Http\Message\ResponseInterface;
@@ -39,20 +42,30 @@ class ErpApiClient extends AbstractHelper
      * @var string
      */
     private $warehouseCode;
+    /**
+     * @var \Encomage\ErpIntegration\Logger\Logger
+     */
+    private $logger;
 
     /**
      * ErpApiClient constructor.
      *
-     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Magento\Framework\App\Helper\Context  $context
+     * @param \Encomage\ErpIntegration\Logger\Logger $logger
      */
-    public function __construct(Context $context)
+    public function __construct(
+        Context $context,
+        Logger $logger
+    )
     {
         parent::__construct($context);
+
+        $this->logger = $logger;
 
         $host_name = $this->scopeConfig->getValue(self::HOST_NAME);
 
         $this->client = new Client([
-            'timeout' => 600,
+            'timeout' => 2000,
             'base_uri' => "{$host_name}/",
             'headers' => [
                 'Accept' => 'application/json',
@@ -61,6 +74,7 @@ class ErpApiClient extends AbstractHelper
         ]);
 
         $this->warehouseCode = $this->scopeConfig->getValue(self::WAREHOUSE_CODE);
+
 
         $this->defaults = [
             'userAccount' => $this->scopeConfig->getValue(self::LOGIN),
@@ -85,6 +99,33 @@ class ErpApiClient extends AbstractHelper
     /**
      * @param string $point
      * @param array  $query
+     *
+     * @param array  $options
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getData(string $point,array $query = [], array $options = []): ResponseInterface
+    {
+        if (!empty($this->defaults['testmode'])){
+            unset($this->defaults['testmode']);
+        }
+
+
+        $query = array_merge($this->defaults, $query);
+
+        $_options = [
+            'query' => $query,
+            'handler' => $this->requestHandler(),
+        ];
+
+        $_options = array_merge($_options, $options);
+
+        return $this->client->get($point,$_options);
+    }
+
+    /**
+     * @param string $point
+     * @param array  $query
      * @param array  $options
      *
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -94,6 +135,7 @@ class ErpApiClient extends AbstractHelper
         $_options = [
             'query' => $this->defaults,
             'json' => $query,
+            'handler' => $this->requestHandler(),
         ];
 
         $_options = array_merge($_options, $options);
@@ -131,6 +173,36 @@ class ErpApiClient extends AbstractHelper
         }
 
         return $result;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function requestHandler(){
+        $clientHandler = $this->getClient()->getConfig('handler');
+
+        $tapMiddleware = Middleware::tap([$this,'logRequest']);
+
+        return $tapMiddleware($clientHandler);
+    }
+
+    /**
+     * @param \GuzzleHttp\Psr7\Request $request
+     * @param array                    $options
+     */
+    public function logRequest(Request $request,array $options = []): void
+    {
+        /** @var \GuzzleHttp\Psr7\Uri $uri */
+        $uri = $request->getUri();
+
+        $this->logger->info("'{$uri->getPath()}' Request Method:", [(string) $request->getMethod()]);
+        $this->logger->info("'{$uri->getPath()}' Request Uri:", [(string) $uri]);
+
+        if (!empty((string)$request->getBody())){
+            $Body = $this->jsonDecode($request->getBody(), true);
+            $this->logger->info("'{$uri->getPath()}' Request Body:", $Body);
+
+        }
     }
 
     /**

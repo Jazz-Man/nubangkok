@@ -5,8 +5,6 @@ namespace Encomage\ErpIntegration\Helper;
 use Encomage\ErpIntegration\Logger\Logger;
 use Encomage\ErpIntegration\Model\Api\ErpCreateCustomerResponse;
 use Exception;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Request;
 use Magento\Customer\Model\Address\Mapper as AddressMapper;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\ResourceModel\Customer as CustomerResource;
@@ -50,13 +48,13 @@ class ErpApiCustomer extends AbstractHelper
     /**
      * ErpApiCustomer constructor.
      *
-     * @param \Magento\Framework\App\Helper\Context                    $context
+     * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Customer\Model\ResourceModel\CustomerRepository $customerRepository
-     * @param \Magento\Customer\Model\CustomerFactory                  $customerFactory
-     * @param \Magento\Customer\Model\Address\Mapper                   $addressMapper
-     * @param \Magento\Customer\Model\ResourceModel\Customer           $customerResource
-     * @param \Encomage\ErpIntegration\Logger\Logger                   $logger
-     * @param \Encomage\ErpIntegration\Helper\ErpApiClient             $erpApiClient
+     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param \Magento\Customer\Model\Address\Mapper $addressMapper
+     * @param \Magento\Customer\Model\ResourceModel\Customer $customerResource
+     * @param \Encomage\ErpIntegration\Logger\Logger $logger
+     * @param \Encomage\ErpIntegration\Helper\ErpApiClient $erpApiClient
      */
     public function __construct(
         Context $context,
@@ -72,7 +70,7 @@ class ErpApiCustomer extends AbstractHelper
         $this->erpApiClient       = $erpApiClient;
         $this->customerResource   = $customerResource;
         $this->customerFactory    = $customerFactory;
-        $this->logger = $logger;
+        $this->logger             = $logger;
 
         parent::__construct($context);
     }
@@ -91,7 +89,7 @@ class ErpApiCustomer extends AbstractHelper
                 $customer = $this->customerRepository->getById($customer);
             }
 
-            if ($customer !== null){
+            if ($customer !== null) {
 
                 if ($code = $this->hasErpCustomerCode($customer)) {
                     return $code;
@@ -99,47 +97,36 @@ class ErpApiCustomer extends AbstractHelper
 
                 $this->logger->info('Start ERP CreateCustomer');
 
-                $clientHandler = $this->erpApiClient->getClient()->getConfig('handler');
-
                 $self = $this;
 
-                $tapMiddleware = Middleware::tap(static function (Request $request) use ($self) {
 
-                    /** @var \GuzzleHttp\Psr7\Uri $uri */
-                    $uri = $request->getUri();
+                $response = $this->erpApiClient->postJsonData('CreateCustomer',
+                        $this->prepareCustomerPostData($customer))->then(static function (ResponseInterface $res) use (
+                        $self,
+                        $customer
+                    ) {
 
-                    $Body = $self->erpApiClient->jsonDecode($request->getBody(), true);
+                        try {
+                            $result = $self->erpApiClient->parseBody($res);
 
-                    $self->logger->info('CreateCustomer Request Uri:', [(string) $uri]);
-                    $self->logger->info('CreateCustomer Request Body:', $Body);
-                });
+                            $self->logger->info('CreateCustomer Response', (array)$result);
 
+                            $erpCustomer = new ErpCreateCustomerResponse($result);
 
-                $response = $this->erpApiClient->postJsonData('CreateCustomer', $this->prepareCustomerPostData($customer), [
-                    'handler' => $tapMiddleware($clientHandler),
-                ])->then(static function (ResponseInterface $res) use ($self, $customer) {
+                            if ($erpCustomer->isValid()) {
 
-                    try{
-                        $result = $self->erpApiClient->parseBody($res);
+                                $self->updateErpCustomerCode($customer, $erpCustomer->getCustomerCode());
 
-                        $self->logger->info('CreateCustomer Response', (array) $result);
+                                return $erpCustomer->getCustomerCode();
+                            }
 
-                        $erpCustomer = new ErpCreateCustomerResponse($result);
+                        } catch (Exception $exception) {
 
-                        if ( $erpCustomer->isValid()) {
-
-                            $self->updateErpCustomerCode($customer, $erpCustomer->getCustomerCode());
-
-                            return $erpCustomer->getCustomerCode();
                         }
 
-                    }catch (Exception $exception){
+                        return false;
 
-                    }
-
-                    return false;
-
-                });
+                    });
 
                 return $response->wait();
             }
