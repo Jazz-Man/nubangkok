@@ -2,18 +2,10 @@
 
 namespace Encomage\ErpIntegration\Cron;
 
-use Encomage\ErpIntegration\Helper\ApiClient;
-use Encomage\ErpIntegration\Helper\Data;
-use Encomage\ErpIntegration\Helper\ScrapCommandTrait;
-use Exception;
+use Encomage\ErpIntegration\Helper\ErpApiClient;
+use Encomage\ErpIntegration\Helper\ErpApiScrap;
+use Encomage\ErpIntegration\Logger\Logger;
 use GuzzleHttp\Psr7\Response;
-use Magento\Catalog\Api\CategoryLinkManagementInterface;
-use Magento\Catalog\Model\ResourceModel\Product as ProductResource;
-use Magento\CatalogInventory\Api\StockRegistryInterfaceFactory;
-use Magento\ConfigurableProduct\Api\LinkManagementInterfaceFactory;
-use Magento\ConfigurableProduct\Model\Product\Type\Configurable as TypeConfigurableProduct;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Psr\Log\LoggerInterface;
 
 
 /**
@@ -23,7 +15,6 @@ use Psr\Log\LoggerInterface;
  */
 class ImportProducts
 {
-    use ScrapCommandTrait;
 
     /**
      * @var array
@@ -31,95 +22,36 @@ class ImportProducts
     private $products_data = [[]];
 
     /**
-     * @var ProductResource
-     */
-    private $productResource;
-
-    /**
-     * @var CategoryLinkManagementInterface
-     */
-    private $categoryLinkManagement;
-    /**
-     * @var TypeConfigurableProduct
-     */
-    private $typeConfigurableProduct;
-    /**
-     * @var StockRegistryInterfaceFactory
-     */
-    private $stockRegistryFactory;
-
-    /**
-     * @var LinkManagementInterfaceFactory
-     */
-    private $linkManagementFactory;
-
-    /**
-     * @var \Encomage\ErpIntegration\Helper\ApiClient
-     */
-    private $apiClient;
-
-    /**
-     * @var \Encomage\ErpIntegration\Helper\Data
-     */
-    private $helper;
-
-    /**
-     * @var int
-     */
-    private $color_option_id;
-    /**
-     * @var int
-     */
-    private $size_option_id;
-    /**
-     * @var array
-     */
-    private $configurableProductData = [];
-
-    private $configurableProductCategity = [];
-    /**
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;
+    /**
+     * @var \Encomage\ErpIntegration\Helper\ErpApiScrap
+     */
+    private $erpApiScrap;
+    /**
+     * @var \Encomage\ErpIntegration\Helper\ErpApiClient
+     */
+    private $erpApiClient;
 
     /**
      * ImportProducts constructor.
      *
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface              $scopeConfig
-     * @param \Magento\Catalog\Model\ResourceModel\Product                    $productResource
-     * @param \Magento\Catalog\Api\CategoryLinkManagementInterface            $categoryLinkManagement
-     * @param \Magento\ConfigurableProduct\Model\Product\Type\Configurable    $typeConfigurableProduct
-     * @param \Magento\CatalogInventory\Api\StockRegistryInterfaceFactory     $stockRegistryFactory
-     * @param \Magento\ConfigurableProduct\Api\LinkManagementInterfaceFactory $linkManagementFactory
-     * @param \Psr\Log\LoggerInterface                                        $logger
-     * @param \Encomage\ErpIntegration\Helper\Data                            $helper
+     * @param \Encomage\ErpIntegration\Logger\Logger       $logger
+     * @param \Encomage\ErpIntegration\Helper\ErpApiClient $erpApiClient
+     * @param \Encomage\ErpIntegration\Helper\ErpApiScrap  $erpApiScrap
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
-        ProductResource $productResource,
-        CategoryLinkManagementInterface $categoryLinkManagement,
-        TypeConfigurableProduct $typeConfigurableProduct,
-        StockRegistryInterfaceFactory $stockRegistryFactory,
-        LinkManagementInterfaceFactory $linkManagementFactory,
-        LoggerInterface $logger,
-        Data $helper
+
+        Logger $logger,
+        ErpApiClient $erpApiClient,
+        ErpApiScrap $erpApiScrap
     ) {
 
-        $this->productResource         = $productResource;
-        $this->categoryLinkManagement  = $categoryLinkManagement;
-        $this->typeConfigurableProduct = $typeConfigurableProduct;
-        $this->stockRegistryFactory    = $stockRegistryFactory;
-        $this->linkManagementFactory   = $linkManagementFactory;
 
-
-        $this->apiClient = new ApiClient($scopeConfig);
-
-
-        $this->helper = $helper;
-
-        $this->color_option_id = $this->productResource->getAttribute('color')->getId();
-        $this->size_option_id  = $this->productResource->getAttribute('size')->getId();
-        $this->logger          = $logger;
+        $this->logger       = $logger;
+        $this->erpApiClient = $erpApiClient;
+        $this->erpApiScrap  = $erpApiScrap;
     }
 
     /**
@@ -131,49 +63,19 @@ class ImportProducts
     {
         $this->logger->info('Start ERP Cron Import');
 
-
-        $last_point = 'GetProductList';
-
-        $query = [
-            'Branchpricedisplay'    => 1,
-            'CategoryDisplaySubCat' => 1,
-            'Page'                  => 1,
-        ];
-
         do {
             /** @var Response $response */
-            $response = $this->apiClient->getData($last_point, $query);
-        } while ($this->parseBody($response) && $query['Page']++);
+            $response = $this->erpApiClient->getData($this->erpApiScrap->getProductListPoint,
+                $this->erpApiScrap->getProductListQuery);
+        } while ($this->erpApiScrap->parseBody($response) && $this->erpApiScrap->getProductListQuery['Page']++);
 
         if ( ! empty($this->products_data)) {
-            $this->products_data = array_merge(...$this->products_data);
 
-            $this->dataProccesing($this->products_data);
+            $this->erpApiScrap->dataProccesing();
         }
 
         $this->logger->info('Finish ERP Cron Import');
 
-    }
-
-    /**
-     * @param string                                                                    $sction
-     * @param \Magento\Catalog\Api\Data\ProductInterface|\Magento\Catalog\Model\Product $product
-     * @param string                                                                    $color_style
-     * @param \Exception                                                                $exception
-     * @param string                                                                    $child_sku
-     */
-    public function printProductException(
-        string $sction,
-        $product,
-        string $color_style = 'info',
-        Exception $exception = null,
-        $child_sku = ''
-    ): void {
-
-
-        if (null !== $exception) {
-            $this->logger->error($exception->getMessage());
-        }
     }
 
 
