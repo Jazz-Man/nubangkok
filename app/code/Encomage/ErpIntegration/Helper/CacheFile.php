@@ -4,9 +4,12 @@
 namespace Encomage\ErpIntegration\Helper;
 
 
+use Encomage\ErpIntegration\Logger\Logger;
 use function GuzzleHttp\json_decode as json_decodeAlias;
 use function GuzzleHttp\json_encode as json_encodeAlias;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Filesystem;
@@ -16,7 +19,7 @@ use Magento\Framework\Filesystem;
  *
  * @package ErpAPI\ErpAPICommand\Helper
  */
-class CacheFile
+class CacheFile extends AbstractHelper
 {
 
     /**
@@ -35,16 +38,25 @@ class CacheFile
      * @var string
      */
     private $erpConfigProductFile;
+    /**
+     * @var \Encomage\ErpIntegration\Logger\Logger
+     */
+    private $logger;
 
 
     /**
      * CacheFile constructor.
      *
+     * @param \Magento\Framework\App\Helper\Context     $context
+     * @param \Encomage\ErpIntegration\Logger\Logger    $logger
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
-     *
      */
-    public function __construct(ObjectManagerInterface $objectManager)
-    {
+    public function __construct(
+        Context $context,
+        Logger $logger,
+        ObjectManagerInterface $objectManager
+    ) {
+        parent::__construct($context);
 
         $filesystem    = $objectManager->get(Filesystem::class);
         $directoryList = $objectManager->get(DirectoryList::class);
@@ -54,13 +66,14 @@ class CacheFile
         $this->erpConfigProductFile = 'erp/ErpConfigProductFile.json';
 
 
-        $this->cacheRead  = $filesystem->getDirectoryRead($directoryList::VAR_DIR);
+        $this->cacheRead = $filesystem->getDirectoryRead($directoryList::VAR_DIR);
 
         try {
             $this->cacheWrite = $filesystem->getDirectoryWrite($directoryList::VAR_DIR);
         } catch (FileSystemException $e) {
             $this->cacheWrite = false;
         }
+        $this->logger = $logger;
     }
 
     /**
@@ -109,7 +122,7 @@ class CacheFile
 
             return $data ? json_decodeAlias($data) : false;
         } catch (FileSystemException $e) {
-            dump($e->getMessage());
+            $this->logger->error('Get data from Cache File', [$e->getMessage()]);
         }
 
         return false;
@@ -122,13 +135,14 @@ class CacheFile
      */
     private function saveFileData(string $file, $data): void
     {
-        if ($this->cacheWrite){
+        if ($this->cacheWrite) {
             try {
                 $contents = json_encodeAlias($data, JSON_UNESCAPED_SLASHES);
 
                 $this->cacheWrite->writeFile($file, $contents);
             } catch (FileSystemException $e) {
-                dump($e->getMessage());
+                $this->logger->error('Save data to Cache File', [$e->getMessage()]);
+
             }
         }
     }
