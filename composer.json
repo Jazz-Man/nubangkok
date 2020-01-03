@@ -56,7 +56,6 @@
     "magento/module-authorizenet-cardinal": "*",
     "magento/module-cardinal-commerce": "*",
     "magento/module-google-adwords": "*",
-    "magento/module-google-analytics": "*",
     "magento/module-google-optimizer": "*",
     "msp/twofactorauth": "*",
     "magento/module-new-relic-reporting": "*",
